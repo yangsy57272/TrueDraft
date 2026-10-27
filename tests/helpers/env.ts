@@ -1,0 +1,20 @@
+/** Environment for the automated test suite. Uses a dedicated test database. */
+export const TEST_ENV: Record<string, string> = {
+  NODE_ENV: "test",
+  DATABASE_URL: process.env.TEST_DATABASE_URL ?? "postgres://truedraft:truedraft@localhost:5432/truedraft_test",
+  APP_URL: "http://localhost:3000",
+  BETTER_AUTH_URL: "http://localhost:3000",
+  BETTER_AUTH_SECRET: "test-secret-test-secret-test-secret-1234",
+  ENCRYPTION_KEYS: "t1:" + Buffer.alloc(32, 7).toString("base64"),
+  AI_PROVIDER: "mock",
+  MOCK_AI_DELAY_MS: "0",
+  AI_MAX_RETRIES: "1",
+  AI_PROVIDER_DISPLAY_NAME: "Test provider",
+  PRIVACY_POLICY_VERSION: "2026-10-27",
+  EMAIL_TRANSPORT: "console",
+  AUTH_RATE_LIMIT: "off",
+  ADMIN_EMAILS: "admin@example.test",
+  AI_REQUESTS_PER_HOUR: "1000",
+  AI_REQUESTS_PER_DAY: "1000",
+  LOG_LEVEL: "",
+};

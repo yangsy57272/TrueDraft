@@ -27,7 +27,7 @@ const enJourney = {
   profile: {
     title: "Your profile",
     intro: "This is your private record of what you've studied and done. It powers Major Explorer and helps you keep your application organized. Nothing here is required.",
-    privacy: "Encrypted and visible only to you. Major Explorer sends your courses, activities, honors, and interests to the AI provider — never your test scores, GPA, or contact details.",
+    privacy: "Encrypted, and only your account can open it. Major Explorer sends your courses (names, levels, school year), activities, honors, interests, and values to the AI provider — never your test scores, GPA, course results, or contact details.",
     save: "Save profile",
     saved: "Profile saved.",
     unsaved: "You have unsaved changes.",
@@ -130,6 +130,7 @@ const enJourney = {
     },
   },
   majors: {
+    showOlder: "Show older explorations",
     title: "Major Explorer",
     intro: "Possible fields of study based on what you've actually studied, done, and said you enjoy. These are ideas to investigate — not recommendations, rankings, or predictions.",
     run: "Explore majors from my profile",

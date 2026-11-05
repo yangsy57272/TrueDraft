@@ -1,5 +1,5 @@
 import "server-only";
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, isNotNull, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { essay, essayVersion, feedbackRun } from "@/db/schema";
 import { limits } from "@/config/deployment";
@@ -73,7 +73,7 @@ export async function createEssay(userId: string, input: EssayInput) {
         versionNumber: 1,
         encryptedContent: encryptText(input.draft, "essay_version"),
         wordCount,
-        versionNote: null,
+        encryptedVersionNote: null,
       });
     }
     return created;
@@ -204,7 +204,7 @@ export async function saveVersion(userId: string, essayId: string, content: stri
         versionNumber: maxVersion + 1,
         encryptedContent: encryptText(content, "essay_version"),
         wordCount,
-        versionNote: note || null,
+        encryptedVersionNote: note ? encryptText(note, "version_note") : null,
       })
       .returning();
     // The working draft is deliberately left alone: a version is a snapshot, and writing it back
@@ -213,19 +213,42 @@ export async function saveVersion(userId: string, essayId: string, content: stri
   });
 }
 
+/** A version's note, decrypted; falls back to a legacy plaintext note not yet migrated. */
+export function versionNoteOf(row: { encryptedVersionNote: string | null; legacyVersionNote: string | null }) {
+  if (row.encryptedVersionNote) return decryptText(row.encryptedVersionNote, "version_note");
+  return row.legacyVersionNote ?? null;
+}
+
 export async function listVersions(userId: string, essayId: string) {
   await assertOwnedEssay(userId, essayId);
-  return db
+  const rows = await db
     .select({
       id: essayVersion.id,
       versionNumber: essayVersion.versionNumber,
       wordCount: essayVersion.wordCount,
-      versionNote: essayVersion.versionNote,
+      encryptedVersionNote: essayVersion.encryptedVersionNote,
+      legacyVersionNote: essayVersion.legacyVersionNote,
       createdAt: essayVersion.createdAt,
     })
     .from(essayVersion)
     .where(eq(essayVersion.essayId, essayId))
     .orderBy(desc(essayVersion.versionNumber));
+  return rows.map(({ encryptedVersionNote, legacyVersionNote, ...r }) => ({ ...r, versionNote: versionNoteOf({ encryptedVersionNote, legacyVersionNote }) }));
+}
+
+/** Encrypt plaintext version notes written before notes were encrypted. Idempotent. */
+export async function encryptLegacyVersionNotes() {
+  const rows = await db
+    .select({ id: essayVersion.id, note: essayVersion.legacyVersionNote })
+    .from(essayVersion)
+    .where(isNotNull(essayVersion.legacyVersionNote));
+  for (const r of rows) {
+    await db
+      .update(essayVersion)
+      .set({ encryptedVersionNote: r.note ? encryptText(r.note, "version_note") : null, legacyVersionNote: null })
+      .where(eq(essayVersion.id, r.id));
+  }
+  return rows.length;
 }
 
 export async function getVersion(userId: string, essayId: string, versionNumber: number) {
@@ -236,7 +259,7 @@ export async function getVersion(userId: string, essayId: string, versionNumber:
     .where(and(eq(essayVersion.essayId, essayId), eq(essayVersion.versionNumber, versionNumber)))
     .limit(1);
   if (!row) throw new ApiError(404, "not_found");
-  return { ...row, content: decryptText(row.encryptedContent, "essay_version") };
+  return { ...row, versionNote: versionNoteOf(row), content: decryptText(row.encryptedContent, "essay_version") };
 }
 
 export async function getVersionById(userId: string, essayId: string, versionId: string) {
@@ -247,7 +270,7 @@ export async function getVersionById(userId: string, essayId: string, versionId:
     .where(and(eq(essayVersion.essayId, essayId), eq(essayVersion.id, versionId)))
     .limit(1);
   if (!row) throw new ApiError(404, "not_found");
-  return { ...row, content: decryptText(row.encryptedContent, "essay_version") };
+  return { ...row, versionNote: versionNoteOf(row), content: decryptText(row.encryptedContent, "essay_version") };
 }
 
 /** The newest saved version if it matches the current draft, otherwise null. */

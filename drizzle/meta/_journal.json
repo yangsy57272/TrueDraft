@@ -29,6 +29,13 @@
       "when": 1793849423760,
       "tag": "0003_draft_revision",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793850824958,
+      "tag": "0004_encrypt_version_notes",
+      "breakpoints": true
     }
   ]
 }

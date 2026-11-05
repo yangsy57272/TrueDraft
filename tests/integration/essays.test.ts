@@ -9,7 +9,7 @@ import { GET as listVersions, POST as saveVersion } from "@/app/api/essays/[id]/
 import { GET as getVersion } from "@/app/api/essays/[id]/versions/[n]/route";
 import { GET as exportEssay } from "@/app/api/essays/[id]/export/route";
 import { POST as duplicate } from "@/app/api/essays/[id]/duplicate/route";
-import { getEssay, listEssays } from "@/server/services/essays";
+import { encryptLegacyVersionNotes, getEssay, listEssays, listVersions as listVersionsService } from "@/server/services/essays";
 import { ctx, json, req, sampleEssay, signIn } from "../helpers/http";
 
 let me: { cookie: string; userId: string };
@@ -90,6 +90,18 @@ describe("drafts and versions", () => {
     const after = await getEssay(me.userId, id);
     expect(after.draft).toBe("Newer text typed later");
     expect(after.draftRevision).toBe(1);
+  });
+
+  it("migrates plaintext version notes written before encryption", async () => {
+    const { id } = await create();
+    await db.update(essayVersion).set({ legacyVersionNote: "Old plaintext note" }).where(eq(essayVersion.essayId, id));
+    expect((await listVersionsService(me.userId, id))[0].versionNote).toBe("Old plaintext note");
+    expect(await encryptLegacyVersionNotes()).toBe(1);
+    const [row] = await db.select().from(essayVersion).where(eq(essayVersion.essayId, id));
+    expect(row.legacyVersionNote).toBeNull();
+    expect(row.encryptedVersionNote).toMatch(/^v1\./);
+    expect((await listVersionsService(me.userId, id))[0].versionNote).toBe("Old plaintext note");
+    expect(await encryptLegacyVersionNotes()).toBe(0);
   });
 
   it("numbers versions sequentially, keeps notes, and never overwrites older versions", async () => {

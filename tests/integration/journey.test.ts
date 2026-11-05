@@ -1,7 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { essay, planningRun, studentProfile } from "@/db/schema";
+import { essay, essayVersion, planningRun, studentProfile } from "@/db/schema";
+import { encryptJson } from "@/server/crypto";
+import { POST as saveVersionRoute } from "@/app/api/essays/[id]/versions/route";
 import { GET as getProfileRoute, PUT as putProfile } from "@/app/api/profile/route";
 import { DELETE as removeMajor, POST as addMajor } from "@/app/api/profile/majors/route";
 import { POST as runPlanning } from "@/app/api/planning/[kind]/route";
@@ -290,6 +292,63 @@ describe("college list", () => {
 });
 
 describe("export and deletion include planning data", () => {
+  it("exports every exploration (no cap), with identifiers, and pages the history without gaps", async () => {
+    const base = Date.now() - 1_000_000;
+    // 25 explorations, several sharing the same millisecond to exercise the keyset cursor.
+    await db.insert(planningRun).values(
+      Array.from({ length: 25 }, (_, i) => ({
+        userId: me.userId,
+        kind: "major_explorer",
+        feedbackLanguage: "en",
+        provider: "fake",
+        modelName: "fake",
+        promptVersion: "p",
+        schemaVersion: "s",
+        status: "completed",
+        encryptedStructuredResult: encryptJson({ n: i }, "planning_result"),
+        createdAt: new Date(base + Math.floor(i / 3) * 1000),
+      })),
+    );
+    const data = await (await exportData(req("GET", "/api/account/export", { cookie: me.cookie }), undefined as never)).json();
+    expect(data.format).toBe("truedraft-export/v2");
+    expect(data.account.id).toBe(me.userId);
+    expect(data.majorExplorations).toHaveLength(25);
+    expect(new Set(data.majorExplorations.map((r: { id: string }) => r.id)).size).toBe(25);
+    expect(data.majorExplorations.map((r: { result: { n: number } }) => r.result.n).sort((a: number, b: number) => a - b)).toEqual(Array.from({ length: 25 }, (_, i) => i));
+    expect(data.activity.length).toBeGreaterThan(0);
+
+    const seen: string[] = [];
+    let cursor: string | null = null;
+    let pages = 0;
+    do {
+      const url: string = `/api/planning/runs?kind=major_explorer${cursor ? `&cursor=${cursor}` : ""}`;
+      const page: { runs: { id: string }[]; nextCursor: string | null } = await json(await listRuns(req("GET", url, { cookie: me.cookie }), undefined as never));
+      seen.push(...page.runs.map((r) => r.id));
+      cursor = page.nextCursor;
+      pages++;
+    } while (cursor && pages < 10);
+    expect(pages).toBe(2);
+    expect(seen).toHaveLength(25);
+    expect(new Set(seen).size).toBe(25);
+    // Another student's cursor reveals nothing.
+    const foreign = await json(await listRuns(req("GET", `/api/planning/runs?kind=major_explorer&cursor=${seen[5]}`, { cookie: other.cookie }), undefined as never));
+    expect(foreign.runs).toEqual([]);
+  });
+
+  it("encrypts version notes at rest and exports them with ids", async () => {
+    const { id } = await json(await createEssay(req("POST", "/api/essays", { cookie: me.cookie, body: sampleEssay }), undefined as never));
+    await saveVersionRoute(req("POST", "/x", { cookie: me.cookie, body: { content: "Second draft", note: "Moved the stall scene earlier" } }), ctx({ id }));
+    const rows = await db.select().from(essayVersion).where(eq(essayVersion.essayId, id));
+    const withNote = rows.find((r) => r.versionNumber === 2)!;
+    expect(withNote.legacyVersionNote).toBeNull();
+    expect(withNote.encryptedVersionNote).toMatch(/^v1\./);
+    expect(JSON.stringify(rows)).not.toContain("stall scene");
+    const data = await (await exportData(req("GET", "/api/account/export", { cookie: me.cookie }), undefined as never)).json();
+    const v2 = data.essays[0].versions.find((v: { versionNumber: number }) => v.versionNumber === 2);
+    expect(v2).toMatchObject({ note: "Moved the stall scene earlier" });
+    expect(v2.id).toBe(withNote.id);
+    expect(data.essays[0].id).toBe(id);
+  });
   it("exports profile, list, and explorations, and deletes them with the account", async () => {
     await save(PROFILE);
     await addToList(req("POST", "/api/list", { cookie: me.cookie, body: { customSchoolName: "Example U" } }), undefined as never);

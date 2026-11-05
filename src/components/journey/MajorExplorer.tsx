@@ -33,7 +33,19 @@ export type MajorResult = {
 type Run = { id: string; createdAt: string; status: string; provider: string; result: MajorResult | null };
 type Major = { id: string; name: string; cipFamily?: string | null };
 
-export function MajorExplorer({ ai, hasProfile, initialMajors, runs }: { ai: WorkspaceAi; hasProfile: boolean; initialMajors: Major[]; runs: Run[] }) {
+export function MajorExplorer({
+  ai,
+  hasProfile,
+  initialMajors,
+  runs: firstPage,
+  nextCursor: firstCursor = null,
+}: {
+  ai: WorkspaceAi;
+  hasProfile: boolean;
+  initialMajors: Major[];
+  runs: Run[];
+  nextCursor?: string | null;
+}) {
   const { t, locale } = useI18n();
   const router = useRouter();
   const notify = useToast();
@@ -41,7 +53,26 @@ export function MajorExplorer({ ai, hasProfile, initialMajors, runs }: { ai: Wor
   const gate = useConsentGate(ai);
   const [stage, setStage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Older pages are appended below the server-rendered first page.
+  const [older, setOlder] = useState<{ runs: Run[]; cursor: string | null; forFirst: string | undefined }>({ runs: [], cursor: firstCursor, forFirst: firstPage[0]?.id });
+  const olderValid = older.forFirst === firstPage[0]?.id ? older : { runs: [], cursor: firstCursor, forFirst: firstPage[0]?.id };
+  const runs = [...firstPage, ...olderValid.runs.filter((r) => !firstPage.some((f) => f.id === r.id))];
+  const [loadingOlder, setLoadingOlder] = useState(false);
   const latestCompleted = runs.find((r) => r.status === "completed" && r.result);
+
+  async function loadOlder() {
+    if (!olderValid.cursor) return;
+    setLoadingOlder(true);
+    const res = await apiFetch<{ runs: (Omit<Run, "createdAt"> & { createdAt: string })[]; nextCursor: string | null }>(
+      `/api/planning/runs?kind=major_explorer&cursor=${encodeURIComponent(olderValid.cursor)}`,
+    );
+    setLoadingOlder(false);
+    if (!res.ok) {
+      notify(t(`errors.${res.code}` as never), "error");
+      return;
+    }
+    setOlder({ runs: [...olderValid.runs, ...(res.data.runs as Run[])], cursor: res.data.nextCursor, forFirst: firstPage[0]?.id });
+  }
   const [current, setCurrent] = useState<{ result: MajorResult; isMock: boolean } | null>(
     latestCompleted?.result ? { result: latestCompleted.result, isMock: latestCompleted.provider === "mock" } : null,
   );
@@ -80,6 +111,7 @@ export function MajorExplorer({ ai, hasProfile, initialMajors, runs }: { ai: Wor
   async function deleteRun(id: string) {
     const res = await apiFetch(`/api/planning/runs/${id}`, { method: "DELETE" });
     if (res.ok) {
+      setOlder((cur) => ({ ...cur, runs: cur.runs.filter((r) => r.id !== id) }));
       if (latestCompleted?.id === id) setCurrent(null);
       router.refresh();
     }
@@ -246,6 +278,11 @@ export function MajorExplorer({ ai, hasProfile, initialMajors, runs }: { ai: Wor
                 </li>
               ))}
             </ul>
+            {olderValid.cursor ? (
+              <button type="button" className="btn btn-secondary btn-sm mt-3" disabled={loadingOlder} onClick={() => void loadOlder()}>
+                {loadingOlder ? t("common.loading") : t("majors.showOlder")}
+              </button>
+            ) : null}
           </section>
         ) : null}
       </aside>

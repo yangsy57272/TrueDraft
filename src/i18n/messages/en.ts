@@ -100,7 +100,7 @@ const en = {
     sampleCta: "Read the full fictional example",
     privacyTitle: "Private by design",
     privacyPoints: [
-      "Your drafts are encrypted in our database and visible only to you.",
+      "Your drafts are encrypted in our database and only your account can open them.",
       "Before any AI feedback, we show exactly what is sent and ask for your consent.",
       "We do not use your essays to train or fine-tune AI models.",
       "Delete a draft, its feedback, or your whole account at any time.",
@@ -135,7 +135,7 @@ const en = {
       },
       {
         q: "Are my essays stored?",
-        a: "Yes, so you can keep revising. Drafts, versions, and feedback are stored encrypted and only your account can open them. You can save without ever using AI.",
+        a: "Yes, so you can keep revising. Drafts, versions, and feedback are stored encrypted, and only your account can open them. Titles, prompts, and target-school names are stored unencrypted so they can be listed, but are still visible only to you. You can save without ever using AI.",
       },
       {
         q: "Can I delete everything?",
@@ -155,7 +155,7 @@ const en = {
       },
     ],
     finalTitle: "Ready to look at your draft with fresh eyes?",
-    finalBody: "Free to try. No real name, school, phone number, or test scores required.",
+    finalBody: "Free to try. You don’t need to give your real name, school, or phone number. Test scores are optional and never sent to the AI.",
   },
   how: {
     title: "How it works",
@@ -163,7 +163,7 @@ const en = {
     sections: [
       {
         title: "1. Set up an essay workspace",
-        body: "Add a title, the application type, the exact prompt, an optional target school and word limit, and your draft. Tell us what you most want help with. We never ask for your legal name, school, phone number, address, ID, test scores, or family finances.",
+        body: "Add a title, the application type, the exact prompt, an optional target school and word limit, and your draft. Tell us what you most want help with. You never need to give your legal name, school, phone number, address, ID, or family finances. Test scores and GPA are optional profile fields that stay in your encrypted profile and are never sent to the AI.",
       },
       {
         title: "2. Choose whether to use AI",
@@ -226,7 +226,7 @@ const en = {
       { q: "Why?", a: "To let you sign in, save and revise your work, and generate the feedback you ask for. Nothing else." },
       {
         q: "What is sent to the AI provider?",
-        a: "Only when you request it: for essay feedback, the essay prompt, the draft (or selected passage), your optional notes, the application type, word limit, focus areas, and feedback language; for Major Explorer, your courses, activities, honors, interests, and values; for CV import, the CV text you paste. Obvious emails, phone numbers, and ID numbers are replaced before sending. Your email address, account details, test scores, and GPA are never sent.",
+        a: "Only when you request it: for essay feedback, the essay prompt, the draft (or selected passage), your optional notes, the application type, word limit, focus areas, and feedback language; for Major Explorer, your courses, activities, honors, interests, and values; for CV import, the CV text you paste. Obvious emails, phone numbers, and ID numbers in that text are replaced before sending, but automated redaction can miss things, so leave out details you don’t want shared. Your account email and other account details, test scores, GPA, and course results are never sent.",
       },
       { q: "Are essays stored?", a: "Yes, encrypted in our database, so you can keep revising. You can choose an automatic deletion period in Settings." },
       { q: "How long is information kept?", a: "Until you delete it, unless you choose an automatic deletion period (90, 180, or 365 days after the last edit)." },
@@ -287,7 +287,7 @@ const en = {
     securityTitle: "Security measures",
     security: [
       "HTTPS (TLS) is required in production.",
-      "Drafts, versions, notes, and feedback are encrypted by the application (AES-256-GCM) before being stored, in addition to any encryption provided by the database host.",
+      "Drafts, versions and version notes, context notes, feedback, brainstorming notes, your profile, and college-list notes are encrypted by the application (AES-256-GCM) before being stored, in addition to any encryption by the database host. Essay titles, prompts, target-school names, and college-list details such as deadlines and status are stored unencrypted so they can be listed and sorted; they are still visible only to your account.",
       "Sign-in uses single-use email links; session cookies are HTTP-only, SameSite, and Secure in production.",
       "Every essay request is checked on the server against your account; changing an ID in a URL does not reveal anyone else's work.",
       "Requests are rate-limited, cross-site requests are rejected, and AI output is validated before display.",
@@ -346,7 +346,7 @@ const en = {
     title: "Sign in or create an account",
     intro: "Enter your email and we'll send you a one-time sign-in link. No password needed.",
     emailLabel: "Email address",
-    emailHelp: "Used only to sign you in. We never ask for your real name or school.",
+    emailHelp: "Used only to sign you in. You don’t need to give your real name or school.",
     submit: "Email me a sign-in link",
     sending: "Sending…",
     sentTitle: "Check your email",
@@ -443,8 +443,8 @@ const en = {
     focusHelp: "Choose any that apply.",
     context: "Anything the reviewer should understand?",
     contextHelp: "Optional. For example: “English is my second language” or “I'm unsure if this topic fits the prompt.” Don't include anything you'd rather keep private.",
-    notRequiredTitle: "We will never ask for",
-    notRequired: "your legal name, phone number, home address, high-school name, government ID, test scores, or family financial information.",
+    notRequiredTitle: "You never need to give us",
+    notRequired: "your legal name, phone number, home address, high-school name, government ID, or family financial information. Test scores and GPA are optional and never sent to the AI.",
     create: "Create workspace",
     creating: "Creating…",
     saveDetails: "Save details",
@@ -529,7 +529,7 @@ const en = {
       "Your draft, or only the passage you selected",
       "Your optional notes for the reviewer",
       "Word limit, focus areas, and feedback language",
-      "Major Explorer: your courses, activities, honors, interests, and values (never test scores or GPA)",
+      "Major Explorer: your courses, activities, honors, interests, and values (never test scores, GPA, or course results)",
       "CV import: the CV text you paste, with contact details removed",
     ],
     notSentTitle: "Never sent",
@@ -625,7 +625,7 @@ const en = {
   },
   tools: {
     title: "Focused tools",
-    intro: "Each tool does one job and never rewrites your essay.",
+    intro: "Each tool does one job. None of them writes or rewrites your essay; Sentence Feedback can suggest at most two short alternatives for a passage you select.",
     run: "Run",
     running: "Working…",
     promptDecoder: {

@@ -1,0 +1,1 @@
+ALTER TABLE "essay_version" ADD COLUMN "encrypted_version_note" text;

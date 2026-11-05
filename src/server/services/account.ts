@@ -1,14 +1,15 @@
 import "server-only";
 import { and, asc, eq, inArray, lt, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { brainstormNote, essay, essayVersion, feedbackRun, privacySettings, user } from "@/db/schema";
+import { auditEvent, brainstormNote, essay, essayVersion, feedbackRun, privacySettings, user } from "@/db/schema";
 import { isFeedbackLanguage, isLocale } from "@/i18n/config";
 import { decryptJson, decryptText } from "../crypto";
 import { ApiError } from "../errors";
 import { recordAudit } from "./audit";
 import { listConsents } from "./consent";
 import { listEntries } from "./college-list";
-import { getProfile, listPlanningRuns } from "./profile";
+import { versionNoteOf } from "./essays";
+import { getProfile, listAllPlanningRuns } from "./profile";
 
 import { RETENTION_OPTIONS, type RetentionOption } from "@/lib/constants";
 export { RETENTION_OPTIONS };
@@ -101,14 +102,21 @@ export async function exportUserData(userId: string) {
 
   const studentProfileData = await getProfile(userId);
   const collegeList = await listEntries(userId);
-  const majorExplorations = await listPlanningRuns(userId, "major_explorer");
+  const planningRuns = await listAllPlanningRuns(userId);
+  const activity = await db
+    .select({ id: auditEvent.id, eventType: auditEvent.eventType, metadata: auditEvent.metadata, createdAt: auditEvent.createdAt })
+    .from(auditEvent)
+    .where(eq(auditEvent.userId, userId))
+    .orderBy(asc(auditEvent.createdAt));
 
   await recordAudit(userId, "data_exported");
 
   return {
     exportedAt: new Date().toISOString(),
-    format: "truedraft-export/v1",
+    format: "truedraft-export/v2",
+    // Every record carries its id so items can be matched to each other and to the app.
     account: {
+      id: profile.id,
       email: profile.email,
       displayName: profile.name || null,
       preferredLanguage: profile.preferredLanguage,
@@ -122,6 +130,9 @@ export async function exportUserData(userId: string) {
     consents,
     profile: studentProfileData,
     collegeList: collegeList.map((e) => ({
+      id: e.id,
+      schoolId: e.schoolId,
+      schoolSlug: e.schoolSlug,
       school: e.schoolName,
       category: e.category,
       round: e.round,
@@ -131,14 +142,25 @@ export async function exportUserData(userId: string) {
       status: e.status,
       notes: e.notes,
       checklist: e.checklist,
+      linkedEssayIds: e.essays.map((x) => x.id),
+      createdAt: e.createdAt,
+      updatedAt: e.updatedAt,
     })),
-    majorExplorations: majorExplorations.map((r) => ({ createdAt: r.createdAt, status: r.status, model: r.modelName, result: r.result })),
+    majorExplorations: planningRuns
+      .filter((r) => r.kind === "major_explorer")
+      .map((r) => ({ id: r.id, createdAt: r.createdAt, completedAt: r.completedAt, status: r.status, errorCode: r.errorCode, provider: r.provider, model: r.modelName, promptVersion: r.promptVersion, language: r.feedbackLanguage, result: r.result })),
+    // Other planning tools (e.g. CV import) keep only metadata; their output is never stored.
+    otherPlanningRuns: planningRuns
+      .filter((r) => r.kind !== "major_explorer")
+      .map((r) => ({ id: r.id, kind: r.kind, createdAt: r.createdAt, status: r.status, errorCode: r.errorCode, provider: r.provider, model: r.modelName, result: r.result })),
+    activity: activity.map((a) => ({ id: a.id, event: a.eventType, details: a.metadata, at: a.createdAt })),
     essays: essays.map((e) => ({
       id: e.id,
       title: e.title,
       applicationType: e.applicationType,
       prompt: e.promptText,
       targetSchool: e.targetSchool,
+      listEntryId: e.listEntryId,
       wordLimit: e.wordLimit,
       status: e.status,
       feedbackLanguage: e.feedbackLanguage,
@@ -150,8 +172,9 @@ export async function exportUserData(userId: string) {
       versions: versions
         .filter((v) => v.essayId === e.id)
         .map((v) => ({
+          id: v.id,
           versionNumber: v.versionNumber,
-          note: v.versionNote,
+          note: versionNoteOf(v),
           wordCount: v.wordCount,
           createdAt: v.createdAt,
           content: decryptText(v.encryptedContent, "essay_version"),
@@ -160,18 +183,24 @@ export async function exportUserData(userId: string) {
         .filter((r) => r.essayId === e.id)
         .map((r) => ({
           id: r.id,
+          versionId: r.essayVersionId,
           kind: r.kind,
           status: r.status,
+          errorCode: r.errorCode,
           language: r.feedbackLanguage,
+          provider: r.provider,
           model: r.modelName,
           promptVersion: r.promptVersion,
+          schemaVersion: r.schemaVersion,
+          redactionCount: r.redactionCount,
           createdAt: r.createdAt,
+          completedAt: r.completedAt,
           request: r.encryptedRequest ? decryptJson(r.encryptedRequest, "feedback_request") : null,
           result: r.encryptedStructuredResult ? decryptJson(r.encryptedStructuredResult, "feedback_result") : null,
         })),
       brainstormNotes: notes
         .filter((n) => n.essayId === e.id)
-        .map((n) => ({ createdAt: n.createdAt, content: decryptJson(n.encryptedContent, "brainstorm_note") })),
+        .map((n) => ({ id: n.id, createdAt: n.createdAt, content: decryptJson(n.encryptedContent, "brainstorm_note") })),
     })),
   };
 }

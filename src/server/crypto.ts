@@ -51,7 +51,8 @@ export type EncryptionPurpose =
   | "brainstorm_note"
   | "student_profile"
   | "planning_result"
-  | "list_notes";
+  | "list_notes"
+  | "version_note";
 
 export function encryptText(plaintext: string, purpose: EncryptionPurpose): string {
   const { primaryId, keys } = loadKeyring();

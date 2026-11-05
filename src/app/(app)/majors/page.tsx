@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function MajorsPage() {
   const user = await requirePageUser();
   const { t } = await getT();
-  const [profile, runs, ai] = await Promise.all([getProfile(user.id), listPlanningRuns(user.id, "major_explorer"), aiFactsFor(user.id)]);
+  const [profile, { runs, nextCursor }, ai] = await Promise.all([getProfile(user.id), listPlanningRuns(user.id, "major_explorer"), aiFactsFor(user.id)]);
   const hasProfile = profile.courses.length + profile.activities.length + profile.honors.length > 0 || profile.interests.trim().length > 0;
   return (
     <div className="container-page py-10">
@@ -25,6 +25,7 @@ export default async function MajorsPage() {
           hasProfile={hasProfile}
           initialMajors={profile.intendedMajors}
           runs={runs.map((r) => ({ id: r.id, createdAt: r.createdAt.toISOString(), status: r.status, provider: r.provider, result: r.result as MajorResult | null }))}
+          nextCursor={nextCursor}
         />
       </div>
     </div>

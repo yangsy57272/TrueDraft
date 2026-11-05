@@ -150,7 +150,10 @@ export const essayVersion = pgTable(
     versionNumber: integer("version_number").notNull(),
     encryptedContent: text("encrypted_content").notNull(),
     wordCount: integer("word_count").notNull(),
-    versionNote: text("version_note"),
+    /** Optional note about the version. AES-GCM encrypted. */
+    encryptedVersionNote: text("encrypted_version_note"),
+    /** Plaintext notes written before encryption was added; cleared by `encryptLegacyVersionNotes`. */
+    legacyVersionNote: text("version_note"),
     createdAt: createdAt(),
   },
   (t) => [uniqueIndex("essay_version_number_uq").on(t.essayId, t.versionNumber)],

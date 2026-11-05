@@ -13,9 +13,11 @@ import { assertOwnedEssay, getEssay, latestVersionMatching, saveVersion } from "
 import { completeRun, createPendingRun, failRun } from "../services/feedback";
 import { getRetrievalGuidance } from "../services/resources";
 import { buildSystemPrompt, buildUserMessage, PROMPT_VERSION, type PromptInput } from "./prompts";
-import { AiProviderError, aiSettings, getProvider } from "./provider";
+import { AiProviderError, aiSettings, getProvider, type TokenUsage } from "./provider";
 import { isSubstanceFailure, jsonSchemaFor, SCHEMA_VERSION, SCHEMAS, type EssayToolKind, type SentenceMode, type ToolKind } from "./schemas";
-import { applyGuards } from "./guard";
+import { applyGuards, quoteAppearsIn } from "./guard";
+import { aiLimitSettings, assertWithinBudget, costMicroUsd, inputHash, withRunSlot } from "./limits";
+import { getReusableRun } from "../services/feedback";
 
 export type AiStage = "checking" | "structure" | "detail" | "priorities" | "reviewing" | "preparing";
 
@@ -116,6 +118,8 @@ export async function prepareAiRun(user: AppUser, essayId: string, kind: EssayTo
   } else if (kind === "sentence") {
     const selection = (options.selection ?? "").trim();
     if (!selection) throw new ApiError(400, "selection_required");
+    // Sentence feedback is only for the student's own text: the passage must come from the draft.
+    if (!quoteAppearsIn(draft, selection)) throw new ApiError(400, "selection_not_in_draft");
     if (selection.length > limits.maxSelectionChars) throw new ApiError(413, "selection_too_long");
     if (!options.sentenceMode) throw new ApiError(400, "mode_required");
     promptInput.selection = redact(selection);
@@ -197,7 +201,11 @@ function errorCodeFor(error: unknown): string {
 }
 
 export class ModelCallError extends Error {
-  constructor(public code: string) {
+  constructor(
+    public code: string,
+    /** Tokens used by every attempt, including failed ones (they still cost money). */
+    public usage: TokenUsage | null = null,
+  ) {
     super(code);
     this.name = "ModelCallError";
   }
@@ -220,6 +228,11 @@ export async function callModel(opts: {
   const settings = aiSettings();
   const markers = STAGE_MARKERS[opts.kind];
   let lastError: unknown = null;
+  let usage: TokenUsage | null = null;
+  const addUsage = (u: TokenUsage | null | undefined) => {
+    if (!u) return;
+    usage = { inputTokens: (usage?.inputTokens ?? 0) + u.inputTokens, outputTokens: (usage?.outputTokens ?? 0) + u.outputTokens };
+  };
   for (let attempt = 0; attempt <= settings.maxRetries; attempt++) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), settings.timeoutMs);
@@ -243,6 +256,7 @@ export async function callModel(opts: {
         },
       });
       clearTimeout(timer);
+      addUsage(response.usage);
       const parsed = SCHEMAS[opts.kind].safeParse(response.json);
       if (!parsed.success) {
         // Well-formed but substantively incomplete output (e.g. a missing category) is worth one
@@ -253,7 +267,7 @@ export async function callModel(opts: {
         }
         throw new AiProviderError("malformed");
       }
-      return { parsed: parsed.data as unknown, model: response.model, providerRef: response.providerRef, providerKind: provider.kind, attempt };
+      return { parsed: parsed.data as unknown, model: response.model, providerRef: response.providerRef, providerKind: provider.kind, attempt, usage: usage as TokenUsage | null };
     } catch (error) {
       clearTimeout(timer);
       lastError = error;
@@ -264,7 +278,7 @@ export async function callModel(opts: {
       opts.onStage("checking");
     }
   }
-  throw new ModelCallError(errorCodeFor(lastError));
+  throw new ModelCallError(errorCodeFor(lastError), usage);
 }
 
 /**
@@ -280,19 +294,43 @@ export const EPHEMERAL_KINDS: ReadonlySet<ToolKind> = new Set<ToolKind>(["brains
  */
 export async function executeAiRun(prepared: Prepared, onStage: (stage: AiStage) => void) {
   const provider = await getProvider();
-  const run = await createPendingRun({
-    essayId: prepared.essayId,
-    essayVersionId: prepared.versionId,
-    kind: prepared.kind,
-    requestedFeedbackTypes: prepared.focusAreas,
-    feedbackLanguage: prepared.language,
-    provider: provider.kind,
-    modelName: provider.model,
-    promptVersion: PROMPT_VERSION,
-    schemaVersion: SCHEMA_VERSION,
-    request: prepared.storedRequest,
-    redactionCount: prepared.redactionCount,
-  });
+  const limitSettings = aiLimitSettings();
+  const system = buildSystemPrompt(prepared.kind, prepared.language);
+  const userMessage = buildUserMessage(prepared.promptInput);
+
+  // Identical input (same text, settings, prompt and model) within the window: reuse the stored
+  // result instead of paying for the same answer twice. Ephemeral tools are never reused.
+  const hash = EPHEMERAL_KINDS.has(prepared.kind) ? null : inputHash({ system, userMessage, provider: provider.kind, model: provider.model, schema: SCHEMA_VERSION });
+  if (hash && limitSettings.dedupWindowHours > 0) {
+    const reusable = await getReusableRun(prepared.essayId, hash, new Date(Date.now() - limitSettings.dedupWindowHours * 3_600_000));
+    if (reusable) {
+      track("feedback_completed", { kind: prepared.kind });
+      return { runId: reusable.id, result: reusable.result, isMock: provider.kind === "mock", redactionCount: reusable.redactionCount, reused: true as const };
+    }
+  }
+  await assertWithinBudget(limitSettings);
+  const run = await withRunSlot(
+    prepared.user.id,
+    (tx) =>
+      createPendingRun(
+        {
+          essayId: prepared.essayId,
+          essayVersionId: prepared.versionId,
+          kind: prepared.kind,
+          requestedFeedbackTypes: prepared.focusAreas,
+          feedbackLanguage: prepared.language,
+          provider: provider.kind,
+          modelName: provider.model,
+          promptVersion: PROMPT_VERSION,
+          schemaVersion: SCHEMA_VERSION,
+          request: prepared.storedRequest,
+          redactionCount: prepared.redactionCount,
+          inputHash: hash,
+        },
+        tx,
+      ),
+    limitSettings,
+  );
   const logFields = { userId: prepared.user.id, essayId: prepared.essayId, runId: run.id, kind: prepared.kind, provider: provider.kind };
   track("feedback_requested", { kind: prepared.kind, language: prepared.language, wordCountBucket: wordCountBucket(prepared.wordCount) });
 
@@ -301,8 +339,8 @@ export async function executeAiRun(prepared: Prepared, onStage: (stage: AiStage)
   try {
     const response = await callModel({
       kind: prepared.kind,
-      system: buildSystemPrompt(prepared.kind, prepared.language),
-      userMessage: buildUserMessage(prepared.promptInput),
+      system,
+      userMessage,
       onStage,
       logFields,
       firstStage: prepared.kind === "full_feedback" ? "structure" : "reviewing",
@@ -314,13 +352,14 @@ export async function executeAiRun(prepared: Prepared, onStage: (stage: AiStage)
       wordCount: prepared.wordCount,
       wordLimit: prepared.wordLimit,
     });
-    await completeRun(run.id, EPHEMERAL_KINDS.has(prepared.kind) ? null : result, response.model, response.providerRef);
+    await completeRun(run.id, EPHEMERAL_KINDS.has(prepared.kind) ? null : result, response.model, response.providerRef, response.usage, costMicroUsd(response.usage, limitSettings));
     logger.info("ai.run_completed", { ...logFields, model: response.model, durationMs: Date.now() - started, attempt: response.attempt, redactions: prepared.redactionCount });
     track("feedback_completed", { kind: prepared.kind });
     return { runId: run.id, result, isMock: provider.kind === "mock", redactionCount: prepared.redactionCount };
   } catch (error) {
     const code = error instanceof ModelCallError ? error.code : "ai_unavailable";
-    await failRun(run.id, code);
+    const usage = error instanceof ModelCallError ? error.usage : null;
+    await failRun(run.id, code, usage, costMicroUsd(usage, limitSettings));
     track("feedback_failed", { kind: prepared.kind, status: code });
     logger.error("ai.run_failed", { ...logFields, code, durationMs: Date.now() - started });
     throw new ApiError(502, code, { runId: run.id });

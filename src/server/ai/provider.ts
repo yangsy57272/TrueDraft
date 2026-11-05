@@ -1,4 +1,5 @@
 import "server-only";
+import { isDemoMode } from "@/config/production-guard";
 import { getAiProviderKind, isAiConfigured } from "@/config/deployment";
 
 export type StructuredRequest = {
@@ -12,7 +13,8 @@ export type StructuredRequest = {
   signal: AbortSignal;
 };
 
-export type StructuredResponse = { json: unknown; model: string; providerRef: string | null };
+export type TokenUsage = { inputTokens: number; outputTokens: number };
+export type StructuredResponse = { json: unknown; model: string; providerRef: string | null; usage?: TokenUsage | null };
 
 export type AiErrorCode =
   | "not_configured"
@@ -70,6 +72,9 @@ export async function getProvider(): Promise<AiProvider> {
   if (kind === "openai-compatible") {
     const { OpenAiCompatibleProvider } = await import("./openai-compatible");
     return new OpenAiCompatibleProvider();
+  }
+  if (kind === "mock" && process.env.NODE_ENV === "production" && !isDemoMode()) {
+    throw new AiProviderError("not_configured");
   }
   if (kind === "mock") {
     const { MockProvider } = await import("./mock");

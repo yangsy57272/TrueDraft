@@ -45,6 +45,10 @@ The same safeguards apply as for essay tools: consent (students), rate limits, t
 - Requests use the provider's **structured output** mode with a strict JSON schema (`src/server/ai/schemas.ts`). Claude requests use `output_config.format` and a moderate `effort`. Current Claude models do not accept `temperature`. OpenAI-compatible requests use `response_format: json_schema` with `strict: true` and a low temperature.
 - Requests stream so the UI can show real progress stages, based on which sections of the structured response have started arriving.
 - Timeout `AI_TIMEOUT_MS`; at most `AI_MAX_RETRIES` retries, and only for retryable failures (network, 5xx, 429, timeout).
+- **Limits.** Each student can have one AI run in flight at a time (`AI_MAX_CONCURRENT_PER_USER`), enforced under a database lock.
+  - An identical request reuses the stored result instead of calling the provider again: same text, settings, prompt version, and model, within `AI_DEDUP_WINDOW_HOURS`. Identical requests are matched by a keyed HMAC of the input. It can't be reversed or checked against guessed text without the server secret. Brainstorming is never reused, because it is never stored.
+  - Token usage is recorded per run, and an optional daily ceiling on tokens or estimated spend pauses new runs.
+  - Runs left pending by a crash are marked `ai_interrupted`.
 - **Provider-side retention and training are governed by the operator's provider account and contract, not by this code.** The Privacy Center only says “not used for training by the provider” when the operator sets `AI_PROVIDER_NO_TRAINING_CONFIRMED=true`, and it shows the operator's own retention note.
 
 ## 4. After the response

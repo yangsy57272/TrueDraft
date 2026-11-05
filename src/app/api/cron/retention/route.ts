@@ -1,6 +1,7 @@
 import { timingSafeEqual } from "node:crypto";
 import { ApiError, apiRoute, jsonResponse } from "@/server/http";
 import { purgeExpiredEssays } from "@/server/services/account";
+import { recoverStuckRuns } from "@/server/ai/limits";
 import { pruneRateLimits } from "@/server/rate-limit";
 
 function authorized(request: Request) {
@@ -16,6 +17,7 @@ function authorized(request: Request) {
 export const POST = apiRoute("cron.retention", async (request) => {
   if (!authorized(request)) throw new ApiError(401, "unauthenticated");
   const deleted = await purgeExpiredEssays();
+  await recoverStuckRuns();
   await pruneRateLimits();
   return jsonResponse({ deleted });
 });

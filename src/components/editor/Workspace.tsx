@@ -252,6 +252,7 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
         isMock: result.isMock,
         redactionCount: result.redactionCount,
       }));
+      if ((result as { reused?: boolean }).reused) notify(t("feedback.reused"), "info");
     } else if (result.code !== "cancelled") {
       setFeedbackError(t(`errors.${result.code}` as never));
     }

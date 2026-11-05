@@ -40,6 +40,32 @@ STORAGE_REGION="..."
 
 Back up `ENCRYPTION_KEYS` securely. Without it, stored essays cannot be decrypted.
 
+### AI limits and spend
+
+```bash
+AI_MAX_CONCURRENT_PER_USER=1       # AI runs in flight per student (default 1)
+AI_DEDUP_WINDOW_HOURS=24           # reuse an identical recent result instead of calling again (0 = off)
+AI_PRICE_INPUT_PER_MTOK_USD=...    # your provider's price per million input tokens, to estimate cost
+AI_PRICE_OUTPUT_PER_MTOK_USD=...   # ... and per million output tokens
+AI_DAILY_BUDGET_USD=20             # optional: stop new AI runs for the day at this estimated spend
+AI_DAILY_TOKEN_BUDGET=2000000      # optional: or at this many tokens (works without prices)
+```
+
+Token usage is recorded per run, including failed attempts. Today's totals are on `/admin`. The ceilings are checked before each run, so runs already in flight can overshoot slightly. Set a hard limit in your provider account as well.
+
+### Startup guard
+
+In production the server refuses to start if any of these hold:
+
+- `AI_PROVIDER=mock`;
+- `EMAIL_TRANSPORT` is `console` or `file`;
+- SMTP settings are missing;
+- `AUTH_RATE_LIMIT=off`;
+- `ENCRYPTION_KEYS` or a strong `BETTER_AUTH_SECRET` is missing;
+- `APP_URL` doesn't use https.
+
+For a demo with fictional data only, set `TRUEDRAFT_DEMO_MODE=true`. The server then starts with a site-wide banner telling visitors not to enter real essays. Never use demo mode for real students.
+
 ## 3. Build, migrate, seed, start
 
 ```bash
@@ -50,7 +76,7 @@ npm run db:seed        # optional: original writing resources
 npm run start          # listens on $PORT or 3000
 ```
 
-Run `db:migrate` on every deploy before starting the new version. Migrations live in `drizzle/`; generate new ones with `npm run db:generate` after changing `src/db/schema.ts`.
+Run `db:migrate` on every deploy before starting the new version. It also encrypts any version notes stored before notes were encrypted. Migrations live in `drizzle/`; generate new ones with `npm run db:generate` after changing `src/db/schema.ts`.
 
 ## 4. Schedule retention
 
@@ -62,12 +88,15 @@ curl -X POST https://your-domain.example/api/cron/retention -H "Authorization: B
 npm run retention:run
 ```
 
+The retention job also marks AI runs left "pending" by a crash or restart as failed (`ai_interrupted`). The app does the same for one student before starting that student's next run.
+
 ## 5. Verify after deploy
 
 1. Visit `/privacy` and check that every row in the status panel is accurate for this deployment.
 2. Sign in with a real email. Create an essay, request feedback once, and confirm the result shows the expected model name.
 3. Check response headers on `/` (CSP, HSTS) and confirm `/dashboard` returns `Cache-Control: no-store`.
 4. Delete the test account from Settings.
+5. Before changing `AI_MODEL` or the prompts, run the evaluation set against the new setup: `npm run eval:ai` (see `docs/AI_EVALUATION.md`).
 
 ## Scaling notes
 

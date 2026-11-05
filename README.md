@@ -2,7 +2,7 @@
 
 **Your story. Your voice. Clearer feedback.** · 你的故事，你的声音。更清晰、更透明的文书反馈。
 
-TrueDraft is a bilingual (English / Simplified Chinese) web app that gives students — especially Chinese students applying to undergraduate programs abroad — structured, ethical feedback on their own college application essays. It is a coaching and revision tool, **not** a ghostwriting service: the AI is constrained so it can't write or replace the essay, invent experiences, or predict admission outcomes.
+TrueDraft is a bilingual (English / Simplified Chinese) web app that gives students — especially Chinese students applying to undergraduate programs abroad — structured, ethical feedback on their own college application essays. It is a coaching and revision tool, **not** a ghostwriting service. The AI is instructed not to write or replace the essay, invent experiences, or predict admission outcomes. Structured, length-capped output (at most two short alternatives for a passage the student selects) makes handing back a replacement essay hard, but no control can guarantee a model never produces ghostwritten text.
 
 > The product name, tagline, and logo are configured in [`src/config/brand.ts`](src/config/brand.ts).
 
@@ -18,7 +18,7 @@ TrueDraft is a bilingual (English / Simplified Chinese) web app that gives stude
 | Essays | Create workspaces (title, type, exact prompt, optional school & word limit, focus areas, feedback language, optional context); autosaved working draft (saves run one at a time with a revision number, so an outdated tab or reordered request can never overwrite newer text; conflicts are shown with keep/load/copy choices; export and navigation wait for the save); immutable numbered versions with notes; compare any two versions (word diff); duplicate; export `.md` / `.txt`; delete. |
 | AI feedback | Five-part structured feedback (overall response, 8-category diagnostic with developmental labels, passage comments, 3–5 step revision plan, voice check) in English, Chinese, or bilingual. Honest progress stages from the real response stream, no fake percentages. |
 | AI tools | Prompt Decoder, Brainstorming Coach (stored only if the student saves notes), Sentence Feedback (7 modes, max 2 alternatives, length-capped), Word-Count Assistant, Final Read-Through. |
-| AI safety | Versioned server-side prompts; strict JSON-schema structured output validated with Zod; length-capped fields so no field can carry an essay; long alternatives discarded; quotes checked against the draft; prompt-injection tag neutralisation; never fabricates feedback on failure; timeouts + limited retries; refusal handling. |
+| AI safety | Versioned server-side prompts; strict JSON-schema structured output validated with Zod; length-capped fields so no single field can carry an essay; long alternatives discarded; quotes checked against the draft; prompt-injection tag neutralisation; never fabricates feedback on failure; timeouts + limited retries; refusal handling. |
 | Privacy | Consent dialog (with “Learn what is sent” and “Save without AI analysis”) before the first AI call and after any policy-version change; consent records with withdrawal; identifier redaction before sending; AES-256-GCM application-level encryption of drafts, versions and version notes, notes, profiles, and feedback (titles, prompts, and list metadata are stored unencrypted and owner-scoped); retention periods with automatic purge; Privacy Center driven by deployment config; no third-party analytics; logs carry no essay content. |
 | Security | Server-side auth + per-user authorization on every route (foreign IDs → 404), same-origin checks on mutations, Postgres-backed rate limits, CSP and security headers, `no-store` on private data, sanitized Markdown, generic error messages. |
 | Localization | Complete English and Simplified Chinese UI; language switcher in the header and Settings; preference stored on the account; i18n architecture ready for more locales. |
@@ -80,6 +80,8 @@ Keys are read only on the server. Model, timeout, retries, token limit, effort/t
 ## Testing
 
 ```bash
+# Unit tests only (no database needed)
+npm run test:unit
 # Unit + integration (uses a separate database: truedraft_test)
 createdb truedraft_test            # once
 npm test

@@ -1,5 +1,5 @@
 import "server-only";
-import { and, sql, desc, eq } from "drizzle-orm";
+import { and, desc, eq, gte, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { feedbackRun } from "@/db/schema";
 import { decryptJson, encryptJson } from "../crypto";
@@ -29,8 +29,9 @@ export async function createPendingRun(values: {
   schemaVersion: string;
   request: unknown | null;
   redactionCount: number;
-}) {
-  const [row] = await db
+  inputHash?: string | null;
+}, exec: Pick<typeof db, "insert"> = db) {
+  const [row] = await exec
     .insert(feedbackRun)
     .values({
       essayId: values.essayId,
@@ -44,6 +45,7 @@ export async function createPendingRun(values: {
       schemaVersion: values.schemaVersion,
       encryptedRequest: values.request === null ? null : encryptJson(values.request, "feedback_request"),
       redactionCount: values.redactionCount,
+      inputHash: values.inputHash ?? null,
       status: "pending",
     })
     .returning();
@@ -51,11 +53,21 @@ export async function createPendingRun(values: {
 }
 
 /** `result` is null for ephemeral tools, whose output is shown once and never stored. */
-export async function completeRun(runId: string, result: unknown | null, modelName: string, providerRef: string | null) {
+export async function completeRun(
+  runId: string,
+  result: unknown | null,
+  modelName: string,
+  providerRef: string | null,
+  usage?: { inputTokens: number; outputTokens: number } | null,
+  costMicroUsd?: number | null,
+) {
   await db
     .update(feedbackRun)
     .set({
       status: "completed",
+      inputTokens: usage?.inputTokens ?? null,
+      outputTokens: usage?.outputTokens ?? null,
+      costMicroUsd: costMicroUsd ?? null,
       encryptedStructuredResult: result == null ? null : encryptJson(result, "feedback_result"),
       modelName,
       providerRequestReference: providerRef,
@@ -64,10 +76,10 @@ export async function completeRun(runId: string, result: unknown | null, modelNa
     .where(eq(feedbackRun.id, runId));
 }
 
-export async function failRun(runId: string, errorCode: string) {
+export async function failRun(runId: string, errorCode: string, usage?: { inputTokens: number; outputTokens: number } | null, costMicroUsd?: number | null) {
   await db
     .update(feedbackRun)
-    .set({ status: "failed", errorCode, completedAt: new Date() })
+    .set({ status: "failed", errorCode, completedAt: new Date(), inputTokens: usage?.inputTokens ?? null, outputTokens: usage?.outputTokens ?? null, costMicroUsd: costMicroUsd ?? null })
     .where(eq(feedbackRun.id, runId));
 }
 
@@ -117,6 +129,18 @@ export async function getRun<T = unknown>(userId: string, essayId: string, runId
     request: row.encryptedRequest ? decryptJson(row.encryptedRequest, "feedback_request") : null,
     result: row.encryptedStructuredResult ? decryptJson<T>(row.encryptedStructuredResult, "feedback_result") : null,
   };
+}
+
+/** A completed run for exactly the same input, recent enough to reuse instead of calling the AI again. */
+export async function getReusableRun(essayId: string, hash: string, since: Date) {
+  const [row] = await db
+    .select()
+    .from(feedbackRun)
+    .where(and(eq(feedbackRun.essayId, essayId), eq(feedbackRun.inputHash, hash), eq(feedbackRun.status, "completed"), gte(feedbackRun.createdAt, since)))
+    .orderBy(desc(feedbackRun.createdAt))
+    .limit(1);
+  if (!row?.encryptedStructuredResult) return null;
+  return { id: row.id, redactionCount: row.redactionCount, result: decryptJson(row.encryptedStructuredResult, "feedback_result") };
 }
 
 export const TASK_STATES = ["todo", "doing", "done"] as const;

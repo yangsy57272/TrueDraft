@@ -334,8 +334,8 @@ const en = {
       "Colleges and application platforms have their own rules about outside help and AI tools, and they can change. Read the current policy for each school and platform you use. When in doubt, ask the school.",
     howTitle: "How we keep the AI on track",
     how: [
-      "A versioned set of instructions on our server tells the AI its role and limits. Your essay is treated as data, so instructions hidden inside an essay are ignored.",
-      "Responses must match a fixed structure. Every text field has a length cap far shorter than an essay, and sentence alternatives longer than the passage you selected are discarded.",
+      "A versioned set of instructions on our server tells the AI its role and limits. Your essay is sent as data, and the AI is told to ignore any instructions inside it. This reduces the risk of hidden instructions changing its behavior, but no technique rules it out completely.",
+      "Responses must match a fixed structure. Every text field has a length cap far shorter than an essay, and sentence alternatives more than about twice the length of the passage you selected are discarded. These limits make it hard for the AI to hand back a replacement essay, but they can’t guarantee it never writes text for you — please use only words that are your own.",
       "Quotes in feedback are checked against your draft; if a quote can't be found, the feedback says so.",
       "If the AI service fails or returns something unusable, we show an error. We never substitute made-up feedback.",
     ],
@@ -544,6 +544,7 @@ const en = {
     checkboxRequired: "Please confirm to continue, or choose “Save without AI analysis”.",
   },
   feedback: {
+    reused: "Same text and settings as your feedback from earlier — showing that result instead of asking the AI again.",
     showPassage: "Show in my draft",
     passageMoved: "Couldn’t find this passage in your current draft. It may have been edited since this feedback.",
     staleVersion: "This feedback is for version {n}. Your draft has changed since then, so some comments may no longer apply.",
@@ -783,6 +784,15 @@ const en = {
     deleted: "Your account has been deleted.",
   },
   admin: {
+    usage: {
+      title: "AI usage today (UTC)",
+      runs: "Runs",
+      tokens: "Tokens (input + output)",
+      cost: "Estimated cost",
+      noPrices: "Set AI_PRICE_* to estimate",
+      concurrency: "Runs in flight per student",
+      note: "Daily ceilings (AI_DAILY_BUDGET_USD, AI_DAILY_TOKEN_BUDGET) are checked before each run; runs already in flight can overshoot slightly. Costs are estimates from your configured prices, not your provider’s invoice.",
+    },
     title: "Administration",
     note: "This dashboard shows aggregate counts only. There is intentionally no way to browse student essays.",
     metrics: { users: "Accounts", essays: "Essays", versions: "Saved versions", completed: "Completed feedback runs", failed: "Failed feedback runs" },
@@ -854,6 +864,10 @@ const en = {
     school_required: "Choose a school or type its name.",
     checklist_full: "This checklist has the maximum number of items.",
     deadlines_full: "This school has the maximum number of deadlines.",
+    ai_run_in_progress: "Another AI request is still running for your account. Wait for it to finish, then try again.",
+    ai_budget_reached: "AI feedback is paused for today because this site reached its daily usage limit. You can keep writing and saving; please try again tomorrow.",
+    ai_interrupted: "This AI request was interrupted before it finished (for example by a server restart). Nothing partial was saved. Please try again.",
+    selection_not_in_draft: "That passage isn’t in your current draft. Select text from the editor, then try again.",
     already_on_list: "That school is already on your list.",
     list_full: "Your list has reached the maximum number of schools.",
     invalid_cds_data: "Some CDS values are invalid. Check the highlighted field.",
@@ -871,6 +885,7 @@ const en = {
     errorTitle: "Something went wrong",
   },
   dev: {
+    demoMode: "Demo site with development services (placeholder AI, test email). Use fictional material only — don’t enter real essays or personal details.",
     configWarning: "Development configuration: {issue}",
     noAi: "no AI provider is configured (AI_PROVIDER). Live feedback is disabled.",
     mockAi: "AI_PROVIDER=mock — feedback is placeholder text.",

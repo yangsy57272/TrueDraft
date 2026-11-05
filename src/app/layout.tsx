@@ -4,6 +4,7 @@ import "@fontsource-variable/source-serif-4";
 import "./globals.css";
 import { brand } from "@/config/brand";
 import { getPrivacyFacts } from "@/config/deployment";
+import { isDemoMode } from "@/config/production-guard";
 import { htmlLang } from "@/i18n/config";
 import { I18nProvider } from "@/i18n/client";
 import { getT } from "@/i18n/server";
@@ -27,12 +28,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const facts = getPrivacyFacts();
   const devIssue =
     process.env.NODE_ENV !== "production" ? (!facts.aiConfigured ? t("dev.noAi") : facts.aiIsMock ? t("dev.mockAi") : null) : null;
+  const demo = process.env.NODE_ENV === "production" && isDemoMode();
 
   return (
     <html lang={htmlLang(locale)}>
       <body className="flex min-h-screen flex-col">
         <I18nProvider locale={locale}>
           <ToastProvider>
+            {demo ? (
+              <div className="border-b border-[#ead9ab] bg-amber-soft px-4 py-2 text-center text-sm font-semibold text-[#4f3a08]" role="note">
+                {t("dev.demoMode")}
+              </div>
+            ) : null}
             {devIssue ? (
               <div className="border-b border-[#ead9ab] bg-amber-soft px-4 py-2 text-center text-sm text-[#4f3a08]" role="note">
                 {t("dev.configWarning", { issue: devIssue })}

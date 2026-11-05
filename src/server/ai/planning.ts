@@ -14,6 +14,7 @@ import { completePlanningRun, createPlanningRun, failPlanningRun, getProfile } f
 import { buildSystemPrompt, buildUserMessage, PROMPT_VERSION } from "./prompts";
 import { getProvider } from "./provider";
 import { callModel, ModelCallError, type AiStage } from "./run";
+import { aiLimitSettings, assertWithinBudget, costMicroUsd, withRunSlot } from "./limits";
 import { SCHEMA_VERSION, type CvImport, type MajorExplorer, type PlanningToolKind } from "./schemas";
 import { guardCvImport, guardMajorExplorer, profileToText } from "./planning-guard";
 
@@ -63,16 +64,26 @@ export async function preparePlanningRun(
 
 export async function executePlanningRun(prepared: PreparedPlanning, onStage: (stage: AiStage) => void) {
   const provider = await getProvider();
-  const run = await createPlanningRun({
-    userId: prepared.user.id,
-    kind: prepared.kind,
-    feedbackLanguage: prepared.language,
-    provider: provider.kind,
-    modelName: provider.model,
-    promptVersion: PROMPT_VERSION,
-    schemaVersion: SCHEMA_VERSION,
-    redactionCount: prepared.redactionCount,
-  });
+  const limitSettings = aiLimitSettings();
+  await assertWithinBudget(limitSettings);
+  const run = await withRunSlot(
+    prepared.user.id,
+    (tx) =>
+      createPlanningRun(
+        {
+          userId: prepared.user.id,
+          kind: prepared.kind,
+          feedbackLanguage: prepared.language,
+          provider: provider.kind,
+          modelName: provider.model,
+          promptVersion: PROMPT_VERSION,
+          schemaVersion: SCHEMA_VERSION,
+          redactionCount: prepared.redactionCount,
+        },
+        tx,
+      ),
+    limitSettings,
+  );
   const logFields = { userId: prepared.user.id, runId: run.id, kind: prepared.kind, provider: provider.kind };
   onStage("checking");
   try {
@@ -88,18 +99,19 @@ export async function executePlanningRun(prepared: PreparedPlanning, onStage: (s
     let result: unknown;
     if (prepared.kind === "major_explorer") {
       result = guardMajorExplorer(response.parsed as MajorExplorer, prepared.profile);
-      await completePlanningRun(run.id, result, response.model);
+      await completePlanningRun(run.id, result, response.model, response.usage, costMicroUsd(response.usage, limitSettings));
     } else {
       // CV extraction is shown once for review and never stored; only accepted items are saved to the profile.
       result = guardCvImport(response.parsed as CvImport, prepared.text);
-      await completePlanningRun(run.id, null, response.model);
+      await completePlanningRun(run.id, null, response.model, response.usage, costMicroUsd(response.usage, limitSettings));
     }
     track("tool_used", { kind: prepared.kind });
     logger.info("ai.planning_completed", { ...logFields, model: response.model, redactions: prepared.redactionCount });
     return { runId: run.id, result, isMock: provider.kind === "mock", redactionCount: prepared.redactionCount };
   } catch (error) {
     const code = error instanceof ModelCallError ? error.code : "ai_unavailable";
-    await failPlanningRun(run.id, code);
+    const usage = error instanceof ModelCallError ? error.usage : null;
+    await failPlanningRun(run.id, code, usage, costMicroUsd(usage, limitSettings));
     logger.error("ai.planning_failed", { ...logFields, code });
     throw new ApiError(502, code, { runId: run.id });
   }
@@ -113,14 +125,35 @@ export async function executePlanningRun(prepared: PreparedPlanning, onStage: (s
  */
 export async function extractCdsDraft(adminId: string, cdsText: string, onStage: (stage: AiStage) => void) {
   const fields = new Map(CDS_FIELDS.map((f) => [f.key, f]));
+  const provider = await getProvider();
+  const limitSettings = aiLimitSettings();
+  await assertWithinBudget(limitSettings);
+  // Recorded (metadata and usage only, no content) so admin extractions count toward the budget.
+  const run = await withRunSlot(
+    adminId,
+    (tx) =>
+      createPlanningRun(
+        { userId: adminId, kind: "cds_extract", feedbackLanguage: "en", provider: provider.kind, modelName: provider.model, promptVersion: PROMPT_VERSION, schemaVersion: SCHEMA_VERSION, redactionCount: 0 },
+        tx,
+      ),
+    limitSettings,
+  );
   onStage("checking");
-  const response = await callModel({
-    kind: "cds_extract",
-    system: buildSystemPrompt("cds_extract", "en"),
-    userMessage: buildUserMessage({ kind: "cds_extract", cdsText }),
-    onStage,
-    logFields: { userId: adminId, kind: "cds_extract" },
-  });
+  let response: Awaited<ReturnType<typeof callModel>>;
+  try {
+    response = await callModel({
+      kind: "cds_extract",
+      system: buildSystemPrompt("cds_extract", "en"),
+      userMessage: buildUserMessage({ kind: "cds_extract", cdsText }),
+      onStage,
+      logFields: { userId: adminId, runId: run.id, kind: "cds_extract" },
+    });
+  } catch (error) {
+    const usage = error instanceof ModelCallError ? error.usage : null;
+    await failPlanningRun(run.id, error instanceof ModelCallError ? error.code : "ai_unavailable", usage, costMicroUsd(usage, limitSettings));
+    throw error;
+  }
+  await completePlanningRun(run.id, null, response.model, response.usage, costMicroUsd(response.usage, limitSettings));
   const raw = response.parsed as Record<string, unknown> & {
     c7: { factor: string; level: string }[];
     degrees_by_field: { cip_family: string; percent: number }[];
@@ -133,6 +166,5 @@ export async function extractCdsDraft(adminId: string, cdsText: string, onStage:
   if (raw.c7.length) data.c7 = Object.fromEntries(raw.c7.map((c) => [c.factor, c.level]));
   const j1 = raw.degrees_by_field.filter((d) => CIP_FAMILIES[d.cip_family] && d.percent >= 0 && d.percent <= 100);
   if (j1.length) data.degreesByField = Object.fromEntries(j1.map((d) => [d.cip_family, d.percent]));
-  const provider = await getProvider();
   return { data, uncertainFields: raw.uncertain_fields, model: response.model, isMock: provider.kind === "mock" };
 }

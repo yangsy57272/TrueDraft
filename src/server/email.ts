@@ -4,6 +4,7 @@ import path from "node:path";
 import nodemailer from "nodemailer";
 import { brand } from "@/config/brand";
 import { logger } from "./logger";
+import { isDemoMode } from "@/config/production-guard";
 
 /**
  * Email delivery for sign-in links.
@@ -44,10 +45,12 @@ export async function sendMagicLinkEmail(email: string, url: string, locale: str
   const kind = transportKind();
   const message = renderMagicLink(url, locale);
 
+  // Defense in depth: the startup guard already refuses these in production outside demo mode.
+  if ((kind === "console" || kind === "file") && process.env.NODE_ENV === "production" && !isDemoMode()) {
+    logger.error("email.dev_transport_in_production");
+    throw new Error("Development email transport is not allowed in production");
+  }
   if (kind === "console") {
-    if (process.env.NODE_ENV === "production") {
-      logger.warn("email.console_transport_in_production");
-    }
     // Development convenience only. The link is a credential, never essay content.
     console.info(`\n[dev email] Sign-in link for ${email}:\n${url}\n`);
     return;

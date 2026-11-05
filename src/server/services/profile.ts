@@ -44,16 +44,19 @@ export async function createPlanningRun(values: {
   promptVersion: string;
   schemaVersion: string;
   redactionCount: number;
-}) {
-  const [row] = await db.insert(planningRun).values({ ...values, status: "pending" }).returning();
+}, exec: Pick<typeof db, "insert"> = db) {
+  const [row] = await exec.insert(planningRun).values({ ...values, status: "pending" }).returning();
   return row;
 }
 
-export async function completePlanningRun(runId: string, result: unknown | null, modelName: string) {
+export async function completePlanningRun(runId: string, result: unknown | null, modelName: string, usage?: { inputTokens: number; outputTokens: number } | null, costMicroUsd?: number | null) {
   await db
     .update(planningRun)
     .set({
       status: "completed",
+      inputTokens: usage?.inputTokens ?? null,
+      outputTokens: usage?.outputTokens ?? null,
+      costMicroUsd: costMicroUsd ?? null,
       modelName,
       encryptedStructuredResult: result === null ? null : encryptJson(result, "planning_result"),
       completedAt: new Date(),
@@ -61,8 +64,11 @@ export async function completePlanningRun(runId: string, result: unknown | null,
     .where(eq(planningRun.id, runId));
 }
 
-export async function failPlanningRun(runId: string, errorCode: string) {
-  await db.update(planningRun).set({ status: "failed", errorCode, completedAt: new Date() }).where(eq(planningRun.id, runId));
+export async function failPlanningRun(runId: string, errorCode: string, usage?: { inputTokens: number; outputTokens: number } | null, costMicroUsd?: number | null) {
+  await db
+    .update(planningRun)
+    .set({ status: "failed", errorCode, completedAt: new Date(), inputTokens: usage?.inputTokens ?? null, outputTokens: usage?.outputTokens ?? null, costMicroUsd: costMicroUsd ?? null })
+    .where(eq(planningRun.id, runId));
 }
 
 type PlanningRunRow = typeof planningRun.$inferSelect;

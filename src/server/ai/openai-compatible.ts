@@ -1,5 +1,5 @@
 import "server-only";
-import { AiProviderError, parseJsonText, type AiProvider, type StructuredRequest, type StructuredResponse } from "./provider";
+import { AiProviderError, parseJsonText, type AiProvider, type StructuredRequest, type StructuredResponse, type TokenUsage } from "./provider";
 
 /**
  * Generic adapter for any provider exposing an OpenAI-compatible Chat Completions endpoint with
@@ -22,6 +22,7 @@ export class OpenAiCompatibleProvider implements AiProvider {
         body: JSON.stringify({
           model: this.model,
           stream: true,
+          stream_options: { include_usage: true },
           temperature,
           max_tokens: request.maxOutputTokens,
           messages: [
@@ -49,6 +50,7 @@ export class OpenAiCompatibleProvider implements AiProvider {
     let text = "";
     let finishReason: string | null = null;
     let id: string | null = null;
+    let usage: TokenUsage | null = null;
     let model = this.model;
     const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
     let buffer = "";
@@ -68,6 +70,7 @@ export class OpenAiCompatibleProvider implements AiProvider {
             id?: string;
             model?: string;
             choices?: { delta?: { content?: string; refusal?: string }; finish_reason?: string | null }[];
+            usage?: { prompt_tokens?: number; completion_tokens?: number } | null;
           };
           try {
             chunk = JSON.parse(data);
@@ -75,6 +78,7 @@ export class OpenAiCompatibleProvider implements AiProvider {
             continue;
           }
           id = chunk.id ?? id;
+          if (chunk.usage) usage = { inputTokens: chunk.usage.prompt_tokens ?? 0, outputTokens: chunk.usage.completion_tokens ?? 0 };
           model = chunk.model ?? model;
           const choice = chunk.choices?.[0];
           if (choice?.delta?.refusal) throw new AiProviderError("refused");
@@ -93,6 +97,6 @@ export class OpenAiCompatibleProvider implements AiProvider {
     // A stream that ends without a finish reason was cut off (connection dropped mid-response).
     if (!finishReason) throw new AiProviderError("truncated", true);
     if (finishReason === "content_filter") throw new AiProviderError("refused");
-    return { json: parseJsonText(text), model, providerRef: id };
+    return { json: parseJsonText(text), model, providerRef: id, usage };
   }
 }

@@ -184,6 +184,12 @@ export const feedbackRun = pgTable(
     status: text("status").notNull().default("pending"),
     errorCode: text("error_code"),
     redactionCount: integer("redaction_count").notNull().default(0),
+    /** Provider-reported token usage summed over attempts, and cost if the operator set prices. */
+    inputTokens: integer("input_tokens"),
+    outputTokens: integer("output_tokens"),
+    costMicroUsd: integer("cost_micro_usd"),
+    /** Keyed hash of the exact input (HMAC, not reversible), to reuse identical recent results. */
+    inputHash: text("input_hash"),
     /** The student's progress on each revision-plan task, keyed by task index. Not AI content. */
     taskStates: jsonb("task_states").$type<Record<string, "todo" | "doing" | "done">>().notNull().default({}),
     /** Provider message id, kept only for debugging provider incidents. Contains no content. */
@@ -191,7 +197,7 @@ export const feedbackRun = pgTable(
     createdAt: createdAt(),
     completedAt: timestamp("completed_at", { withTimezone: true }),
   },
-  (t) => [index("feedback_essay_idx").on(t.essayId, t.createdAt)],
+  (t) => [index("feedback_essay_idx").on(t.essayId, t.createdAt), index("feedback_input_hash_idx").on(t.essayId, t.inputHash)],
 );
 
 export const brainstormNote = pgTable(
@@ -302,6 +308,10 @@ export const planningRun = pgTable(
     status: text("status").notNull().default("pending"),
     errorCode: text("error_code"),
     redactionCount: integer("redaction_count").notNull().default(0),
+    /** Provider-reported token usage summed over attempts, and cost if the operator set prices. */
+    inputTokens: integer("input_tokens"),
+    outputTokens: integer("output_tokens"),
+    costMicroUsd: integer("cost_micro_usd"),
     createdAt: createdAt(),
     completedAt: timestamp("completed_at", { withTimezone: true }),
   },

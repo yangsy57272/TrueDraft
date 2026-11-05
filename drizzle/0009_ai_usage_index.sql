@@ -1,0 +1,1 @@
+CREATE INDEX "feedback_input_hash_idx" ON "feedback_run" USING btree ("essay_id","input_hash");

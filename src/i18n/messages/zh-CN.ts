@@ -320,8 +320,8 @@ const zhCN: Messages = {
     policiesBody: "各大学和申请平台对外部帮助和 AI 工具都有自己的规定，而且可能会变化。请阅读你使用的每所学校和平台的最新政策；如有疑问，可以直接询问学校。",
     howTitle: "我们如何约束 AI",
     how: [
-      "服务器上有一套带版本号的指令，规定 AI 的角色和边界。你的文书被当作“数据”处理，藏在文书里的指令会被忽略。",
-      "AI 的回复必须符合固定结构。每个文字字段都有远短于一篇文书的长度上限；比你选中段落长太多的改写建议会被直接丢弃。",
+      "服务器上有一套带版本号的指令，规定 AI 的角色和边界。你的文书作为“数据”发送，AI 会被要求忽略其中的任何指令。这能降低隐藏指令影响 AI 的风险，但没有任何技术能完全杜绝。",
+      "AI 的回复必须符合固定结构。每个文字字段都有远短于一篇文书的长度上限；超过你选中段落约两倍长度的替代表述会被直接丢弃。这些限制让 AI 很难交给你一篇替代文书，但不能保证它绝不会替你写内容——请只使用你自己的文字。",
       "反馈中的引文会和你的草稿进行核对；如果找不到原文，反馈里会注明。",
       "如果 AI 服务出错或返回无法使用的内容，我们会显示错误提示，绝不会用编造的反馈代替。",
     ],
@@ -528,6 +528,7 @@ const zhCN: Messages = {
     checkboxRequired: "请勾选确认后继续，或选择“只保存，不进行 AI 分析”。",
   },
   feedback: {
+    reused: "文字和设置与之前的反馈完全相同——直接显示那次的结果，不再重复请求 AI。",
     showPassage: "在草稿中显示",
     passageMoved: "在当前草稿中找不到这段文字，可能在这次反馈之后已经修改过。",
     staleVersion: "这份反馈针对的是第 {n} 版。之后你修改了草稿，部分意见可能已不再适用。",
@@ -767,6 +768,15 @@ const zhCN: Messages = {
     deleted: "你的账户已被删除。",
   },
   admin: {
+    usage: {
+      title: "今日 AI 用量（UTC）",
+      runs: "运行次数",
+      tokens: "Token（输入 + 输出）",
+      cost: "估算费用",
+      noPrices: "设置 AI_PRICE_* 后可估算",
+      concurrency: "每位学生同时运行数",
+      note: "每日上限（AI_DAILY_BUDGET_USD、AI_DAILY_TOKEN_BUDGET）会在每次运行前检查；已在进行中的运行可能略微超出。费用是根据你配置的价格估算的，并非服务商账单。",
+    },
     title: "管理",
     note: "此后台只显示汇总数字。系统刻意不提供浏览学生文书的方式。",
     metrics: { users: "账户数", essays: "文书数", versions: "已保存版本", completed: "已完成的反馈", failed: "失败的反馈" },
@@ -838,6 +848,10 @@ const zhCN: Messages = {
     school_required: "请选择一所学校或输入学校名称。",
     checklist_full: "这个清单的条目已达上限。",
     deadlines_full: "这所学校的截止日期数量已达上限。",
+    ai_run_in_progress: "你的账户还有一个 AI 请求正在进行。请等它完成后再试。",
+    ai_budget_reached: "本网站今天的 AI 用量已达上限，AI 反馈暂停到明天。你仍然可以继续写作和保存。",
+    ai_interrupted: "这个 AI 请求在完成前被中断（例如服务器重启），没有保存任何不完整的内容。请重试。",
+    selection_not_in_draft: "这段文字不在你当前的草稿中。请在编辑器中选中文字后再试。",
     already_on_list: "这所学校已经在你的清单中了。",
     list_full: "你的清单已达到学校数量上限。",
     invalid_cds_data: "部分 CDS 数值无效，请检查标出的字段。",
@@ -855,6 +869,7 @@ const zhCN: Messages = {
     errorTitle: "出了点问题",
   },
   dev: {
+    demoMode: "这是使用开发服务（占位 AI、测试邮件）的演示网站。请只使用虚构内容——不要输入真实文书或个人信息。",
     configWarning: "开发配置提示：{issue}",
     noAi: "未配置 AI 服务商（AI_PROVIDER），实时反馈已关闭。",
     mockAi: "AI_PROVIDER=mock——反馈为占位文字。",

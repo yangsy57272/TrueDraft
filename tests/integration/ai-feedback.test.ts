@@ -12,7 +12,8 @@ import { getEssay, listEssays, listVersions } from "@/server/services/essays";
 import { PUT as setTask } from "@/app/api/essays/[id]/feedback/[runId]/tasks/[index]/route";
 import { PUT as autosave } from "@/app/api/essays/[id]/draft/route";
 import { GET as exportAccount } from "@/app/api/account/export/route";
-import { auditEvent } from "@/db/schema";
+import { auditEvent, essay as essayTable } from "@/db/schema";
+import { recoverStuckRuns } from "@/server/ai/limits";
 import { ctx, json, readStream, req, sampleEssay, signIn } from "../helpers/http";
 import { validFeedback } from "../helpers/fixtures";
 
@@ -305,9 +306,107 @@ describe("AI feedback", () => {
         boundary_note: null,
       })),
     );
-    const events = await readStream(await run("sentence", { selection, sentenceMode: "clearer" }));
+    const content = `${sampleEssay.draft} ${selection}`;
+    const events = await readStream(await run("sentence", { selection, sentenceMode: "clearer", content }));
     const done = events.find((e) => e.type === "done");
     expect(done.result.alternatives).toHaveLength(1);
     expect(done.result.removedAlternatives).toBe(1); // the third was already cut by the two-item cap
+  });
+
+  it("only gives sentence feedback on passages from the student's own draft", async () => {
+    await grant();
+    const calls: StructuredRequest[] = [];
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue(fakeProvider(() => ({}), calls));
+    const res = await run("sentence", { selection: "A paragraph pasted from somewhere else entirely.", sentenceMode: "clearer", content: sampleEssay.draft });
+    expect(res.status).toBe(400);
+    expect((await json(res)).error.code).toBe("selection_not_in_draft");
+    expect(calls).toHaveLength(0);
+  });
+});
+
+describe("AI limits: concurrency, deduplication, usage, budget, recovery", () => {
+  const withUsage = (calls: { n: number }, delayMs = 0): AiProvider => ({
+    kind: "fake",
+    model: "fake-model",
+    async generate() {
+      calls.n++;
+      if (delayMs) await new Promise((r) => setTimeout(r, delayMs));
+      return { json: validFeedback, model: "fake-model", providerRef: null, usage: { inputTokens: 1000, outputTokens: 500 } };
+    },
+  });
+  const errorCode = (events: { type: string; code?: string }[]) => events.find((e) => e.type === "error")?.code;
+  afterEach(() => {
+    for (const k of ["AI_DAILY_TOKEN_BUDGET", "AI_DAILY_BUDGET_USD", "AI_PRICE_INPUT_PER_MTOK_USD", "AI_PRICE_OUTPUT_PER_MTOK_USD", "AI_DEDUP_WINDOW_HOURS"]) delete process.env[k];
+  });
+
+  it("allows one run in flight per student", async () => {
+    await grant();
+    const calls = { n: 0 };
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue(withUsage(calls, 300));
+    const [a, b] = await Promise.all([
+      run("full_feedback", { content: sampleEssay.draft + " One." }).then(readStream),
+      run("full_feedback", { content: sampleEssay.draft + " Two." }).then(readStream),
+    ]);
+    const codes = [errorCode(a), errorCode(b)];
+    expect(codes.filter((c) => c === "ai_run_in_progress")).toHaveLength(1);
+    expect(calls.n).toBe(1);
+  });
+
+  it("reuses an identical recent result instead of calling the AI again", async () => {
+    await grant();
+    const calls = { n: 0 };
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue(withUsage(calls));
+    const first = (await readStream(await run("full_feedback", { content: sampleEssay.draft }))).find((e) => e.type === "done");
+    const second = (await readStream(await run("full_feedback", { content: sampleEssay.draft }))).find((e) => e.type === "done");
+    expect(calls.n).toBe(1);
+    expect(second.reused).toBe(true);
+    expect(second.runId).toBe(first.runId);
+    // Any change to the text means a new request.
+    await readStream(await run("full_feedback", { content: sampleEssay.draft + " Changed." }));
+    expect(calls.n).toBe(2);
+    // Deduplication can be switched off.
+    process.env.AI_DEDUP_WINDOW_HOURS = "0";
+    await readStream(await run("full_feedback", { content: sampleEssay.draft }));
+    expect(calls.n).toBe(3);
+  });
+
+  it("records token usage and estimated cost, and stops at the daily ceiling", async () => {
+    await grant();
+    process.env.AI_PRICE_INPUT_PER_MTOK_USD = "3";
+    process.env.AI_PRICE_OUTPUT_PER_MTOK_USD = "15";
+    const calls = { n: 0 };
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue(withUsage(calls));
+    await readStream(await run("full_feedback", { content: sampleEssay.draft + " A." }));
+    const [row] = await db.select().from(feedbackRun).where(eq(feedbackRun.essayId, essayId)).orderBy(feedbackRun.createdAt);
+    const done = (await db.select().from(feedbackRun).where(eq(feedbackRun.essayId, essayId))).find((r) => r.status === "completed")!;
+    expect(row).toBeDefined();
+    expect(done).toMatchObject({ inputTokens: 1000, outputTokens: 500, costMicroUsd: 1000 * 3 + 500 * 15 });
+
+    process.env.AI_DAILY_TOKEN_BUDGET = "1500";
+    const blocked = await readStream(await run("full_feedback", { content: sampleEssay.draft + " B." }));
+    expect(errorCode(blocked)).toBe("ai_budget_reached");
+    expect(calls.n).toBe(1);
+    delete process.env.AI_DAILY_TOKEN_BUDGET;
+    process.env.AI_DAILY_BUDGET_USD = "0.01"; // 10,000 micro-dollars; 10,500 already spent
+    expect(errorCode(await readStream(await run("full_feedback", { content: sampleEssay.draft + " C." })))).toBe("ai_budget_reached");
+  });
+
+  it("marks runs stuck in pending as interrupted, freeing the student's slot", async () => {
+    await grant();
+    const [{ id: stuckId }] = await db
+      .insert(feedbackRun)
+      .values({ essayId, kind: "full_feedback", feedbackLanguage: "en", provider: "fake", modelName: "fake", promptVersion: "p", schemaVersion: "s", status: "pending", createdAt: new Date(Date.now() - 6 * 3_600_000) })
+      .returning({ id: feedbackRun.id });
+    const calls = { n: 0 };
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue(withUsage(calls));
+    // The stuck run would otherwise block this request (one run in flight per student).
+    const events = await readStream(await run("full_feedback", { content: sampleEssay.draft + " After a crash." }));
+    expect(events.some((e) => e.type === "done")).toBe(true);
+    const [stuck] = await db.select().from(feedbackRun).where(eq(feedbackRun.id, stuckId));
+    expect(stuck).toMatchObject({ status: "failed", errorCode: "ai_interrupted" });
+    // A recent pending run is left alone.
+    await db.insert(feedbackRun).values({ essayId, kind: "full_feedback", feedbackLanguage: "en", provider: "fake", modelName: "fake", promptVersion: "p", schemaVersion: "s", status: "pending" });
+    expect(await recoverStuckRuns()).toBe(0);
+    expect((await db.select().from(essayTable)).length).toBe(1);
   });
 });

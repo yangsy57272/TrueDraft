@@ -5,8 +5,9 @@ import { ACTIVITY_TYPES, C7_FACTORS, C7_LEVELS, CDS_FIELDS, COURSE_LEVELS, HONOR
  * Structured-output schemas for every AI tool.
  *
  * Length limits are enforced by clamping after parsing (providers' JSON-schema support does not
- * reliably honour maxLength/maxItems). Because every text field is capped well below essay
- * length, the AI cannot return a replacement essay through any field of these schemas.
+ * reliably honour maxLength/maxItems). Every text field is capped well below essay length, so no
+ * single field can carry a replacement essay. This narrows, but cannot eliminate, the chance of
+ * ghostwritten text; the prompts and guards are further layers, not guarantees.
  */
 
 export const SCHEMA_VERSION = "2026-11-05.2";

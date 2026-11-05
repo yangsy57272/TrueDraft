@@ -49,7 +49,12 @@ export class AnthropicProvider implements AiProvider {
         .filter((b): b is Anthropic.TextBlock => b.type === "text")
         .map((b) => b.text)
         .join("");
-      return { json: parseJsonText(textOut), model: message.model, providerRef: message.id };
+      return {
+        json: parseJsonText(textOut),
+        model: message.model,
+        providerRef: message.id,
+        usage: message.usage ? { inputTokens: message.usage.input_tokens ?? 0, outputTokens: message.usage.output_tokens ?? 0 } : null,
+      };
     } catch (error) {
       throw mapAnthropicError(error, request.signal);
     }

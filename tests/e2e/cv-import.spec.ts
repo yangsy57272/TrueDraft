@@ -8,7 +8,7 @@ test("CV review: uncertain and duplicate items start unticked, fields are editab
   await page.getByRole("button", { name: /Add course/ }).click();
   await page.getByLabel("Course name", { exact: true }).first().fill("Physics HL");
   await page.getByRole("button", { name: "Save profile" }).first().click();
-  await expect(page.getByText("Profile saved.")).toBeVisible();
+  await expect(page.getByText("Profile saved.").last()).toBeVisible();
 
   await page.getByLabel("CV text").fill(["Course: Physics HL", "Course: Economics SL", "Activity: Robotics captain", "Honor: Regional math olympiad bronze", "[[mock:cv-sample]]"].join("\n"));
   await page.getByRole("button", { name: "Extract for review" }).click();
@@ -33,7 +33,7 @@ test("CV review: uncertain and duplicate items start unticked, fields are editab
   await page.getByRole("button", { name: /Add \d+ selected to my profile/ }).click();
   await expect(page.getByText(/Added \d+ item\(s\)/)).toBeVisible();
   await page.getByRole("button", { name: "Save profile" }).first().click();
-  await expect(page.getByText("Profile saved.")).toBeVisible();
+  await expect(page.getByText("Profile saved.").last()).toBeVisible();
   await page.reload();
   await expect(page.getByLabel("Course name", { exact: true }).nth(1)).toHaveValue("Economics SL (Year 1)");
   await expect(page.getByText("Mock Award Not In CV")).toHaveCount(0);

@@ -1,0 +1,1 @@
+ALTER TABLE "college_list_entry" DROP COLUMN "deadline";

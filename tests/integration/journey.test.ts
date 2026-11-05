@@ -13,6 +13,8 @@ import { GET as getList, POST as addToList } from "@/app/api/list/route";
 import { DELETE as removeFromList, PATCH as patchList } from "@/app/api/list/[id]/route";
 import { POST as addChecklistItem } from "@/app/api/list/[id]/checklist/route";
 import { DELETE as removeChecklistItem, PATCH as setChecklistItem } from "@/app/api/list/[id]/checklist/[itemId]/route";
+import { POST as addDeadlineRoute } from "@/app/api/list/[id]/deadlines/route";
+import { DELETE as removeDeadlineRoute, PATCH as patchDeadlineRoute } from "@/app/api/list/[id]/deadlines/[deadlineId]/route";
 import { POST as createEssay } from "@/app/api/essays/route";
 import { POST as consent } from "@/app/api/consent/route";
 import { GET as exportData } from "@/app/api/account/export/route";
@@ -230,21 +232,20 @@ describe("college list", () => {
     const { id } = await json(await addToList(req("POST", "/api/list", { cookie: me.cookie, body: { schoolId } }), undefined as never));
     expect((await patchList(req("PATCH", "/x", { cookie: other.cookie, body: { status: "submitted" } }), ctx({ id }))).status).toBe(404);
     expect((await removeFromList(req("DELETE", "/x", { cookie: other.cookie }), ctx({ id }))).status).toBe(404);
-    const ok = await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { category: "reach", round: "ea", deadline: "2026-11-01", notes: "Visit in spring" } }), ctx({ id }));
+    const ok = await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { category: "reach", round: "ea", intendedMajor: "Physics", notes: "Visit in spring" } }), ctx({ id }));
     expect(ok.status).toBe(200);
     const bad = await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { category: "guaranteed" } }), ctx({ id }));
     expect(bad.status).toBe(400);
     const list = await json(await getList(req("GET", "/api/list", { cookie: me.cookie }), undefined as never));
-    expect(list.entries[0]).toMatchObject({ category: "reach", round: "ea", deadline: "2026-11-01", notes: "Visit in spring" });
+    expect(list.entries[0]).toMatchObject({ category: "reach", round: "ea", intendedMajor: "Physics", notes: "Visit in spring" });
   });
 
   it("updates only the fields sent and never resets the others to defaults", async () => {
     const { id } = await json(await addToList(req("POST", "/api/list", { cookie: me.cookie, body: { schoolId, category: "reach", status: "in_progress" } }), undefined as never));
     const res = await json(await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { round: "ed" } }), ctx({ id })));
     expect(res.entry).toMatchObject({ category: "reach", status: "in_progress", round: "ed" });
-    const deadline = await json(await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { deadline: "2026-12-01" } }), ctx({ id })));
-    expect(deadline.entry).toMatchObject({ category: "reach", round: "ed", deadline: "2026-12-01" });
-    expect((await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { deadline: "2026-02-31" } }), ctx({ id }))).status).toBe(400);
+    const major = await json(await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { intendedMajor: "History" } }), ctx({ id })));
+    expect(major.entry).toMatchObject({ category: "reach", round: "ed", intendedMajor: "History" });
     // The whole checklist can no longer be replaced through a field update.
     expect((await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { checklist: [] } }), ctx({ id }))).status).toBe(400);
   });
@@ -258,9 +259,9 @@ describe("college list", () => {
     const results = await Promise.all([set(a.id, true), set(b.id, true), set(c.id, true)]);
     expect(results.map((r) => r.status)).toEqual([200, 200, 200]);
     // A field update racing with a checklist click doesn't undo it, and vice versa.
-    await Promise.all([patchList(req("PATCH", "/x", { cookie: me.cookie, body: { deadline: "2026-11-15" } }), ctx({ id })), set(a.id, false)]);
+    await Promise.all([patchList(req("PATCH", "/x", { cookie: me.cookie, body: { intendedMajor: "Biology" } }), ctx({ id })), set(a.id, false)]);
     const [after] = (await json(await getList(req("GET", "/api/list", { cookie: me.cookie }), undefined as never))).entries;
-    expect(after.deadline).toBe("2026-11-15");
+    expect(after.intendedMajor).toBe("Biology");
     expect(after.checklist.filter((i: { done: boolean }) => i.done).map((i: { id: string }) => i.id)).toEqual([b.id, c.id]);
     // Setting is idempotent, so a retried request has the same effect.
     await set(b.id, true);
@@ -275,6 +276,32 @@ describe("college list", () => {
     expect((await set("no-such-item", true)).status).toBe(404);
     const removed = await json(await removeChecklistItem(req("DELETE", "/x", { cookie: me.cookie }), ctx({ id, itemId: "custom-1" })));
     expect(removed.entry.checklist.some((i: { id: string }) => i.id === "custom-1")).toBe(false);
+  });
+
+  it("keeps several typed deadlines per school with time zone, source, and done state", async () => {
+    const { id } = await json(await addToList(req("POST", "/api/list", { cookie: me.cookie, body: { customSchoolName: "Deadline College" } }), undefined as never));
+    const add = (body: Record<string, unknown>, cookie = me.cookie) => addDeadlineRoute(req("POST", "/x", { cookie, body }), ctx({ id }));
+    const ed = await json(await add({ type: "early_decision", date: "2026-11-01", timeZone: "America/New_York", source: "https://example.edu/apply", itemId: "dl-ed" }));
+    expect(ed.entry.deadlines).toEqual([{ id: "dl-ed", type: "early_decision", date: "2026-11-01", time: null, timeZone: "America/New_York", source: "https://example.edu/apply", label: null, done: false }]);
+    // Retrying with the same id doesn't duplicate; concurrent adds are all kept.
+    await add({ type: "early_decision", date: "2026-11-01", itemId: "dl-ed" });
+    await Promise.all([add({ type: "financial_aid", date: "2026-11-15", itemId: "dl-aid" }), add({ type: "interview", date: "2026-11-20", time: "17:00", timeZone: "Asia/Shanghai", itemId: "dl-int" })]);
+    const patch = (did: string, body: Record<string, unknown>) => patchDeadlineRoute(req("PATCH", "/x", { cookie: me.cookie, body }), ctx({ id, deadlineId: did }));
+    const done = await json(await patch("dl-ed", { done: true }));
+    expect(done.entry.deadlines.map((d: { id: string }) => d.id).sort()).toEqual(["dl-aid", "dl-ed", "dl-int"]);
+    expect(done.entry.deadlines.find((d: { id: string }) => d.id === "dl-ed")).toMatchObject({ done: true, timeZone: "America/New_York", source: "https://example.edu/apply" });
+    // Validation: real dates, times, and zones only; strict fields.
+    expect((await add({ type: "application", date: "2026-02-31" })).status).toBe(400);
+    expect((await add({ type: "application", date: "2026-02-28", timeZone: "Mars/Base" })).status).toBe(400);
+    expect((await add({ type: "deadline_of_doom", date: "2026-02-28" })).status).toBe(400);
+    expect((await patch("dl-aid", { admissionChance: 1 })).status).toBe(400);
+    // Owner only.
+    expect((await add({ type: "application", date: "2026-12-01" }, other.cookie)).status).toBe(404);
+    expect((await patchDeadlineRoute(req("PATCH", "/x", { cookie: other.cookie, body: { done: true } }), ctx({ id, deadlineId: "dl-aid" }))).status).toBe(404);
+    const removed = await json(await removeDeadlineRoute(req("DELETE", "/x", { cookie: me.cookie }), ctx({ id, deadlineId: "dl-int" })));
+    expect(removed.entry.deadlines).toHaveLength(2);
+    const exported = await (await exportData(req("GET", "/api/account/export", { cookie: me.cookie }), undefined as never)).json();
+    expect(exported.collegeList[0].deadlines).toHaveLength(2);
   });
 
   it("links essays only to the student's own list entries", async () => {

@@ -137,7 +137,7 @@ export async function exportUserData(userId: string) {
       category: e.category,
       round: e.round,
       platform: e.platform,
-      deadline: e.deadline,
+      deadlines: e.deadlines,
       intendedMajor: e.intendedMajor,
       status: e.status,
       notes: e.notes,

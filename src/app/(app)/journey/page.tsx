@@ -33,7 +33,7 @@ export default async function JourneyPage() {
     schools: list.some((e) => e.schoolId) ? "done" : "not_started",
     list: list.length === 0 ? "not_started" : list.every((e) => e.category !== "unsure" && e.round !== "undecided") ? "done" : "in_progress",
     essays: essays.length === 0 ? "not_started" : essays.some((e) => e.versionCount > 0) ? "done" : "in_progress",
-    track: list.length === 0 ? "not_started" : list.some((e) => e.deadline) ? (list.every((e) => ["submitted", "admitted", "waitlisted", "deferred", "denied", "withdrawn"].includes(e.status)) ? "done" : "in_progress") : "not_started",
+    track: list.length === 0 ? "not_started" : list.some((e) => e.deadlines.length > 0) ? (list.every((e) => ["submitted", "admitted", "waitlisted", "deferred", "denied", "withdrawn"].includes(e.status)) ? "done" : "in_progress") : "not_started",
   };
   const steps = [
     { key: "profile", href: "/profile" },

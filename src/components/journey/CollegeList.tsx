@@ -6,6 +6,8 @@ import { formatDate } from "@/i18n/translate";
 import { apiFetch, newId } from "@/lib/api-client";
 import { APPLICATION_PLATFORMS, APPLICATION_ROUNDS, APPLICATION_STATUSES, LIST_CATEGORIES } from "@/lib/planning";
 import { ConfirmDialog } from "@/components/ui/Dialog";
+import type { Deadline } from "@/lib/deadlines";
+import { DeadlineList, DeadlineOverview, type DeadlineOps } from "./Deadlines";
 import { useToast } from "@/components/ui/Toaster";
 
 export type ListEntry = {
@@ -17,7 +19,7 @@ export type ListEntry = {
   category: string;
   round: string;
   platform: string | null;
-  deadline: string | null;
+  deadlines: Deadline[];
   intendedMajor: string | null;
   status: string;
   notes: string;
@@ -27,13 +29,12 @@ export type ListEntry = {
 
 const CATEGORY_ICON: Record<string, string> = { reach: "▲", target: "●", likely: "▼", unsure: "?" };
 
-type FormFields = Pick<ListEntry, "category" | "round" | "platform" | "deadline" | "intendedMajor" | "status" | "notes">;
-const FORM_KEYS = ["category", "round", "platform", "deadline", "intendedMajor", "status", "notes"] as const;
+type FormFields = Pick<ListEntry, "category" | "round" | "platform" | "intendedMajor" | "status" | "notes">;
+const FORM_KEYS = ["category", "round", "platform", "intendedMajor", "status", "notes"] as const;
 const formOf = (e: ListEntry): FormFields => ({
   category: e.category,
   round: e.round,
   platform: e.platform,
-  deadline: e.deadline,
   intendedMajor: e.intendedMajor,
   status: e.status,
   notes: e.notes,
@@ -46,6 +47,7 @@ type ListOps = {
   addItem: (entryId: string, label: string) => void;
   removeItem: (entryId: string, itemId: string) => void;
   removeEntry: (entryId: string) => Promise<boolean>;
+  deadlines: (entryId: string) => DeadlineOps;
 };
 
 function EntryCard({ entry, ops }: { entry: ListEntry; ops: ListOps }) {
@@ -86,7 +88,6 @@ function EntryCard({ entry, ops }: { entry: ListEntry; ops: ListOps }) {
               {t(`list.categories.${v.category}` as never)}
             </span>
             <span>{t(`list.rounds.${v.round}` as never)}</span>
-            {v.deadline ? <span>· {formatDate(`${v.deadline}T12:00:00Z`, locale)}</span> : null}
             <span>· {t(`list.statuses.${v.status}` as never)}</span>
           </p>
         </div>
@@ -111,11 +112,6 @@ function EntryCard({ entry, ops }: { entry: ListEntry; ops: ListOps }) {
             <select id={id("round")} className="input" value={form.round} onChange={(e) => set({ round: e.target.value })}>
               {APPLICATION_ROUNDS.map((r) => <option key={r} value={r}>{t(`list.rounds.${r}` as never)}</option>)}
             </select>
-          </div>
-          <div>
-            <label htmlFor={id("dl")} className="field-label text-sm">{t("list.deadline")}</label>
-            <input id={id("dl")} type="date" className="input" value={form.deadline ?? ""} onChange={(e) => set({ deadline: e.target.value || null })} aria-describedby={id("dlh")} />
-            <p id={id("dlh")} className="field-help">{t("list.deadlineHelp")}</p>
           </div>
           <div>
             <label htmlFor={id("plat")} className="field-label text-sm">{t("list.platform")}</label>
@@ -186,6 +182,9 @@ function EntryCard({ entry, ops }: { entry: ListEntry; ops: ListOps }) {
             <button type="submit" className="btn btn-secondary btn-sm">{t("list.addItem")}</button>
           </form>
         </fieldset>
+        <div className="md:col-span-2">
+          <DeadlineList deadlines={v.deadlines} ops={ops.deadlines(entry.id)} />
+        </div>
         <div>
           <h3 className="text-sm font-semibold">{t("list.essays")}</h3>
           {v.essays.length === 0 ? <p className="mt-2 text-sm text-ink-soft">{t("list.noEssays")}</p> : null}
@@ -225,7 +224,6 @@ export function CollegeList({ entries }: { entries: ListEntry[] }) {
   const [items, setItems] = useState(entries);
   const [custom, setCustom] = useState("");
   const [adding, setAdding] = useState(false);
-  const upcoming = [...items].filter((e) => e.deadline).sort((a, b) => (a.deadline! < b.deadline! ? -1 : 1));
 
   // Checklist operations still waiting for the server, per entry and item, so a response to an
   // earlier operation doesn't briefly undo a later click.
@@ -312,6 +310,47 @@ export function CollegeList({ entries }: { entries: ListEntry[] }) {
         }
       });
     },
+    deadlines(entryId) {
+      return {
+        add(input) {
+          const itemId = newId();
+          patchLocal(entryId, (e) => ({ ...e, deadlines: [...e.deadlines, { ...input, id: itemId }] }));
+          void enqueue(entryId, async () => {
+            const res = await apiFetch<{ entry: ListEntry }>(`/api/list/${entryId}/deadlines`, { method: "POST", body: { ...input, itemId } });
+            if (res.ok) applyServer(res.data.entry);
+            else {
+              patchLocal(entryId, (e) => ({ ...e, deadlines: e.deadlines.filter((d) => d.id !== itemId) }));
+              fail(res.code);
+            }
+          });
+        },
+        update(deadlineId, patch) {
+          const before = items.find((e) => e.id === entryId)?.deadlines.find((d) => d.id === deadlineId);
+          patchLocal(entryId, (e) => ({ ...e, deadlines: e.deadlines.map((d) => (d.id === deadlineId ? { ...d, ...patch } : d)) }));
+          void enqueue(entryId, async () => {
+            const res = await apiFetch<{ entry: ListEntry }>(`/api/list/${entryId}/deadlines/${deadlineId}`, { method: "PATCH", body: patch });
+            if (res.ok) applyServer(res.data.entry);
+            else {
+              if (before) patchLocal(entryId, (e) => ({ ...e, deadlines: e.deadlines.map((d) => (d.id === deadlineId ? before : d)) }));
+              fail(res.code);
+            }
+          });
+        },
+        remove(deadlineId) {
+          const entry = items.find((e) => e.id === entryId);
+          const removed = entry?.deadlines.find((d) => d.id === deadlineId);
+          patchLocal(entryId, (e) => ({ ...e, deadlines: e.deadlines.filter((d) => d.id !== deadlineId) }));
+          void enqueue(entryId, async () => {
+            const res = await apiFetch<{ entry: ListEntry }>(`/api/list/${entryId}/deadlines/${deadlineId}`, { method: "DELETE" });
+            if (res.ok) applyServer(res.data.entry);
+            else {
+              if (removed) patchLocal(entryId, (e) => ({ ...e, deadlines: [...e.deadlines, removed] }));
+              fail(res.code);
+            }
+          });
+        },
+      };
+    },
     async removeEntry(entryId) {
       const res = await apiFetch(`/api/list/${entryId}`, { method: "DELETE" });
       if (!res.ok) {
@@ -361,15 +400,7 @@ export function CollegeList({ entries }: { entries: ListEntry[] }) {
       </div>
       <aside className="card h-fit p-5" aria-labelledby="upcoming">
         <h2 id="upcoming" className="text-lg font-semibold">{t("list.upcoming")}</h2>
-        {upcoming.length === 0 ? <p className="mt-2 text-sm text-ink-soft">{t("list.noDeadlines")}</p> : null}
-        <ol className="mt-2 space-y-2 text-sm">
-          {upcoming.map((e) => (
-            <li key={e.id} className="flex justify-between gap-2 border-t border-line pt-2 first:border-t-0">
-              <span className="min-w-0 truncate">{locale === "zh-CN" && e.schoolNameZh ? e.schoolNameZh : e.schoolName}</span>
-              <span className="shrink-0 text-ink-soft">{formatDate(`${e.deadline}T12:00:00Z`, locale)}</span>
-            </li>
-          ))}
-        </ol>
+        <DeadlineOverview entries={items.map((e) => ({ id: e.id, name: locale === "zh-CN" && e.schoolNameZh ? e.schoolNameZh : e.schoolName, deadlines: e.deadlines }))} />
       </aside>
     </div>
   );

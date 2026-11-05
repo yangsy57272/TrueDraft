@@ -53,10 +53,12 @@ test("journey: profile → majors → schools → list → linked supplemental e
   await page.getByText("Edit", { exact: true }).click();
   await page.getByLabel("Your category").selectOption("reach");
   await page.getByLabel("Round").selectOption("rea");
-  await page.getByLabel("Your deadline").fill("2026-11-01");
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await expect(page.getByText("Saved.")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Upcoming deadlines" })).toBeVisible();
+  await page.getByRole("button", { name: "+ Add a deadline" }).click();
+  await page.getByLabel("Date").fill("2027-01-01");
+  await page.getByRole("button", { name: "Save deadline" }).click();
+  await expect(page.getByRole("heading", { name: "Your deadlines" })).toBeVisible();
   await page.getByLabel("Recommendations requested").check();
   await expect(page.getByText(/1 of \d+ done/)).toBeVisible();
   await page.getByRole("link", { name: "+ Start a supplemental essay" }).click();

@@ -371,7 +371,11 @@ export const collegeListEntry = pgTable(
     category: text("category").notNull().default("unsure"),
     round: text("round").notNull().default("undecided"),
     platform: text("platform"),
-    deadline: text("deadline"), // YYYY-MM-DD
+    /** Application, aid, interview… deadlines, each with its own time zone and source. */
+    deadlines: jsonb("deadlines")
+      .$type<{ id: string; type: string; date: string; time: string | null; timeZone: string; source: string | null; label?: string | null; done: boolean }[]>()
+      .notNull()
+      .default([]),
     intendedMajor: text("intended_major"),
     status: text("status").notNull().default("researching"),
     encryptedNotes: text("encrypted_notes"),

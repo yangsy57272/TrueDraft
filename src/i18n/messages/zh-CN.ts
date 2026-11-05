@@ -834,6 +834,7 @@ const zhCN: Messages = {
     cv_too_long: "简历文字太长了。请只粘贴活动、课程和奖项部分。",
     school_required: "请选择一所学校或输入学校名称。",
     checklist_full: "这个清单的条目已达上限。",
+    deadlines_full: "这所学校的截止日期数量已达上限。",
     already_on_list: "这所学校已经在你的清单中了。",
     list_full: "你的清单已达到学校数量上限。",
     invalid_cds_data: "部分 CDS 数值无效，请检查标出的字段。",

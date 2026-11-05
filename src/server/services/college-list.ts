@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { collegeListEntry, essay, school } from "@/db/schema";
 import { DEFAULT_CHECKLIST, MAX_CHECKLIST_ITEMS, listEntryInputSchema, listEntryPatchSchema, type ListEntryInput } from "@/lib/planning";
 import { decryptText, encryptText } from "../crypto";
+import { deadlineInputSchema, deadlinePatchSchema, MAX_DEADLINES, type Deadline } from "@/lib/deadlines";
 import { ApiError } from "../errors";
 
 const MAX_ENTRIES = 40;
@@ -45,7 +46,7 @@ export async function listEntries(userId: string, onlyId?: string) {
     category: entry.category,
     round: entry.round,
     platform: entry.platform,
-    deadline: entry.deadline,
+    deadlines: entry.deadlines as Deadline[],
     intendedMajor: entry.intendedMajor,
     status: entry.status,
     notes: entry.encryptedNotes ? decryptText(entry.encryptedNotes, "list_notes") : "",
@@ -83,7 +84,6 @@ export async function addEntry(userId: string, input: unknown) {
         category: data.category,
         round: data.round,
         platform: data.platform ?? null,
-        deadline: data.deadline ?? null,
         intendedMajor: data.intendedMajor ?? null,
         status: data.status,
         encryptedNotes: data.notes ? encryptText(data.notes, "list_notes") : null,
@@ -104,7 +104,6 @@ export async function updateEntry(userId: string, entryId: string, input: unknow
   if (data.category !== undefined) values.category = data.category;
   if (data.round !== undefined) values.round = data.round;
   if (data.platform !== undefined) values.platform = data.platform ?? null;
-  if (data.deadline !== undefined) values.deadline = data.deadline ?? null;
   if (data.intendedMajor !== undefined) values.intendedMajor = data.intendedMajor || null;
   if (data.status !== undefined) values.status = data.status;
   if (data.customSchoolName !== undefined && data.customSchoolName) values.customSchoolName = data.customSchoolName.trim();
@@ -152,6 +151,54 @@ export function addChecklistItem(userId: string, entryId: string, label: string,
     if (items.length >= MAX_CHECKLIST_ITEMS) throw new ApiError(409, "checklist_full");
     return [...items, { id: itemId, key: null, label: clean, done: false }];
   });
+}
+
+/** Deadlines use the same row-locked, per-item pattern as the checklist. */
+async function mutateDeadlines(userId: string, entryId: string, change: (items: Deadline[]) => Deadline[]) {
+  await db.transaction(async (tx) => {
+    const [row] = await tx
+      .select({ deadlines: collegeListEntry.deadlines })
+      .from(collegeListEntry)
+      .where(and(eq(collegeListEntry.id, entryId), eq(collegeListEntry.userId, userId)))
+      .for("update");
+    if (!row) throw new ApiError(404, "not_found");
+    await tx.update(collegeListEntry).set({ deadlines: change(row.deadlines as Deadline[]) }).where(eq(collegeListEntry.id, entryId));
+  });
+  return getEntryView(userId, entryId);
+}
+
+export function addDeadline(userId: string, entryId: string, input: unknown, itemId: string = randomUUID()) {
+  const data = validate(deadlineInputSchema, input);
+  return mutateDeadlines(userId, entryId, (items) => {
+    if (items.some((d) => d.id === itemId)) return items; // retried request
+    if (items.length >= MAX_DEADLINES) throw new ApiError(409, "deadlines_full");
+    return [...items, { id: itemId, type: data.type, date: data.date, time: data.time ?? null, timeZone: data.timeZone, source: data.source || null, label: data.label || null, done: data.done }];
+  });
+}
+
+export function updateDeadline(userId: string, entryId: string, deadlineId: string, input: unknown) {
+  const patch = validate(deadlinePatchSchema, input);
+  return mutateDeadlines(userId, entryId, (items) => {
+    if (!items.some((d) => d.id === deadlineId)) throw new ApiError(404, "not_found");
+    return items.map((d) =>
+      d.id === deadlineId
+        ? {
+            ...d,
+            ...(patch.type !== undefined && { type: patch.type }),
+            ...(patch.date !== undefined && { date: patch.date }),
+            ...(patch.time !== undefined && { time: patch.time ?? null }),
+            ...(patch.timeZone !== undefined && { timeZone: patch.timeZone }),
+            ...(patch.source !== undefined && { source: patch.source || null }),
+            ...(patch.label !== undefined && { label: patch.label || null }),
+            ...(patch.done !== undefined && { done: patch.done }),
+          }
+        : d,
+    );
+  });
+}
+
+export function removeDeadline(userId: string, entryId: string, deadlineId: string) {
+  return mutateDeadlines(userId, entryId, (items) => items.filter((d) => d.id !== deadlineId));
 }
 
 export function removeChecklistItem(userId: string, entryId: string, itemId: string) {

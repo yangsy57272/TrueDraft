@@ -225,26 +225,70 @@ export const CDS_FIELDS: CdsFieldDef[] = [
   { key: "studentFacultyRatio", item: "I2", section: "I", type: "decimal" },
 ];
 
-const nint = z.number().int().min(0).max(10_000_000).nullable().optional();
-const npct = z.number().min(0).max(100).nullable().optional();
-const nmoney = z.number().min(0).max(1_000_000).nullable().optional();
+/** Plausible bounds per field (inclusive). Anything outside is rejected rather than shown. */
+export const CDS_BOUNDS: Record<string, [number, number]> = {
+  undergradTotal: [1, 150_000],
+  intlUndergrads: [0, 150_000],
+  gradRate6yr: [0, 100],
+  retentionRate: [0, 100],
+  applicants: [1, 500_000],
+  admitted: [0, 500_000],
+  enrolled: [0, 100_000],
+  waitlistOffered: [0, 200_000],
+  waitlistAccepted: [0, 200_000],
+  waitlistAdmitted: [0, 200_000],
+  satSubmitPct: [0, 100],
+  actSubmitPct: [0, 100],
+  satComposite25: [400, 1600],
+  satComposite50: [400, 1600],
+  satComposite75: [400, 1600],
+  satEbrw25: [200, 800],
+  satEbrw75: [200, 800],
+  satMath25: [200, 800],
+  satMath75: [200, 800],
+  actComposite25: [1, 36],
+  actComposite50: [1, 36],
+  actComposite75: [1, 36],
+  avgGpa: [0, 5],
+  gpaSubmitPct: [0, 100],
+  appFee: [0, 500],
+  edApplicants: [0, 200_000],
+  edAdmitted: [0, 200_000],
+  tuition: [0, 150_000],
+  requiredFees: [0, 50_000],
+  foodHousing: [0, 60_000],
+  intlAidRecipients: [0, 150_000],
+  intlAidAverage: [0, 150_000],
+  studentFacultyRatio: [1, 100],
+};
+
+const DAYS_IN_MONTH = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+/** "MM-DD" that exists on a calendar (February 29 allowed). */
+export function isValidMonthDay(value: string) {
+  const m = /^(\d{2})-(\d{2})$/.exec(value);
+  if (!m) return false;
+  const month = Number(m[1]);
+  const day = Number(m[2]);
+  return month >= 1 && month <= 12 && day >= 1 && day <= DAYS_IN_MONTH[month - 1];
+}
+
 const nmonthday = z
   .string()
-  .regex(/^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/)
+  .refine(isValidMonthDay, "not a real calendar date")
   .nullable()
   .optional();
 const nbool = z.boolean().nullable().optional();
 
 function scalarSchema(def: CdsFieldDef) {
+  const [lo, hi] = CDS_BOUNDS[def.key] ?? [0, 1_000_000];
   switch (def.type) {
     case "int":
-      return nint;
+      return z.number().int().min(lo).max(hi).nullable().optional();
     case "percent":
-      return npct;
     case "decimal":
-      return z.number().min(0).max(100).nullable().optional();
     case "money":
-      return nmoney;
+      return z.number().min(lo).max(hi).nullable().optional();
     case "monthday":
       return nmonthday;
     case "bool":
@@ -254,7 +298,28 @@ function scalarSchema(def: CdsFieldDef) {
   }
 }
 
-/** Every value is optional: a missing value is shown as "not reported", never guessed. */
+/** Cross-field rules: [smaller, larger, message]. Checked only when both values are present. */
+const ORDERED: [string, string, string][] = [
+  ["admitted", "applicants", "admitted exceeds applicants"],
+  ["enrolled", "admitted", "enrolled exceeds admitted"],
+  ["edAdmitted", "edApplicants", "early decision admits exceed early decision applicants"],
+  ["edApplicants", "applicants", "early decision applicants exceed all applicants"],
+  ["edAdmitted", "admitted", "early decision admits exceed all admits"],
+  ["intlUndergrads", "undergradTotal", "international undergraduates exceed all undergraduates"],
+  ["waitlistAccepted", "waitlistOffered", "waitlist acceptances exceed offers"],
+  ["waitlistAdmitted", "waitlistOffered", "waitlist admits exceed offers"],
+  ["intlAidRecipients", "intlUndergrads", "international aid recipients exceed international undergraduates"],
+  ["satComposite25", "satComposite50", "SAT 25th above 50th percentile"],
+  ["satComposite50", "satComposite75", "SAT 50th above 75th percentile"],
+  ["satComposite25", "satComposite75", "SAT 25th above 75th percentile"],
+  ["satEbrw25", "satEbrw75", "SAT reading 25th above 75th"],
+  ["satMath25", "satMath75", "SAT math 25th above 75th"],
+  ["actComposite25", "actComposite50", "ACT 25th above 50th percentile"],
+  ["actComposite50", "actComposite75", "ACT 50th above 75th percentile"],
+  ["actComposite25", "actComposite75", "ACT 25th above 75th percentile"],
+];
+
+/** Every value is optional: a missing value is shown as "not available", never guessed. */
 export const cdsDataSchema = z
   .object({
     ...Object.fromEntries(CDS_FIELDS.map((f) => [f.key, scalarSchema(f)])),
@@ -263,18 +328,35 @@ export const cdsDataSchema = z
   })
   .strict()
   .superRefine((d, ctx) => {
-    const v = d as Record<string, number | null | undefined>;
-    if (v.applicants != null && v.admitted != null && v.admitted > v.applicants) {
-      ctx.addIssue({ code: "custom", path: ["admitted"], message: "admitted exceeds applicants" });
+    const v = d as Record<string, unknown>;
+    const n = (k: string) => (typeof v[k] === "number" ? (v[k] as number) : null);
+    for (const [small, large, message] of ORDERED) {
+      const a = n(small);
+      const b = n(large);
+      if (a != null && b != null && a > b) ctx.addIssue({ code: "custom", path: [small], message });
     }
-    if (v.admitted != null && v.enrolled != null && v.enrolled > v.admitted) {
-      ctx.addIssue({ code: "custom", path: ["enrolled"], message: "enrolled exceeds admitted" });
+    if (v.waitlistAdmitted != null && v.waitlistAccepted != null && n("waitlistAdmitted")! > n("waitlistAccepted")!) {
+      ctx.addIssue({ code: "custom", path: ["waitlistAdmitted"], message: "waitlist admits exceed acceptances" });
     }
-    for (const prefix of ["satComposite", "actComposite"]) {
-      const a = v[`${prefix}25`];
-      const b = v[`${prefix}75`];
-      if (a != null && b != null && a > b) ctx.addIssue({ code: "custom", path: [`${prefix}25`], message: "25th above 75th" });
+    // H6: "not available" can't coexist with an available type or with recipients/averages.
+    if (v.intlAidNotAvailable === true) {
+      if (v.intlAidNeedBased === true || v.intlAidNonNeed === true) {
+        ctx.addIssue({ code: "custom", path: ["intlAidNotAvailable"], message: "aid marked both available and not available" });
+      }
+      if ((n("intlAidRecipients") ?? 0) > 0 || (n("intlAidAverage") ?? 0) > 0) {
+        ctx.addIssue({ code: "custom", path: ["intlAidNotAvailable"], message: "aid recipients reported while aid is not available" });
+      }
     }
+    // Early-plan details require the plan.
+    if (v.earlyDecision === false && (v.edDeadline != null || (n("edApplicants") ?? 0) > 0 || (n("edAdmitted") ?? 0) > 0)) {
+      ctx.addIssue({ code: "custom", path: ["earlyDecision"], message: "early decision details reported without an early decision plan" });
+    }
+    if (v.earlyAction === false && (v.eaDeadline != null || v.eaRestrictive === true)) {
+      ctx.addIssue({ code: "custom", path: ["earlyAction"], message: "early action details reported without an early action plan" });
+    }
+    const degrees = (v.degreesByField ?? {}) as Record<string, number>;
+    const total = Object.values(degrees).reduce((a, b) => a + b, 0);
+    if (total > 101) ctx.addIssue({ code: "custom", path: ["degreesByField"], message: "degree shares add up to more than 100%" });
   });
 
 export type CdsData = { [key: string]: unknown } & {

@@ -13,7 +13,8 @@
     "retention:run": "tsx --conditions=react-server scripts/retention.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "cds:import": "tsx --conditions=react-server scripts/import-cds.ts"
   },
   "license": "UNLICENSED",
   "dependencies": {

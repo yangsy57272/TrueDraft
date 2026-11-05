@@ -332,11 +332,18 @@ export const cdsDataset = pgTable(
       .references(() => school.id, { onDelete: "cascade" }),
     academicYear: text("academic_year").notNull(), // e.g. "2025-2026"
     sourceUrl: text("source_url").notNull(),
+    /** Where in the document the values come from, e.g. "Sections B, C, G, H, I (pp. 3–30)". */
+    sourcePageRef: text("source_page_ref"),
+    /** Set when the official document is hosted off the institution's domain (reviewed exception). */
+    sourceDomainException: boolean("source_domain_exception").notNull().default(false),
+    sourceExceptionReason: text("source_exception_reason"),
     data: jsonb("data").$type<Record<string, unknown>>().notNull().default({}),
     /** draft | verified */
     verificationStatus: text("verification_status").notNull().default("draft"),
     verifiedAt: timestamp("verified_at", { withTimezone: true }),
     verifiedBy: text("verified_by").references(() => user.id, { onDelete: "set null" }),
+    /** How values were checked, e.g. "admin-manual" or "import-script: parsed + line-by-line review". */
+    verificationMethod: text("verification_method"),
     notes: text("notes"),
     published: boolean("published").notNull().default(false),
     createdAt: createdAt(),

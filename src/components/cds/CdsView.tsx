@@ -132,11 +132,11 @@ export function CdsView({ data, t, locale, tests }: { data: CdsData; t: Translat
           <p className="mt-3 text-sm text-ink-faint">{nr}</p>
         ) : (
           <div className="mt-4 grid gap-6 md:grid-cols-2">
-            {[true, false].map((academic) => (
+            {[true, false].filter((academic) => C7_FACTORS.some((f) => C7_ACADEMIC.has(f) === academic && c7[f])).map((academic) => (
               <div key={String(academic)}>
                 <h4 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">{academic ? t("c7.academic") : t("c7.nonAcademic")}</h4>
                 <dl className="mt-2">
-                  {C7_FACTORS.filter((f) => C7_ACADEMIC.has(f) === academic).map((f) => {
+                  {C7_FACTORS.filter((f) => C7_ACADEMIC.has(f) === academic && c7[f]).map((f) => {
                     const level = c7[f];
                     const style = level ? LEVEL_STYLE[level] : null;
                     return (
@@ -160,6 +160,9 @@ export function CdsView({ data, t, locale, tests }: { data: CdsData; t: Translat
             ))}
           </div>
         )}
+        {Object.keys(c7).length > 0 && C7_FACTORS.some((f) => !c7[f]) ? (
+          <p className="mt-3 text-xs text-ink-faint">{t("c7.unreported", { count: C7_FACTORS.filter((f) => !c7[f]).length })}</p>
+        ) : null}
       </section>
 
       <Block title={t("schools.school.deadlines")}>

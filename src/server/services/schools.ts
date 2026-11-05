@@ -34,6 +34,9 @@ export type PublicDataset = {
   id: string;
   academicYear: string;
   sourceUrl: string;
+  sourcePageRef: string | null;
+  sourceExceptionReason: string | null;
+  verificationMethod: string | null;
   data: CdsData;
   derived: ReturnType<typeof derived>;
   verifiedAt: Date | null;
@@ -41,7 +44,17 @@ export type PublicDataset = {
 
 function toPublic(d: CdsDataset): PublicDataset {
   const data = d.data as CdsData;
-  return { id: d.id, academicYear: d.academicYear, sourceUrl: d.sourceUrl, data, derived: derived(data), verifiedAt: d.verifiedAt };
+  return {
+    id: d.id,
+    academicYear: d.academicYear,
+    sourceUrl: d.sourceUrl,
+    sourcePageRef: d.sourcePageRef,
+    sourceExceptionReason: d.sourceDomainException ? d.sourceExceptionReason : null,
+    verificationMethod: d.verificationMethod,
+    data,
+    derived: derived(data),
+    verifiedAt: d.verifiedAt,
+  };
 }
 
 async function publishedDatasetsFor(schoolIds: string[]) {
@@ -79,45 +92,63 @@ export function usesDataFilters(f: SchoolFilters) {
   return Boolean(f.sizes?.length || f.testPolicy || f.admitRate || f.round || f.intlAid || f.field);
 }
 
+/**
+ * Three outcomes per school: it matches, it doesn't, or it can't be assessed because the data a
+ * filter needs hasn't been verified for it. Unassessable schools are returned separately so
+ * students never mistake "no data" for "doesn't match".
+ */
+export type FilterKey = "size" | "testPolicy" | "admitRate" | "round" | "intlAid" | "field";
+
 export async function searchSchools(filters: SchoolFilters) {
   const schools = await db.select().from(school).where(eq(school.published, true)).orderBy(asc(school.name));
   const datasets = await publishedDatasetsFor(schools.map((s) => s.id));
   const q = filters.q?.trim().toLowerCase();
-  const needsData = usesDataFilters(filters);
-  let hiddenForMissingData = 0;
+  const regions = (filters.regions ?? []).filter((r) => (REGIONS as readonly string[]).includes(r));
+  const results: { school: School; latest: PublicDataset | null }[] = [];
+  const unassessable: { school: School; latest: PublicDataset | null; missing: FilterKey[] }[] = [];
 
-  const results = schools
-    .map((s) => ({ school: s, latest: datasets.get(s.id)?.[0] ?? null }))
-    .filter(({ school: s, latest }) => {
-      if (q && !`${s.name} ${s.nameZh ?? ""} ${s.city ?? ""}`.toLowerCase().includes(q)) return false;
-      const regions = (filters.regions ?? []).filter((r) => (REGIONS as readonly string[]).includes(r));
-      if (regions.length && !regions.includes(STATE_REGIONS[s.state ?? ""] ?? "")) return false;
-      if (filters.control && s.control !== filters.control) return false;
-      if (!needsData) return true;
-      if (!latest) {
-        hiddenForMissingData += 1;
-        return false;
-      }
-      const d = latest.data;
-      if (filters.sizes?.length && !filters.sizes.includes(sizeBand(num(d, "undergradTotal")) ?? "")) return false;
-      if (filters.testPolicy && (TEST_POLICIES as readonly string[]).includes(filters.testPolicy) && d.testPolicy !== filters.testPolicy) return false;
-      if (filters.admitRate && ADMIT_BANDS[filters.admitRate]) {
-        const rate = latest.derived.admitRate;
-        const [lo, hi] = ADMIT_BANDS[filters.admitRate];
-        if (rate == null || rate < lo || rate >= hi) return false;
-      }
-      if (filters.round === "ed" && d.earlyDecision !== true) return false;
-      if (filters.round === "ea" && d.earlyAction !== true) return false;
-      if (filters.intlAid === "need" && d.intlAidNeedBased !== true) return false;
-      if (filters.intlAid === "any" && d.intlAidNeedBased !== true && d.intlAidNonNeed !== true) return false;
-      if (filters.field && CIP_CODES.includes(filters.field)) {
-        const share = d.degreesByField?.[filters.field];
-        if (share == null || share <= 0) return false;
-      }
-      return true;
-    });
+  for (const s of schools) {
+    const latest = datasets.get(s.id)?.[0] ?? null;
+    if (q && !`${s.name} ${s.nameZh ?? ""} ${s.city ?? ""}`.toLowerCase().includes(q)) continue;
+    if (regions.length && !regions.includes(STATE_REGIONS[s.state ?? ""] ?? "")) continue;
+    if (filters.control && s.control !== filters.control) continue;
 
-  return { results, hiddenForMissingData, total: schools.length };
+    const d = (latest?.data ?? {}) as CdsData;
+    // Each check returns true (match), false (no match), or null (can't tell from verified data).
+    const checks: [FilterKey, boolean | null][] = [];
+    if (filters.sizes?.length) {
+      const band = sizeBand(num(d, "undergradTotal"));
+      checks.push(["size", band == null ? null : filters.sizes.includes(band)]);
+    }
+    if (filters.testPolicy && (TEST_POLICIES as readonly string[]).includes(filters.testPolicy)) {
+      checks.push(["testPolicy", d.testPolicy == null ? null : d.testPolicy === filters.testPolicy]);
+    }
+    if (filters.admitRate && ADMIT_BANDS[filters.admitRate]) {
+      const rate = latest?.derived.admitRate ?? null;
+      const [lo, hi] = ADMIT_BANDS[filters.admitRate];
+      checks.push(["admitRate", rate == null ? null : rate >= lo && rate < hi]);
+    }
+    if (filters.round === "ed") checks.push(["round", typeof d.earlyDecision === "boolean" ? d.earlyDecision : null]);
+    if (filters.round === "ea") checks.push(["round", typeof d.earlyAction === "boolean" ? d.earlyAction : null]);
+    if (filters.intlAid) {
+      const need = d.intlAidNeedBased;
+      const merit = d.intlAidNonNeed;
+      if (filters.intlAid === "need") checks.push(["intlAid", typeof need === "boolean" ? need : d.intlAidNotAvailable === true ? false : null]);
+      else checks.push(["intlAid", need === true || merit === true ? true : need === false && merit === false ? false : d.intlAidNotAvailable === true ? false : null]);
+    }
+    if (filters.field && CIP_CODES.includes(filters.field)) {
+      const degrees = d.degreesByField;
+      checks.push(["field", !degrees ? null : (degrees[filters.field] ?? 0) > 0]);
+    }
+
+    if (checks.some(([, c]) => c === false)) continue;
+    const missing = checks.filter(([, c]) => c === null).map(([k]) => k);
+    if (missing.length) unassessable.push({ school: s, latest, missing });
+    else results.push({ school: s, latest });
+  }
+
+  const withData = schools.filter((s) => datasets.has(s.id)).length;
+  return { results, unassessable, hiddenForMissingData: unassessable.length, total: schools.length, withData };
 }
 
 export async function getSchoolBySlug(slug: string) {
@@ -202,6 +233,10 @@ export async function adminDeleteSchool(adminId: string, id: string) {
 export type DatasetInput = {
   academicYear: string;
   sourceUrl: string;
+  sourcePageRef?: string | null;
+  sourceDomainException?: boolean;
+  sourceExceptionReason?: string | null;
+  verificationMethod?: string | null;
   data: unknown;
   verificationStatus: "draft" | "verified";
   published: boolean;
@@ -218,9 +253,36 @@ export function validateCdsData(data: unknown): CdsData {
   return Object.fromEntries(Object.entries(parsed.data).filter(([, v]) => v !== null && v !== undefined)) as unknown as CdsData;
 }
 
+/** "oira.harvard.edu" -> "harvard.edu" (good enough for .edu and most institutional hosts). */
+export function baseDomain(url: string | null | undefined) {
+  if (!url) return null;
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    const parts = host.split(".");
+    return parts.slice(-2).join(".");
+  } catch {
+    return null;
+  }
+}
+
+/** True when the source document is on the institution's own website domain. */
+export function isInstitutionalSource(sourceUrl: string, s: Pick<School, "website" | "cdsPageUrl">) {
+  const src = baseDomain(sourceUrl);
+  return Boolean(src && (src === baseDomain(s.website) || src === baseDomain(s.cdsPageUrl)));
+}
+
 export async function adminUpsertDataset(adminId: string, schoolId: string, datasetId: string | null, input: DatasetInput) {
-  if (!/^\d{4}-\d{4}$/.test(input.academicYear)) throw new ApiError(400, "validation_failed", { field: "academicYear", reason: "format" });
+  const yearMatch = /^(\d{4})-(\d{4})$/.exec(input.academicYear);
+  if (!yearMatch || Number(yearMatch[2]) !== Number(yearMatch[1]) + 1) {
+    throw new ApiError(400, "validation_failed", { field: "academicYear", reason: "format" });
+  }
   if (!/^https:\/\//.test(input.sourceUrl)) throw new ApiError(400, "source_url_required");
+  const [owner] = await db.select().from(school).where(eq(school.id, schoolId)).limit(1);
+  if (!owner) throw new ApiError(404, "not_found");
+  if (!isInstitutionalSource(input.sourceUrl, owner)) {
+    if (!input.sourceDomainException) throw new ApiError(400, "source_not_institutional");
+    if ((input.sourceExceptionReason ?? "").trim().length < 10) throw new ApiError(400, "source_exception_reason_required");
+  }
   if (input.published && input.verificationStatus !== "verified") throw new ApiError(400, "must_verify_before_publish");
   const data = validateCdsData(input.data);
   const verified = input.verificationStatus === "verified";
@@ -228,10 +290,14 @@ export async function adminUpsertDataset(adminId: string, schoolId: string, data
     schoolId,
     academicYear: input.academicYear,
     sourceUrl: input.sourceUrl,
+    sourcePageRef: input.sourcePageRef?.trim() || null,
+    sourceDomainException: isInstitutionalSource(input.sourceUrl, owner) ? false : Boolean(input.sourceDomainException),
+    sourceExceptionReason: isInstitutionalSource(input.sourceUrl, owner) ? null : input.sourceExceptionReason?.trim() || null,
     data,
     verificationStatus: input.verificationStatus,
     verifiedAt: verified ? new Date() : null,
     verifiedBy: verified ? adminId : null,
+    verificationMethod: verified ? input.verificationMethod?.trim() || "admin-manual" : null,
     published: input.published,
     notes: input.notes ?? null,
   };
@@ -300,6 +366,8 @@ export function csvColumns() {
     "school_slug",
     "academic_year",
     "source_url",
+    "source_page_ref",
+    "source_exception_reason",
     ...CDS_FIELDS.map((f) => f.key),
     ...C7_FACTORS.map((f) => `c7_${f}`),
     ...CIP_CODES.map((c) => `j1_${c}`),
@@ -360,6 +428,9 @@ export async function adminImportCsv(adminId: string, csvText: string) {
       await adminUpsertDataset(adminId, s.id, existing?.id ?? null, {
         academicYear: cells.academic_year?.trim() ?? "",
         sourceUrl: cells.source_url?.trim() ?? "",
+        sourcePageRef: cells.source_page_ref?.trim() || null,
+        sourceDomainException: Boolean(cells.source_exception_reason?.trim()),
+        sourceExceptionReason: cells.source_exception_reason?.trim() || null,
         data,
         verificationStatus: "draft",
         published: false,

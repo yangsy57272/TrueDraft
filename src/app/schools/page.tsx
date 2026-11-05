@@ -3,7 +3,17 @@ import type { Metadata } from "next";
 import { getT } from "@/i18n/server";
 import { CIP_CODES, CIP_FAMILIES, REGIONS, SIZE_PREFS, TEST_POLICIES } from "@/lib/planning";
 import { getCurrentUser } from "@/server/session";
-import { searchSchools, type SchoolFilters } from "@/server/services/schools";
+import { searchSchools, type FilterKey, type PublicDataset, type SchoolFilters } from "@/server/services/schools";
+import type { School } from "@/db/schema";
+
+const MISSING_LABEL = {
+  size: "schools.size",
+  testPolicy: "schools.testPolicy",
+  admitRate: "schools.admitRate",
+  round: "schools.round",
+  intlAid: "schools.intlAid",
+  field: "schools.fieldShort",
+} as const;
 import { listedSchoolIds } from "@/server/services/college-list";
 import { getProfile } from "@/server/services/profile";
 import { AddToListButton, CompareBar, CompareProvider, CompareToggle } from "@/components/cds/SchoolClientBits";
@@ -32,7 +42,8 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
     intlAid: one(sp.intlAid),
     field: one(sp.field),
   };
-  const { results, hiddenForMissingData } = await searchSchools(filters);
+  const { results, unassessable, total, withData } = await searchSchools(filters);
+  const anyCdsFilter = Boolean(filters.sizes?.length || filters.testPolicy || filters.admitRate || filters.round || filters.intlAid || filters.field);
   const listed = user ? await listedSchoolIds(user.id) : new Set<string>();
   let prefsHref: string | null = null;
   if (user) {
@@ -52,6 +63,50 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
         {options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
       </select>
     </div>
+  );
+
+  const card = ({ school: s, latest, missing }: { school: School; latest: PublicDataset | null; missing?: FilterKey[] }) => (
+      <li key={s.id} className="card flex flex-col p-5">
+        <h2 className="text-lg font-semibold">
+          <Link href={`/schools/${s.slug}`} className="text-ink">{zh && s.nameZh ? s.nameZh : s.name}</Link>
+        </h2>
+        <p className="text-sm text-ink-soft">
+          {zh && s.nameZh ? `${s.name} · ` : ""}
+          {[s.city, s.state].filter(Boolean).join(", ")}
+          {s.control ? ` · ${t(`schools.controls.${s.control}` as never)}` : ""}
+        </p>
+        <div className="mt-3 flex-1 text-sm">
+          {latest ? (
+            <dl className="grid grid-cols-2 gap-x-3 gap-y-1">
+              <dt className="text-ink-soft">{t("cdsFields.admitRate")}</dt>
+              <dd className="text-right font-semibold">{latest.derived.admitRate != null ? `${latest.derived.admitRate}%` : t("schools.notReported")}</dd>
+              <dt className="text-ink-soft">{t("cdsFields.testPolicy")}</dt>
+              <dd className="text-right font-semibold">{latest.data.testPolicy ? t(`testPolicies.${latest.data.testPolicy}` as never) : t("schools.notReported")}</dd>
+              <dt className="text-ink-soft">{t("cdsFields.undergradTotal")}</dt>
+              <dd className="text-right font-semibold">{typeof latest.data.undergradTotal === "number" ? latest.data.undergradTotal.toLocaleString() : t("schools.notReported")}</dd>
+              <dt className="col-span-2 mt-1 text-xs text-ink-faint">{t("schools.dataYear", { year: latest.academicYear })}</dt>
+            </dl>
+          ) : (
+            <p><span className="badge badge-neutral">{t("schools.noData")}</span></p>
+          )}
+        </div>
+        {missing?.length ? (
+          <p className="mt-3 text-xs text-ink-soft">
+            {t("schools.missingFor", { filters: missing.map((k) => t(MISSING_LABEL[k])).join(zh ? "、" : ", ") })}
+          </p>
+        ) : null}
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <Link href={`/schools/${s.slug}`} className="btn btn-primary btn-sm">{t("schools.view")}</Link>
+          <AddToListButton schoolId={s.id} onList={listed.has(s.id)} signedIn={Boolean(user)} />
+          <CompareToggle schoolId={s.id} name={s.name} />
+        </div>
+        {s.cdsPageUrl ? (
+          <a href={s.cdsPageUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-sm">
+            {t("schools.officialCds")} <span className="sr-only">{t("schools.opensNewTab")}</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        ) : null}
+      </li>
   );
 
   return (
@@ -99,7 +154,10 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
             </div>
             {sel("round", t("schools.round"), filters.round, [["ed", t("schools.rounds.ed")], ["ea", t("schools.rounds.ea")]])}
             {sel("intlAid", t("schools.intlAid"), filters.intlAid, [["need", t("schools.intlAids.need")], ["any", t("schools.intlAids.any")]])}
-            {sel("field", t("schools.field"), filters.field, CIP_CODES.map((c) => [c, CIP_FAMILIES[c][zh ? "zh" : "en"]]))}
+            <div>
+              {sel("field", t("schools.field"), filters.field, CIP_CODES.map((c) => [c, CIP_FAMILIES[c][zh ? "zh" : "en"]]))}
+              <p className="mt-1 text-xs text-ink-soft">{t("schools.fieldHelp")}</p>
+            </div>
           </div>
         </details>
         <div className="mt-4 flex flex-wrap gap-2">
@@ -114,48 +172,20 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
           <p className="font-semibold" role="status">{results.length === 1 ? t("schools.resultsOne") : t("schools.results", { count: results.length })}</p>
           <CompareBar />
         </div>
-        {hiddenForMissingData ? <p className="notice mt-3 text-sm">{t("schools.hiddenNote", { count: hiddenForMissingData })}</p> : null}
-        {results.length === 0 ? <p className="notice mt-4">{t("schools.noResults")}</p> : null}
+        <p className="mt-2 text-sm text-ink-soft">{t("schools.coverage", { withData, total })}</p>
+        {results.length === 0 ? <p className="notice mt-4">{anyCdsFilter && unassessable.length ? t("schools.noConfirmedMatches") : t("schools.noResults")}</p> : null}
         <ul className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {results.map(({ school: s, latest }) => (
-            <li key={s.id} className="card flex flex-col p-5">
-              <h2 className="text-lg font-semibold">
-                <Link href={`/schools/${s.slug}`} className="text-ink">{zh && s.nameZh ? s.nameZh : s.name}</Link>
-              </h2>
-              <p className="text-sm text-ink-soft">
-                {zh && s.nameZh ? `${s.name} · ` : ""}
-                {[s.city, s.state].filter(Boolean).join(", ")}
-                {s.control ? ` · ${t(`schools.controls.${s.control}` as never)}` : ""}
-              </p>
-              <div className="mt-3 flex-1 text-sm">
-                {latest ? (
-                  <dl className="grid grid-cols-2 gap-x-3 gap-y-1">
-                    <dt className="text-ink-soft">{t("cdsFields.admitRate")}</dt>
-                    <dd className="text-right font-semibold">{latest.derived.admitRate != null ? `${latest.derived.admitRate}%` : t("schools.notReported")}</dd>
-                    <dt className="text-ink-soft">{t("cdsFields.testPolicy")}</dt>
-                    <dd className="text-right font-semibold">{latest.data.testPolicy ? t(`testPolicies.${latest.data.testPolicy}` as never) : t("schools.notReported")}</dd>
-                    <dt className="text-ink-soft">{t("cdsFields.undergradTotal")}</dt>
-                    <dd className="text-right font-semibold">{typeof latest.data.undergradTotal === "number" ? latest.data.undergradTotal.toLocaleString() : t("schools.notReported")}</dd>
-                    <dt className="col-span-2 mt-1 text-xs text-ink-faint">{t("schools.dataYear", { year: latest.academicYear })}</dt>
-                  </dl>
-                ) : (
-                  <p><span className="badge badge-neutral">{t("schools.noData")}</span></p>
-                )}
-              </div>
-              <div className="mt-4 flex flex-wrap items-center gap-2">
-                <Link href={`/schools/${s.slug}`} className="btn btn-primary btn-sm">{t("schools.view")}</Link>
-                <AddToListButton schoolId={s.id} onList={listed.has(s.id)} signedIn={Boolean(user)} />
-                <CompareToggle schoolId={s.id} name={s.name} />
-              </div>
-              {s.cdsPageUrl ? (
-                <a href={s.cdsPageUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-sm">
-                  {t("schools.officialCds")} <span className="sr-only">{t("schools.opensNewTab")}</span>
-                  <span aria-hidden="true">↗</span>
-                </a>
-              ) : null}
-            </li>
-          ))}
+          {results.map((r) => card(r))}
         </ul>
+        {unassessable.length ? (
+          <section className="mt-10" aria-labelledby="unassessable-h">
+            <h2 id="unassessable-h" className="text-xl font-semibold">{t("schools.unassessableTitle", { count: unassessable.length })}</h2>
+            <p className="mt-1 max-w-3xl text-sm text-ink-soft">{t("schools.unassessableNote")}</p>
+            <ul className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {unassessable.map((r) => card(r))}
+            </ul>
+          </section>
+        ) : null}
       </CompareProvider>
     </div>
   );

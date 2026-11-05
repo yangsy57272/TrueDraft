@@ -17,7 +17,18 @@ export default async function AdminDatasetPage({ params, searchParams }: { param
   const { school: schoolParam } = await searchParams;
   const { t } = await getT();
   let schoolId: string;
-  let initial = { academicYear: "", sourceUrl: "", data: {} as Record<string, unknown>, verificationStatus: "draft" as "draft" | "verified", published: false, notes: "" };
+  let initial = {
+    academicYear: "",
+    sourceUrl: "",
+    sourcePageRef: "",
+    sourceDomainException: false,
+    sourceExceptionReason: "",
+    verificationMethod: "",
+    data: {} as Record<string, unknown>,
+    verificationStatus: "draft" as "draft" | "verified",
+    published: false,
+    notes: "",
+  };
   if (id === "new") {
     if (!schoolParam || !isUuid(schoolParam)) notFound();
     schoolId = schoolParam;
@@ -29,6 +40,10 @@ export default async function AdminDatasetPage({ params, searchParams }: { param
     initial = {
       academicYear: row.academicYear,
       sourceUrl: row.sourceUrl,
+      sourcePageRef: row.sourcePageRef ?? "",
+      sourceDomainException: row.sourceDomainException,
+      sourceExceptionReason: row.sourceExceptionReason ?? "",
+      verificationMethod: row.verificationMethod ?? "",
       data: row.data,
       verificationStatus: row.verificationStatus === "verified" ? "verified" : "draft",
       published: row.published,

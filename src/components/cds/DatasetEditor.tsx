@@ -12,6 +12,10 @@ type Values = Record<string, string>; // form state as strings; converted on sav
 type Initial = {
   academicYear: string;
   sourceUrl: string;
+  sourcePageRef: string;
+  sourceDomainException: boolean;
+  sourceExceptionReason: string;
+  verificationMethod: string;
   data: Record<string, unknown>;
   verificationStatus: "draft" | "verified";
   published: boolean;
@@ -54,7 +58,17 @@ export function DatasetEditor({ schoolId, datasetId, initial }: { schoolId: stri
   const { t } = useI18n();
   const router = useRouter();
   const notify = useToast();
-  const [meta, setMeta] = useState({ academicYear: initial.academicYear, sourceUrl: initial.sourceUrl, verificationStatus: initial.verificationStatus, published: initial.published, notes: initial.notes });
+  const [meta, setMeta] = useState({
+    academicYear: initial.academicYear,
+    sourceUrl: initial.sourceUrl,
+    sourcePageRef: initial.sourcePageRef,
+    sourceDomainException: initial.sourceDomainException,
+    sourceExceptionReason: initial.sourceExceptionReason,
+    verificationMethod: initial.verificationMethod,
+    verificationStatus: initial.verificationStatus,
+    published: initial.published,
+    notes: initial.notes,
+  });
   const [values, setValues] = useState<Values>(toForm(initial.data));
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -156,7 +170,25 @@ export function DatasetEditor({ schoolId, datasetId, initial }: { schoolId: stri
             <label htmlFor="ds-src" className="field-label">{t("adminSchools.fields.sourceUrl")}</label>
             <input id="ds-src" className="input" value={meta.sourceUrl} onChange={(e) => setMeta({ ...meta, sourceUrl: e.target.value })} />
           </div>
+          <div>
+            <label htmlFor="ds-ref" className="field-label">{t("adminSchools.fields.sourcePageRef")}</label>
+            <input id="ds-ref" className="input" maxLength={200} value={meta.sourcePageRef} onChange={(e) => setMeta({ ...meta, sourcePageRef: e.target.value })} />
+          </div>
+          <div>
+            <label htmlFor="ds-method" className="field-label">{t("adminSchools.fields.verificationMethod")}</label>
+            <input id="ds-method" className="input" maxLength={200} value={meta.verificationMethod} onChange={(e) => setMeta({ ...meta, verificationMethod: e.target.value })} />
+          </div>
         </div>
+        <label className="mt-4 flex items-center gap-3">
+          <input type="checkbox" className="h-4 w-4 accent-teal" checked={meta.sourceDomainException} onChange={(e) => setMeta({ ...meta, sourceDomainException: e.target.checked })} />
+          <span className="text-sm font-semibold">{t("adminSchools.fields.sourceException")}</span>
+        </label>
+        {meta.sourceDomainException ? (
+          <div className="mt-2">
+            <label htmlFor="ds-exc" className="field-label text-sm">{t("adminSchools.fields.sourceExceptionReason")}</label>
+            <input id="ds-exc" className="input" maxLength={500} value={meta.sourceExceptionReason} onChange={(e) => setMeta({ ...meta, sourceExceptionReason: e.target.value })} />
+          </div>
+        ) : null}
       </section>
 
       <section className="card p-5">

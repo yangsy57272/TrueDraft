@@ -16,6 +16,10 @@ export const schoolInputSchema = z.object({
 export const datasetInputSchema = z.object({
   academicYear: z.string().trim(),
   sourceUrl: z.string().trim().max(500),
+  sourcePageRef: z.string().trim().max(200).nullish(),
+  sourceDomainException: z.boolean().optional(),
+  sourceExceptionReason: z.string().trim().max(500).nullish(),
+  verificationMethod: z.string().trim().max(200).nullish(),
   data: z.record(z.string(), z.unknown()),
   verificationStatus: z.enum(["draft", "verified"]),
   published: z.boolean(),

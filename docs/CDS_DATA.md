@@ -4,18 +4,59 @@ TrueDraft shows students figures from each college's own **Common Data Set**: th
 
 ## Integrity rules (enforced in code)
 
-1. **Official source only.** Every dataset stores the `https` URL of the college's own CDS document.
+1. **Official source only.** Every dataset stores the `https` URL of the college's own CDS document. The URL must be on the college's own domain (compared with the school's website and CDS page). A file hosted elsewhere, such as a Google Drive link from the college's official CDS page, needs a recorded, reviewed exception and a written reason. Students see that reason. A dataset can also record where in the document the values came from (`sourcePageRef`) and how it was verified (`verificationMethod`).
 2. **Drafts by default.** CSV imports and AI pre-fills create unpublished drafts.
 3. **Verify before publish.** A dataset can be published only after an admin marks it *verified against the official document*. The verifying admin and the date are recorded.
-4. **Nothing estimated.** Missing values are shown as "Not reported". Admission rate, yield, and ED admission rate are computed from the reported counts at display time, never stored or guessed.
-5. **Validation.** Values are type- and range-checked. For example, admitted can't exceed applicants, and a 25th percentile can't be above the 75th. Unknown fields are rejected.
+4. **Nothing estimated.** Missing values are shown as "Not available". The college may not have reported a value, or we may not have captured it. Admission rate, yield, and ED admission rate are computed from the reported counts at display time, never stored or guessed.
+5. **Validation.** Every field has its own allowed range: SAT composite 400–1600, SAT sections 200–800, ACT 1–36, real calendar dates (February 29 is allowed), and so on. Cross-field rules are checked too:
+   - admitted ≤ applicants, and enrolled ≤ admitted
+   - ED admits ≤ ED applicants
+   - international students ≤ undergraduates
+   - 25th ≤ 50th ≤ 75th percentile
+   - waitlist admits ≤ waitlist offers
+   - no ED or EA details without the plan
+   - international aid can't be both "available" and "not available"
+   - degree shares can't total more than 100%
+
+   Academic years must be consecutive, for example `2025-2026`. Unknown fields are rejected.
 6. **No predictions.** The UI never turns CDS figures into admission chances. "Your scores in context" only says whether a student's self-reported score is below, within, or above the reported middle 50%, and is labelled "not a prediction".
 
 ## What ships in this repository
 
 `src/content/schools.ts` seeds **24 schools**: name, Chinese name, city, state, public or private, website, and a link to each school's **own CDS page**. Those links were found by web search on 2026-11-05, with each search restricted to the university's own domain. The build environment couldn't fetch the pages directly, so the links haven't been opened and checked yet (`linkCheckedAt` is empty).
 
-**No admissions numbers are seeded.** Until an admin imports a verified dataset, each school page says "No CDS data imported yet" and links to the official document.
+**No admissions numbers are seeded.** Until a dataset is imported, the school page says "No CDS data imported yet" and links to the official document.
+
+### Imported 2025-2026 data (`data/cds/2025-2026.json`)
+
+`npm run cds:import` loads 14 datasets from that file: Caltech, Columbia, Cornell, Dartmouth, Duke, Emory, Harvard, Rice, Stanford, UChicago, Michigan, USC, WashU, and Yale. Each record includes:
+
+- the URL of the official document;
+- the source line each value was read from (`sourceLines`), so any value can be checked against the document;
+- the method used (`method`).
+
+The importer validates every record with the same rules as the admin form. Re-running it updates the datasets in place.
+
+How the values were produced: the official PDFs were converted with `pdftotext -layout` and read by a field parser. Each value was then checked against its source line. Fields that couldn't be read unambiguously were left out rather than guessed. C7 (admission factors) is included only when at least 17 factors were read, and the school page shows only the factors that were captured. J1 (degrees by field) isn't included in this import. Caltech's PDF uses a font that garbles extraction, so its dataset is partial (no C1 or C7).
+
+**Review status.** The datasets are marked verified with `verifiedBy` empty and `verificationMethod` set to the method above. They were checked by an automated process against the source text, **not by a named human admin**. Before relying on them publicly, an admin should spot-check each school against its PDF and re-save it from the admin page. That records their name and date.
+
+Two reviewed source-domain exceptions are recorded:
+
+- **Stanford:** the file is on Google Drive, linked from irds.stanford.edu's CDS page.
+- **WashU:** the file is on washu.edu, the university's current domain (it was formerly wustl.edu).
+
+Not imported yet (the school page shows the official link instead):
+
+- **Princeton, Johns Hopkins, NYU:** the sites block automated downloads.
+- **Northwestern:** the download failed.
+- **MIT:** publishes its CDS as HTML pages, not a document.
+- **Penn:** the document is on Box.
+- **Brown, Berkeley:** no document link was found.
+- **Carnegie Mellon:** only a partial 2026-27 edition is available.
+- **Vanderbilt:** its spreadsheet couldn't be read reliably.
+
+These can be added by hand or through the CSV import.
 
 The `/cds` guide includes a worked example for "Northfield College". Both the college and its numbers are **fictional**, and the page labels them as such.
 

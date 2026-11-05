@@ -85,6 +85,14 @@ describe("CDS administration", () => {
     const filtered = await searchSchools({ admitRate: "10to25", testPolicy: "considered", round: "ed", intlAid: "need", field: "11" });
     expect(filtered.results.map((r) => r.school.slug)).toEqual(["example-college"]);
     expect(filtered.hiddenForMissingData).toBe(1);
+    expect(filtered.unassessable.map((r) => r.school.slug)).toEqual(["no-data-u"]);
+    expect(filtered.unassessable[0].missing).toEqual(expect.arrayContaining(["admitRate", "testPolicy", "round", "intlAid", "field"]));
+    expect(filtered.total).toBe(2);
+    expect(filtered.withData).toBe(1);
+    // A definite mismatch excludes; missing data never counts as a match.
+    const mismatch = await searchSchools({ testPolicy: "required" });
+    expect(mismatch.results).toHaveLength(0);
+    expect(mismatch.unassessable.map((r) => r.school.slug)).toEqual(["no-data-u"]);
     expect((await searchSchools({ admitRate: "under10" })).results).toHaveLength(0);
     expect((await searchSchools({ regions: ["west"] })).results.map((r) => r.school.slug)).toEqual(["no-data-u"]);
     expect((await searchSchools({ q: "example" })).results).toHaveLength(1);
@@ -150,3 +158,52 @@ async function consentFor() {
   // The extraction tool is an admin data tool on public documents; it doesn't need student consent.
   return Promise.resolve();
 }
+
+describe("CDS validation (field-specific ranges and relationships)", () => {
+  const post = (data: Record<string, unknown>, extra: Record<string, unknown> = {}) =>
+    createDataset(req("POST", "/x", { cookie: admin.cookie, body: dataset({ data, ...extra }) }), ctx({ id: schoolId }));
+  const code = async (res: Response) => (await json(res)).error?.code;
+
+  it.each([
+    ["SAT percentiles of 99,999 and 100,000", { satComposite25: 99999, satComposite75: 100000 }],
+    ["ED admits above ED applicants", { edApplicants: 100, edAdmitted: 200 }],
+    ["a regular deadline of February 31", { regularDeadline: "02-31" }],
+    ["international students above total undergraduates", { undergradTotal: 100, intlUndergrads: 101 }],
+    ["SAT 50th below 25th", { satComposite25: 1400, satComposite50: 1300, satComposite75: 1500 }],
+    ["ACT above 36", { actComposite75: 37 }],
+    ["SAT section above 800", { satMath75: 810 }],
+    ["aid both available and not available", { intlAidNeedBased: true, intlAidNotAvailable: true }],
+    ["aid recipients while aid is not available", { intlAidNotAvailable: true, intlAidRecipients: 5 }],
+    ["ED details without an ED plan", { earlyDecision: false, edApplicants: 10 }],
+    ["waitlist admits above offers", { waitlistOffered: 10, waitlistAdmitted: 11 }],
+    ["degree shares above 100% in total", { degreesByField: { "11": 70, "14": 60 } }],
+  ])("rejects %s", async (_label, data) => {
+    expect(await code(await post(data))).toBe("invalid_cds_data");
+  });
+
+  it("accepts February 29 and a consistent dataset", async () => {
+    expect((await post({ regularDeadline: "02-29", satComposite25: 1400, satComposite50: 1450, satComposite75: 1500 })).status).toBe(201);
+  });
+
+  it("rejects academic years that are not consecutive", async () => {
+    expect((await post({}, { academicYear: "2025-2027" })).status).toBe(400);
+  });
+
+  it("requires the source document to be on the institution's domain unless a reviewed exception is recorded", async () => {
+    const off = await post({}, { sourceUrl: "https://drive.google.com/file/d/abc" });
+    expect(await code(off)).toBe("source_not_institutional");
+    const noReason = await post({}, { sourceUrl: "https://drive.google.com/file/d/abc", sourceDomainException: true, sourceExceptionReason: "x" });
+    expect(await code(noReason)).toBe("source_exception_reason_required");
+    const ok = await post({}, {
+      sourceUrl: "https://drive.google.com/file/d/abc",
+      sourceDomainException: true,
+      sourceExceptionReason: "Linked from example.edu's official CDS page",
+      sourcePageRef: "Sections B–J",
+    });
+    expect(ok.status).toBe(201);
+    const shown = (await getSchoolBySlug("example-college"))!.datasets[0];
+    expect(shown.sourceExceptionReason).toContain("official CDS page");
+    expect(shown.sourcePageRef).toBe("Sections B–J");
+    expect(shown.verificationMethod).toBe("admin-manual");
+  });
+});

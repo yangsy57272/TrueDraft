@@ -807,6 +807,8 @@ const zhCN: Messages = {
     csv_empty: "CSV 中没有数据行。",
     csv_unknown_columns: "CSV 中有无法识别的列。",
     unknown_school: "未知的学校标识。",
+    source_not_institutional: "来源必须位于学校自己的网站上。如果学校把官方 CDS 放在其他网站，请记录经过核查的例外及原因。",
+    source_exception_reason_required: "请说明为什么这份站外文件是学校的官方 CDS（至少 10 个字符）。",
     notFoundTitle: "页面不存在",
     notFoundBody: "你要找的页面不存在，或者你没有访问权限。",
     goHome: "返回首页",

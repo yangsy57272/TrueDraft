@@ -34,15 +34,18 @@ test("journey: profile → majors → schools → list → linked supplemental e
 
   // Schools directory: official links, no invented numbers
   await page.goto("/schools");
-  await expect(page.getByText("24 schools")).toBeVisible();
+  await expect(page.getByText("24 schools", { exact: true })).toBeVisible();
+  await expect(page.getByText(/Verified CDS data is available for \d+ of 24 schools/)).toBeVisible();
   await expect(page.getByText("CDS data not yet imported").first()).toBeVisible();
   const harvard = page.locator("li", { has: page.getByRole("link", { name: "Harvard University" }) });
   await expect(harvard.getByRole("link", { name: /Official CDS page/ })).toHaveAttribute("href", "https://oira.harvard.edu/common-data-set/");
   await harvard.getByRole("button", { name: "+ Add to my list" }).click();
   await expect(harvard.getByText("On my list")).toBeVisible();
 
-  // School page
+  // School pages: imported data is shown with its source; schools without it say so plainly.
   await page.goto("/schools/harvard-university");
+  await expect(page.getByRole("link", { name: /Open the official document/ }).first()).toHaveAttribute("href", /harvard\.edu/);
+  await page.goto("/schools/princeton-university");
   await expect(page.getByRole("heading", { name: "No CDS data imported yet" })).toBeVisible();
 
   // My list: set category/round/deadline, toggle checklist, start a linked essay
@@ -77,7 +80,7 @@ test("admin enters verified CDS data and students see it with its source", async
   await admin.getByRole("link", { name: "Rice University" }).click();
   await admin.getByRole("link", { name: "+ New dataset" }).click();
   await admin.getByLabel("Academic year (e.g. 2025-2026)").fill("2099-2100");
-  await admin.getByLabel(/Source document URL/).fill("https://example.edu/fictional-test-cds.pdf");
+  await admin.getByLabel(/Source document URL/).fill("https://ideas.rice.edu/fictional-e2e-test-cds.pdf");
   await admin.getByLabel(/First-year applicants/).fill("1000");
   await admin.getByLabel(/^Admitted\s*C1/).fill("100");
   await admin.getByLabel("Application essay").selectOption("very_important");
@@ -95,7 +98,8 @@ test("admin enters verified CDS data and students see it with its source", async
   // Clean up the test dataset so it never lingers on a shared database.
   await admin.goto("/admin/schools");
   await admin.getByRole("link", { name: "Rice University" }).click();
-  await admin.getByRole("button", { name: "Delete" }).last().click();
+  // Scope to the fictional year's row so a real dataset can never be the one deleted.
+  await admin.locator("li", { hasText: "2099-2100" }).getByRole("button", { name: "Delete" }).click();
   await admin.getByRole("dialog").getByRole("button", { name: "Delete" }).click();
 });
 
@@ -106,7 +110,7 @@ test("CDS guide shows a clearly fictional worked example", async ({ page }) => {
   await expect(page.getByText(/every number below are fictional/)).toBeVisible();
 });
 
-for (const path of ["/cds", "/schools", "/schools/harvard-university", "/schools/compare?ids="]) {
+for (const path of ["/cds", "/schools", "/schools/harvard-university", "/schools/princeton-university", "/schools/compare?ids="]) {
   test(`no serious accessibility violations on ${path}`, async ({ page }) => {
     await page.goto(path);
     const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();

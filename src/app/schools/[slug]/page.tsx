@@ -69,6 +69,8 @@ export default async function SchoolPage({ params, searchParams }: { params: Pro
                 {t("schools.school.openDocument")} <span className="sr-only">{t("schools.opensNewTab")}</span>↗
               </a>
             </p>
+            {dataset.sourcePageRef ? <p className="mt-1">{t("schools.school.pageRef", { ref: dataset.sourcePageRef })}</p> : null}
+            {dataset.sourceExceptionReason ? <p className="mt-1">{t("schools.school.hostedElsewhere", { reason: dataset.sourceExceptionReason })}</p> : null}
             {dataset.verifiedAt ? <p className="mt-1">{t("schools.school.verified", { date: formatDate(dataset.verifiedAt, locale) })}</p> : null}
             {datasets.length > 1 ? (
               <p className="mt-2">

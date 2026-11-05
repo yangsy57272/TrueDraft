@@ -823,6 +823,8 @@ const en = {
     csv_empty: "The CSV has no data rows.",
     csv_unknown_columns: "The CSV has columns we don't recognize.",
     unknown_school: "Unknown school slug.",
+    source_not_institutional: "The source must be on the college's own website. If the college hosts its official CDS elsewhere, record a reviewed exception with a reason.",
+    source_exception_reason_required: "Explain why this off-site document is the college's official CDS (at least 10 characters).",
     notFoundTitle: "Page not found",
     notFoundBody: "The page you're looking for doesn't exist or you don't have access to it.",
     goHome: "Go to the home page",

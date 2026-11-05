@@ -156,6 +156,18 @@ function payloadFor(schemaName: string, user: string): unknown {
         limitations: `${M} No AI analysis was performed.`,
       };
     case "cv_import":
+      if (user.includes("[[mock:cv-sample]]")) {
+        // Test hook: build items from "Course:", "Activity:" and "Honor:" lines in the pasted text,
+        // plus one honor that is deliberately not in the CV.
+        const cv = user.match(/<cv_text>\n([\s\S]*?)\n<\/cv_text>/)?.[1] ?? "";
+        const take = (label: string) => cv.split("\n").filter((l) => l.startsWith(`${label}:`)).map((l) => l.slice(label.length + 1).trim());
+        return {
+          courses: take("Course").map((name) => ({ name, level: "standard", grade: null, result: null })),
+          activities: take("Activity").map((role) => ({ type: "other", role, organization: "", description: `${M}`, grades: [], hours_per_week: null, weeks_per_year: null })),
+          honors: [...take("Honor").map((title) => ({ title, level: "other", grades: [] })), { title: "Mock Award Not In CV", level: "national", grades: [] }],
+          skipped_notes: [M],
+        };
+      }
       return { courses: [], activities: [], honors: [], skipped_notes: [`${M} Nothing was extracted. Configure an AI provider to import a CV.`] };
     case "cds_extract":
       return {

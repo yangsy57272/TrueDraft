@@ -22,13 +22,7 @@ import { useConsentGate } from "@/components/ai/useConsentGate";
 import { ProgressStages } from "@/components/editor/ProgressStages";
 import { useToast } from "@/components/ui/Toaster";
 import type { WorkspaceAi } from "@/components/editor/types";
-
-type Extracted = {
-  courses: (Omit<Course, "id"> & { id: string; foundInCv: boolean; result?: string | null })[];
-  activities: { id: string; type: Activity["type"]; role: string; organization: string; description: string; grades: number[]; hours_per_week: number | null; weeks_per_year: number | null; foundInCv: boolean }[];
-  honors: (Omit<Honor, "id"> & { id: string; foundInCv: boolean })[];
-  skipped_notes: string[];
-};
+import { CvReview, type Extracted } from "./CvReview";
 
 function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
@@ -115,7 +109,6 @@ export function ProfileEditor({ initial, ai }: { initial: StudentProfile; ai: Wo
   const [cvStage, setCvStage] = useState<string | null>(null);
   const [cvError, setCvError] = useState<string | null>(null);
   const [extracted, setExtracted] = useState<Extracted | null>(null);
-  const [picked, setPicked] = useState<Set<string>>(new Set());
   const [cvMock, setCvMock] = useState(false);
 
   async function runCv() {
@@ -131,44 +124,18 @@ export function ProfileEditor({ initial, ai }: { initial: StudentProfile; ai: Wo
     }
     setCvMock(res.isMock);
     setExtracted(res.result);
-    setPicked(new Set([...res.result.courses, ...res.result.activities, ...res.result.honors].map((x) => x.id)));
   }
 
-  function addPicked() {
-    if (!extracted) return;
-    const courses = extracted.courses.filter((c) => picked.has(c.id)).map((c) => ({ id: newId(), name: c.name, level: c.level, grade: (c.grade as Course["grade"]) ?? null, result: c.result ?? "" }));
-    const activities = extracted.activities
-      .filter((a) => picked.has(a.id))
-      .map((a) => ({ id: newId(), type: a.type, role: a.role, organization: a.organization, description: a.description.slice(0, 150), grades: a.grades, hoursPerWeek: a.hours_per_week, weeksPerYear: a.weeks_per_year }));
-    const honors = extracted.honors.filter((h) => picked.has(h.id)).map((h) => ({ id: newId(), title: h.title, level: h.level, grades: h.grades }));
+  function addReviewed(items: { courses: Course[]; activities: Activity[]; honors: Honor[] }) {
     update({
-      courses: [...p.courses, ...courses].slice(0, 40),
-      activities: [...p.activities, ...activities].slice(0, 20),
-      honors: [...p.honors, ...honors].slice(0, 10),
+      courses: [...p.courses, ...items.courses],
+      activities: [...p.activities, ...items.activities],
+      honors: [...p.honors, ...items.honors],
     });
-    notify(t("profile.cv.added", { count: courses.length + activities.length + honors.length }));
+    notify(t("profile.cv.added", { count: items.courses.length + items.activities.length + items.honors.length }));
     setExtracted(null);
     setCvText("");
   }
-
-  const PickRow = ({ itemId, found, children }: { itemId: string; found: boolean; children: ReactNode }) => (
-    <li className="flex items-start gap-3 rounded-lg border border-line p-3">
-      <input
-        type="checkbox"
-        className="mt-1 h-4 w-4 accent-teal"
-        aria-label={t("profile.cv.add")}
-        checked={picked.has(itemId)}
-        onChange={(e) => {
-          const next = new Set(picked);
-          if (e.target.checked) next.add(itemId);
-          else next.delete(itemId);
-          setPicked(next);
-        }}
-      />
-      <div className="min-w-0 flex-1 text-sm">{children}</div>
-      {!found ? <span className="badge badge-developing">◐ {t("profile.cv.check")}</span> : null}
-    </li>
-  );
 
   return (
     <div className="space-y-6">
@@ -189,43 +156,7 @@ export function ProfileEditor({ initial, ai }: { initial: StudentProfile; ai: Wo
             {!ai.configured ? <p className="mt-2 text-sm text-ink-soft">{t("editor.aiDisabled")}</p> : null}
           </>
         ) : (
-          <div className="mt-4">
-            {cvMock ? <p className="notice notice-warn mb-3 text-sm">{t("feedback.mockBanner")}</p> : null}
-            <h3 className="font-semibold">{t("profile.cv.reviewTitle")}</h3>
-            <p className="mt-1 text-sm text-ink-soft">{t("profile.cv.reviewIntro")}</p>
-            {extracted.courses.length + extracted.activities.length + extracted.honors.length === 0 ? (
-              <p className="mt-3 text-sm">{t("profile.cv.none")}</p>
-            ) : (
-              <ul className="mt-3 space-y-2">
-                {extracted.courses.map((c) => (
-                  <PickRow key={c.id} itemId={c.id} found={c.foundInCv}>
-                    <strong>{t("profile.sections.courses")}:</strong> {c.name} · {t(`profile.levels.${c.level}` as never)}
-                  </PickRow>
-                ))}
-                {extracted.activities.map((a) => (
-                  <PickRow key={a.id} itemId={a.id} found={a.foundInCv}>
-                    <strong>{t(`profile.activityTypes.${a.type}` as never)}:</strong> {a.role}
-                    {a.organization ? `, ${a.organization}` : ""}
-                    <span className="block text-ink-soft">{a.description}</span>
-                  </PickRow>
-                ))}
-                {extracted.honors.map((h) => (
-                  <PickRow key={h.id} itemId={h.id} found={h.foundInCv}>
-                    <strong>{t("profile.sections.honors")}:</strong> {h.title} · {t(`profile.honorLevels.${h.level}` as never)}
-                  </PickRow>
-                ))}
-              </ul>
-            )}
-            {extracted.skipped_notes.length ? (
-              <p className="mt-3 text-xs text-ink-soft">
-                {t("profile.cv.skipped")}: {extracted.skipped_notes.join(" · ")}
-              </p>
-            ) : null}
-            <div className="mt-4 flex flex-wrap gap-2">
-              <button type="button" className="btn btn-primary btn-sm" disabled={picked.size === 0} onClick={addPicked}>{t("profile.cv.add")}</button>
-              <button type="button" className="btn btn-secondary btn-sm" onClick={() => setExtracted(null)}>{t("common.cancel")}</button>
-            </div>
-          </div>
+          <CvReview extracted={extracted} profile={p} isMock={cvMock} onAdd={addReviewed} onCancel={() => setExtracted(null)} />
         )}
         {cvError ? <p className="notice notice-error mt-3 text-sm" role="alert">{cvError}</p> : null}
       </Section>

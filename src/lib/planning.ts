@@ -31,7 +31,8 @@ export const ACTIVITY_TYPES = [
   "work",
   "other",
 ] as const;
-export const HONOR_LEVELS = ["school", "regional", "national", "international"] as const;
+/** "other" covers honors whose level the student (or the CV) doesn't state. */
+export const HONOR_LEVELS = ["school", "regional", "national", "international", "other"] as const;
 export const GRADE_LEVELS = [9, 10, 11, 12] as const;
 export const SIZE_PREFS = ["small", "medium", "large"] as const;
 export const REGIONS = ["northeast", "mid_atlantic", "south", "midwest", "southwest", "west"] as const;
@@ -79,7 +80,7 @@ export const profileSchema = z.object({
   curriculum: z.enum(CURRICULA).default("unset"),
   courses: z.array(courseSchema).max(40).default([]),
   activities: z.array(activitySchema).max(20).default([]),
-  honors: z.array(honorSchema).max(10).default([]),
+  honors: z.array(honorSchema).max(10).default([]), // keep in sync with PROFILE_LIMITS
   tests: z
     .object({
       satTotal: optInt(400, 1600),
@@ -476,4 +477,6 @@ export const listEntryPatchSchema = z
   .strict();
 export type ListEntryPatch = z.infer<typeof listEntryPatchSchema>;
 export const MAX_CHECKLIST_ITEMS = 30;
+/** Profile capacity, shared by validation and the CV-import review. */
+export const PROFILE_LIMITS = { courses: 40, activities: 20, honors: 10 } as const;
 export type ListEntryInput = z.infer<typeof listEntryInputSchema>;

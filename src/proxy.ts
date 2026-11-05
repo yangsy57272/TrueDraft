@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
  * Optimistic redirect for private pages when no session cookie exists. This is only a UX
  * shortcut: every private page and API route still verifies the session on the server.
  */
-const PRIVATE_PREFIXES = ["/dashboard", "/essays", "/settings", "/library", "/admin"];
+const PRIVATE_PREFIXES = ["/dashboard", "/essays", "/settings", "/library", "/admin", "/journey", "/profile", "/majors", "/my-list"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -22,5 +22,15 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/essays/:path*", "/settings/:path*", "/library/:path*", "/admin/:path*"],
+  matcher: [
+    "/dashboard/:path*",
+    "/essays/:path*",
+    "/settings/:path*",
+    "/library/:path*",
+    "/admin/:path*",
+    "/journey/:path*",
+    "/profile/:path*",
+    "/majors/:path*",
+    "/my-list/:path*",
+  ],
 };

@@ -16,7 +16,7 @@ export async function signIn(page: Page, email = uniqueEmail()) {
   await expect.poll(() => existsSync(file), { timeout: 10_000 }).toBe(true);
   const { url } = JSON.parse(readFileSync(file, "utf8"));
   await page.goto(url);
-  await page.waitForURL("**/dashboard");
+  await page.waitForURL("**/journey");
   return email;
 }
 

@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function SignInPage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
-  if (await getCurrentUser()) redirect("/dashboard");
+  if (await getCurrentUser()) redirect("/journey");
   const { t } = await getT();
   const params = await searchParams;
   const showDevHint = process.env.NODE_ENV !== "production" && (process.env.EMAIL_TRANSPORT ?? "console") === "console";

@@ -56,6 +56,26 @@ export default async function HomePage() {
         <p className="mt-4 text-lg text-ink-soft">{t("home.ethicalBody")}</p>
       </section>
 
+      <section className="container-page mb-16" aria-labelledby="journey-title">
+        <div className="card p-6 sm:p-8">
+          <h2 id="journey-title" className="text-2xl font-semibold">{t("journey.homeTitle")}</h2>
+          <p className="mt-2 max-w-3xl text-ink-soft">{t("journey.homeBody")}</p>
+          <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {(["profile", "majors", "cds", "schools", "list", "essays", "track"] as const).map((k, i) => (
+              <li key={k} className="flex gap-3 rounded-lg border border-line bg-paper p-3">
+                <span className="font-serif text-xl text-teal" aria-hidden="true">{i + 1}</span>
+                <span className="text-sm font-semibold">{t(`journey.steps.${k}.title` as never)}</span>
+              </li>
+            ))}
+          </ol>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link href={user ? "/journey" : "/sign-in"} className="btn btn-accent">{t("home.ctaPrimary")}</Link>
+            <Link href="/schools" className="btn btn-secondary">{t("journey.homeCta")}</Link>
+            <Link href="/cds" className="btn btn-ghost">{t("nav.cdsGuide")}</Link>
+          </div>
+        </div>
+      </section>
+
       <section className="container-page" aria-labelledby="steps-title">
         <h2 id="steps-title" className="text-2xl font-semibold">{m.stepsTitle}</h2>
         <ol className="mt-6 grid gap-4 md:grid-cols-3">

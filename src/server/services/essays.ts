@@ -7,6 +7,7 @@ import { countWords } from "@/lib/wordcount";
 import { decryptText, encryptText } from "../crypto";
 import { ApiError } from "../errors";
 import { recordAudit } from "./audit";
+import { assertOwnedEntry } from "./college-list";
 
 /*
  * Every function here takes the acting user's id and scopes all queries by it. A missing or
@@ -26,6 +27,7 @@ export type EssayInput = {
   feedbackLanguage: string;
   focusAreas: string[];
   context?: string | null;
+  listEntryId?: string | null;
 };
 
 export async function assertOwnedEssay(userId: string, essayId: string) {
@@ -39,6 +41,7 @@ export async function assertOwnedEssay(userId: string, essayId: string) {
 }
 
 export async function createEssay(userId: string, input: EssayInput) {
+  if (input.listEntryId) await assertOwnedEntry(userId, input.listEntryId);
   const [{ count }] = await db
     .select({ count: sql<number>`count(*)::int` })
     .from(essay)
@@ -59,6 +62,7 @@ export async function createEssay(userId: string, input: EssayInput) {
         feedbackLanguage: input.feedbackLanguage,
         focusAreas: input.focusAreas,
         encryptedContext: input.context ? encryptText(input.context, "essay_context") : null,
+        listEntryId: input.listEntryId ?? null,
         encryptedDraft: encryptText(input.draft, "essay_draft"),
         draftWordCount: wordCount,
       })
@@ -105,6 +109,7 @@ export async function getEssay(userId: string, essayId: string) {
     applicationType: row.applicationType,
     promptText: row.promptText,
     targetSchool: row.targetSchool,
+    listEntryId: row.listEntryId,
     wordLimit: row.wordLimit,
     status: row.status,
     feedbackLanguage: row.feedbackLanguage,
@@ -131,6 +136,10 @@ export async function updateEssayMeta(userId: string, essayId: string, patch: Es
   if (patch.feedbackLanguage !== undefined) values.feedbackLanguage = patch.feedbackLanguage;
   if (patch.focusAreas !== undefined) values.focusAreas = patch.focusAreas;
   if (patch.status !== undefined) values.status = patch.status;
+  if (patch.listEntryId !== undefined) {
+    if (patch.listEntryId) await assertOwnedEntry(userId, patch.listEntryId);
+    values.listEntryId = patch.listEntryId ?? null;
+  }
   if (patch.context !== undefined) {
     values.encryptedContext = patch.context ? encryptText(patch.context, "essay_context") : null;
   }

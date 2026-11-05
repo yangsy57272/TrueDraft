@@ -1,0 +1,25 @@
+import type { Metadata } from "next";
+import { getT } from "@/i18n/server";
+import { requirePageUser } from "@/server/session";
+import { listEntries } from "@/server/services/college-list";
+import { CollegeList } from "@/components/journey/CollegeList";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getT();
+  return { title: t("list.title"), robots: { index: false } };
+}
+
+export default async function MyListPage() {
+  const user = await requirePageUser();
+  const { t } = await getT();
+  const entries = await listEntries(user.id);
+  return (
+    <div className="container-page py-10">
+      <h1 className="text-3xl font-semibold">{t("list.title")}</h1>
+      <p className="mt-2 max-w-3xl text-ink-soft">{t("list.intro")}</p>
+      <div className="mt-8">
+        <CollegeList entries={entries.map(({ createdAt: _c, updatedAt: _u, ...rest }) => rest)} />
+      </div>
+    </div>
+  );
+}

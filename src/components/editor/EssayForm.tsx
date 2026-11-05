@@ -18,13 +18,24 @@ export type EssayFormValues = {
   feedbackLanguage: FeedbackLanguage;
   focusAreas: FocusArea[];
   context: string;
+  listEntryId: string;
 };
 
 type Mode = { kind: "create" } | { kind: "edit"; essayId: string; onSaved?: () => void };
 
 const MAX = { title: 160, prompt: 4000, context: 2000, draft: 20000 };
 
-export function EssayForm({ initial, mode, defaultLanguage }: { initial?: Partial<EssayFormValues>; mode: Mode; defaultLanguage: FeedbackLanguage }) {
+export function EssayForm({
+  initial,
+  mode,
+  defaultLanguage,
+  listOptions = [],
+}: {
+  initial?: Partial<EssayFormValues>;
+  mode: Mode;
+  defaultLanguage: FeedbackLanguage;
+  listOptions?: { id: string; name: string }[];
+}) {
   const { t } = useI18n();
   const router = useRouter();
   const notify = useToast();
@@ -39,6 +50,7 @@ export function EssayForm({ initial, mode, defaultLanguage }: { initial?: Partia
     feedbackLanguage: defaultLanguage,
     focusAreas: [],
     context: "",
+    listEntryId: "",
     ...initial,
   });
   const [errors, setErrors] = useState<Partial<Record<keyof EssayFormValues, string>>>({});
@@ -82,6 +94,7 @@ export function EssayForm({ initial, mode, defaultLanguage }: { initial?: Partia
       feedbackLanguage: values.feedbackLanguage,
       focusAreas: values.focusAreas,
       context: values.context.trim() || null,
+      listEntryId: values.listEntryId || null,
     };
     if (mode.kind === "create") {
       const res = await apiFetch<{ id: string }>("/api/essays", { method: "POST", body: { ...payload, draft: values.draft } });
@@ -137,6 +150,16 @@ export function EssayForm({ initial, mode, defaultLanguage }: { initial?: Partia
         <p id={id("promptText-help")} className="field-help">{t("essayForm.promptHelp")}</p>
         <FieldError name="promptText" />
       </div>
+
+      {listOptions.length ? (
+        <div>
+          <label htmlFor={id("listEntry")} className="field-label">{t("nav.myList")} <span className="font-normal text-ink-faint">({t("common.optional")})</span></label>
+          <select id={id("listEntry")} className="input" value={values.listEntryId} onChange={(e) => set("listEntryId", e.target.value)}>
+            <option value="">—</option>
+            {listOptions.map((o) => <option key={o.id} value={o.id}>{o.name}</option>)}
+          </select>
+        </div>
+      ) : null}
 
       <div className="grid gap-6 sm:grid-cols-2">
         <div>

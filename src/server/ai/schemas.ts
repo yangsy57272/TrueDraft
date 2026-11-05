@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ACTIVITY_TYPES, C7_FACTORS, C7_LEVELS, CDS_FIELDS, COURSE_LEVELS, HONOR_LEVELS } from "@/lib/planning";
 
 /**
  * Structured-output schemas for every AI tool.
@@ -8,7 +9,7 @@ import { z } from "zod";
  * length, the AI cannot return a replacement essay through any field of these schemas.
  */
 
-export const SCHEMA_VERSION = "2026-10-27.1";
+export const SCHEMA_VERSION = "2026-11-05.1";
 
 const text = (max: number) => z.string().transform((s) => (s.length > max ? `${s.slice(0, max - 1)}…` : s));
 const nullableText = (max: number) => z.string().nullable().transform((s) => (s && s.length > max ? `${s.slice(0, max - 1)}…` : s));
@@ -131,6 +132,75 @@ export const brainstormSchema = z.object({
 });
 export type Brainstorm = z.infer<typeof brainstormSchema>;
 
+/* ------------------------- major explorer ------------------------ */
+
+const cip = z.string().nullable(); // validated against the CIP list by the guard
+
+export const majorExplorerSchema = z.object({
+  themes: list(z.object({ theme: text(200), evidence: text(300) }), 4),
+  suggestions: list(
+    z.object({
+      major: text(80),
+      cip_family: cip,
+      why_it_might_fit: text(600),
+      based_on: list(text(120), 4),
+      what_you_would_study: text(500),
+      related_majors: list(text(80), 4),
+      ways_to_test_interest: list(text(250), 3),
+      questions_to_ask_yourself: list(text(250), 3),
+      zh_note: nullableText(300),
+    }),
+    6,
+  ),
+  broader_options: list(z.object({ major: text(80), cip_family: cip, why: text(300) }), 3),
+  reflective_questions: list(text(300), 5),
+  notes_on_naming: text(400),
+  limitations: text(400),
+});
+export type MajorExplorer = z.infer<typeof majorExplorerSchema>;
+
+/* --------------------------- CV import --------------------------- */
+
+const gradeList = z.array(z.number().int()).transform((a) => [...new Set(a.filter((g) => g >= 9 && g <= 12))].slice(0, 4));
+
+export const cvImportSchema = z.object({
+  courses: list(
+    z.object({ name: text(80), level: z.enum(COURSE_LEVELS), grade: z.number().int().nullable(), result: nullableText(20) }),
+    40,
+  ),
+  activities: list(
+    z.object({
+      type: z.enum(ACTIVITY_TYPES),
+      role: text(50),
+      organization: text(100),
+      description: text(150),
+      grades: gradeList,
+      hours_per_week: z.number().int().nullable(),
+      weeks_per_year: z.number().int().nullable(),
+    }),
+    20,
+  ),
+  honors: list(z.object({ title: text(100), level: z.enum(HONOR_LEVELS), grades: gradeList }), 10),
+  skipped_notes: list(text(200), 5),
+});
+export type CvImport = z.infer<typeof cvImportSchema>;
+
+/* ------------------- CDS extraction (admin tool) ------------------ */
+
+function extractField(def: (typeof CDS_FIELDS)[number]) {
+  if (def.type === "bool") return z.boolean().nullable();
+  if (def.type === "monthday") return z.string().nullable();
+  if (def.type === "enum") return z.enum(def.options as [string, ...string[]]).nullable();
+  return z.number().nullable();
+}
+
+export const cdsExtractSchema = z.object({
+  ...Object.fromEntries(CDS_FIELDS.map((f) => [f.key, extractField(f)])),
+  c7: list(z.object({ factor: z.enum(C7_FACTORS), level: z.enum(C7_LEVELS) }), 19),
+  degrees_by_field: list(z.object({ cip_family: z.string(), percent: z.number() }), 40),
+  uncertain_fields: list(text(60), 20),
+}) as unknown as z.ZodType<Record<string, unknown> & { c7: { factor: string; level: string }[]; degrees_by_field: { cip_family: string; percent: number }[]; uncertain_fields: string[] }>;
+
 /* ----------------------------------------------------------------- */
 
 export const SCHEMAS = {
@@ -140,8 +210,17 @@ export const SCHEMAS = {
   word_count: wordCountSchema,
   final_read: finalReadSchema,
   brainstorm: brainstormSchema,
+  major_explorer: majorExplorerSchema,
+  cv_import: cvImportSchema,
+  cds_extract: cdsExtractSchema,
 } as const;
 export type ToolKind = keyof typeof SCHEMAS;
+/** Tools that operate on one essay (served by /api/essays/[id]/ai/[kind]). */
+export const ESSAY_TOOL_KINDS = ["full_feedback", "prompt_decoder", "sentence", "word_count", "final_read", "brainstorm"] as const;
+export type EssayToolKind = (typeof ESSAY_TOOL_KINDS)[number];
+/** Tools that operate on the student's profile (served by /api/planning/[kind]). */
+export const PLANNING_TOOL_KINDS = ["major_explorer", "cv_import"] as const;
+export type PlanningToolKind = (typeof PLANNING_TOOL_KINDS)[number];
 
 type JsonSchema = Record<string, unknown>;
 

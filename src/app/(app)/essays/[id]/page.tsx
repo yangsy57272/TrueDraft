@@ -10,6 +10,7 @@ import { hasCurrentConsent } from "@/server/services/consent";
 import { listBrainstormNotes } from "@/server/services/brainstorm";
 import { isUuid, orNotFound } from "@/server/page-data";
 import { Workspace } from "@/components/editor/Workspace";
+import { listEntries } from "@/server/services/college-list";
 import type { LatestFeedback } from "@/components/editor/FeedbackPanel";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -29,6 +30,8 @@ export default async function EssayPage({ params }: { params: Promise<{ id: stri
     listBrainstormNotes(user.id, id),
   ]);
   const facts = getPrivacyFacts();
+  const { locale } = await getT();
+  const listOptionsFor = (await listEntries(user.id)).map((e) => ({ id: e.id, name: locale === "zh-CN" && e.schoolNameZh ? e.schoolNameZh : e.schoolName }));
 
   const latestRunMeta = runs.find((r) => r.kind === "full_feedback" && r.status === "completed");
   let latestFeedback: LatestFeedback | null = null;
@@ -62,7 +65,9 @@ export default async function EssayPage({ params }: { params: Promise<{ id: stri
         context: essay.context,
         draft: essay.draft,
         updatedAt: essay.updatedAt.toISOString(),
+        listEntryId: essay.listEntryId ?? null,
       }}
+      listOptions={listOptionsFor}
       versions={versions.map((v) => ({ ...v, createdAt: v.createdAt.toISOString() }))}
       runs={runs.map((r) => ({
         id: r.id,

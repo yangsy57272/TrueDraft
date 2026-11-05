@@ -31,9 +31,10 @@ type Props = {
   latestFeedback: LatestFeedback | null;
   ai: WorkspaceAi;
   notes: SavedNote[];
+  listOptions?: { id: string; name: string }[];
 };
 
-export function Workspace({ essay, versions, runs, latestFeedback, ai, notes }: Props) {
+export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, listOptions = [] }: Props) {
   const { t, locale } = useI18n();
   const router = useRouter();
   const notify = useToast();
@@ -271,6 +272,7 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes }: 
     feedbackLanguage: essay.feedbackLanguage,
     focusAreas: essay.focusAreas as EssayFormValues["focusAreas"],
     context: essay.context,
+    listEntryId: essay.listEntryId ?? "",
   };
 
   const busy = activeRun !== null;
@@ -428,7 +430,7 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes }: 
               <div className="card p-4">
                 <h2 className="text-lg font-semibold">{t("essayForm.editTitle")}</h2>
                 <div className="mt-4">
-                  <EssayForm mode={{ kind: "edit", essayId: essay.id }} initial={formInitial} defaultLanguage={essay.feedbackLanguage} />
+                  <EssayForm mode={{ kind: "edit", essayId: essay.id }} initial={formInitial} defaultLanguage={essay.feedbackLanguage} listOptions={listOptions} />
                 </div>
               </div>
               <div className="card mt-4 p-4">

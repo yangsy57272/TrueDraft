@@ -30,6 +30,16 @@ Before sending, `src/server/redact.ts` replaces obvious direct identifiers in **
 - **System prompt** (`src/server/ai/prompts.ts`, versioned as `PROMPT_VERSION`): the ethical coaching rules from the product spec, tool-specific instructions, and language rules. It never contains student content.
 - **User message**: student material wrapped in tagged blocks (`<student_essay>`, `<essay_prompt>`, …). Any tag-like text inside student content that could close those blocks is neutralised. The message ends by restating that everything inside the tags is data.
 
+### Planning tools (profile-level)
+
+| Tool | Sent | Not sent | Stored |
+|---|---|---|---|
+| Major Explorer | Curriculum, course names and levels, activity type, role, organization, and description, honors, interests, values, majors already being considered | Test scores, GPA, graduation year, preferences, email | The structured result, encrypted (`planning_run`), deletable by the student |
+| CV import | The pasted CV text, after identifier redaction | Anything else from the account | **Nothing.** Extracted items are returned once for review. Only items the student ticks are added to the encrypted profile, and the CV text is never saved. |
+| CDS pre-fill (admins only) | Text copied from a college's public CDS document | Any student data | Nothing. The admin reviews proposed values before saving. |
+
+The same safeguards apply as for essay tools: consent (students), rate limits, tag neutralisation, strict schemas, and failure without fabrication. Major Explorer results are also checked against the profile: each cited entry is marked as found or not found.
+
 ## 3. At the provider
 
 - Requests use the provider's **structured output** mode with a strict JSON schema (`src/server/ai/schemas.ts`). Claude requests use `output_config.format` and a moderate `effort`. Current Claude models do not accept `temperature`. OpenAI-compatible requests use `response_format: json_schema` with `strict: true` and a low temperature.

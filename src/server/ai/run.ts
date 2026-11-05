@@ -14,7 +14,7 @@ import { completeRun, createPendingRun, failRun } from "../services/feedback";
 import { getRetrievalGuidance } from "../services/resources";
 import { buildSystemPrompt, buildUserMessage, PROMPT_VERSION, type PromptInput } from "./prompts";
 import { AiProviderError, aiSettings, getProvider } from "./provider";
-import { jsonSchemaFor, SCHEMA_VERSION, SCHEMAS, type SentenceMode, type ToolKind } from "./schemas";
+import { jsonSchemaFor, SCHEMA_VERSION, SCHEMAS, type EssayToolKind, type SentenceMode, type ToolKind } from "./schemas";
 import { applyGuards } from "./guard";
 
 export type AiStage = "checking" | "structure" | "detail" | "priorities" | "reviewing" | "preparing";
@@ -32,7 +32,7 @@ export type AiRequestOptions = {
 type Prepared = {
   user: AppUser;
   essayId: string;
-  kind: ToolKind;
+  kind: EssayToolKind;
   versionId: string | null;
   language: FeedbackLanguage;
   originalDraft: string;
@@ -58,7 +58,7 @@ function surroundingText(draft: string, selection: string) {
  * Validate and assemble everything needed for an AI call. Runs before any streaming starts so
  * that consent, rate-limit, and validation failures return normal HTTP errors.
  */
-export async function prepareAiRun(user: AppUser, essayId: string, kind: ToolKind, options: AiRequestOptions): Promise<Prepared> {
+export async function prepareAiRun(user: AppUser, essayId: string, kind: EssayToolKind, options: AiRequestOptions): Promise<Prepared> {
   const facts = getPrivacyFacts();
   if (!facts.aiConfigured) throw new ApiError(503, "ai_not_configured");
   await assertOwnedEssay(user.id, essayId);
@@ -130,7 +130,7 @@ export async function prepareAiRun(user: AppUser, essayId: string, kind: ToolKin
     promptInput.conversation = turns.map((t) => ({ role: t.role, text: redact(t.text) }));
   }
 
-  const guidanceCategories: Record<ToolKind, string[]> = {
+  const guidanceCategories: Record<EssayToolKind, string[]> = {
     full_feedback: ["craft", "structure", "reflection"],
     prompt_decoder: ["prompt"],
     sentence: ["language", "craft"],
@@ -167,6 +167,9 @@ const STAGE_MARKERS: Record<ToolKind, [string, AiStage][]> = {
   word_count: [['"preserve"', "preparing"]],
   final_read: [['"grammar_issues"', "preparing"]],
   brainstorm: [['"questions"', "preparing"]],
+  major_explorer: [['"suggestions"', "preparing"]],
+  cv_import: [['"honors"', "preparing"]],
+  cds_extract: [['"c7"', "preparing"]],
 };
 
 function errorCodeFor(error: unknown): string {
@@ -190,13 +193,75 @@ function errorCodeFor(error: unknown): string {
   return "ai_unavailable";
 }
 
+export class ModelCallError extends Error {
+  constructor(public code: string) {
+    super(code);
+    this.name = "ModelCallError";
+  }
+}
+
+/**
+ * Shared provider call used by every AI tool: streaming progress stages, per-attempt timeout,
+ * limited retries for retryable failures only, and strict schema validation of the result.
+ * Throws ModelCallError with a user-safe code; never returns unvalidated output.
+ */
+export async function callModel(opts: {
+  kind: ToolKind;
+  system: string;
+  userMessage: string;
+  onStage: (stage: AiStage) => void;
+  logFields: Record<string, string | number>;
+  firstStage?: AiStage;
+}) {
+  const provider = await getProvider();
+  const settings = aiSettings();
+  const markers = STAGE_MARKERS[opts.kind];
+  let lastError: unknown = null;
+  for (let attempt = 0; attempt <= settings.maxRetries; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), settings.timeoutMs);
+    let reached = -1;
+    opts.onStage(opts.firstStage ?? "reviewing");
+    try {
+      const response = await provider.generate({
+        system: opts.system,
+        user: opts.userMessage,
+        schemaName: opts.kind,
+        jsonSchema: jsonSchemaFor(opts.kind),
+        maxOutputTokens: settings.maxOutputTokens,
+        signal: controller.signal,
+        onProgress: (snapshot) => {
+          for (let i = reached + 1; i < markers.length; i++) {
+            if (snapshot.includes(markers[i][0])) {
+              reached = i;
+              opts.onStage(markers[i][1]);
+            }
+          }
+        },
+      });
+      clearTimeout(timer);
+      const parsed = SCHEMAS[opts.kind].safeParse(response.json);
+      if (!parsed.success) throw new AiProviderError("malformed");
+      return { parsed: parsed.data as unknown, model: response.model, providerRef: response.providerRef, providerKind: provider.kind, attempt };
+    } catch (error) {
+      clearTimeout(timer);
+      lastError = error;
+      const retryable = error instanceof AiProviderError ? error.retryable : false;
+      logger.warn("ai.attempt_failed", { ...opts.logFields, attempt, code: errorCodeFor(error), errorName: errorName(error) });
+      if (!retryable || attempt === settings.maxRetries) break;
+      await new Promise((r) => setTimeout(r, 1000 * 2 ** attempt));
+      opts.onStage("checking");
+    }
+  }
+  throw new ModelCallError(errorCodeFor(lastError));
+}
+
 /**
  * Call the provider, validate the structured result, apply guardrails, and persist.
  * On any failure the run is marked failed and NO feedback is fabricated.
  */
 export async function executeAiRun(prepared: Prepared, onStage: (stage: AiStage) => void) {
   const provider = await getProvider();
-  const settings = aiSettings();
   const run = await createPendingRun({
     essayId: prepared.essayId,
     essayVersionId: prepared.versionId,
@@ -214,64 +279,32 @@ export async function executeAiRun(prepared: Prepared, onStage: (stage: AiStage)
   track("feedback_requested", { kind: prepared.kind, language: prepared.language, wordCountBucket: wordCountBucket(prepared.wordCount) });
 
   onStage("checking");
-  const system = buildSystemPrompt(prepared.kind, prepared.language);
-  const userMessage = buildUserMessage(prepared.promptInput);
-  const markers = STAGE_MARKERS[prepared.kind];
   const started = Date.now();
-  let lastError: unknown = null;
-
-  for (let attempt = 0; attempt <= settings.maxRetries; attempt++) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), settings.timeoutMs);
-    let reached = -1;
-    if (prepared.kind !== "full_feedback") onStage("reviewing");
-    else onStage("structure");
-    try {
-      const response = await provider.generate({
-        system,
-        user: userMessage,
-        schemaName: prepared.kind,
-        jsonSchema: jsonSchemaFor(prepared.kind),
-        maxOutputTokens: settings.maxOutputTokens,
-        signal: controller.signal,
-        onProgress: (snapshot) => {
-          for (let i = reached + 1; i < markers.length; i++) {
-            if (snapshot.includes(markers[i][0])) {
-              reached = i;
-              onStage(markers[i][1]);
-            }
-          }
-        },
-      });
-      clearTimeout(timer);
-
-      const parsed = SCHEMAS[prepared.kind].safeParse(response.json);
-      if (!parsed.success) throw new AiProviderError("malformed");
-      const result = applyGuards(prepared.kind, parsed.data, {
-        draft: prepared.originalDraft,
-        selection: (prepared.storedRequest as { selection?: string } | null)?.selection ?? "",
-        mode: prepared.promptInput.sentenceMode,
-        wordCount: prepared.wordCount,
-        wordLimit: prepared.wordLimit,
-      });
-      await completeRun(run.id, result, response.model, response.providerRef);
-      logger.info("ai.run_completed", { ...logFields, model: response.model, durationMs: Date.now() - started, attempt, redactions: prepared.redactionCount });
-      track("feedback_completed", { kind: prepared.kind });
-      return { runId: run.id, result, isMock: provider.kind === "mock", redactionCount: prepared.redactionCount };
-    } catch (error) {
-      clearTimeout(timer);
-      lastError = error;
-      const retryable = error instanceof AiProviderError ? error.retryable : false;
-      logger.warn("ai.attempt_failed", { ...logFields, attempt, code: errorCodeFor(error), errorName: errorName(error) });
-      if (!retryable || attempt === settings.maxRetries) break;
-      await new Promise((r) => setTimeout(r, 1000 * 2 ** attempt));
-      onStage("checking");
-    }
+  try {
+    const response = await callModel({
+      kind: prepared.kind,
+      system: buildSystemPrompt(prepared.kind, prepared.language),
+      userMessage: buildUserMessage(prepared.promptInput),
+      onStage,
+      logFields,
+      firstStage: prepared.kind === "full_feedback" ? "structure" : "reviewing",
+    });
+    const result = applyGuards(prepared.kind, response.parsed, {
+      draft: prepared.originalDraft,
+      selection: (prepared.storedRequest as { selection?: string } | null)?.selection ?? "",
+      mode: prepared.promptInput.sentenceMode,
+      wordCount: prepared.wordCount,
+      wordLimit: prepared.wordLimit,
+    });
+    await completeRun(run.id, result, response.model, response.providerRef);
+    logger.info("ai.run_completed", { ...logFields, model: response.model, durationMs: Date.now() - started, attempt: response.attempt, redactions: prepared.redactionCount });
+    track("feedback_completed", { kind: prepared.kind });
+    return { runId: run.id, result, isMock: provider.kind === "mock", redactionCount: prepared.redactionCount };
+  } catch (error) {
+    const code = error instanceof ModelCallError ? error.code : "ai_unavailable";
+    await failRun(run.id, code);
+    track("feedback_failed", { kind: prepared.kind, status: code });
+    logger.error("ai.run_failed", { ...logFields, code, durationMs: Date.now() - started });
+    throw new ApiError(502, code, { runId: run.id });
   }
-
-  const code = errorCodeFor(lastError);
-  await failRun(run.id, code);
-  track("feedback_failed", { kind: prepared.kind, status: code });
-  logger.error("ai.run_failed", { ...logFields, code, durationMs: Date.now() - started });
-  throw new ApiError(502, code, { runId: run.id });
 }

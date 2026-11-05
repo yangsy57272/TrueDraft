@@ -11,10 +11,12 @@ type Props = {
   ai: WorkspaceAi;
   onAgree: () => Promise<void>;
   onSaveOnly: () => Promise<void>;
+  /** Label for the secondary action; defaults to "Save without AI analysis". */
+  saveOnlyLabel?: string;
 };
 
 /** Shown immediately before the first AI analysis (and again if the policy version changes). */
-export function ConsentDialog({ open, onOpenChange, ai, onAgree, onSaveOnly }: Props) {
+export function ConsentDialog({ open, onOpenChange, ai, onAgree, onSaveOnly, saveOnlyLabel }: Props) {
   const { t, messages } = useI18n();
   const [checked, setChecked] = useState(false);
   const [error, setError] = useState(false);
@@ -44,7 +46,7 @@ export function ConsentDialog({ open, onOpenChange, ai, onAgree, onSaveOnly }: P
               setBusy(false);
             }}
           >
-            {t("consent.saveOnly")}
+            {saveOnlyLabel ?? t("consent.saveOnly")}
           </button>
           <button
             type="button"

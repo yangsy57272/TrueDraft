@@ -7,6 +7,8 @@ import { decryptJson, decryptText } from "../crypto";
 import { ApiError } from "../errors";
 import { recordAudit } from "./audit";
 import { listConsents } from "./consent";
+import { listEntries } from "./college-list";
+import { getProfile, listPlanningRuns } from "./profile";
 
 import { RETENTION_OPTIONS, type RetentionOption } from "@/lib/constants";
 export { RETENTION_OPTIONS };
@@ -97,6 +99,10 @@ export async function exportUserData(userId: string) {
     ? await db.select().from(brainstormNote).where(inArray(brainstormNote.essayId, essayIds))
     : [];
 
+  const studentProfileData = await getProfile(userId);
+  const collegeList = await listEntries(userId);
+  const majorExplorations = await listPlanningRuns(userId, "major_explorer");
+
   await recordAudit(userId, "data_exported");
 
   return {
@@ -114,6 +120,19 @@ export async function exportUserData(userId: string) {
       optionalConsents: settings.optionalConsents,
     },
     consents,
+    profile: studentProfileData,
+    collegeList: collegeList.map((e) => ({
+      school: e.schoolName,
+      category: e.category,
+      round: e.round,
+      platform: e.platform,
+      deadline: e.deadline,
+      intendedMajor: e.intendedMajor,
+      status: e.status,
+      notes: e.notes,
+      checklist: e.checklist,
+    })),
+    majorExplorations: majorExplorations.map((r) => ({ createdAt: r.createdAt, status: r.status, model: r.modelName, result: r.result })),
     essays: essays.map((e) => ({
       id: e.id,
       title: e.title,

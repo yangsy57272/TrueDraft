@@ -13,6 +13,7 @@ export type WorkspaceEssay = {
   context: string;
   draft: string;
   updatedAt: string;
+  listEntryId: string | null;
 };
 
 export type WorkspaceVersion = { id: string; versionNumber: number; wordCount: number; versionNote: string | null; createdAt: string };

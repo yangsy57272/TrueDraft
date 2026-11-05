@@ -52,7 +52,7 @@ test.describe("mobile @mobile", () => {
       expect(await noHorizontalOverflow(page), path).toBe(true);
     }
     await page.getByRole("button", { name: "Menu" }).click();
-    await expect(page.getByRole("dialog").getByRole("link", { name: "Dashboard" })).toBeVisible();
+    await expect(page.getByRole("dialog").getByRole("link", { name: "My journey" })).toBeVisible();
     await page.keyboard.press("Escape");
   });
 });

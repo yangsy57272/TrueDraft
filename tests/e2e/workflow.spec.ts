@@ -6,6 +6,7 @@ test("student can sign in, write, save without AI, get feedback, version, compar
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await signIn(page);
+  await page.goto("/dashboard");
   await expect(page.getByRole("heading", { name: "Start your first essay workspace" })).toBeVisible();
 
   const essayUrl = await createEssay(page);

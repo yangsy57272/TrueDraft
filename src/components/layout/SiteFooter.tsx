@@ -17,6 +17,8 @@ export async function SiteFooter() {
           <ul className="mt-3 space-y-2 text-sm">
             <li><Link href="/how-it-works">{t("nav.howItWorks")}</Link></li>
             <li><Link href="/sample-feedback">{t("nav.sample")}</Link></li>
+            <li><Link href="/schools">{t("nav.schools")}</Link></li>
+            <li><Link href="/cds">{t("nav.cdsGuide")}</Link></li>
             <li><Link href="/resources">{t("nav.resources")}</Link></li>
           </ul>
         </nav>

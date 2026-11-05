@@ -97,3 +97,44 @@ export function assertUuid(value: string) {
   if (!uuidSchema.safeParse(value).success) throw new ApiError(404, "not_found");
   return value;
 }
+
+/**
+ * Stream newline-delimited JSON progress events from an AI task:
+ * {"type":"stage",...} … then {"type":"done",...} or {"type":"error","code":...}.
+ * The task keeps running (and its result is saved) even if the client disconnects.
+ */
+export function ndjsonStream(task: (stage: (stage: string) => void) => Promise<Record<string, unknown>>) {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      const send = (event: unknown) => {
+        try {
+          controller.enqueue(encoder.encode(`${JSON.stringify(event)}\n`));
+        } catch {
+          /* client went away */
+        }
+      };
+      try {
+        const outcome = await task((stage) => send({ type: "stage", stage }));
+        send({ type: "done", ...outcome });
+      } catch (error) {
+        send({ type: "error", code: error instanceof ApiError ? error.code : "ai_unavailable" });
+      } finally {
+        try {
+          controller.close();
+        } catch {
+          /* already closed */
+        }
+      }
+    },
+  });
+  return new Response(stream, {
+    headers: { "Content-Type": "application/x-ndjson; charset=utf-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex", "X-Accel-Buffering": "no" },
+  });
+}
+
+export async function requireAdmin(request: Request) {
+  const user = await requireApiUser(request);
+  if (!user.isAdmin) throw new ApiError(403, "forbidden");
+  return user;
+}

@@ -1,4 +1,5 @@
 import "server-only";
+import { CDS_FIELDS } from "@/lib/planning";
 import { AiProviderError, type AiProvider, type StructuredRequest, type StructuredResponse } from "./provider";
 
 /**
@@ -113,6 +114,36 @@ function payloadFor(schemaName: string, user: string): unknown {
         questions: [`${M} What is a moment you still think about?`],
         threads_noticed: [],
         boundary_note: null,
+      };
+    case "major_explorer":
+      return {
+        themes: [{ theme: `${M} A theme from your profile`, evidence: M }],
+        suggestions: [
+          {
+            major: "[Mock] Example major",
+            cip_family: "11",
+            why_it_might_fit: `${M} An explanation grounded in your profile would appear here.`,
+            based_on: [],
+            what_you_would_study: M,
+            related_majors: ["[Mock] Related major"],
+            ways_to_test_interest: [`${M} A low-cost way to explore this.`],
+            questions_to_ask_yourself: [`${M} A question to ask yourself?`],
+            zh_note: null,
+          },
+        ],
+        broader_options: [],
+        reflective_questions: [`${M} A reflective question?`],
+        notes_on_naming: M,
+        limitations: `${M} No AI analysis was performed.`,
+      };
+    case "cv_import":
+      return { courses: [], activities: [], honors: [], skipped_notes: [`${M} Nothing was extracted. Configure an AI provider to import a CV.`] };
+    case "cds_extract":
+      return {
+        ...Object.fromEntries(CDS_FIELDS.map((f) => [f.key, null])),
+        c7: [],
+        degrees_by_field: [],
+        uncertain_fields: ["[Development mock] nothing was extracted"],
       };
     default:
       return {};

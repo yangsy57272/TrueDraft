@@ -1,7 +1,8 @@
 import "dotenv/config";
 import { sql } from "drizzle-orm";
 import { closeDb, getDb } from "../src/db";
-import { resource } from "../src/db/schema";
+import { resource, school } from "../src/db/schema";
+import { SEED_SCHOOLS } from "../src/content/schools";
 
 /**
  * Seeds ORIGINAL educational resources written for TrueDraft, plus attributed external links.
@@ -364,6 +365,14 @@ async function main() {
       });
   }
   console.log(`Seeded ${resources.length} original resources and links.`);
+  // School directory: names, locations, and official CDS links only (no admissions numbers).
+  for (const s of SEED_SCHOOLS) {
+    await db
+      .insert(school)
+      .values({ ...s, published: true })
+      .onConflictDoUpdate({ target: school.slug, set: { ...s, updatedAt: sql`now()` } });
+  }
+  console.log(`Seeded ${SEED_SCHOOLS.length} schools (official CDS links; data must be imported and verified).`);
   await closeDb();
 }
 

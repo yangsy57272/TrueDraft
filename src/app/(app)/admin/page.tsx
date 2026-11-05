@@ -28,7 +28,10 @@ export default async function AdminPage() {
           </div>
         ))}
       </dl>
-      <Link href="/admin/resources" className="btn btn-primary mt-8">{t("admin.resources")}</Link>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <Link href="/admin/resources" className="btn btn-primary">{t("admin.resources")}</Link>
+        <Link href="/admin/schools" className="btn btn-primary">{t("adminSchools.title")}</Link>
+      </div>
     </div>
   );
 }

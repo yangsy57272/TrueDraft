@@ -25,19 +25,23 @@ export async function apiFetch<T = unknown>(url: string, init: { method?: string
 
 export type AiStreamEvent =
   | { type: "stage"; stage: string }
-  | { type: "done"; runId: string; result: unknown; isMock: boolean; redactionCount: number }
+  | { type: "done"; runId?: string; result?: unknown; isMock?: boolean; redactionCount?: number; [key: string]: unknown }
   | { type: "error"; code: string };
 
-/** Call an AI tool endpoint and surface its NDJSON progress events. */
-export async function runAiTool(
-  essayId: string,
-  kind: string,
-  body: Record<string, unknown>,
-  onStage: (stage: string) => void,
-): Promise<{ ok: true; runId: string; result: unknown; isMock: boolean; redactionCount: number } | { ok: false; code: string; status: number; details?: Record<string, string | number> }> {
+export type StreamOutcome<T = unknown> =
+  | ({ ok: true; result: T; isMock: boolean; redactionCount: number; runId: string } & Record<string, unknown>)
+  | { ok: false; code: string; status: number; details?: Record<string, string | number> };
+
+/** Call an essay AI tool endpoint and surface its NDJSON progress events. */
+export function runAiTool(essayId: string, kind: string, body: Record<string, unknown>, onStage: (stage: string) => void) {
+  return runStreamingTool(`/api/essays/${essayId}/ai/${kind}`, body, onStage);
+}
+
+/** POST to any NDJSON-streaming AI endpoint and resolve with the final event. */
+export async function runStreamingTool<T = unknown>(url: string, body: Record<string, unknown>, onStage: (stage: string) => void): Promise<StreamOutcome<T>> {
   let response: Response;
   try {
-    response = await fetch(`/api/essays/${essayId}/ai/${kind}`, {
+    response = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -63,7 +67,10 @@ export async function runAiTool(
         if (!line.trim()) continue;
         const event = JSON.parse(line) as AiStreamEvent;
         if (event.type === "stage") onStage(event.stage);
-        if (event.type === "done") return { ok: true, runId: event.runId, result: event.result, isMock: event.isMock, redactionCount: event.redactionCount };
+        if (event.type === "done") {
+          const { type: _type, ...rest } = event as Record<string, unknown>;
+          return { ok: true, runId: "", result: undefined as T, isMock: false, redactionCount: 0, ...rest } as StreamOutcome<T>;
+        }
         if (event.type === "error") return { ok: false, code: event.code, status: 502 };
       }
     }
@@ -71,4 +78,10 @@ export async function runAiTool(
     return { ok: false, code: "network", status: 0 };
   }
   return { ok: false, code: "ai_unavailable", status: 502 };
+}
+
+/** Client-side id for new list items (falls back when crypto.randomUUID is unavailable). */
+export function newId() {
+  if (typeof crypto !== "undefined" && "randomUUID" in crypto) return crypto.randomUUID();
+  return `id-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }

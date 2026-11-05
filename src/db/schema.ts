@@ -1,4 +1,5 @@
 import {
+  type AnyPgColumn,
   boolean,
   index,
   integer,
@@ -124,6 +125,8 @@ export const essay = pgTable(
     status: text("status").notNull().default("drafting"),
     feedbackLanguage: text("feedback_language").notNull().default("en"),
     focusAreas: jsonb("focus_areas").$type<string[]>().notNull().default([]),
+    /** Optional link to a school on the student's college list (supplemental essays). */
+    listEntryId: uuid("list_entry_id").references((): AnyPgColumn => collegeListEntry.id, { onDelete: "set null" }),
     /** Optional notes for the reviewer. AES-GCM encrypted. */
     encryptedContext: text("encrypted_context"),
     /** Autosaved working draft. AES-GCM encrypted. Versions are separate, immutable snapshots. */
@@ -260,8 +263,116 @@ export const rateLimitBucket = pgTable(
   (t) => [primaryKey({ columns: [t.key, t.windowStart] })],
 );
 
+/* ------------------------------------------------------------------ */
+/* Application journey: profile, planning AI runs, schools/CDS, list    */
+/* ------------------------------------------------------------------ */
+
+/** One profile per student: courses, activities, honors, tests, preferences. AES-GCM encrypted JSON. */
+export const studentProfile = pgTable("student_profile", {
+  userId: text("user_id")
+    .primaryKey()
+    .references(() => user.id, { onDelete: "cascade" }),
+  encryptedData: text("encrypted_data").notNull(),
+  updatedAt: updatedAt(),
+});
+
+/** AI runs that are about the student's planning rather than one essay (e.g. Major Explorer). */
+export const planningRun = pgTable(
+  "planning_run",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    kind: text("kind").notNull(),
+    feedbackLanguage: text("feedback_language").notNull(),
+    provider: text("provider").notNull(),
+    modelName: text("model_name").notNull(),
+    promptVersion: text("prompt_version").notNull(),
+    schemaVersion: text("schema_version").notNull(),
+    /** Null for CV import: extracted CV items are returned once and never stored unless accepted. */
+    encryptedStructuredResult: text("encrypted_structured_result"),
+    status: text("status").notNull().default("pending"),
+    errorCode: text("error_code"),
+    redactionCount: integer("redaction_count").notNull().default(0),
+    createdAt: createdAt(),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+  },
+  (t) => [index("planning_run_user_idx").on(t.userId, t.kind, t.createdAt)],
+);
+
+/** Directory of institutions. Public reference data, not student data. */
+export const school = pgTable("school", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
+  nameZh: text("name_zh"),
+  city: text("city"),
+  state: text("state"),
+  country: text("country").notNull().default("US"),
+  control: text("control"), // public | private
+  website: text("website"),
+  /** The institution's own Common Data Set page. */
+  cdsPageUrl: text("cds_page_url"),
+  /** Most recent CDS edition the operator has seen listed on that page (not necessarily imported). */
+  latestCdsYearListed: text("latest_cds_year_listed"),
+  linkCheckedAt: timestamp("link_checked_at", { withTimezone: true }),
+  published: boolean("published").notNull().default(true),
+  createdAt: createdAt(),
+  updatedAt: updatedAt(),
+});
+
+/** One CDS edition for one school. Values come only from the official document and are verified by an admin. */
+export const cdsDataset = pgTable(
+  "cds_dataset",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    schoolId: uuid("school_id")
+      .notNull()
+      .references(() => school.id, { onDelete: "cascade" }),
+    academicYear: text("academic_year").notNull(), // e.g. "2025-2026"
+    sourceUrl: text("source_url").notNull(),
+    data: jsonb("data").$type<Record<string, unknown>>().notNull().default({}),
+    /** draft | verified */
+    verificationStatus: text("verification_status").notNull().default("draft"),
+    verifiedAt: timestamp("verified_at", { withTimezone: true }),
+    verifiedBy: text("verified_by").references(() => user.id, { onDelete: "set null" }),
+    notes: text("notes"),
+    published: boolean("published").notNull().default(false),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [uniqueIndex("cds_school_year_uq").on(t.schoolId, t.academicYear)],
+);
+
+export const collegeListEntry = pgTable(
+  "college_list_entry",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    schoolId: uuid("school_id").references(() => school.id, { onDelete: "set null" }),
+    customSchoolName: text("custom_school_name"),
+    category: text("category").notNull().default("unsure"),
+    round: text("round").notNull().default("undecided"),
+    platform: text("platform"),
+    deadline: text("deadline"), // YYYY-MM-DD
+    intendedMajor: text("intended_major"),
+    status: text("status").notNull().default("researching"),
+    encryptedNotes: text("encrypted_notes"),
+    checklist: jsonb("checklist").$type<{ id: string; key?: string | null; label?: string; done: boolean }[]>().notNull().default([]),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [index("list_user_idx").on(t.userId), uniqueIndex("list_user_school_uq").on(t.userId, t.schoolId)],
+);
+
 export type User = typeof user.$inferSelect;
 export type Essay = typeof essay.$inferSelect;
 export type EssayVersion = typeof essayVersion.$inferSelect;
 export type FeedbackRun = typeof feedbackRun.$inferSelect;
 export type Resource = typeof resource.$inferSelect;
+export type School = typeof school.$inferSelect;
+export type CdsDataset = typeof cdsDataset.$inferSelect;
+export type CollegeListEntry = typeof collegeListEntry.$inferSelect;

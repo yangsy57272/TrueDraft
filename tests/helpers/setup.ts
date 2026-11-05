@@ -35,7 +35,7 @@ beforeEach(async () => {
   const { db } = await import("@/db");
   const { sql } = await import("drizzle-orm");
   await db.execute(
-    sql`truncate table audit_event, rate_limit_bucket, resource, brainstorm_note, feedback_run, essay_version, essay, consent_record, privacy_settings, verification, account, session, "user" restart identity cascade`,
+    sql`truncate table college_list_entry, cds_dataset, school, planning_run, student_profile, audit_event, rate_limit_bucket, resource, brainstorm_note, feedback_run, essay_version, essay, consent_record, privacy_settings, verification, account, session, "user" restart identity cascade`,
   );
   jar.clear();
   sentLinks.clear();

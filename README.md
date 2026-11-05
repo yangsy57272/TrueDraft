@@ -23,6 +23,11 @@ TrueDraft is a bilingual (English / Simplified Chinese) web app that gives stude
 | Security | Server-side auth + per-user authorization on every route (foreign IDs → 404), same-origin checks on mutations, Postgres-backed rate limits, CSP and security headers, `no-store` on private data, sanitized Markdown, generic error messages. |
 | Localization | Complete English and Simplified Chinese UI; language switcher in the header and Settings; preference stored on the account; i18n architecture ready for more locales. |
 | Content | Original bilingual writing guides (seeded), attributed external links, and a clearly-labelled fictional sample essay with hand-written sample feedback. |
+| Application journey | A 7-step hub (`/journey`): profile → majors → read the CDS → explore schools → college list → essays → track applications. Each step's status is computed from the student's own data, with no streaks or pressure. |
+| Profile | Courses (IB/A-Level/AP/Chinese national/OSSD levels), Common App-style activities (150-char descriptions, grades, hours), honors, interests and values, optional scores, and college preferences. Encrypted at rest. **CV import:** paste CV text, the AI extracts items, the student ticks which to add, and the CV itself is never stored. |
+| Major Explorer | AI suggests fields of study grounded in the student's own entries. Every cited entry is checked against the profile and flagged if not found. Includes ways to test each interest. No prestige ranking or admission talk. Scores and GPA are never sent. Shortlist "majors I'm considering". |
+| Common Data Set | `/cds` explains every CDS section and the key items (C1, C2, C7, C8–C9, C11–C12, C13–C22, G1, H6, J1), with a fictional worked example. `/schools` is a directory of 24 universities, each linked to its **official** CDS page. Filters cover region, size, test policy, admission rate, ED/EA, international aid, and field of study. School pages show C7 factor tables, score ranges, international aid, and degrees by field, all with source links and verification dates. Students can compare up to 4 schools. |
+| College list | Add directory or custom schools. The student chooses their own reach/target/likely labels (never computed). Tracks round, platform, deadline, intended major, status, private notes (encrypted), a checklist with defaults (recommendations, transcript, English test, CSS/ISFAA, …), linked supplemental essays, and upcoming deadlines. |
 | Admin | Aggregate counts only (no essay browsing). Resource management with source, author, license status, permission notes, knowledge collection, access level, and an AI-retrieval switch that is off by default. |
 | Accessibility | Semantic HTML, skip link, labelled fields with associated errors, visible focus, keyboard-operable Radix tabs/dialogs/menus with focus return, non-colour cues on all statuses, reduced-motion support, no horizontal overflow at 375px. |
 
@@ -35,6 +40,8 @@ TrueDraft is a bilingual (English / Simplified Chinese) web app that gives stude
 - Translations beyond English and Simplified Chinese.
 - Uploading `.docx`/PDF drafts (students paste text).
 - AI retrieval from licensed materials is implemented as a gated mechanism but ships with **no** licensed content.
+- **CDS numbers are not pre-loaded.** This build environment could not reach university websites, commondataset.org, or gradgpt.com, so no figures were imported. Use the admin import tools to load verified data (see [docs/CDS_DATA.md](docs/CDS_DATA.md)).
+- More schools in the directory, school-specific supplement prompts, and deadline reminders by email.
 - Legal review of the privacy text for a specific operator and market (required before launch — see [docs/SECURITY_AND_LEGAL_REVIEW.md](docs/SECURITY_AND_LEGAL_REVIEW.md)).
 
 ---
@@ -110,6 +117,7 @@ docs/                  AI data flow, security & legal review, deployment
 - [docs/AI_DATA_FLOW.md](docs/AI_DATA_FLOW.md) — exactly what is sent to the AI provider and what happens to it
 - [docs/SECURITY_AND_LEGAL_REVIEW.md](docs/SECURITY_AND_LEGAL_REVIEW.md) — security measures and the tasks still required before launch
 - [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — production setup
+- [docs/CDS_DATA.md](docs/CDS_DATA.md) — Common Data Set sources, integrity rules, and how to import and verify data
 
 ## Learning materials and intellectual property
 

@@ -25,6 +25,7 @@ export const essayCreateSchema = z.object({
   feedbackLanguage: z.enum(FEEDBACK_LANGUAGES),
   focusAreas: z.array(z.enum(FOCUS_AREAS)).max(FOCUS_AREAS.length).default([]),
   context: trimmed(limits.maxContextChars).nullish(),
+  listEntryId: z.string().uuid().nullish(),
 });
 
 export const essayPatchSchema = essayCreateSchema

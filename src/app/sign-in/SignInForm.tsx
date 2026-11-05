@@ -19,7 +19,7 @@ export function SignInForm({ showDevHint }: { showDevHint: boolean }) {
       return;
     }
     setState("sending");
-    const result = await authClient.signIn.magicLink({ email: value, callbackURL: "/dashboard", errorCallbackURL: "/sign-in?error=link" });
+    const result = await authClient.signIn.magicLink({ email: value, callbackURL: "/journey", errorCallbackURL: "/sign-in?error=link" });
     if (result.error) {
       setState("idle");
       setError(result.error.status === 429 ? t("auth.tooMany") : t("common.unknownError"));

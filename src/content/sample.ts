@@ -90,3 +90,92 @@ export const SAMPLE_FEEDBACK = {
   limitations: "This feedback can't judge how this essay fits with the rest of your application, and AI can misread tone. Use your judgment.",
   computed: { wordCount: 214, wordLimit: 650 },
 };
+
+/** The same hand-written feedback, English only (no Chinese notes). */
+export const SAMPLE_FEEDBACK_EN = (() => {
+  const strip = <T extends { zh_note?: string | null }>(x: T) => ({ ...x, zh_note: null });
+  return {
+    ...SAMPLE_FEEDBACK,
+    primary_priority: strip(SAMPLE_FEEDBACK.primary_priority),
+    categories: SAMPLE_FEEDBACK.categories.map(strip),
+    passage_comments: SAMPLE_FEEDBACK.passage_comments.map(strip),
+    revision_plan: SAMPLE_FEEDBACK.revision_plan.map(strip),
+  };
+})();
+
+/**
+ * The same feedback written in Simplified Chinese, as a student who chose Chinese feedback would
+ * see it. Quotes stay in English because they must match the essay exactly. Hand-written; have a
+ * native-speaker editor review any change before publishing.
+ */
+export const SAMPLE_FEEDBACK_ZH = {
+  ...SAMPLE_FEEDBACK,
+  summary:
+    "这篇草稿的题材很有原创性——在姑姑的夜市小摊上记录人流——中间几段也真实地展现了你的好奇心。最大的修改空间在第四段：前面具体的观察，到这里变成了关于“热爱”和“坚持”的笼统表述。",
+  strengths: [
+    { point: "你的观察非常具体，只有亲身经历的人才写得出来。", evidence_quote: "Nobody went down the third row because the light there was broken.", located: true },
+    { point: "你通过行动展示学习过程，而不是直接宣称自己学到了什么。", evidence_quote: "I started counting people with a clicker my cousin lent me.", located: true },
+    { point: "姑姑起的外号用很少的字增添了温度，也提供了另一个人的视角。", evidence_quote: "my aunt started calling me \"the surveyor.\"", located: true },
+  ],
+  primary_priority: {
+    title: "把总结段换成你自己的思考",
+    explanation:
+      "“热爱城市规划”“努力和坚持”这样的话可能出现在成千上万篇文书里。题目问的是：它为什么吸引你？当你看到人们绕圈走时，你意识到了什么？用你自己的话回答这个问题，比任何标签都更有说服力。",
+    zh_note: null,
+  },
+  prompt_alignment: {
+    status: "partly" as const,
+    explanation: "你清楚地写出了一个让你忘记时间的主题。但“它为什么吸引你”只是被说出来了，没有展开；“你会向什么或谁求助”的回答也比较简短、笼统。",
+  },
+  categories: [
+    { key: "prompt_response", label: "developing", explanation: "主题清楚，但“为什么”还需要深入。", next_step: "加两三句话，写清楚人们移动的方式到底哪一点让你着迷。", passage_quote: null, located: false, zh_note: null },
+    { key: "specificity", label: "strong_foundation", explanation: "坏掉的灯、晚上七点的茶摊高峰和计数器都很生动。", next_step: "保留这些细节；可以再加一个你表格里的数字。", passage_quote: "The tea stall was busy at 7pm but empty at 9pm.", located: true, zh_note: null },
+    { key: "reflection", label: "needs_attention", explanation: "反思部分主要是一串抽象的道理。", next_step: "写出你的理解发生变化的某一个具体时刻。", passage_quote: "It showed me the importance of hard work and perseverance.", located: true, zh_note: null },
+    { key: "structure_pacing", label: "developing", explanation: "故事铺垫得很好，但结尾节奏突然加快。", next_step: "给最后两段和观察部分同样多的篇幅。", passage_quote: null, located: false, zh_note: null },
+    { key: "clarity", label: "strong_foundation", explanation: "句子清楚，容易读懂。", next_step: "这方面不需要大改。", passage_quote: null, located: false, zh_note: null },
+    { key: "voice", label: "strong_foundation", explanation: "朴实、善于观察，还带点幽默——读起来像一个真实的人。", next_step: "修改结尾时保护好这种语气。", passage_quote: null, located: false, zh_note: null },
+    { key: "opening_ending", label: "developing", explanation: "“I was wrong”是个好开头；结尾却重复了笼统的结论。", next_step: "用一个你现在会注意到的具体规律来结尾，而不是总结。", passage_quote: "For a long time I thought it was just work. I was wrong.", located: true, zh_note: null },
+    { key: "concision", label: "developing", explanation: "第四段几乎可以整段删掉，换成反思。", next_step: "把省下的字数用来写“为什么”。", passage_quote: null, located: false, zh_note: null },
+  ],
+  passage_comments: [
+    {
+      quote: "This experience taught me that I am passionate about urban planning.",
+      observation: "这句话直接给出了结论，却没有展示你是怎样得出它的。",
+      why_it_matters: "读者从你的行动里已经相信你有好奇心；再贴一个标签作用不大，还显得空泛。",
+      revision_question: "当你的表格第一次显示出意料之外的规律时，你在想什么、有什么感受？",
+      priority: "high",
+      located: true,
+      zh_note: null,
+    },
+    {
+      quote: "I read blogs about city design and watch videos.",
+      observation: "对题目后半部分的回答比较模糊。",
+      why_it_matters: "题目专门问你会向什么或谁求助。说出一个真实的来源、问题或人，能体现你是怎样学习的。",
+      revision_question: "哪个博客、视频或人改变了你看待夜市的方式？他们帮你理解了什么？",
+      priority: "medium",
+      located: true,
+      zh_note: null,
+    },
+    {
+      quote: "At first I just drew boxes, but then I started noticing patterns.",
+      observation: "这是一个很有力的转折点，可以承载更多内容。",
+      why_it_matters: "这是“干活”变成“好奇”的时刻——也是你回答的核心。",
+      revision_question: "能不能多加一个具体细节，把这个时刻放慢一点？",
+      priority: "low",
+      located: true,
+      zh_note: null,
+    },
+  ],
+  revision_plan: [
+    { task: "重写第四段，用夜市里一个真实的时刻解释这些规律为什么吸引你。", why: "这是题目的核心。", zh_note: null },
+    { task: "说出一个你会向其学习的具体来源或人，以及你学到了什么。", why: "回答题目中的第二个问题。", zh_note: null },
+    { task: "把最后一句换成你现在在其他地方注意到的某个具体规律。", why: "用你的思考而不是总结来结尾。", zh_note: null },
+    { task: "把草稿大声读一遍，保留每一处听起来像你在说话的表达。", why: "你现在的语气是一个优势。", zh_note: null },
+  ],
+  voice_check: [
+    { question: "这读起来像你向一个信任的人讲述夜市时的样子吗？", note: "中间几段是的。检查新写的句子是否和它们一致。" },
+    { question: "有没有哪些句子用了你平时不会自然选择的词？", note: "和文章其他部分相比，“passionate”和“perseverance”显得像是借来的。" },
+  ],
+  questions_for_student: ["姑姑怎么看你画的地图？小摊有没有因此发生什么变化？"],
+  limitations: "这份反馈无法判断这篇文书与你申请材料其他部分的配合程度，AI 也可能误读语气。请结合你自己的判断。",
+};

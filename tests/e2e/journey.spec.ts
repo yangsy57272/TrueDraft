@@ -71,7 +71,9 @@ test("journey: profile → majors → schools → list → linked supplemental e
 
   // Journey reflects progress
   await page.goto("/journey");
-  await expect(page.getByText("Done").first()).toBeVisible();
+  await expect(page.getByText("Started").first()).toBeVisible();
+  await expect(page.getByText("Done", { exact: true })).toHaveCount(0); // no step claims to be finished
+  await expect(page.getByText(/1 essay\(s\) · 0 with a saved version/)).toBeVisible();
   expect(errors).toEqual([]);
 });
 

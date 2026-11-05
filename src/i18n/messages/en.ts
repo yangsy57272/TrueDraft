@@ -187,6 +187,9 @@ const en = {
       "“Strong foundation”, “Developing”, and “Needs attention” describe how a part of your writing is working right now. They are not grades and not predictions of admission.",
   },
   sample: {
+    languageNav: "Feedback language",
+    variants: { en: "English", bilingual: "English + Chinese notes", zh: "中文" },
+    variantNotes: { en: "Feedback in English.", bilingual: "Feedback in English, with short Simplified Chinese notes where an idea may be easier to grasp in Chinese.", zh: "Feedback in Simplified Chinese. Quotes stay in the essay’s own language so they match the draft exactly." },
     title: "Sample feedback",
     notice: "Everything on this page is fictional. The essay was written for demonstration and is not from a real applicant. This is not a live AI response.",
     essayHeading: "The fictional draft",

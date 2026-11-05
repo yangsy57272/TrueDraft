@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getT } from "@/i18n/server";
-import { SAMPLE_ESSAY, SAMPLE_FEEDBACK, SAMPLE_PROMPT } from "@/content/sample";
+import Link from "next/link";
+import { SAMPLE_ESSAY, SAMPLE_FEEDBACK, SAMPLE_FEEDBACK_EN, SAMPLE_FEEDBACK_ZH, SAMPLE_PROMPT } from "@/content/sample";
 import { countWords } from "@/lib/wordcount";
 import { FeedbackView, type FullFeedbackResult } from "@/components/feedback/FeedbackView";
 
@@ -9,9 +10,14 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("sample.title") };
 }
 
-export default async function SampleFeedbackPage() {
-  const { t } = await getT();
-  const data = { ...SAMPLE_FEEDBACK, computed: { wordCount: countWords(SAMPLE_ESSAY), wordLimit: 650 } } as FullFeedbackResult;
+const VARIANTS = { en: SAMPLE_FEEDBACK_EN, bilingual: SAMPLE_FEEDBACK, zh: SAMPLE_FEEDBACK_ZH } as const;
+type Variant = keyof typeof VARIANTS;
+
+export default async function SampleFeedbackPage({ searchParams }: { searchParams: Promise<{ lang?: string }> }) {
+  const { t, locale } = await getT();
+  const requested = (await searchParams).lang;
+  const variant: Variant = requested === "en" || requested === "zh" || requested === "bilingual" ? requested : locale === "zh-CN" ? "zh" : "en";
+  const data = { ...VARIANTS[variant], computed: { wordCount: countWords(SAMPLE_ESSAY), wordLimit: 650 } } as FullFeedbackResult;
   return (
     <div className="container-page py-12">
       <h1 className="text-4xl font-semibold">{t("sample.title")}</h1>
@@ -35,7 +41,15 @@ export default async function SampleFeedbackPage() {
         </section>
         <section aria-labelledby="sample-feedback">
           <h2 id="sample-feedback" className="text-xl font-semibold">{t("sample.feedbackHeading")}</h2>
-          <div className="mt-3">
+          <nav aria-label={t("sample.languageNav")} className="mt-3 flex flex-wrap gap-2">
+            {(["en", "bilingual", "zh"] as const).map((v) => (
+              <Link key={v} href={`/sample-feedback?lang=${v}`} aria-current={v === variant ? "page" : undefined} className={`btn btn-sm ${v === variant ? "btn-primary" : "btn-secondary"}`}>
+                {t(`sample.variants.${v}` as never)}
+              </Link>
+            ))}
+          </nav>
+          <p className="mt-2 text-sm text-ink-soft">{t(`sample.variantNotes.${variant}` as never)}</p>
+          <div className="mt-3" lang={variant === "zh" ? "zh-Hans" : "en"}>
             <FeedbackView data={data} />
           </div>
         </section>

@@ -32,6 +32,9 @@ export const ACTIVITY_TYPES = [
   "other",
 ] as const;
 /** "other" covers honors whose level the student (or the CV) doesn't state. */
+export const DEFERRABLE_STEPS = ["majors"] as const;
+export type DeferrableStep = (typeof DEFERRABLE_STEPS)[number];
+
 export const HONOR_LEVELS = ["school", "regional", "national", "international", "other"] as const;
 export const GRADE_LEVELS = [9, 10, 11, 12] as const;
 export const SIZE_PREFS = ["small", "medium", "large"] as const;
@@ -105,6 +108,8 @@ export const profileSchema = z.object({
     })
     .default({ sizes: [], regions: [], testPlan: "undecided", needAid: "unsure" }),
   intendedMajors: z.array(intendedMajorSchema).max(8).default([]),
+  /** Journey steps the student chose to come back to later. */
+  deferredSteps: z.array(z.enum(DEFERRABLE_STEPS)).max(DEFERRABLE_STEPS.length).default([]),
 });
 
 export type StudentProfile = z.infer<typeof profileSchema>;

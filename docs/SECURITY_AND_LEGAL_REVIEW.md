@@ -46,6 +46,7 @@ This document lists what the code already does, and what an operator still must 
 - [ ] Turn on dependency scanning (Dependabot or Renovate, plus `npm audit` in CI), secret scanning, and push protection on the repository.
 - [ ] Add CI that runs `npm run typecheck`, `npm test`, and `npm run test:e2e` on every pull request.
 - [ ] Write a key-rotation re-encryption script and an incident-response runbook.
+- [ ] Have a native Simplified Chinese editor review `src/i18n/messages/zh-*.ts` and the Chinese sample feedback in `src/content/sample.ts`. They were written during development and have not had an independent native-speaker review.
 - [ ] Commission an independent security assessment or penetration test before a public launch.
 - [ ] Monitor provider usage and cost, and alert on spikes in failed AI runs (counts are visible on the admin page).
 

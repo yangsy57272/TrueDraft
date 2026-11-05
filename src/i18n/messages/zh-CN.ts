@@ -179,6 +179,9 @@ const zhCN: Messages = {
     labelsBody: "“基础扎实”“正在发展”“需要关注”描述的是你这部分写作目前的状态。它们不是分数，也不是录取预测。",
   },
   sample: {
+    languageNav: "反馈语言",
+    variants: { en: "English", bilingual: "英文 + 中文提示", zh: "中文" },
+    variantNotes: { en: "英文反馈。", bilingual: "英文反馈，并在用中文更容易理解的地方附上简短的简体中文提示。", zh: "简体中文反馈。引用保留文书原文的语言，以便与草稿完全一致。" },
     title: "反馈示例",
     notice: "本页所有内容均为虚构。文书为演示而写，并非真实申请者的作品。这也不是 AI 的实时回复。",
     essayHeading: "虚构的草稿",

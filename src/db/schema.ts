@@ -132,6 +132,8 @@ export const essay = pgTable(
     /** Autosaved working draft. AES-GCM encrypted. Versions are separate, immutable snapshots. */
     encryptedDraft: text("encrypted_draft").notNull(),
     draftWordCount: integer("draft_word_count").notNull().default(0),
+    /** Incremented on every accepted draft write; saves based on an older revision are rejected. */
+    draftRevision: integer("draft_revision").notNull().default(0),
     createdAt: createdAt(),
     updatedAt: updatedAt(),
   },

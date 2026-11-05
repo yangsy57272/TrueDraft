@@ -53,12 +53,43 @@ describe("drafts and versions", () => {
 
   it("autosave updates the working draft but never modifies saved versions", async () => {
     const { id } = await create();
-    const res = await autosave(req("PUT", `/api/essays/${id}/draft`, { cookie: me.cookie, body: { draft: "A completely new draft." } }), ctx({ id }));
+    const res = await autosave(req("PUT", `/api/essays/${id}/draft`, { cookie: me.cookie, body: { draft: "A completely new draft.", baseRevision: 0 } }), ctx({ id }));
     expect(res.status).toBe(200);
     expect((await json(res)).wordCount).toBe(4);
     const v1 = await json(await getVersion(req("GET", `/api/essays/${id}/versions/1`, { cookie: me.cookie }), ctx({ id, n: "1" })));
     expect(v1.version.content).toBe(sampleEssay.draft);
     expect((await getEssay(me.userId, id)).draft).toBe("A completely new draft.");
+  });
+
+  it("rejects a draft write based on an outdated revision and never overwrites newer text", async () => {
+    const { id } = await create();
+    const put = (draft: string, baseRevision: number) =>
+      autosave(req("PUT", `/api/essays/${id}/draft`, { cookie: me.cookie, body: { draft, baseRevision } }), ctx({ id }));
+    const first = await json(await put("Tab one text", 0));
+    expect(first.revision).toBe(1);
+    // A second tab (or a delayed request) still based on revision 0:
+    const stale = await put("Stale tab text", 0);
+    expect(stale.status).toBe(409);
+    expect((await json(stale)).error).toMatchObject({ code: "draft_conflict", details: { revision: 1 } });
+    expect((await getEssay(me.userId, id)).draft).toBe("Tab one text");
+    // Retrying an already-applied save is harmless.
+    const retried = await put("Tab one text", 0);
+    expect(retried.status).toBe(200);
+    expect((await json(retried)).revision).toBe(1);
+    const second = await json(await put("Tab one text, continued", 1));
+    expect(second.revision).toBe(2);
+    expect((await put("Missing revision" as string, undefined as never)).status).toBe(400);
+  });
+
+  it("saving a version never overwrites a newer working draft", async () => {
+    const { id } = await create();
+    // Typing continued and was autosaved while the version request was in flight.
+    await autosave(req("PUT", `/api/essays/${id}/draft`, { cookie: me.cookie, body: { draft: "Newer text typed later", baseRevision: 0 } }), ctx({ id }));
+    const v = await saveVersion(req("POST", `/api/essays/${id}/versions`, { cookie: me.cookie, body: { content: "Older snapshot", note: null } }), ctx({ id }));
+    expect(v.status).toBe(201);
+    const after = await getEssay(me.userId, id);
+    expect(after.draft).toBe("Newer text typed later");
+    expect(after.draftRevision).toBe(1);
   });
 
   it("numbers versions sequentially, keeps notes, and never overwrites older versions", async () => {

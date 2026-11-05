@@ -1,0 +1,1 @@
+ALTER TABLE "essay" ADD COLUMN "draft_revision" integer DEFAULT 0 NOT NULL;

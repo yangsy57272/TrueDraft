@@ -33,7 +33,7 @@ export const essayPatchSchema = essayCreateSchema
   .partial()
   .extend({ status: z.enum(ESSAY_STATUSES).optional() });
 
-export const draftSchema = z.object({ draft: z.string().max(limits.maxDraftChars) });
+export const draftSchema = z.object({ draft: z.string().max(limits.maxDraftChars), baseRevision: z.number().int().min(0) });
 
 export const versionCreateSchema = z.object({
   content: z.string().max(limits.maxDraftChars),

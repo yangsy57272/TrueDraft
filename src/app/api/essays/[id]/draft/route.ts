@@ -12,7 +12,7 @@ export const PUT = apiRoute<Ctx>("essays.autosave", async (request, { params }) 
   const id = assertUuid((await params).id);
   const limit = await consumeRateLimit(`write:${user.id}`, limits.writesPerMinute, 60);
   if (!limit.allowed) throw new ApiError(429, "rate_limited");
-  const { draft } = await parseJson(request, draftSchema);
-  const result = await autosaveDraft(user.id, id, draft);
+  const { draft, baseRevision } = await parseJson(request, draftSchema);
+  const result = await autosaveDraft(user.id, id, draft, baseRevision);
   return jsonResponse(result);
 });

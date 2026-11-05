@@ -12,6 +12,7 @@ export type WorkspaceEssay = {
   focusAreas: string[];
   context: string;
   draft: string;
+  draftRevision: number;
   updatedAt: string;
   listEntryId: string | null;
 };

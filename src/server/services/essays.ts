@@ -117,6 +117,7 @@ export async function getEssay(userId: string, essayId: string) {
     context: row.encryptedContext ? decryptText(row.encryptedContext, "essay_context") : "",
     draft: decryptText(row.encryptedDraft, "essay_draft"),
     draftWordCount: row.draftWordCount,
+    draftRevision: row.draftRevision,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
   };
@@ -150,16 +151,27 @@ export async function updateEssayMeta(userId: string, essayId: string, patch: Es
     .where(and(eq(essay.id, essayId), eq(essay.userId, userId)));
 }
 
-/** Autosave the working draft. Never touches saved versions. */
-export async function autosaveDraft(userId: string, essayId: string, draft: string) {
+/**
+ * Autosave the working draft. Never touches saved versions.
+ *
+ * Writes are conditional on `baseRevision`: a save based on an outdated revision (another tab, a
+ * reordered request) is rejected with `draft_conflict` instead of silently overwriting newer text.
+ * Re-sending text identical to what is stored succeeds, so a retried request is harmless.
+ */
+export async function autosaveDraft(userId: string, essayId: string, draft: string, baseRevision: number) {
   const wordCount = countWords(draft);
   const result = await db
     .update(essay)
-    .set({ encryptedDraft: encryptText(draft, "essay_draft"), draftWordCount: wordCount })
-    .where(and(eq(essay.id, essayId), eq(essay.userId, userId)))
-    .returning({ updatedAt: essay.updatedAt });
-  if (result.length === 0) throw new ApiError(404, "not_found");
-  return { wordCount, savedAt: result[0].updatedAt };
+    .set({ encryptedDraft: encryptText(draft, "essay_draft"), draftWordCount: wordCount, draftRevision: sql`${essay.draftRevision} + 1` })
+    .where(and(eq(essay.id, essayId), eq(essay.userId, userId), eq(essay.draftRevision, baseRevision)))
+    .returning({ updatedAt: essay.updatedAt, revision: essay.draftRevision });
+  if (result.length > 0) return { wordCount, savedAt: result[0].updatedAt, revision: result[0].revision };
+
+  const current = await assertOwnedEssay(userId, essayId);
+  if (decryptText(current.encryptedDraft, "essay_draft") === draft) {
+    return { wordCount, savedAt: current.updatedAt, revision: current.draftRevision };
+  }
+  throw new ApiError(409, "draft_conflict", { revision: current.draftRevision });
 }
 
 /**
@@ -195,10 +207,8 @@ export async function saveVersion(userId: string, essayId: string, content: stri
         versionNote: note || null,
       })
       .returning();
-    await tx
-      .update(essay)
-      .set({ encryptedDraft: encryptText(content, "essay_draft"), draftWordCount: wordCount })
-      .where(eq(essay.id, essayId));
+    // The working draft is deliberately left alone: a version is a snapshot, and writing it back
+    // to the draft could overwrite newer text the student typed while the request was in flight.
     return version;
   });
 }

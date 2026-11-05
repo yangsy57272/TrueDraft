@@ -8,7 +8,8 @@ import { GET as getRun } from "@/app/api/essays/[id]/feedback/[runId]/route";
 import { POST as consent } from "@/app/api/consent/route";
 import * as providerModule from "@/server/ai/provider";
 import { AiProviderError, type AiProvider, type StructuredRequest } from "@/server/ai/provider";
-import { listEssays, listVersions } from "@/server/services/essays";
+import { getEssay, listEssays, listVersions } from "@/server/services/essays";
+import { PUT as autosave } from "@/app/api/essays/[id]/draft/route";
 import { ctx, json, readStream, req, sampleEssay, signIn } from "../helpers/http";
 import { validFeedback } from "../helpers/fixtures";
 
@@ -78,6 +79,18 @@ describe("AI feedback", () => {
     await readStream(await run("full_feedback", { content: sampleEssay.draft + " A new sentence." }));
     const versions = await listVersions(me.userId, essayId);
     expect(versions).toHaveLength(2);
+  });
+
+  it("pins feedback to the submitted text without touching a newer working draft", async () => {
+    await grant();
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue(fakeProvider(() => validFeedback));
+    const submitted = sampleEssay.draft + " Submitted for feedback.";
+    const pending = run("full_feedback", { content: submitted });
+    await autosave(req("PUT", `/api/essays/${essayId}/draft`, { cookie: me.cookie, body: { draft: submitted + " Typed during feedback.", baseRevision: 0 } }), ctx({ id: essayId }));
+    await readStream(await pending);
+    expect((await getEssay(me.userId, essayId)).draft).toBe(submitted + " Typed during feedback.");
+    const versions = await listVersions(me.userId, essayId);
+    expect(versions[0].versionNumber).toBe(2);
   });
 
   it("rejects malformed provider output and never fabricates feedback", async () => {

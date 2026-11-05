@@ -42,7 +42,7 @@ describe("per-user authorization", () => {
     const attempts: Response[] = [
       await getEssay(req("GET", `/api/essays/${essayId}`, { cookie: bob.cookie }), p),
       await patchEssay(req("PATCH", `/api/essays/${essayId}`, { cookie: bob.cookie, body: { title: "pwned" } }), p),
-      await autosave(req("PUT", `/api/essays/${essayId}/draft`, { cookie: bob.cookie, body: { draft: "overwritten" } }), p),
+      await autosave(req("PUT", `/api/essays/${essayId}/draft`, { cookie: bob.cookie, body: { draft: "overwritten", baseRevision: 0 } }), p),
       await listVersions(req("GET", `/api/essays/${essayId}/versions`, { cookie: bob.cookie }), p),
       await saveVersion(req("POST", `/api/essays/${essayId}/versions`, { cookie: bob.cookie, body: { content: "x", note: null } }), p),
       await getVersion(req("GET", `/api/essays/${essayId}/versions/1`, { cookie: bob.cookie }), ctx({ id: essayId, n: "1" })),

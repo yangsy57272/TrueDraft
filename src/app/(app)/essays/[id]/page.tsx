@@ -64,6 +64,7 @@ export default async function EssayPage({ params }: { params: Promise<{ id: stri
         focusAreas: essay.focusAreas,
         context: essay.context,
         draft: essay.draft,
+        draftRevision: essay.draftRevision,
         updatedAt: essay.updatedAt.toISOString(),
         listEntryId: essay.listEntryId ?? null,
       }}

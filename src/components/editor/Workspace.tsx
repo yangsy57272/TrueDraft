@@ -8,6 +8,7 @@ import { formatDate } from "@/i18n/translate";
 import { apiFetch, runAiTool } from "@/lib/api-client";
 import { ESSAY_STATUSES } from "@/lib/constants";
 import { countWords } from "@/lib/wordcount";
+import { DraftSaver, type SaveStatus } from "@/lib/draft-saver";
 import { ConfirmDialog, Dialog } from "@/components/ui/Dialog";
 import { useToast } from "@/components/ui/Toaster";
 import { ConsentDialog } from "./ConsentDialog";
@@ -16,8 +17,6 @@ import { FeedbackPanel, type LatestFeedback } from "./FeedbackPanel";
 import { VersionsPanel } from "./VersionsPanel";
 import { ToolsPanel } from "@/components/tools/ToolsPanel";
 import type { SavedNote, WorkspaceAi, WorkspaceEssay, WorkspaceRun, WorkspaceVersion } from "./types";
-
-type SaveState = "idle" | "dirty" | "saving" | "saved" | "error";
 
 export type RunToolFn = (
   kind: string,
@@ -41,8 +40,8 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
   const uid = useId();
 
   const [draft, setDraft] = useState(essay.draft);
-  const [saveState, setSaveState] = useState<SaveState>("idle");
-  const [savedAt, setSavedAt] = useState<Date | null>(null);
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>({ state: "saved", savedAt: null });
+  const [loadingServerCopy, setLoadingServerCopy] = useState(false);
   const [selection, setSelection] = useState("");
   const [showPrompt, setShowPrompt] = useState(true);
   const [tab, setTab] = useState("feedback");
@@ -66,8 +65,6 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
 
   const draftRef = useRef(draft);
   draftRef.current = draft;
-  const lastSaved = useRef(essay.draft);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const words = countWords(draft);
@@ -75,44 +72,96 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
   const latestVersion = versions[0];
 
   /* ------------------------------ autosave ------------------------------ */
-  const save = useCallback(async () => {
-    if (timer.current) clearTimeout(timer.current);
-    const content = draftRef.current;
-    if (content === lastSaved.current) {
-      setSaveState((s) => (s === "dirty" ? "idle" : s));
-      return true;
-    }
-    setSaveState("saving");
-    const res = await apiFetch<{ savedAt: string }>(`/api/essays/${essay.id}/draft`, { method: "PUT", body: { draft: content } });
-    if (res.ok) {
-      lastSaved.current = content;
-      setSavedAt(new Date(res.data.savedAt));
-      setSaveState(draftRef.current === content ? "saved" : "dirty");
-      return true;
-    }
-    setSaveState("error");
-    return false;
-  }, [essay.id]);
+  // One saver per essay. It sends saves one at a time with the revision they are based on, and
+  // only marks text as saved once the server has acknowledged exactly that text.
+  const saverRef = useRef<DraftSaver | null>(null);
+  if (!saverRef.current) {
+    saverRef.current = new DraftSaver({
+      initialText: essay.draft,
+      initialRevision: essay.draftRevision,
+      onStatus: setSaveStatus,
+      send: async (content, baseRevision) => {
+        const res = await apiFetch<{ savedAt: string; revision: number }>(`/api/essays/${essay.id}/draft`, {
+          method: "PUT",
+          body: { draft: content, baseRevision },
+        });
+        return res.ok ? { ok: true, revision: res.data.revision, savedAt: res.data.savedAt } : res;
+      },
+    });
+  }
+  const saver = saverRef.current;
+  useEffect(() => () => saver.dispose(), [saver]);
+
+  const save = useCallback(() => saver.flush(), [saver]);
 
   useEffect(() => {
-    if (draft === lastSaved.current) return;
-    setSaveState("dirty");
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => void save(), 1200);
-    return () => {
-      if (timer.current) clearTimeout(timer.current);
-    };
-  }, [draft, save]);
+    saver.update(draft);
+  }, [draft, saver]);
 
   useEffect(() => {
     const warn = (e: BeforeUnloadEvent) => {
-      if (draftRef.current !== lastSaved.current) {
-        e.preventDefault();
-      }
+      if (saver.isDirty()) e.preventDefault();
+    };
+    const hidden = () => {
+      if (document.visibilityState === "hidden" && saver.isDirty()) void saver.flush();
+    };
+    // In-app links don't fire beforeunload: wait for the save first, or ask before leaving.
+    const navigate = (e: MouseEvent) => {
+      if (!saver.isDirty() || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = (e.target as Element | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
+      if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+      const url = new URL(a.href, window.location.href);
+      if (url.origin !== window.location.origin || (url.pathname === window.location.pathname && url.hash)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      void saver.flush().then((ok) => {
+        if (ok || window.confirm(t("editor.autosave.leaveUnsaved"))) {
+          if (!ok) saver.dispose();
+          router.push(url.pathname + url.search + url.hash);
+        }
+      });
     };
     window.addEventListener("beforeunload", warn);
-    return () => window.removeEventListener("beforeunload", warn);
-  }, []);
+    document.addEventListener("visibilitychange", hidden);
+    document.addEventListener("click", navigate, true);
+    return () => {
+      window.removeEventListener("beforeunload", warn);
+      document.removeEventListener("visibilitychange", hidden);
+      document.removeEventListener("click", navigate, true);
+    };
+  }, [saver, router, t]);
+
+  async function copyMyText() {
+    try {
+      await navigator.clipboard.writeText(draftRef.current);
+      notify(t("editor.autosave.copied"), "success");
+    } catch {
+      textareaRef.current?.select();
+      notify(t("editor.autosave.copyManually"), "info");
+    }
+  }
+
+  async function loadServerCopy() {
+    if (!window.confirm(t("editor.autosave.loadServerConfirm"))) return;
+    setLoadingServerCopy(true);
+    const res = await apiFetch<{ essay: { draft: string; draftRevision: number } }>(`/api/essays/${essay.id}`);
+    setLoadingServerCopy(false);
+    if (!res.ok) {
+      notify(t(`errors.${res.code}` as never), "error");
+      return;
+    }
+    saver.acceptServer(res.data.essay.draft, res.data.essay.draftRevision);
+    setDraft(res.data.essay.draft);
+  }
+
+  /** Exports read the stored draft, so they only proceed once the latest text is saved. */
+  async function exportAs(format: "md" | "txt") {
+    if (!(await save())) {
+      notify(t("editor.autosave.exportBlocked"), "error");
+      return;
+    }
+    window.location.href = `/api/essays/${essay.id}/export?format=${format}`;
+  }
 
   // Grow the textarea with its content so the page scrolls naturally on every device.
   useEffect(() => {
@@ -132,14 +181,15 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
   /* ------------------------------ versions ------------------------------ */
   async function saveVersion(note: string | null) {
     setSavingVersion(true);
-    await save();
+    // The version stores exactly the text submitted here; the working draft is saved separately.
+    const content = draftRef.current;
+    void save();
     const res = await apiFetch<{ versionNumber: number; unchanged?: boolean }>(`/api/essays/${essay.id}/versions`, {
       method: "POST",
-      body: { content: draftRef.current, note },
+      body: { content, note },
     });
     setSavingVersion(false);
     if (res.ok) {
-      lastSaved.current = draftRef.current;
       setVersionDialog(false);
       setVersionNote("");
       notify(res.data.unchanged ? t("editor.noChangesSinceVersion") : t("editor.versionSaved", { n: res.data.versionNumber }), res.data.unchanged ? "info" : "success");
@@ -153,7 +203,7 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
   /* ------------------------------ AI runs ------------------------------- */
   const executeTool = useCallback(
     async (kind: string, body: Record<string, unknown>): ReturnType<RunToolFn> => {
-      await save();
+      void save();
       setActiveRun({ kind, stage: "checking" });
       const result = await runAiTool(essay.id, kind, body, (stage) => setActiveRun({ kind, stage }));
       setActiveRun(null);
@@ -194,7 +244,6 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
         isMock: result.isMock,
         redactionCount: result.redactionCount,
       });
-      lastSaved.current = draftRef.current;
     } else if (result.code !== "cancelled") {
       setFeedbackError(t(`errors.${result.code}` as never));
     }
@@ -232,7 +281,7 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
     const res = await apiFetch(`/api/essays/${essay.id}`, { method: "DELETE" });
     setDeleting(false);
     if (res.ok) {
-      lastSaved.current = draftRef.current;
+      saver.dispose();
       notify(t("dashboard.deleted"));
       router.push("/dashboard");
       router.refresh();
@@ -240,6 +289,10 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
   }
 
   async function duplicate() {
+    if (!(await save())) {
+      notify(t("editor.autosave.duplicateBlocked"), "error");
+      return;
+    }
     const res = await apiFetch<{ id: string }>(`/api/essays/${essay.id}/duplicate`, { method: "POST" });
     if (res.ok) {
       notify(t("dashboard.duplicated"));
@@ -253,15 +306,20 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
   }
 
   const saveLabel =
-    saveState === "saving"
+    saveStatus.state === "saving"
       ? t("editor.autosave.saving")
-      : saveState === "dirty"
+      : saveStatus.state === "dirty"
         ? t("editor.autosave.unsaved")
-        : saveState === "error"
-          ? t("editor.autosave.error")
-          : saveState === "saved" && savedAt
-            ? t("editor.autosave.saved", { time: savedAt.toLocaleTimeString(locale === "zh-CN" ? "zh-CN" : "en-US", { hour: "2-digit", minute: "2-digit" }) })
-            : t("editor.autosave.idle");
+        : saveStatus.state === "error"
+          ? saveStatus.retrying
+            ? t("editor.autosave.errorRetrying")
+            : t("editor.autosave.error")
+          : saveStatus.state === "conflict"
+            ? t("editor.autosave.conflictShort")
+            : saveStatus.savedAt
+              ? t("editor.autosave.saved", { time: saveStatus.savedAt.toLocaleTimeString(locale === "zh-CN" ? "zh-CN" : "en-US", { hour: "2-digit", minute: "2-digit" }) })
+              : t("editor.autosave.idle");
+  const saveProblem = saveStatus.state === "error" || saveStatus.state === "conflict";
 
   const formInitial: Partial<EssayFormValues> = {
     title: essay.title,
@@ -299,10 +357,10 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
             <DropdownMenu.Trigger className="btn btn-secondary btn-sm">{t("editor.export")} ▾</DropdownMenu.Trigger>
             <DropdownMenu.Portal>
               <DropdownMenu.Content align="end" sideOffset={4} className="z-40 min-w-56 rounded-lg border border-line bg-card p-1 shadow-lg">
-                <DropdownMenu.Item className={menuItem} onSelect={async () => { await save(); window.location.href = `/api/essays/${essay.id}/export?format=md`; }}>
+                <DropdownMenu.Item className={menuItem} onSelect={() => void exportAs("md")}>
                   {t("editor.exportMd")}
                 </DropdownMenu.Item>
-                <DropdownMenu.Item className={menuItem} onSelect={async () => { await save(); window.location.href = `/api/essays/${essay.id}/export?format=txt`; }}>
+                <DropdownMenu.Item className={menuItem} onSelect={() => void exportAs("txt")}>
                   {t("editor.exportTxt")}
                 </DropdownMenu.Item>
                 <DropdownMenu.Separator className="my-1 h-px bg-line" />
@@ -329,6 +387,27 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
             </div>
             <p id={`${uid}-prompt-body`} hidden={!showPrompt} className="mt-2 whitespace-pre-wrap">{essay.promptText}</p>
           </section>
+
+          {saveStatus.state === "conflict" ? (
+            <div className="notice notice-warn mt-4" role="alert">
+              <p className="font-semibold">{t("editor.autosave.conflictTitle")}</p>
+              <p className="mt-1 text-sm">{t("editor.autosave.conflictBody")}</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <button type="button" className="btn btn-primary btn-sm" onClick={() => void saver.overwriteServer()}>{t("editor.autosave.keepMine")}</button>
+                <button type="button" className="btn btn-secondary btn-sm" disabled={loadingServerCopy} onClick={() => void loadServerCopy()}>{t("editor.autosave.loadServer")}</button>
+                <button type="button" className="btn btn-ghost btn-sm" onClick={() => void copyMyText()}>{t("editor.autosave.copyMine")}</button>
+              </div>
+            </div>
+          ) : null}
+          {saveStatus.state === "error" ? (
+            <div className="notice notice-warn mt-4" role="alert">
+              <p className="text-sm">{t("editor.autosave.errorBody")}</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <button type="button" className="btn btn-primary btn-sm" onClick={() => void save()}>{t("editor.autosave.retryNow")}</button>
+                <button type="button" className="btn btn-ghost btn-sm" onClick={() => void copyMyText()}>{t("editor.autosave.copyMine")}</button>
+              </div>
+            </div>
+          ) : null}
 
           <div className="mt-4">
             <label htmlFor={`${uid}-editor`} className="sr-only">{t("editor.editorLabel")}</label>
@@ -358,7 +437,7 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
                     </span>
                   ) : null}
                 </p>
-                <p id={`${uid}-save`} className={`text-xs ${saveState === "error" ? "text-coral-dark" : "text-ink-soft"}`} role="status">
+                <p id={`${uid}-save`} className={`text-xs ${saveProblem ? "text-coral-dark" : "text-ink-soft"}`} role="status">
                   {saveLabel}
                 </p>
               </div>

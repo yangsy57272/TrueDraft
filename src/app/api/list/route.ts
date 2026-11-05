@@ -14,5 +14,6 @@ export const POST = apiRoute("list.add", async (request) => {
   const limit = await consumeRateLimit(`write:${user.id}`, limits.writesPerMinute, 60);
   if (!limit.allowed) throw new ApiError(429, "rate_limited");
   const body = await parseJson(request, z.record(z.string(), z.unknown()));
-  return jsonResponse(await addEntry(user.id, body), 201);
+  const entry = await addEntry(user.id, body);
+  return jsonResponse({ id: entry.id, entry }, 201);
 });

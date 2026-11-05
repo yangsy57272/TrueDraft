@@ -3,14 +3,13 @@ import { randomUUID } from "node:crypto";
 import { and, asc, eq, inArray } from "drizzle-orm";
 import { db } from "@/db";
 import { collegeListEntry, essay, school } from "@/db/schema";
-import { DEFAULT_CHECKLIST, listEntryInputSchema, type ListEntryInput } from "@/lib/planning";
+import { DEFAULT_CHECKLIST, MAX_CHECKLIST_ITEMS, listEntryInputSchema, listEntryPatchSchema, type ListEntryInput } from "@/lib/planning";
 import { decryptText, encryptText } from "../crypto";
 import { ApiError } from "../errors";
 
 const MAX_ENTRIES = 40;
 
-function validate(input: unknown, partial: boolean): Partial<ListEntryInput> {
-  const schema = partial ? listEntryInputSchema.partial() : listEntryInputSchema;
+function validate<T>(schema: { safeParse: (v: unknown) => { success: true; data: T } | { success: false; error: { issues: { path: PropertyKey[]; code: string }[] } } }, input: unknown): T {
   const parsed = schema.safeParse(input);
   if (!parsed.success) {
     const issue = parsed.error.issues[0];
@@ -23,12 +22,12 @@ export function defaultChecklist() {
   return DEFAULT_CHECKLIST.map((key) => ({ id: randomUUID(), key, done: false }));
 }
 
-export async function listEntries(userId: string) {
+export async function listEntries(userId: string, onlyId?: string) {
   const rows = await db
     .select({ entry: collegeListEntry, school })
     .from(collegeListEntry)
     .leftJoin(school, eq(collegeListEntry.schoolId, school.id))
-    .where(eq(collegeListEntry.userId, userId))
+    .where(onlyId ? and(eq(collegeListEntry.userId, userId), eq(collegeListEntry.id, onlyId)) : eq(collegeListEntry.userId, userId))
     .orderBy(asc(collegeListEntry.createdAt));
   const ids = rows.map((r) => r.entry.id);
   const essays = ids.length
@@ -58,8 +57,15 @@ export async function listEntries(userId: string) {
 }
 export type ListEntryView = Awaited<ReturnType<typeof listEntries>>[number];
 
+/** One entry in the same shape as the list, so the client can replace its copy with it. */
+export async function getEntryView(userId: string, entryId: string) {
+  const [view] = await listEntries(userId, entryId);
+  if (!view) throw new ApiError(404, "not_found");
+  return view;
+}
+
 export async function addEntry(userId: string, input: unknown) {
-  const data = validate(input, false) as ListEntryInput;
+  const data = validate<ListEntryInput>(listEntryInputSchema, input);
   if (!data.schoolId && !data.customSchoolName?.trim()) throw new ApiError(400, "school_required");
   const existing = await db.select({ id: collegeListEntry.id }).from(collegeListEntry).where(eq(collegeListEntry.userId, userId));
   if (existing.length >= MAX_ENTRIES) throw new ApiError(409, "list_full");
@@ -84,7 +90,7 @@ export async function addEntry(userId: string, input: unknown) {
         checklist: data.checklist ?? defaultChecklist(),
       })
       .returning({ id: collegeListEntry.id });
-    return row;
+    return getEntryView(userId, row.id);
   } catch (error) {
     const e = error as { code?: string; cause?: { code?: string } };
     if (e?.code === "23505" || e?.cause?.code === "23505") throw new ApiError(409, "already_on_list");
@@ -93,23 +99,63 @@ export async function addEntry(userId: string, input: unknown) {
 }
 
 export async function updateEntry(userId: string, entryId: string, input: unknown) {
-  const data = validate(input, true);
+  const data = validate(listEntryPatchSchema, input);
   const values: Partial<typeof collegeListEntry.$inferInsert> = {};
   if (data.category !== undefined) values.category = data.category;
   if (data.round !== undefined) values.round = data.round;
   if (data.platform !== undefined) values.platform = data.platform ?? null;
   if (data.deadline !== undefined) values.deadline = data.deadline ?? null;
-  if (data.intendedMajor !== undefined) values.intendedMajor = data.intendedMajor ?? null;
+  if (data.intendedMajor !== undefined) values.intendedMajor = data.intendedMajor || null;
   if (data.status !== undefined) values.status = data.status;
-  if (data.checklist !== undefined) values.checklist = data.checklist;
   if (data.customSchoolName !== undefined && data.customSchoolName) values.customSchoolName = data.customSchoolName.trim();
   if (data.notes !== undefined) values.encryptedNotes = data.notes ? encryptText(data.notes, "list_notes") : null;
-  const updated = await db
-    .update(collegeListEntry)
-    .set(values)
-    .where(and(eq(collegeListEntry.id, entryId), eq(collegeListEntry.userId, userId)))
-    .returning({ id: collegeListEntry.id });
-  if (!updated.length) throw new ApiError(404, "not_found");
+  if (Object.keys(values).length > 0) {
+    const updated = await db
+      .update(collegeListEntry)
+      .set(values)
+      .where(and(eq(collegeListEntry.id, entryId), eq(collegeListEntry.userId, userId)))
+      .returning({ id: collegeListEntry.id });
+    if (!updated.length) throw new ApiError(404, "not_found");
+  }
+  return getEntryView(userId, entryId);
+}
+
+type ChecklistItem = (typeof collegeListEntry.$inferSelect)["checklist"][number];
+
+/** Change one entry's checklist under a row lock, so concurrent operations never lose each other. */
+async function mutateChecklist(userId: string, entryId: string, change: (items: ChecklistItem[]) => ChecklistItem[]) {
+  await db.transaction(async (tx) => {
+    const [row] = await tx
+      .select({ checklist: collegeListEntry.checklist })
+      .from(collegeListEntry)
+      .where(and(eq(collegeListEntry.id, entryId), eq(collegeListEntry.userId, userId)))
+      .for("update");
+    if (!row) throw new ApiError(404, "not_found");
+    await tx.update(collegeListEntry).set({ checklist: change(row.checklist) }).where(eq(collegeListEntry.id, entryId));
+  });
+  return getEntryView(userId, entryId);
+}
+
+/** Set (not toggle) an item's state, so a retried request has the same effect. */
+export function setChecklistItem(userId: string, entryId: string, itemId: string, done: boolean) {
+  return mutateChecklist(userId, entryId, (items) => {
+    if (!items.some((i) => i.id === itemId)) throw new ApiError(404, "not_found");
+    return items.map((i) => (i.id === itemId ? { ...i, done } : i));
+  });
+}
+
+export function addChecklistItem(userId: string, entryId: string, label: string, itemId: string = randomUUID()) {
+  const clean = label.trim().slice(0, 80);
+  if (!clean) throw new ApiError(400, "validation_failed", { field: "label", reason: "too_small" });
+  return mutateChecklist(userId, entryId, (items) => {
+    if (items.some((i) => i.id === itemId)) return items; // retried request
+    if (items.length >= MAX_CHECKLIST_ITEMS) throw new ApiError(409, "checklist_full");
+    return [...items, { id: itemId, key: null, label: clean, done: false }];
+  });
+}
+
+export function removeChecklistItem(userId: string, entryId: string, itemId: string) {
+  return mutateChecklist(userId, entryId, (items) => items.filter((i) => i.id !== itemId));
 }
 
 export async function removeEntry(userId: string, entryId: string) {

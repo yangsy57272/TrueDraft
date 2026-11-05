@@ -373,6 +373,9 @@ const enJourney = {
     },
   },
   list: {
+    discard: "Discard changes",
+    unsavedFields: "Unsaved changes",
+    removeItem: "Remove",
     title: "My college list",
     intro: "Your schools, rounds, deadlines, and checklists in one place. Categories are your own judgment — TrueDraft never labels schools for you.",
     empty: "Your list is empty. Add schools from Explore schools, or add one that isn't in our directory.",

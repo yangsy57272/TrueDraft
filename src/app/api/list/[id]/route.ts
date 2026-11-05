@@ -7,8 +7,8 @@ type Ctx = { params: Promise<{ id: string }> };
 export const PATCH = apiRoute<Ctx>("list.update", async (request, { params }) => {
   const user = await requireApiUser(request);
   const id = assertUuid((await params).id);
-  await updateEntry(user.id, id, await parseJson(request, z.record(z.string(), z.unknown())));
-  return jsonResponse({ ok: true });
+  const entry = await updateEntry(user.id, id, await parseJson(request, z.record(z.string(), z.unknown())));
+  return jsonResponse({ entry });
 });
 
 export const DELETE = apiRoute<Ctx>("list.delete", async (request, { params }) => {

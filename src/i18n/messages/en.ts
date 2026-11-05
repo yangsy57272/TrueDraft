@@ -830,6 +830,7 @@ const en = {
     cv_required: "Paste your CV text first.",
     cv_too_long: "That CV text is too long. Paste only the activities, courses, and honors sections.",
     school_required: "Choose a school or type its name.",
+    checklist_full: "This checklist has the maximum number of items.",
     already_on_list: "That school is already on your list.",
     list_full: "Your list has reached the maximum number of schools.",
     invalid_cds_data: "Some CDS values are invalid. Check the highlighted field.",

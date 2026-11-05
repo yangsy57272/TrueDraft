@@ -9,6 +9,8 @@ import { GET as listRuns } from "@/app/api/planning/runs/route";
 import { DELETE as deleteRun } from "@/app/api/planning/runs/[id]/route";
 import { GET as getList, POST as addToList } from "@/app/api/list/route";
 import { DELETE as removeFromList, PATCH as patchList } from "@/app/api/list/[id]/route";
+import { POST as addChecklistItem } from "@/app/api/list/[id]/checklist/route";
+import { DELETE as removeChecklistItem, PATCH as setChecklistItem } from "@/app/api/list/[id]/checklist/[itemId]/route";
 import { POST as createEssay } from "@/app/api/essays/route";
 import { POST as consent } from "@/app/api/consent/route";
 import { GET as exportData } from "@/app/api/account/export/route";
@@ -232,6 +234,45 @@ describe("college list", () => {
     expect(bad.status).toBe(400);
     const list = await json(await getList(req("GET", "/api/list", { cookie: me.cookie }), undefined as never));
     expect(list.entries[0]).toMatchObject({ category: "reach", round: "ea", deadline: "2026-11-01", notes: "Visit in spring" });
+  });
+
+  it("updates only the fields sent and never resets the others to defaults", async () => {
+    const { id } = await json(await addToList(req("POST", "/api/list", { cookie: me.cookie, body: { schoolId, category: "reach", status: "in_progress" } }), undefined as never));
+    const res = await json(await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { round: "ed" } }), ctx({ id })));
+    expect(res.entry).toMatchObject({ category: "reach", status: "in_progress", round: "ed" });
+    const deadline = await json(await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { deadline: "2026-12-01" } }), ctx({ id })));
+    expect(deadline.entry).toMatchObject({ category: "reach", round: "ed", deadline: "2026-12-01" });
+    expect((await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { deadline: "2026-02-31" } }), ctx({ id }))).status).toBe(400);
+    // The whole checklist can no longer be replaced through a field update.
+    expect((await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { checklist: [] } }), ctx({ id }))).status).toBe(400);
+  });
+
+  it("applies concurrent checklist operations without losing any of them", async () => {
+    const { id, entry } = await json(await addToList(req("POST", "/api/list", { cookie: me.cookie, body: { customSchoolName: "Custom College" } }), undefined as never));
+    const [a, b, c] = entry.checklist;
+    const set = (itemId: string, done: boolean, cookie = me.cookie) =>
+      setChecklistItem(req("PATCH", "/x", { cookie, body: { done } }), ctx({ id, itemId }));
+    // Rapid clicks on different items, sent at the same time.
+    const results = await Promise.all([set(a.id, true), set(b.id, true), set(c.id, true)]);
+    expect(results.map((r) => r.status)).toEqual([200, 200, 200]);
+    // A field update racing with a checklist click doesn't undo it, and vice versa.
+    await Promise.all([patchList(req("PATCH", "/x", { cookie: me.cookie, body: { deadline: "2026-11-15" } }), ctx({ id })), set(a.id, false)]);
+    const [after] = (await json(await getList(req("GET", "/api/list", { cookie: me.cookie }), undefined as never))).entries;
+    expect(after.deadline).toBe("2026-11-15");
+    expect(after.checklist.filter((i: { done: boolean }) => i.done).map((i: { id: string }) => i.id)).toEqual([b.id, c.id]);
+    // Setting is idempotent, so a retried request has the same effect.
+    await set(b.id, true);
+    expect((await json(await set(b.id, true))).entry.checklist.find((i: { id: string }) => i.id === b.id).done).toBe(true);
+    // Custom items: add (idempotent with a client id), remove; owners only.
+    const add = (cookie = me.cookie) => addChecklistItem(req("POST", "/x", { cookie, body: { label: "Portfolio", itemId: "custom-1" } }), ctx({ id }));
+    expect((await add()).status).toBe(201);
+    const twice = await json(await add());
+    expect(twice.entry.checklist.filter((i: { label?: string }) => i.label === "Portfolio")).toHaveLength(1);
+    expect((await add(other.cookie)).status).toBe(404);
+    expect((await set(a.id, true, other.cookie)).status).toBe(404);
+    expect((await set("no-such-item", true)).status).toBe(404);
+    const removed = await json(await removeChecklistItem(req("DELETE", "/x", { cookie: me.cookie }), ctx({ id, itemId: "custom-1" })));
+    expect(removed.entry.checklist.some((i: { id: string }) => i.id === "custom-1")).toBe(false);
   });
 
   it("links essays only to the student's own list entries", async () => {

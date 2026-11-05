@@ -428,20 +428,52 @@ export const checklistItemSchema = z.object({
   done: z.boolean(),
 });
 
-export const listEntryInputSchema = z.object({
+/** A real calendar date in YYYY-MM-DD form (rejects 2026-02-31). */
+export const isoDate = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/)
+  .refine((v) => {
+    const d = new Date(`${v}T00:00:00Z`);
+    return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === v;
+  }, "invalid_date");
+
+const listEntryFields = {
   schoolId: z.string().uuid().nullable().optional(),
   customSchoolName: short(160).nullable().optional(),
-  category: z.enum(LIST_CATEGORIES).default("unsure"),
-  round: z.enum(APPLICATION_ROUNDS).default("undecided"),
+  category: z.enum(LIST_CATEGORIES),
+  round: z.enum(APPLICATION_ROUNDS),
   platform: z.enum(APPLICATION_PLATFORMS).nullable().optional(),
-  deadline: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/)
-    .nullable()
-    .optional(),
+  deadline: isoDate.nullable().optional(),
   intendedMajor: short(120).nullable().optional(),
-  status: z.enum(APPLICATION_STATUSES).default("researching"),
+  status: z.enum(APPLICATION_STATUSES),
   notes: short(4000).nullable().optional(),
+};
+
+export const listEntryInputSchema = z.object({
+  ...listEntryFields,
+  category: listEntryFields.category.default("unsure"),
+  round: listEntryFields.round.default("undecided"),
+  status: listEntryFields.status.default("researching"),
   checklist: z.array(checklistItemSchema).max(30).optional(),
 });
+
+/**
+ * Updates carry only the fields that changed. No defaults here: Zod applies defaults even inside
+ * `.partial()`, which would silently reset fields the client didn't send. The checklist is changed
+ * through per-item operations instead, so concurrent clicks can't overwrite each other.
+ */
+export const listEntryPatchSchema = z
+  .object({
+    customSchoolName: listEntryFields.customSchoolName,
+    category: listEntryFields.category.optional(),
+    round: listEntryFields.round.optional(),
+    platform: listEntryFields.platform,
+    deadline: listEntryFields.deadline,
+    intendedMajor: listEntryFields.intendedMajor,
+    status: listEntryFields.status.optional(),
+    notes: listEntryFields.notes,
+  })
+  .strict();
+export type ListEntryPatch = z.infer<typeof listEntryPatchSchema>;
+export const MAX_CHECKLIST_ITEMS = 30;
 export type ListEntryInput = z.infer<typeof listEntryInputSchema>;

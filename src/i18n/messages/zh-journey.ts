@@ -377,6 +377,9 @@ const zhJourney: Widen<typeof enJourney> = {
     },
   },
   list: {
+    discard: "放弃修改",
+    unsavedFields: "有未保存的修改",
+    removeItem: "删除",
     title: "我的选校清单",
     intro: "在一个地方管理你的学校、申请轮次、截止日期和清单。分类由你自己判断——TrueDraft 从不替你给学校贴标签。",
     empty: "清单还是空的。可以从“探索学校”添加，也可以添加目录中没有的学校。",

@@ -14,7 +14,7 @@ import { completeRun, createPendingRun, failRun } from "../services/feedback";
 import { getRetrievalGuidance } from "../services/resources";
 import { buildSystemPrompt, buildUserMessage, PROMPT_VERSION, type PromptInput } from "./prompts";
 import { AiProviderError, aiSettings, getProvider } from "./provider";
-import { jsonSchemaFor, SCHEMA_VERSION, SCHEMAS, type EssayToolKind, type SentenceMode, type ToolKind } from "./schemas";
+import { isSubstanceFailure, jsonSchemaFor, SCHEMA_VERSION, SCHEMAS, type EssayToolKind, type SentenceMode, type ToolKind } from "./schemas";
 import { applyGuards } from "./guard";
 
 export type AiStage = "checking" | "structure" | "detail" | "priorities" | "reviewing" | "preparing";
@@ -182,8 +182,11 @@ function errorCodeFor(error: unknown): string {
       case "refused":
         return "ai_refused";
       case "malformed":
-      case "truncated":
         return "ai_malformed";
+      case "truncated":
+        return "ai_truncated";
+      case "incomplete":
+        return "ai_incomplete";
       case "not_configured":
         return "ai_not_configured";
       default:
@@ -241,7 +244,15 @@ export async function callModel(opts: {
       });
       clearTimeout(timer);
       const parsed = SCHEMAS[opts.kind].safeParse(response.json);
-      if (!parsed.success) throw new AiProviderError("malformed");
+      if (!parsed.success) {
+        // Well-formed but substantively incomplete output (e.g. a missing category) is worth one
+        // more attempt; a malformed shape is not.
+        if (isSubstanceFailure(parsed.error)) {
+          logger.warn("ai.incomplete_output", { ...opts.logFields, attempt, code: parsed.error.issues.map((i) => i.message).join(",") });
+          throw new AiProviderError("incomplete", true);
+        }
+        throw new AiProviderError("malformed");
+      }
       return { parsed: parsed.data as unknown, model: response.model, providerRef: response.providerRef, providerKind: provider.kind, attempt };
     } catch (error) {
       clearTimeout(timer);

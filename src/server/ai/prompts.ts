@@ -5,7 +5,7 @@ import type { SentenceMode, ToolKind } from "./schemas";
  * Versioned server-side prompts. Bump PROMPT_VERSION whenever any text here changes; the version
  * is stored with every feedback run so results can be traced to the exact instructions used.
  */
-export const PROMPT_VERSION = "coach-2026-11-05.1";
+export const PROMPT_VERSION = "coach-2026-11-05.2";
 
 export const BASE_SYSTEM_PROMPT = `You are an ethical college-application writing coach. Your purpose is to help a student understand and revise their own writing while preserving their voice, factual accuracy, and ownership of the work.
 
@@ -60,12 +60,13 @@ const TOOL_INSTRUCTIONS: Record<Exclude<ToolKind, "cds_extract">, string> = {
 - grades are school years 9–12 only. hours_per_week and weeks_per_year only if stated.
 - Never include personal contact details, ID numbers, other people's names, or the student's own name in any field. Mention in skipped_notes anything you deliberately left out (for example "contact details omitted").`,
   full_feedback: `Task: give structured developmental feedback on the draft.
+- material: "sufficient" normally. Use "insufficient" only when the draft is too short, mostly off the prompt, or too fragmentary to assess honestly. In that case explain why in insufficient_reason, ask questions_for_student that would help the student develop material, and leave categories, passage_comments, and revision_plan empty rather than guessing. Otherwise set insufficient_reason to null.
 - strengths: two or three genuine, specific strengths, each tied to a short exact quote. No generic praise.
 - primary_priority: the single most important revision.
 - prompt_alignment: whether and how the draft responds to the prompt.
-- categories: one entry for each of the eight category keys. label must be strong_foundation, developing, or needs_attention. Give one concrete next step and, where possible, a short exact quote.
+- categories: exactly one entry for each of the eight category keys (prompt_response, specificity, reflection, structure_pacing, clarity, voice, opening_ending, concision) — no key missing, none repeated. Every explanation and next_step must be filled in. label must be strong_foundation, developing, or needs_attention. Give one concrete next step and, where possible, a short exact quote.
 - passage_comments: only the 3–6 most useful comments, not every sentence. Each needs an exact short quote, what is happening, why it matters, a question or action that helps the student revise, and a priority.
-- revision_plan: three to five ordered, manageable tasks tied to the student's actual text, focused on thinking and revision rather than polishing.
+- revision_plan: three to five (never fewer, never more) distinct, ordered, manageable tasks tied to the student's actual text, focused on thinking and revision rather than polishing.
 - voice_check: two to four questions that help the student check the essay still sounds like them, and note any risk that edits would make it generic.
 - questions_for_student: questions where you need information only the student has.
 - limitations: briefly state what you could not judge (for example, context you lack, or that AI can misread tone).

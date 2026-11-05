@@ -121,6 +121,58 @@ describe("AI feedback", () => {
     expect(JSON.stringify(await db.select().from(auditEvent))).not.toContain("turquoise");
   });
 
+  it("retries once when feedback is well-formed but incomplete, and never shows an incomplete report", async () => {
+    await grant();
+    const incomplete = { ...validFeedback, categories: validFeedback.categories.slice(0, 6) };
+    let calls = 0;
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue(fakeProvider(() => (++calls === 1 ? incomplete : validFeedback)));
+    const events = await readStream(await run("full_feedback", { content: sampleEssay.draft }));
+    const done = events.find((e) => e.type === "done");
+    expect(calls).toBe(2);
+    expect(done.result.categories).toHaveLength(8);
+
+    calls = 0;
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue(fakeProvider(() => ({ ...validFeedback, revision_plan: validFeedback.revision_plan.slice(0, 1) })));
+    const failed = await readStream(await run("full_feedback", { content: sampleEssay.draft + " More." }));
+    expect(failed.find((e) => e.type === "error")?.code).toBe("ai_incomplete");
+    const rows = await db.select().from(feedbackRun).where(eq(feedbackRun.essayId, essayId));
+    const failedRow = rows.find((r) => r.status === "failed")!;
+    expect(failedRow.errorCode).toBe("ai_incomplete");
+    expect(failedRow.encryptedStructuredResult).toBeNull();
+  });
+
+  it("reports truncated responses distinctly", async () => {
+    await grant();
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue({
+      kind: "fake",
+      model: "fake",
+      async generate() {
+        throw new AiProviderError("truncated");
+      },
+    });
+    const events = await readStream(await run("full_feedback", { content: sampleEssay.draft }));
+    expect(events.find((e) => e.type === "error")?.code).toBe("ai_truncated");
+  });
+
+  it("returns an honest insufficient-material result instead of padded feedback", async () => {
+    await grant();
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue(
+      fakeProvider(() => ({
+        ...validFeedback,
+        material: "insufficient",
+        insufficient_reason: "Only two sentences so far.",
+        strengths: [],
+        categories: [],
+        passage_comments: [],
+        revision_plan: [],
+        questions_for_student: ["What happened at the stall that night?"],
+      })),
+    );
+    const events = await readStream(await run("full_feedback", { content: "Two short sentences. That is all." }));
+    const done = events.find((e) => e.type === "done");
+    expect(done.result).toMatchObject({ material: "insufficient", insufficient_reason: "Only two sentences so far.", categories: [] });
+  });
+
   it("rejects malformed provider output and never fabricates feedback", async () => {
     await grant();
     vi.spyOn(providerModule, "getProvider").mockResolvedValue(fakeProvider(() => ({ summary: 42 })));

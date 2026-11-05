@@ -541,6 +541,8 @@ const en = {
     checkboxRequired: "Please confirm to continue, or choose “Save without AI analysis”.",
   },
   feedback: {
+    insufficientTitle: "Not enough material for full feedback yet",
+    insufficientBody: "Rather than guess, the reviewer explains what is missing and asks questions to help you develop the draft. Get feedback again once you have written more.",
     title: "Feedback",
     emptyTitle: "No feedback yet",
     emptyBody: "When you're ready, choose “Get feedback”. Your draft will be saved as a version first, so feedback always matches a specific version.",
@@ -818,6 +820,8 @@ const en = {
     ai_busy: "The AI service is busy. Please wait a moment and try again.",
     ai_refused: "The AI service declined this request. Try rephrasing your notes, or ask for feedback on a different section.",
     ai_malformed: "The AI returned feedback in an unexpected format, so we didn't show it. Please try again.",
+    ai_truncated: "The AI's response was cut off before it finished, so we didn't show a partial result. Please try again.",
+    ai_incomplete: "The AI's feedback was missing required parts (for example, a diagnostic category or enough revision tasks), so we didn't show it. Please try again.",
     cross_site_request: "This request was blocked for security reasons. Reload the page and try again.",
     internal_error: "Something went wrong on our side. Your saved work is safe.",
     network: "Network problem. Check your connection and try again.",

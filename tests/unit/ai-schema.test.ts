@@ -24,14 +24,58 @@ describe("structured AI output", () => {
     expect(fullFeedbackSchema.safeParse("not json").success).toBe(false);
   });
 
-  it("clamps oversized text and lists so no field can carry a full essay", () => {
-    const parsed = fullFeedbackSchema.parse({
-      ...validFeedback,
-      summary: "word ".repeat(2000),
-      revision_plan: Array.from({ length: 12 }, () => validFeedback.revision_plan[0]),
-    });
+  it("clamps oversized text so no field can carry a full essay", () => {
+    const parsed = fullFeedbackSchema.parse({ ...validFeedback, summary: "word ".repeat(2000) });
     expect(parsed.summary.length).toBeLessThanOrEqual(900);
-    expect(parsed.revision_plan).toHaveLength(5);
+  });
+
+  const reasons = (value: unknown) => {
+    const r = fullFeedbackSchema.safeParse(value);
+    return r.success ? [] : r.error.issues.map((i) => i.message);
+  };
+
+  it("requires all eight categories exactly once", () => {
+    const cats = validFeedback.categories;
+    expect(reasons({ ...validFeedback, categories: cats.slice(0, 7) })).toContain("categories_not_exactly_once");
+    expect(reasons({ ...validFeedback, categories: [...cats.slice(0, 7), cats[0]] })).toContain("categories_not_exactly_once");
+    expect(reasons({ ...validFeedback, categories: [...cats, cats[1]] })).toContain("categories_not_exactly_once");
+    // Output order doesn't matter; it is normalised.
+    const parsed = fullFeedbackSchema.parse({ ...validFeedback, categories: [...cats].reverse() });
+    expect(parsed.categories.map((c) => c.key)).toEqual(cats.map((c) => c.key));
+  });
+
+  it("requires non-empty essentials", () => {
+    expect(reasons({ ...validFeedback, summary: "  " })).toContain("summary_empty");
+    expect(reasons({ ...validFeedback, categories: validFeedback.categories.map((c, i) => (i === 3 ? { ...c, next_step: "" } : c)) })).toContain("category_empty");
+    expect(reasons({ ...validFeedback, primary_priority: { title: "", explanation: "x", zh_note: null } })).toContain("priority_empty");
+    expect(reasons({ ...validFeedback, strengths: [] })).toContain("strengths_empty");
+    expect(reasons({ ...validFeedback, passage_comments: [] })).toContain("passage_comments_empty");
+    expect(reasons({ ...validFeedback, limitations: "" })).toContain("limitations_empty");
+  });
+
+  it("requires three to five distinct revision tasks", () => {
+    const plan = validFeedback.revision_plan;
+    expect(reasons({ ...validFeedback, revision_plan: plan.slice(0, 2) })).toContain("revision_plan_count");
+    const six = Array.from({ length: 6 }, (_, i) => ({ ...plan[0], task: `Task ${i}` }));
+    expect(reasons({ ...validFeedback, revision_plan: six })).toContain("revision_plan_count");
+    expect(reasons({ ...validFeedback, revision_plan: [plan[0], plan[0], plan[1]] })).toContain("revision_plan_count");
+    expect(reasons({ ...validFeedback, revision_plan: [...plan, { ...plan[0], task: "Fourth.", why: "w" }, { ...plan[0], task: "Fifth.", why: "w" }] })).toEqual([]);
+  });
+
+  it("accepts an honest insufficient-material result without invented diagnosis", () => {
+    const insufficient = {
+      ...validFeedback,
+      material: "insufficient",
+      insufficient_reason: "The draft is two sentences long.",
+      strengths: [],
+      categories: [],
+      passage_comments: [],
+      revision_plan: [],
+      questions_for_student: ["What happened next?"],
+    };
+    expect(reasons(insufficient)).toEqual([]);
+    expect(reasons({ ...insufficient, insufficient_reason: null })).toContain("insufficient_reason_empty");
+    expect(reasons({ ...insufficient, questions_for_student: [] })).toContain("insufficient_needs_questions");
   });
 
   it("produces strict JSON schemas (closed objects, all fields required)", () => {

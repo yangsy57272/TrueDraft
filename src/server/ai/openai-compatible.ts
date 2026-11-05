@@ -90,6 +90,8 @@ export class OpenAiCompatibleProvider implements AiProvider {
       throw new AiProviderError(request.signal.aborted ? "timeout" : "unavailable", true);
     }
     if (finishReason === "length") throw new AiProviderError("truncated");
+    // A stream that ends without a finish reason was cut off (connection dropped mid-response).
+    if (!finishReason) throw new AiProviderError("truncated", true);
     if (finishReason === "content_filter") throw new AiProviderError("refused");
     return { json: parseJsonText(text), model, providerRef: id };
   }

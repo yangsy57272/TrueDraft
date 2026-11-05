@@ -9,7 +9,7 @@ import { ACTIVITY_TYPES, C7_FACTORS, C7_LEVELS, CDS_FIELDS, COURSE_LEVELS, HONOR
  * length, the AI cannot return a replacement essay through any field of these schemas.
  */
 
-export const SCHEMA_VERSION = "2026-11-05.1";
+export const SCHEMA_VERSION = "2026-11-05.2";
 
 const text = (max: number) => z.string().transform((s) => (s.length > max ? `${s.slice(0, max - 1)}…` : s));
 const nullableText = (max: number) => z.string().nullable().transform((s) => (s && s.length > max ? `${s.slice(0, max - 1)}…` : s));
@@ -31,38 +31,82 @@ export const ALIGNMENT = ["responds", "partly", "not_yet", "unclear"] as const;
 
 /* ------------------------- full feedback ------------------------- */
 
-export const fullFeedbackSchema = z.object({
-  summary: text(900),
-  strengths: list(z.object({ point: text(400), evidence_quote: text(400) }), 3),
-  primary_priority: z.object({ title: text(160), explanation: text(900), zh_note: nullableText(300) }),
-  prompt_alignment: z.object({ status: z.enum(ALIGNMENT), explanation: text(800) }),
-  categories: list(
-    z.object({
-      key: z.enum(CATEGORY_KEYS),
-      label: z.enum(DIAGNOSTIC_LABELS),
-      explanation: text(600),
-      next_step: text(400),
-      passage_quote: nullableText(400),
-      zh_note: nullableText(300),
-    }),
-    8,
-  ),
-  passage_comments: list(
-    z.object({
-      quote: text(500),
-      observation: text(600),
-      why_it_matters: text(600),
-      revision_question: text(400),
-      priority: z.enum(PRIORITIES),
-      zh_note: nullableText(300),
-    }),
-    8,
-  ),
-  revision_plan: list(z.object({ task: text(300), why: text(400), zh_note: nullableText(300) }), 5),
-  voice_check: list(z.object({ question: text(300), note: text(400) }), 4),
-  questions_for_student: list(text(300), 5),
-  limitations: text(600),
-});
+export const MATERIAL_STATUS = ["sufficient", "insufficient"] as const;
+export const REVISION_TASKS_MIN = 3;
+export const REVISION_TASKS_MAX = 5;
+
+const blank = (v: string | null | undefined) => !v || !v.trim();
+
+export const fullFeedbackSchema = z
+  .object({
+    /** "insufficient" when the draft is too short, off-prompt, or unreadable to assess honestly. */
+    material: z.enum(MATERIAL_STATUS),
+    insufficient_reason: nullableText(600),
+    summary: text(900),
+    strengths: list(z.object({ point: text(400), evidence_quote: text(400) }), 3),
+    primary_priority: z.object({ title: text(160), explanation: text(900), zh_note: nullableText(300) }),
+    prompt_alignment: z.object({ status: z.enum(ALIGNMENT), explanation: text(800) }),
+    // Not clamped: a ninth or duplicate category must be rejected, not silently cut.
+    categories: z.array(
+      z.object({
+        key: z.enum(CATEGORY_KEYS),
+        label: z.enum(DIAGNOSTIC_LABELS),
+        explanation: text(600),
+        next_step: text(400),
+        passage_quote: nullableText(400),
+        zh_note: nullableText(300),
+      }),
+    ),
+    passage_comments: list(
+      z.object({
+        quote: text(500),
+        observation: text(600),
+        why_it_matters: text(600),
+        revision_question: text(400),
+        priority: z.enum(PRIORITIES),
+        zh_note: nullableText(300),
+      }),
+      8,
+    ),
+    revision_plan: z.array(z.object({ task: text(300), why: text(400), zh_note: nullableText(300) })),
+    voice_check: list(z.object({ question: text(300), note: text(400) }), 4),
+    questions_for_student: list(text(300), 5),
+    limitations: text(600),
+  })
+  .superRefine((f, ctx) => {
+    const issue = (code: string) => ctx.addIssue({ code: "custom", message: code, params: { substance: true } });
+    if (blank(f.summary)) issue("summary_empty");
+    if (blank(f.limitations)) issue("limitations_empty");
+    if (f.material === "insufficient") {
+      // An honest "not enough to assess yet" result: no invented diagnosis is required.
+      if (blank(f.insufficient_reason)) issue("insufficient_reason_empty");
+      if (f.questions_for_student.filter((q) => !blank(q)).length === 0) issue("insufficient_needs_questions");
+      return;
+    }
+    const keys = f.categories.map((c) => c.key);
+    if (f.categories.length !== CATEGORY_KEYS.length || new Set(keys).size !== keys.length || CATEGORY_KEYS.some((k) => !keys.includes(k))) {
+      issue("categories_not_exactly_once");
+    }
+    if (f.categories.some((c) => blank(c.explanation) || blank(c.next_step))) issue("category_empty");
+    if (blank(f.primary_priority.title) || blank(f.primary_priority.explanation)) issue("priority_empty");
+    if (blank(f.prompt_alignment.explanation)) issue("alignment_empty");
+    if (f.strengths.filter((x) => !blank(x.point)).length === 0) issue("strengths_empty");
+    if (f.passage_comments.length === 0) issue("passage_comments_empty");
+    const tasks = f.revision_plan.map((r) => r.task.trim().toLowerCase()).filter(Boolean);
+    if (f.revision_plan.length < REVISION_TASKS_MIN || f.revision_plan.length > REVISION_TASKS_MAX || tasks.length !== f.revision_plan.length || new Set(tasks).size !== tasks.length) {
+      issue("revision_plan_count");
+    }
+  })
+  .transform((f) => ({
+    ...f,
+    // Order categories canonically so every report reads the same way.
+    categories: [...f.categories].sort((a, b) => CATEGORY_KEYS.indexOf(a.key) - CATEGORY_KEYS.indexOf(b.key)),
+  }));
+
+/** True when a parse failure came from the substance rules (as opposed to a malformed shape). */
+export function isSubstanceFailure(error: z.ZodError) {
+  return error.issues.length > 0 && error.issues.every((i) => i.code === "custom" && (i as { params?: { substance?: boolean } }).params?.substance === true);
+}
 export type FullFeedback = z.infer<typeof fullFeedbackSchema>;
 
 /* ------------------------- prompt decoder ------------------------ */

@@ -20,6 +20,31 @@ export function FeedbackView({ data, compact = false }: { data: FullFeedbackResu
   const uid = useId();
   const pad = compact ? "p-4" : "p-5";
 
+  // Results stored before the `material` field existed are full reports.
+  if (data.material === "insufficient") {
+    return (
+      <div className="text-[0.975rem]">
+        <section className="card border-amber/40 bg-amber-soft/40 p-5" aria-labelledby={`${uid}-insufficient`}>
+          <h3 id={`${uid}-insufficient`} className="font-serif text-lg font-semibold">{t("feedback.insufficientTitle")}</h3>
+          <p className="mt-2">{data.insufficient_reason}</p>
+          <p className="mt-2 text-sm text-ink-soft">{t("feedback.insufficientBody")}</p>
+        </section>
+        {data.questions_for_student.length ? (
+          <Section title={t("feedback.questions")} id={`${uid}-q`}>
+            <ul className="list-disc space-y-1 pl-5">
+              {data.questions_for_student.map((q, i) => (
+                <li key={i}>{q}</li>
+              ))}
+            </ul>
+          </Section>
+        ) : null}
+        <Section title={t("feedback.limitations")} id={`${uid}-l`}>
+          <p className="text-sm text-ink-soft">{data.limitations}</p>
+        </Section>
+      </div>
+    );
+  }
+
   return (
     <div className="text-[0.975rem]">
       <Section title={`A. ${t("feedback.overall")}`} id={`${uid}-a`}>

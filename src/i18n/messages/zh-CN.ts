@@ -525,6 +525,8 @@ const zhCN: Messages = {
     checkboxRequired: "请勾选确认后继续，或选择“只保存，不进行 AI 分析”。",
   },
   feedback: {
+    insufficientTitle: "内容还不足以给出完整反馈",
+    insufficientBody: "反馈不会凭空猜测，而是说明还缺少什么，并提出问题帮助你充实初稿。写得更多之后可以再次获取反馈。",
     title: "反馈",
     emptyTitle: "还没有反馈",
     emptyBody: "准备好后点击“获取反馈”。你的草稿会先被保存为一个版本，这样每份反馈都对应一个确定的版本。",
@@ -802,6 +804,8 @@ const zhCN: Messages = {
     ai_busy: "AI 服务繁忙，请稍等片刻再试。",
     ai_refused: "AI 服务拒绝了这次请求。可以尝试修改你的说明，或针对其他部分申请反馈。",
     ai_malformed: "AI 返回的反馈格式异常，因此没有显示。请重试。",
+    ai_truncated: "AI 的回复在完成前被截断，因此没有显示不完整的结果。请重试。",
+    ai_incomplete: "AI 的反馈缺少必要部分（例如某个诊断类别或足够的修改任务），因此没有显示。请重试。",
     cross_site_request: "出于安全原因，这次请求被拦截了。请刷新页面后重试。",
     internal_error: "我们这边出了点问题。你已保存的内容是安全的。",
     network: "网络出现问题，请检查网络连接后重试。",

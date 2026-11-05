@@ -27,6 +27,11 @@ export function renderEssayExport(essay: EssayDetail, run: Run, format: "md" | "
     lines.push(h(2, `${t("feedback.title")} — ${formatDate(run!.createdAt, locale, true)} (${run!.modelName})`), "");
     lines.push(t("feedback.aiNote"), "");
     lines.push(h(3, t("feedback.overall")), "", fb.summary, "");
+    if (fb.material === "insufficient") {
+      lines.push(h(3, t("feedback.insufficientTitle")), "", fb.insufficient_reason ?? "", "");
+      if (fb.questions_for_student.length) lines.push(h(3, t("feedback.questions")), ...fb.questions_for_student.map(bullet), "");
+      lines.push(h(3, t("feedback.limitations")), "", fb.limitations, "");
+    } else {
     lines.push(h(3, t("feedback.strengths")), ...fb.strengths.map((s) => bullet(`${s.point} — “${s.evidence_quote}”`)), "");
     lines.push(h(3, t("feedback.primaryPriority")), "", `${fb.primary_priority.title}: ${fb.primary_priority.explanation}`, "");
     lines.push(h(3, t("feedback.promptAlignment")), "", `${t(`feedback.alignment.${fb.prompt_alignment.status}` as never)} — ${fb.prompt_alignment.explanation}`, "");
@@ -42,6 +47,7 @@ export function renderEssayExport(essay: EssayDetail, run: Run, format: "md" | "
     lines.push(h(3, t("feedback.voiceCheck")), ...fb.voice_check.map((v) => bullet(`${v.question} ${v.note}`)), "");
     if (fb.questions_for_student.length) lines.push(h(3, t("feedback.questions")), ...fb.questions_for_student.map(bullet), "");
     lines.push(h(3, t("feedback.limitations")), "", fb.limitations, "");
+    }
   }
   lines.push("---", t("disclaimer.main"), `${brand.name} · ${formatDate(new Date(), locale)}`);
   return lines.join("\n");

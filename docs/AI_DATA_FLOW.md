@@ -50,6 +50,13 @@ The same safeguards apply as for essay tools: consent (students), rate limits, t
 ## 4. After the response
 
 1. JSON is parsed and validated with Zod. Text fields are length-capped and lists are capped, so no single field can hold an essay.
+   - **Full feedback is also checked for substance:**
+     - all eight diagnostic categories appear exactly once, and none is left blank;
+     - the summary, main priority, prompt alignment, at least one strength and one passage comment, and the limitations are all filled in;
+     - the revision plan has 3–5 distinct tasks.
+   - When there isn't enough to assess honestly (a draft that is too short, off-prompt, or fragmentary), the model returns `material: "insufficient"` with a reason and questions for the student, instead of padding out a report.
+   - Output that is well-formed but incomplete is retried once (`ai_incomplete`).
+   - A response that was cut off is never shown in part (`ai_truncated`). That covers a provider stop reason other than a normal end, and a stream that ends without a finish reason.
 2. Guardrails (`src/server/ai/guard.ts`):
    - Quotes are matched against the draft. Unmatched quotes are flagged as “could not be found in your draft”.
    - Sentence alternatives longer than about twice the selected passage are discarded, and translation requests return no alternatives.

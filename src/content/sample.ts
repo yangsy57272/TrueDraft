@@ -17,6 +17,8 @@ This experience taught me that I am passionate about urban planning. It showed m
 When I want to learn more, I read blogs about city design and watch videos. Now I see patterns everywhere, even in my school cafeteria.`;
 
 export const SAMPLE_FEEDBACK = {
+  material: "sufficient" as const,
+  insufficient_reason: null,
   summary:
     "This draft has a genuinely original subject — mapping foot traffic at your aunt's night-market stall — and the middle paragraphs show real curiosity in action. The biggest opportunity is the fourth paragraph, where specific observations give way to general statements about passion and perseverance.",
   strengths: [

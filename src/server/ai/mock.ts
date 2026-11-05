@@ -7,8 +7,9 @@ import { AiProviderError, type AiProvider, type StructuredRequest, type Structur
  * and the UI labels mock runs prominently. It exists so the interface can be exercised without
  * AI credentials. Never enable AI_PROVIDER=mock in production.
  *
- * Test hooks (only inside the mock): include "[[mock:fail]]" or "[[mock:malformed]]" in a draft to
- * simulate provider failures.
+ * Test hooks (only inside the mock): include "[[mock:fail]]", "[[mock:malformed]]", or
+ * "[[mock:incomplete]]" in a draft to simulate provider failures, or "[[mock:insufficient]]" for an
+ * honest "not enough material" result.
  */
 const M = "[Development mock — not real feedback]";
 
@@ -22,7 +23,25 @@ function payloadFor(schemaName: string, user: string): unknown {
   const quote = firstWords(user, "student_essay") || firstWords(user, "selected_passage");
   switch (schemaName) {
     case "full_feedback":
+      if (user.includes("[[mock:insufficient]]")) {
+        return {
+          material: "insufficient",
+          insufficient_reason: `${M} The draft is too short to assess yet.`,
+          summary: `${M} There isn't enough here for full feedback yet.`,
+          strengths: [],
+          primary_priority: { title: "", explanation: "", zh_note: null },
+          prompt_alignment: { status: "unclear", explanation: "" },
+          categories: [],
+          passage_comments: [],
+          revision_plan: [],
+          voice_check: [],
+          questions_for_student: [`${M} What moment comes to mind first when you read the prompt?`],
+          limitations: `${M} No AI analysis was performed.`,
+        };
+      }
       return {
+        material: "sufficient",
+        insufficient_reason: null,
         summary: `${M} This placeholder shows where an overall response would appear.`,
         strengths: [
           { point: `${M} A strength would be described here.`, evidence_quote: quote },
@@ -157,9 +176,11 @@ export class MockProvider implements AiProvider {
   async generate(request: StructuredRequest): Promise<StructuredResponse> {
     if (request.user.includes("[[mock:fail]]")) throw new AiProviderError("unavailable", false);
     const delay = Number(process.env.MOCK_AI_DELAY_MS ?? 400);
-    const full = request.user.includes("[[mock:malformed]]")
-      ? '{"summary": "unterminated'
-      : JSON.stringify(payloadFor(request.schemaName, request.user));
+    let payload = payloadFor(request.schemaName, request.user) as Record<string, unknown>;
+    if (request.user.includes("[[mock:incomplete]]") && request.schemaName === "full_feedback") {
+      payload = { ...payload, categories: (payload.categories as unknown[]).slice(0, 5) };
+    }
+    const full = request.user.includes("[[mock:malformed]]") ? '{"summary": "unterminated' : JSON.stringify(payload);
     const steps = 6;
     for (let i = 1; i <= steps; i++) {
       if (request.signal.aborted) throw new AiProviderError("timeout");

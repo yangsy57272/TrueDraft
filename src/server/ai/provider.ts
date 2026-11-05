@@ -22,6 +22,7 @@ export type AiErrorCode =
   | "auth"
   | "refused"
   | "truncated"
+  | "incomplete"
   | "malformed"
   | "bad_request";
 

@@ -43,6 +43,8 @@ export class AnthropicProvider implements AiProvider {
 
       if (message.stop_reason === "refusal") throw new AiProviderError("refused");
       if (message.stop_reason === "max_tokens") throw new AiProviderError("truncated");
+      // Anything other than a normal end means the JSON may be incomplete.
+      if (message.stop_reason !== "end_turn" && message.stop_reason !== "stop_sequence") throw new AiProviderError("truncated");
       const textOut = message.content
         .filter((b): b is Anthropic.TextBlock => b.type === "text")
         .map((b) => b.text)

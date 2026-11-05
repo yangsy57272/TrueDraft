@@ -43,9 +43,12 @@ export function EssayActions({ essayId, title }: { essayId: string; title: strin
         <DropdownMenu.Portal>
           <DropdownMenu.Content align="end" sideOffset={4} className="z-40 min-w-48 rounded-lg border border-line bg-card p-1 shadow-lg">
             <DropdownMenu.Item className={item} onSelect={duplicate}>{t("dashboard.duplicate")}</DropdownMenu.Item>
+            {/* A file download from an API route, not page navigation. */}
+            {/* eslint-disable-next-line @next/next/no-location-assign-relative-destination */}
             <DropdownMenu.Item className={item} onSelect={() => (window.location.href = `/api/essays/${essayId}/export?format=md`)}>
               {t("editor.exportMd")}
             </DropdownMenu.Item>
+            {/* eslint-disable-next-line @next/next/no-location-assign-relative-destination */}
             <DropdownMenu.Item className={item} onSelect={() => (window.location.href = `/api/essays/${essayId}/export?format=txt`)}>
               {t("editor.exportTxt")}
             </DropdownMenu.Item>

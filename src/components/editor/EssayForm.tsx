@@ -112,7 +112,7 @@ export function EssayForm({
     }
   }
 
-  const FieldError = ({ name }: { name: keyof EssayFormValues }) =>
+  const fieldError = (name: keyof EssayFormValues) =>
     errors[name] ? (
       <p id={id(`${name}-error`)} className="field-error">
         {errors[name]}
@@ -126,7 +126,7 @@ export function EssayForm({
         <label htmlFor={id("title")} className="field-label">{t("essayForm.title")} <span className="font-normal text-ink-faint">({t("common.required")})</span></label>
         <input id={id("title")} className="input" value={values.title} maxLength={MAX.title} onChange={(e) => set("title", e.target.value)} aria-invalid={errors.title ? true : undefined} aria-describedby={describedBy("title")} required />
         <p id={id("title-help")} className="field-help">{t("essayForm.titleHelp")}</p>
-        <FieldError name="title" />
+        {fieldError("title")}
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2">
@@ -148,7 +148,7 @@ export function EssayForm({
         <label htmlFor={id("promptText")} className="field-label">{t("essayForm.prompt")} <span className="font-normal text-ink-faint">({t("common.required")})</span></label>
         <textarea id={id("promptText")} className="input" rows={4} value={values.promptText} onChange={(e) => set("promptText", e.target.value)} aria-invalid={errors.promptText ? true : undefined} aria-describedby={describedBy("promptText")} required />
         <p id={id("promptText-help")} className="field-help">{t("essayForm.promptHelp")}</p>
-        <FieldError name="promptText" />
+        {fieldError("promptText")}
       </div>
 
       {listOptions.length ? (
@@ -171,7 +171,7 @@ export function EssayForm({
           <label htmlFor={id("wordLimit")} className="field-label">{t("essayForm.wordLimit")} <span className="font-normal text-ink-faint">({t("common.optional")})</span></label>
           <input id={id("wordLimit")} className="input" inputMode="numeric" value={values.wordLimit} onChange={(e) => set("wordLimit", e.target.value)} aria-invalid={errors.wordLimit ? true : undefined} aria-describedby={describedBy("wordLimit")} />
           <p id={id("wordLimit-help")} className="field-help">{t("essayForm.wordLimitHelp")}</p>
-          <FieldError name="wordLimit" />
+          {fieldError("wordLimit")}
         </div>
       </div>
 
@@ -182,7 +182,7 @@ export function EssayForm({
           <p id={id("draft-help")} className="field-help">
             {t("essayForm.draftHelp")} · {t("common.wordsShort", { count: countWords(values.draft) })}
           </p>
-          <FieldError name="draft" />
+          {fieldError("draft")}
         </div>
       ) : null}
 
@@ -208,7 +208,7 @@ export function EssayForm({
         <label htmlFor={id("context")} className="field-label">{t("essayForm.context")} <span className="font-normal text-ink-faint">({t("common.optional")})</span></label>
         <textarea id={id("context")} className="input" rows={3} value={values.context} onChange={(e) => set("context", e.target.value)} aria-invalid={errors.context ? true : undefined} aria-describedby={describedBy("context")} />
         <p id={id("context-help")} className="field-help">{t("essayForm.contextHelp")}</p>
-        <FieldError name="context" />
+        {fieldError("context")}
       </div>
 
       {mode.kind === "create" ? (

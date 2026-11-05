@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import { useI18n } from "@/i18n/client";
-import { formatDate } from "@/i18n/translate";
 import { apiFetch, newId } from "@/lib/api-client";
 import { APPLICATION_PLATFORMS, APPLICATION_ROUNDS, APPLICATION_STATUSES, LIST_CATEGORIES } from "@/lib/planning";
 import { ConfirmDialog } from "@/components/ui/Dialog";

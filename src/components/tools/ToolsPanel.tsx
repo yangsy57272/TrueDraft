@@ -69,23 +69,23 @@ export function ToolsPanel({ essayId, runTool, activeRun, selection, onUseSelect
   const busy = activeRun !== null;
   const tooLong = selection.length > MAX_SELECTION;
 
-  const Progress = ({ kind }: { kind: string }) => (activeRun?.kind === kind ? <div className="mb-3"><ProgressStages stage={activeRun.stage} kind={kind} /></div> : null);
-  const Err = ({ msg }: { msg: string | null }) => (msg ? <p className="notice notice-error mt-3 text-sm" role="alert">{msg}</p> : null);
-  const Mock = ({ on }: { on: boolean }) => (on ? <p className="notice notice-warn mb-3 text-sm">{t("feedback.mockBanner")}</p> : null);
+  const progress = (kind: string) => (activeRun?.kind === kind ? <div className="mb-3"><ProgressStages stage={activeRun.stage} kind={kind} /></div> : null);
+  const err = (msg: string | null) => (msg ? <p className="notice notice-error mt-3 text-sm" role="alert">{msg}</p> : null);
+  const mock = (on: boolean) => (on ? <p className="notice notice-warn mb-3 text-sm">{t("feedback.mockBanner")}</p> : null);
 
   return (
     <div>
       <p className="text-sm text-ink-soft">{t("tools.intro")}</p>
       <Accordion.Root type="multiple" className="mt-3 space-y-3">
         <ToolShell value="decoder" title={t("tools.promptDecoder.title")} desc={t("tools.promptDecoder.desc")}>
-          <Progress kind="prompt_decoder" />
+          {progress("prompt_decoder")}
           <button type="button" className="btn btn-primary btn-sm" disabled={!aiConfigured || busy} onClick={() => decoder.run({})}>
             {t("tools.promptDecoder.button")}
           </button>
-          <Err msg={decoder.error} />
+          {err(decoder.error)}
           {decoder.result ? (
             <div className="mt-4">
-              <Mock on={decoder.isMock} />
+              {mock(decoder.isMock)}
               <PromptDecoderView data={decoder.result} />
             </div>
           ) : null}
@@ -96,7 +96,7 @@ export function ToolsPanel({ essayId, runTool, activeRun, selection, onUseSelect
         </ToolShell>
 
         <ToolShell value="sentence" title={t("tools.sentence.title")} desc={t("tools.sentence.desc")}>
-          <Progress kind="sentence" />
+          {progress("sentence")}
           <div>
             <p className="field-label">{t("tools.sentence.selected")}</p>
             {selection ? (
@@ -126,41 +126,41 @@ export function ToolsPanel({ essayId, runTool, activeRun, selection, onUseSelect
           >
             {t("tools.run")}
           </button>
-          <Err msg={sentence.error} />
+          {err(sentence.error)}
           {sentence.result ? (
             <div className="mt-4">
-              <Mock on={sentence.isMock} />
+              {mock(sentence.isMock)}
               <SentenceView data={sentence.result} />
             </div>
           ) : null}
         </ToolShell>
 
         <ToolShell value="wordcount" title={t("tools.wordCount.title")} desc={t("tools.wordCount.desc")}>
-          <Progress kind="word_count" />
+          {progress("word_count")}
           <p className="text-sm">
             {wordLimit ? t("tools.wordCount.status", { count: words, limit: wordLimit }) : t("tools.wordCount.statusNoLimit", { count: words })}
           </p>
           <button type="button" className="btn btn-primary btn-sm mt-2" disabled={!aiConfigured || busy || words === 0} onClick={() => wordCount.run({ content: getDraft() })}>
             {t("tools.wordCount.button")}
           </button>
-          <Err msg={wordCount.error} />
+          {err(wordCount.error)}
           {wordCount.result ? (
             <div className="mt-4">
-              <Mock on={wordCount.isMock} />
+              {mock(wordCount.isMock)}
               <WordCountView data={wordCount.result} />
             </div>
           ) : null}
         </ToolShell>
 
         <ToolShell value="final" title={t("tools.finalRead.title")} desc={t("tools.finalRead.desc")}>
-          <Progress kind="final_read" />
+          {progress("final_read")}
           <button type="button" className="btn btn-primary btn-sm" disabled={!aiConfigured || busy || words === 0} onClick={() => finalRead.run({ content: getDraft() })}>
             {t("tools.finalRead.button")}
           </button>
-          <Err msg={finalRead.error} />
+          {err(finalRead.error)}
           {finalRead.result ? (
             <div className="mt-4">
-              <Mock on={finalRead.isMock} />
+              {mock(finalRead.isMock)}
               <FinalReadView data={finalRead.result} />
             </div>
           ) : null}

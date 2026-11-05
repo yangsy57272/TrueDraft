@@ -1,7 +1,7 @@
 import "server-only";
 import { and, desc, eq, isNotNull, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { essay, essayVersion, feedbackRun } from "@/db/schema";
+import { essay, essayVersion } from "@/db/schema";
 import { limits } from "@/config/deployment";
 import { countWords } from "@/lib/wordcount";
 import { decryptText, encryptText } from "../crypto";

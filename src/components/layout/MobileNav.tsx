@@ -2,7 +2,7 @@
 import { Dialog } from "radix-ui";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useI18n } from "@/i18n/client";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { SignOutButton } from "./SignOutButton";
@@ -13,10 +13,21 @@ export function MobileNav({ links, signedIn, accountLinks }: { links: NavLink[];
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  useEffect(() => setOpen(false), [pathname]);
+  const [openedOn, setOpenedOn] = useState(pathname);
+  if (open && openedOn !== pathname) {
+    // Navigated while the menu was open: close it (state adjusted during render, not in an effect).
+    setOpenedOn(pathname);
+    setOpen(false);
+  }
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
+    <Dialog.Root
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        if (next) setOpenedOn(pathname);
+      }}
+    >
       <Dialog.Trigger className="btn btn-secondary btn-sm lg:hidden" aria-label={t("nav.menu")}>
         <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />

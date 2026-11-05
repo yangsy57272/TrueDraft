@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { DropdownMenu, Tabs } from "radix-ui";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { useI18n } from "@/i18n/client";
 import { formatDate } from "@/i18n/translate";
 import { apiFetch, runAiTool } from "@/lib/api-client";
@@ -60,24 +60,29 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
   const [feedbackError, setFeedbackError] = useState<string | null>(null);
 
   // After a run completes the server re-renders with the stored result (incl. model and version).
-  useEffect(() => {
-    if (latestFeedback) setFeedback(latestFeedback);
-  }, [latestFeedback?.runId]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Adjust state while rendering when the prop changes (React's recommended pattern, no effect).
+  const [seenRunId, setSeenRunId] = useState(latestFeedback?.runId);
+  if (latestFeedback && latestFeedback.runId !== seenRunId) {
+    setSeenRunId(latestFeedback.runId);
+    setFeedback(latestFeedback);
+  }
 
+  // Event handlers read the latest text through this ref; it's updated after each render.
   const draftRef = useRef(draft);
-  draftRef.current = draft;
+  useLayoutEffect(() => {
+    draftRef.current = draft;
+  }, [draft]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const words = countWords(draft);
   const limit = essay.wordLimit;
-  const latestVersion = versions[0];
 
   /* ------------------------------ autosave ------------------------------ */
   // One saver per essay. It sends saves one at a time with the revision they are based on, and
   // only marks text as saved once the server has acknowledged exactly that text.
-  const saverRef = useRef<DraftSaver | null>(null);
-  if (!saverRef.current) {
-    saverRef.current = new DraftSaver({
+  const [saver] = useState(
+    () =>
+      new DraftSaver({
       initialText: essay.draft,
       initialRevision: essay.draftRevision,
       onStatus: setSaveStatus,
@@ -88,9 +93,8 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
         });
         return res.ok ? { ok: true, revision: res.data.revision, savedAt: res.data.savedAt } : res;
       },
-    });
-  }
-  const saver = saverRef.current;
+    }),
+  );
   useEffect(() => () => saver.dispose(), [saver]);
 
   const save = useCallback(() => saver.flush(), [saver]);
@@ -161,6 +165,8 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
       notify(t("editor.autosave.exportBlocked"), "error");
       return;
     }
+    // A file download from an API route, not page navigation.
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination
     window.location.href = `/api/essays/${essay.id}/export?format=${format}`;
   }
 

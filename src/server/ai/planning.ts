@@ -1,5 +1,4 @@
 import "server-only";
-import { randomUUID } from "node:crypto";
 import { getPrivacyFacts, limits } from "@/config/deployment";
 import type { FeedbackLanguage } from "@/i18n/config";
 import { CDS_FIELDS, CIP_FAMILIES, type StudentProfile } from "@/lib/planning";

@@ -71,6 +71,8 @@ export function SettingsClient(props: Props) {
     const res = await apiFetch("/api/account", { method: "DELETE", body: { confirm: "DELETE" } });
     setBusy(null);
     if (res.ok) {
+      // Full reload on purpose: drop every bit of client state belonging to the deleted account.
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = "/sign-in?deleted=1";
     } else notify(t(`errors.${res.code}` as never), "error");
   }

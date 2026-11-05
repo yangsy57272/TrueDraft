@@ -653,7 +653,7 @@ const en = {
       deleteNote: "Delete note",
       coach: "Coach",
       you: "You",
-      notSavedYet: "This conversation is not saved.",
+      notSavedYet: "Nothing in this conversation is stored — not your answers and not the coach’s replies. Each answer you send goes to the AI provider with the conversation so far. To keep anything, choose “Save notes”.",
     },
     sentence: {
       title: "Sentence Feedback",

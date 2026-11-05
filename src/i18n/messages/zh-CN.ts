@@ -637,7 +637,7 @@ const zhCN: Messages = {
       deleteNote: "删除笔记",
       coach: "教练",
       you: "你",
-      notSavedYet: "这段对话尚未保存。",
+      notSavedYet: "这段对话的任何内容都不会被保存——包括你的回答和教练的回复。每次发送回答时，会把目前为止的对话发送给 AI 服务商。如需保留，请选择“保存笔记”。",
     },
     sentence: {
       title: "句子反馈",

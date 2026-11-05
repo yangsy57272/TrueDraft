@@ -10,6 +10,8 @@ import * as providerModule from "@/server/ai/provider";
 import { AiProviderError, type AiProvider, type StructuredRequest } from "@/server/ai/provider";
 import { getEssay, listEssays, listVersions } from "@/server/services/essays";
 import { PUT as autosave } from "@/app/api/essays/[id]/draft/route";
+import { GET as exportAccount } from "@/app/api/account/export/route";
+import { auditEvent } from "@/db/schema";
 import { ctx, json, readStream, req, sampleEssay, signIn } from "../helpers/http";
 import { validFeedback } from "../helpers/fixtures";
 
@@ -91,6 +93,32 @@ describe("AI feedback", () => {
     expect((await getEssay(me.userId, essayId)).draft).toBe(submitted + " Typed during feedback.");
     const versions = await listVersions(me.userId, essayId);
     expect(versions[0].versionNumber).toBe(2);
+  });
+
+  it("brainstorming leaves no trace of the conversation or the AI's reply unless a note is saved", async () => {
+    await grant();
+    const DETAIL = "my great-aunt's turquoise abacus from Kashgar";
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue(
+      fakeProvider(() => ({
+        acknowledgement: `You mentioned ${DETAIL}.`,
+        questions: [`What did ${DETAIL} sound like?`, "When did you first notice it?"],
+        threads_noticed: [`Patience around ${DETAIL}`],
+        boundary_note: null,
+      })),
+    );
+    const events = await readStream(await run("brainstorm", { conversation: [{ role: "student", text: `I keep thinking about ${DETAIL}.` }] }));
+    const done = events.find((e) => e.type === "done");
+    expect(JSON.stringify(done.result)).toContain(DETAIL); // shown to the student once
+
+    const runs = await db.select().from(feedbackRun).where(eq(feedbackRun.essayId, essayId));
+    const brainstormRun = runs.find((r) => r.kind === "brainstorm")!;
+    expect(brainstormRun.status).toBe("completed");
+    expect(brainstormRun.encryptedStructuredResult).toBeNull();
+    expect(brainstormRun.encryptedRequest).toBeNull();
+
+    const exported = JSON.stringify(await (await exportAccount(req("GET", "/api/account/export", { cookie: me.cookie }), undefined as never)).json());
+    expect(exported).not.toContain("turquoise abacus");
+    expect(JSON.stringify(await db.select().from(auditEvent))).not.toContain("turquoise");
   });
 
   it("rejects malformed provider output and never fabricates feedback", async () => {

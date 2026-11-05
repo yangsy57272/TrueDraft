@@ -50,12 +50,13 @@ export async function createPendingRun(values: {
   return row;
 }
 
-export async function completeRun(runId: string, result: unknown, modelName: string, providerRef: string | null) {
+/** `result` is null for ephemeral tools, whose output is shown once and never stored. */
+export async function completeRun(runId: string, result: unknown | null, modelName: string, providerRef: string | null) {
   await db
     .update(feedbackRun)
     .set({
       status: "completed",
-      encryptedStructuredResult: encryptJson(result, "feedback_result"),
+      encryptedStructuredResult: result == null ? null : encryptJson(result, "feedback_result"),
       modelName,
       providerRequestReference: providerRef,
       completedAt: new Date(),

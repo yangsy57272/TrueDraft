@@ -54,7 +54,7 @@ The same safeguards apply as for essay tools: consent (students), rate limits, t
    - Quotes are matched against the draft. Unmatched quotes are flagged as “could not be found in your draft”.
    - Sentence alternatives longer than about twice the selected passage are discarded, and translation requests return no alternatives.
    - Word counts come from the server, never from the model.
-3. The result is encrypted (AES-256-GCM, purpose-bound) and stored in `feedback_run`. Each run records the provider, model, prompt version, schema version, provider message id, redaction count, status, and timestamps.
+3. The result is encrypted (AES-256-GCM, purpose-bound) and stored in `feedback_run`. **Brainstorming Coach is the exception:** its replies are shown once and never stored. Its run row keeps only metadata (status, provider, model, timestamps), with no request or result. The model's questions can repeat personal details from the conversation, so nothing is kept unless the student explicitly saves notes. The same applies to account exports. Each run records the provider, model, prompt version, schema version, provider message id, redaction count, status, and timestamps.
 4. **On any failure** (invalid output, refusal, truncation, outage, or timeout), the run is marked `failed` with an error code and the student sees a plain-language error. No placeholder or fabricated feedback is ever shown. The development `mock` provider is the one exception, and every mock result is labelled as placeholder text.
 
 ## 5. What TrueDraft does *not* do with essays or feedback

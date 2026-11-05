@@ -257,6 +257,13 @@ export async function callModel(opts: {
 }
 
 /**
+ * Tools whose output is never stored. A brainstorming conversation holds personal details the
+ * student hasn't chosen to keep, and the model's questions can repeat them, so only run metadata
+ * (status, model, timing) is recorded. Students keep material only by saving a note explicitly.
+ */
+export const EPHEMERAL_KINDS: ReadonlySet<ToolKind> = new Set<ToolKind>(["brainstorm"]);
+
+/**
  * Call the provider, validate the structured result, apply guardrails, and persist.
  * On any failure the run is marked failed and NO feedback is fabricated.
  */
@@ -296,7 +303,7 @@ export async function executeAiRun(prepared: Prepared, onStage: (stage: AiStage)
       wordCount: prepared.wordCount,
       wordLimit: prepared.wordLimit,
     });
-    await completeRun(run.id, result, response.model, response.providerRef);
+    await completeRun(run.id, EPHEMERAL_KINDS.has(prepared.kind) ? null : result, response.model, response.providerRef);
     logger.info("ai.run_completed", { ...logFields, model: response.model, durationMs: Date.now() - started, attempt: response.attempt, redactions: prepared.redactionCount });
     track("feedback_completed", { kind: prepared.kind });
     return { runId: run.id, result, isMock: provider.kind === "mock", redactionCount: prepared.redactionCount };

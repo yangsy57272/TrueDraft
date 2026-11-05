@@ -40,6 +40,8 @@ export type PublicDataset = {
   data: CdsData;
   derived: ReturnType<typeof derived>;
   verifiedAt: Date | null;
+  /** True when a named admin verified the values; false for automated imports not yet reviewed by a person. */
+  reviewedByPerson: boolean;
 };
 
 function toPublic(d: CdsDataset): PublicDataset {
@@ -54,6 +56,7 @@ function toPublic(d: CdsDataset): PublicDataset {
     data,
     derived: derived(data),
     verifiedAt: d.verifiedAt,
+    reviewedByPerson: d.verifiedBy != null,
   };
 }
 

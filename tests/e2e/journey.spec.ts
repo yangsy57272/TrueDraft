@@ -35,7 +35,7 @@ test("journey: profile → majors → schools → list → linked supplemental e
   // Schools directory: official links, no invented numbers
   await page.goto("/schools");
   await expect(page.getByText("24 schools", { exact: true })).toBeVisible();
-  await expect(page.getByText(/Verified CDS data is available for \d+ of 24 schools/)).toBeVisible();
+  await expect(page.getByText(/CDS data read from the college’s own document is available for \d+ of 24 schools/)).toBeVisible();
   await expect(page.getByText("CDS data not yet imported").first()).toBeVisible();
   const harvard = page.locator("li", { has: page.getByRole("link", { name: "Harvard University" }) });
   await expect(harvard.getByRole("link", { name: /Official CDS page/ })).toHaveAttribute("href", "https://oira.harvard.edu/common-data-set/");
@@ -45,6 +45,9 @@ test("journey: profile → majors → schools → list → linked supplemental e
   // School pages: imported data is shown with its source; schools without it say so plainly.
   await page.goto("/schools/harvard-university");
   await expect(page.getByRole("link", { name: /Open the official document/ }).first()).toHaveAttribute("href", /harvard\.edu/);
+  // Imported data says plainly that no person has reviewed it yet.
+  await expect(page.getByText("Automated check")).toBeVisible();
+  await expect(page.getByText(/Not yet reviewed by a person/)).toBeVisible();
   await page.goto("/schools/princeton-university");
   await expect(page.getByRole("heading", { name: "No CDS data imported yet" })).toBeVisible();
 
@@ -96,6 +99,8 @@ test("admin enters verified CDS data and students see it with its source", async
   const student = await (await browser.newContext()).newPage();
   await student.goto("/schools/rice-university?year=2099-2100");
   await expect(student.getByText("From the 2099-2100 Common Data Set published by the college.")).toBeVisible();
+  await expect(student.getByText(/Values checked against the official document on/)).toBeVisible();
+  await expect(student.getByText("Automated check")).toHaveCount(0);
   await expect(student.getByText("10%").first()).toBeVisible();
   await expect(student.getByText("Very important").first()).toBeVisible();
 

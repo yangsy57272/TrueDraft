@@ -29,7 +29,11 @@ test("CV review: uncertain and duplicate items start unticked, fields are editab
 
   // Edit before adding.
   const econName = page.getByRole("listitem").filter({ has: page.getByLabel("Courses: Economics SL") }).getByLabel("Course name");
-  await econName.fill("Economics SL (Year 1)");
+  // Type key by key (not .fill) so a field that loses focus after each keystroke would fail here.
+  await econName.click();
+  await econName.press("End");
+  await econName.pressSequentially(" (Year 1)");
+  await expect(econName).toHaveValue("Economics SL (Year 1)");
   await page.getByRole("button", { name: /Add \d+ selected to my profile/ }).click();
   await expect(page.getByText(/Added \d+ item\(s\)/)).toBeVisible();
   await page.getByRole("button", { name: "Save profile" }).first().click();
@@ -37,4 +41,14 @@ test("CV review: uncertain and duplicate items start unticked, fields are editab
   await page.reload();
   await expect(page.getByLabel("Course name", { exact: true }).nth(1)).toHaveValue("Economics SL (Year 1)");
   await expect(page.getByText("Mock Award Not In CV")).toHaveCount(0);
+});
+
+test("form fields keep focus while typing key by key", async ({ page }) => {
+  await signIn(page);
+  await page.goto("/essays/new");
+  const title = page.getByLabel(/Essay title/);
+  await title.click();
+  await title.pressSequentially("Typed one key at a time");
+  await expect(title).toHaveValue("Typed one key at a time");
+  await expect(title).toBeFocused();
 });

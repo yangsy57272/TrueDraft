@@ -39,7 +39,9 @@ The importer validates every record with the same rules as the admin form. Re-ru
 
 How the values were produced: most official PDFs were converted with `pdftotext -layout` and read by a field parser. MIT's CDS is a web page, which was converted to one line per table row. Berkeley's and Vanderbilt's are spreadsheets, which were read by cell; for Vanderbilt that's the file's Answer Sheet tab. A record-level `method` says which applies. Each value was then checked against its source line. Fields that couldn't be read unambiguously were left out rather than guessed. C7 (admission factors) is included only when at least 17 factors were read, and the school page shows only the factors that were captured. J1 (degrees by field) isn't included in this import. Caltech's PDF uses a font that garbles extraction, so its dataset is partial (no C1 or C7).
 
-**Review status.** The datasets are marked verified with `verifiedBy` empty and `verificationMethod` set to the method above. They were checked by an automated process against the source text, **not by a named human admin**. Before relying on them publicly, an admin should spot-check each school against its PDF and re-save it from the admin page. That records their name and date.
+**Review status.** The datasets are marked verified with `verifiedBy` empty and `verificationMethod` set to the method above. They were checked by an automated process against the source text, **not by a named human admin**. Students see this honestly: each imported school page shows an **"Automated check"** badge and says the values haven't yet been reviewed by a person.
+
+Before relying on them publicly, an admin should spot-check each school against its document and re-save it from the admin page with "Verified against the official document" ticked. The editor flags imported datasets and clears the automated method, so the re-save records the admin, today's date, and `admin-manual`. After that, the school page shows the ordinary "checked against the official document" line.
 
 Four reviewed source-domain exceptions are recorded:
 

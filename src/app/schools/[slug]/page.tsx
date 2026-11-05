@@ -71,7 +71,19 @@ export default async function SchoolPage({ params, searchParams }: { params: Pro
             </p>
             {dataset.sourcePageRef ? <p className="mt-1">{t("schools.school.pageRef", { ref: dataset.sourcePageRef })}</p> : null}
             {dataset.sourceExceptionReason ? <p className="mt-1">{t("schools.school.hostedElsewhere", { reason: dataset.sourceExceptionReason })}</p> : null}
-            {dataset.verifiedAt ? <p className="mt-1">{t("schools.school.verified", { date: formatDate(dataset.verifiedAt, locale) })}</p> : null}
+            {dataset.verifiedAt ? (
+              dataset.reviewedByPerson ? (
+                <p className="mt-1">{t("schools.school.verified", { date: formatDate(dataset.verifiedAt, locale) })}</p>
+              ) : (
+                <p className="mt-1">
+                  <span className="badge badge-developing mr-1">
+                    <span aria-hidden="true">◐</span>
+                    {t("schools.school.automatedBadge")}
+                  </span>
+                  {t("schools.school.automated", { date: formatDate(dataset.verifiedAt, locale) })}
+                </p>
+              )
+            ) : null}
             {datasets.length > 1 ? (
               <p className="mt-2">
                 {t("schools.school.older")}:{" "}

@@ -205,5 +205,22 @@ describe("CDS validation (field-specific ranges and relationships)", () => {
     expect(shown.sourceExceptionReason).toContain("official CDS page");
     expect(shown.sourcePageRef).toBe("Sections B–J");
     expect(shown.verificationMethod).toBe("admin-manual");
+    expect(shown.reviewedByPerson).toBe(true);
+  });
+
+  it("marks automated imports as not yet reviewed by a person", async () => {
+    await db.insert(cdsDataset).values({
+      schoolId,
+      academicYear: "2024-2025",
+      sourceUrl: "https://example.edu/cds-2024.pdf",
+      data: { applicants: 100, admitted: 10 },
+      verificationStatus: "verified",
+      verifiedAt: new Date(),
+      verifiedBy: null,
+      verificationMethod: "pdftotext -layout + field parser",
+      published: true,
+    });
+    const shown = (await getSchoolBySlug("example-college"))!.datasets.find((d) => d.academicYear === "2024-2025")!;
+    expect(shown.reviewedByPerson).toBe(false);
   });
 });

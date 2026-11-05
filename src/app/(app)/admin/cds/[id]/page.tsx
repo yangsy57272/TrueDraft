@@ -29,6 +29,7 @@ export default async function AdminDatasetPage({ params, searchParams }: { param
     published: false,
     notes: "",
   };
+  let importedNote: string | null = null;
   if (id === "new") {
     if (!schoolParam || !isUuid(schoolParam)) notFound();
     schoolId = schoolParam;
@@ -36,6 +37,7 @@ export default async function AdminDatasetPage({ params, searchParams }: { param
     if (!isUuid(id)) notFound();
     const [row] = await db.select().from(cdsDataset).where(eq(cdsDataset.id, id)).limit(1);
     if (!row) notFound();
+    if (row.verificationStatus === "verified" && !row.verifiedBy) importedNote = row.verificationMethod ?? "automated import";
     schoolId = row.schoolId;
     initial = {
       academicYear: row.academicYear,
@@ -43,7 +45,9 @@ export default async function AdminDatasetPage({ params, searchParams }: { param
       sourcePageRef: row.sourcePageRef ?? "",
       sourceDomainException: row.sourceDomainException,
       sourceExceptionReason: row.sourceExceptionReason ?? "",
-      verificationMethod: row.verificationMethod ?? "",
+      // An automated import's method describes the script, not a person; a re-save by an admin
+      // replaces it (blank means "admin-manual").
+      verificationMethod: row.verifiedBy ? (row.verificationMethod ?? "") : "",
       data: row.data,
       verificationStatus: row.verificationStatus === "verified" ? "verified" : "draft",
       published: row.published,
@@ -56,6 +60,7 @@ export default async function AdminDatasetPage({ params, searchParams }: { param
       <Link href={`/admin/schools/${s.id}`} className="text-sm">← {s.name}</Link>
       <h1 className="mt-2 text-3xl font-semibold">{id === "new" ? t("adminSchools.newDataset") : t("adminSchools.editDataset")}</h1>
       <p className="notice notice-info mt-4 text-sm">{t("adminSchools.intro")}</p>
+      {importedNote ? <p className="notice notice-warn mt-3 text-sm" role="note">{t("adminSchools.importedNote", { method: importedNote })}</p> : null}
       <div className="mt-6">
         <DatasetEditor schoolId={s.id} datasetId={id === "new" ? null : id} initial={initial} />
       </div>

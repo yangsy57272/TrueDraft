@@ -193,6 +193,7 @@ export async function exportUserData(userId: string) {
           promptVersion: r.promptVersion,
           schemaVersion: r.schemaVersion,
           redactionCount: r.redactionCount,
+          taskStates: r.taskStates,
           createdAt: r.createdAt,
           completedAt: r.completedAt,
           request: r.encryptedRequest ? decryptJson(r.encryptedRequest, "feedback_request") : null,

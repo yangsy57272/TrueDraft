@@ -1,0 +1,1 @@
+ALTER TABLE "feedback_run" ADD COLUMN "task_states" jsonb DEFAULT '{}'::jsonb NOT NULL;

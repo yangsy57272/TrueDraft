@@ -9,6 +9,7 @@ import { POST as consent } from "@/app/api/consent/route";
 import * as providerModule from "@/server/ai/provider";
 import { AiProviderError, type AiProvider, type StructuredRequest } from "@/server/ai/provider";
 import { getEssay, listEssays, listVersions } from "@/server/services/essays";
+import { PUT as setTask } from "@/app/api/essays/[id]/feedback/[runId]/tasks/[index]/route";
 import { PUT as autosave } from "@/app/api/essays/[id]/draft/route";
 import { GET as exportAccount } from "@/app/api/account/export/route";
 import { auditEvent } from "@/db/schema";
@@ -171,6 +172,23 @@ describe("AI feedback", () => {
     const events = await readStream(await run("full_feedback", { content: "Two short sentences. That is all." }));
     const done = events.find((e) => e.type === "done");
     expect(done.result).toMatchObject({ material: "insufficient", insufficient_reason: "Only two sentences so far.", categories: [] });
+  });
+
+  it("stores the student's progress on revision tasks per task, owner only", async () => {
+    await grant();
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue(fakeProvider(() => validFeedback));
+    const done = (await readStream(await run("full_feedback", { content: sampleEssay.draft }))).find((e) => e.type === "done");
+    const runId = done.runId as string;
+    const put = (index: number, state: string, cookie = me.cookie) =>
+      setTask(req("PUT", "/x", { cookie, body: { state } }), ctx({ id: essayId, runId, index: String(index) }));
+    const results = await Promise.all([put(0, "done"), put(1, "doing"), put(2, "done")]);
+    expect(results.map((r) => r.status)).toEqual([200, 200, 200]);
+    const [row] = await db.select().from(feedbackRun).where(eq(feedbackRun.id, runId));
+    expect(row.taskStates).toEqual({ "0": "done", "1": "doing", "2": "done" });
+    expect((await put(3, "done")).status).toBe(404); // only three tasks
+    expect((await put(0, "finished")).status).toBe(400);
+    const intruder = await signIn("intruder@example.test");
+    expect((await put(0, "todo", intruder.cookie)).status).toBe(404);
   });
 
   it("rejects malformed provider output and never fabricates feedback", async () => {

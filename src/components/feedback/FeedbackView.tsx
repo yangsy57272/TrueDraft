@@ -47,7 +47,7 @@ export function FeedbackView({ data, compact = false }: { data: FullFeedbackResu
 
   return (
     <div className="text-[0.975rem]">
-      <Section title={`A. ${t("feedback.overall")}`} id={`${uid}-a`}>
+      <Section title={`A. ${t("feedback.overall")}`} id={`${uid}-a`} collapsible={compact} defaultOpen={!compact}>
         <p>{data.summary}</p>
         <h4 className="mt-4 font-semibold">{t("feedback.strengths")}</h4>
         <ul className="mt-2 space-y-3">
@@ -76,7 +76,7 @@ export function FeedbackView({ data, compact = false }: { data: FullFeedbackResu
         </div>
       </Section>
 
-      <Section title={`B. ${t("feedback.diagnostic")}`} id={`${uid}-b`}>
+      <Section title={`B. ${t("feedback.diagnostic")}`} id={`${uid}-b`} collapsible={compact} defaultOpen={!compact}>
         <p className="text-sm text-ink-soft">{t("feedback.diagnosticNote")}</p>
         <ul className="mt-3 grid gap-3 md:grid-cols-2">
           {data.categories.map((c) => (
@@ -96,7 +96,7 @@ export function FeedbackView({ data, compact = false }: { data: FullFeedbackResu
         </ul>
       </Section>
 
-      <Section title={`C. ${t("feedback.passages")}`} id={`${uid}-c`}>
+      <Section title={`C. ${t("feedback.passages")}`} id={`${uid}-c`} collapsible={compact} defaultOpen={!compact}>
         <ol className="space-y-3">
           {data.passage_comments.map((p, i) => (
             <li key={i} className={`card ${pad}`}>
@@ -117,7 +117,7 @@ export function FeedbackView({ data, compact = false }: { data: FullFeedbackResu
         </ol>
       </Section>
 
-      <Section title={`D. ${t("feedback.revisionPlan")}`} id={`${uid}-d`}>
+      <Section title={`D. ${t("feedback.revisionPlan")}`} id={`${uid}-d`} collapsible={compact} defaultOpen={!compact}>
         <ol className="space-y-2">
           {data.revision_plan.map((r, i) => (
             <li key={i} className={`card flex gap-3 ${pad}`}>
@@ -136,7 +136,7 @@ export function FeedbackView({ data, compact = false }: { data: FullFeedbackResu
         </ol>
       </Section>
 
-      <Section title={`E. ${t("feedback.voiceCheck")}`} id={`${uid}-e`}>
+      <Section title={`E. ${t("feedback.voiceCheck")}`} id={`${uid}-e`} collapsible={compact} defaultOpen={!compact}>
         <ul className="space-y-2">
           {data.voice_check.map((v, i) => (
             <li key={i} className={`card ${pad}`}>

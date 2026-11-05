@@ -16,6 +16,7 @@ import { EssayForm, type EssayFormValues } from "./EssayForm";
 import { FeedbackPanel, type LatestFeedback } from "./FeedbackPanel";
 import { VersionsPanel } from "./VersionsPanel";
 import { ToolsPanel } from "@/components/tools/ToolsPanel";
+import { ShowPassageContext } from "@/components/feedback/bits";
 import type { SavedNote, WorkspaceAi, WorkspaceEssay, WorkspaceRun, WorkspaceVersion } from "./types";
 
 export type RunToolFn = (
@@ -233,9 +234,16 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
   async function getFeedback() {
     setFeedbackError(null);
     setTab("feedback");
-    const result = await runTool("full_feedback", { content: draftRef.current });
+    const submitted = draftRef.current;
+    const result = await runTool("full_feedback", { content: submitted });
     if (result.ok) {
-      setFeedback({
+      setFeedback((prev) => ({
+        versionContent: submitted,
+        taskStates: {},
+        previous:
+          prev && prev.result.material !== "insufficient"
+            ? { createdAt: prev.createdAt, versionNumber: prev.versionNumber, categories: prev.result.categories.map((c) => ({ key: c.key, label: c.label })) }
+            : (prev?.previous ?? null),
         runId: result.runId,
         result: result.result as LatestFeedback["result"],
         createdAt: new Date().toISOString(),
@@ -243,7 +251,7 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
         versionNumber: null,
         isMock: result.isMock,
         redactionCount: result.redactionCount,
-      });
+      }));
     } else if (result.code !== "cancelled") {
       setFeedbackError(t(`errors.${result.code}` as never));
     }
@@ -299,6 +307,29 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
       router.push(`/essays/${res.data.id}`);
     } else notify(t(`errors.${res.code}` as never), "error");
   }
+
+  /** Select a quoted passage in the editor and bring it into view. */
+  const showPassage = useCallback(
+    (quote: string) => {
+      const el = textareaRef.current;
+      if (!el) return;
+      const text = draftRef.current;
+      let start = text.indexOf(quote);
+      if (start < 0) start = text.toLowerCase().indexOf(quote.toLowerCase());
+      if (start < 0) {
+        notify(t("feedback.passageMoved"), "info");
+        return;
+      }
+      el.focus({ preventScroll: true });
+      el.setSelectionRange(start, start + quote.length);
+      setSelection(quote);
+      // The editor grows with its content, so scroll the page to the passage's approximate position.
+      const rect = el.getBoundingClientRect();
+      const offset = (start / Math.max(1, text.length)) * el.scrollHeight;
+      window.scrollTo({ top: window.scrollY + rect.top + offset - window.innerHeight / 3, behavior: "smooth" });
+    },
+    [notify, t],
+  );
 
   function loadVersion(content: string) {
     setDraft(content);
@@ -375,6 +406,7 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
       {!ai.configured ? <p className="notice notice-warn mt-4 text-sm">{t("editor.aiDisabled")}</p> : null}
       {ai.configured && ai.isMock ? <p className="notice notice-warn mt-4 text-sm">{t("editor.aiMock")}</p> : null}
 
+      <ShowPassageContext.Provider value={showPassage}>
       <div className="mt-5 grid gap-6 lg:grid-cols-[minmax(0,1fr)_26rem] xl:grid-cols-[minmax(0,1fr)_30rem]">
         {/* Editor column */}
         <div className="min-w-0">
@@ -486,6 +518,7 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
                 onRetry={getFeedback}
                 aiConfigured={ai.configured}
                 onDeletedAll={() => setFeedback(null)}
+                draft={draft}
               />
             </Tabs.Content>
             <Tabs.Content value="tools" className="mt-4 focus-visible:outline-none" forceMount hidden={tab !== "tools"}>
@@ -523,6 +556,7 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
           <p className="mt-2 text-xs text-ink-faint">{t("common.lastEdited", { date: formatDate(essay.updatedAt, locale, true) })}</p>
         </aside>
       </div>
+      </ShowPassageContext.Provider>
 
       <ConsentDialog
         open={consentOpen}

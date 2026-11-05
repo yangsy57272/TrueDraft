@@ -1,15 +1,24 @@
 "use client";
-import type { ReactNode } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import { useI18n } from "@/i18n/client";
+
+/** Provided by the essay workspace: select a quoted passage in the editor. */
+export const ShowPassageContext = createContext<((quote: string) => void) | null>(null);
 
 export function QuoteBlock({ quote, located = true }: { quote: string | null | undefined; located?: boolean }) {
   const { t } = useI18n();
+  const showPassage = useContext(ShowPassageContext);
   if (!quote) return null;
   return (
     <figure className="mt-2">
       <figcaption className="text-xs font-semibold uppercase tracking-wide text-ink-faint">{t("feedback.inYourDraft")}</figcaption>
       <blockquote className="quote mt-1">“{quote}”</blockquote>
       {!located ? <p className="mt-1 text-xs text-amber">{t("feedback.quoteNotFound")}</p> : null}
+      {located && showPassage ? (
+        <button type="button" className="mt-1 text-xs font-semibold text-teal underline underline-offset-4" onClick={() => showPassage(quote)}>
+          {t("feedback.showPassage")}
+        </button>
+      ) : null}
     </figure>
   );
 }
@@ -59,7 +68,18 @@ export function PriorityBadge({ priority }: { priority: string }) {
   );
 }
 
-export function Section({ title, children, id }: { title: string; children: ReactNode; id?: string }) {
+export function Section({ title, children, id, collapsible = false, defaultOpen = true }: { title: string; children: ReactNode; id?: string; collapsible?: boolean; defaultOpen?: boolean }) {
+  if (collapsible) {
+    return (
+      <details className="group mt-4 rounded-xl border border-line bg-card first:mt-0" open={defaultOpen}>
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-4 py-3">
+          <h3 id={id} className="font-serif text-base font-semibold">{title}</h3>
+          <span aria-hidden="true" className="text-ink-soft transition group-open:rotate-180">▾</span>
+        </summary>
+        <div className="border-t border-line px-4 py-3">{children}</div>
+      </details>
+    );
+  }
   return (
     <section aria-labelledby={id} className="mt-8 first:mt-0">
       <h3 id={id} className="font-serif text-lg font-semibold">

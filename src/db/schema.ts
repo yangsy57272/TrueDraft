@@ -184,6 +184,8 @@ export const feedbackRun = pgTable(
     status: text("status").notNull().default("pending"),
     errorCode: text("error_code"),
     redactionCount: integer("redaction_count").notNull().default(0),
+    /** The student's progress on each revision-plan task, keyed by task index. Not AI content. */
+    taskStates: jsonb("task_states").$type<Record<string, "todo" | "doing" | "done">>().notNull().default({}),
     /** Provider message id, kept only for debugging provider incidents. Contains no content. */
     providerRequestReference: text("provider_request_reference"),
     createdAt: createdAt(),

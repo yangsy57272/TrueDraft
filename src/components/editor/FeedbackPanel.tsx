@@ -8,11 +8,16 @@ import { apiFetch } from "@/lib/api-client";
 import { ConfirmDialog } from "@/components/ui/Dialog";
 import { useToast } from "@/components/ui/Toaster";
 import { FeedbackView, type FullFeedbackResult } from "@/components/feedback/FeedbackView";
+import { RevisionOverview } from "@/components/feedback/RevisionOverview";
 import { ProgressStages } from "./ProgressStages";
 import type { WorkspaceRun, WorkspaceVersion } from "./types";
 
 export type LatestFeedback = {
   runId: string;
+  /** Text of the version this feedback was given on (null if unknown). */
+  versionContent?: string | null;
+  taskStates?: Record<string, "todo" | "doing" | "done">;
+  previous?: { createdAt: string; versionNumber: number | null; categories: { key: string; label: string }[] } | null;
   result: FullFeedbackResult;
   createdAt: string;
   modelName: string;
@@ -31,9 +36,11 @@ type Props = {
   onRetry: () => void;
   aiConfigured: boolean;
   onDeletedAll: () => void;
+  /** The live editor text, to tell whether the feedback still describes it. */
+  draft: string;
 };
 
-export function FeedbackPanel({ essayId, feedback, runs, versions, activeRun, error, onRetry, aiConfigured, onDeletedAll }: Props) {
+export function FeedbackPanel({ essayId, feedback, runs, versions, activeRun, error, onRetry, aiConfigured, onDeletedAll, draft }: Props) {
   const { t, locale } = useI18n();
   const router = useRouter();
   const notify = useToast();
@@ -85,6 +92,22 @@ export function FeedbackPanel({ essayId, feedback, runs, versions, activeRun, er
           {feedback.redactionCount ? <p className="mt-1 text-xs text-ink-soft">{t("feedback.redactedNote", { count: feedback.redactionCount })}</p> : null}
           <p className="notice mt-2 text-sm">{t("feedback.aiNote")}</p>
           <div className="mt-4">
+            <RevisionOverview
+              key={feedback.runId}
+              essayId={essayId}
+              runId={feedback.runId}
+              data={feedback.result}
+              versionNumber={feedback.versionNumber}
+              versionContent={feedback.versionContent}
+              draft={draft}
+              taskStates={feedback.taskStates}
+              previous={feedback.previous}
+              onRequestNew={onRetry}
+              canRequestNew={aiConfigured}
+            />
+          </div>
+          <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-ink-soft">{t("feedback.fullDetail")}</h3>
+          <div className="mt-2">
             <FeedbackView data={feedback.result} compact />
           </div>
           <Link href={`/essays/${essayId}/feedback/${feedback.runId}`} className="btn btn-secondary btn-sm mt-4">{t("feedback.viewFull")}</Link>

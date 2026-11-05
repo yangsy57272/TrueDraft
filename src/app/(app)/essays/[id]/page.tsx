@@ -4,7 +4,7 @@ import { getPrivacyFacts } from "@/config/deployment";
 import type { FeedbackLanguage } from "@/i18n/config";
 import { getT } from "@/i18n/server";
 import { requirePageUser } from "@/server/session";
-import { getEssay, listVersions } from "@/server/services/essays";
+import { getEssay, getVersionById, listVersions } from "@/server/services/essays";
 import { getRun, listRuns } from "@/server/services/feedback";
 import { hasCurrentConsent } from "@/server/services/consent";
 import { listBrainstormNotes } from "@/server/services/brainstorm";
@@ -33,12 +33,28 @@ export default async function EssayPage({ params }: { params: Promise<{ id: stri
   const { locale } = await getT();
   const listOptionsFor = (await listEntries(user.id)).map((e) => ({ id: e.id, name: locale === "zh-CN" && e.schoolNameZh ? e.schoolNameZh : e.schoolName }));
 
-  const latestRunMeta = runs.find((r) => r.kind === "full_feedback" && r.status === "completed");
+  const completedFull = runs.filter((r) => r.kind === "full_feedback" && r.status === "completed");
+  const latestRunMeta = completedFull[0];
   let latestFeedback: LatestFeedback | null = null;
   if (latestRunMeta) {
     const run = await getRun<LatestFeedback["result"]>(user.id, id, latestRunMeta.id);
     if (run.result) {
+      // The text the feedback was given on, so the panel can tell when the draft has moved on.
+      const version = run.essayVersionId ? await getVersionById(user.id, id, run.essayVersionId).catch(() => null) : null;
+      // The previous full report, for a "what changed since last time" comparison.
+      const previousMeta = completedFull[1];
+      const previous = previousMeta ? await getRun<LatestFeedback["result"]>(user.id, id, previousMeta.id) : null;
       latestFeedback = {
+        versionContent: version?.content ?? null,
+        taskStates: run.taskStates,
+        previous:
+          previous?.result && previous.result.material !== "insufficient"
+            ? {
+                createdAt: previous.createdAt.toISOString(),
+                versionNumber: versions.find((v) => v.id === previous.essayVersionId)?.versionNumber ?? null,
+                categories: previous.result.categories.map((c) => ({ key: c.key, label: c.label })),
+              }
+            : null,
         runId: run.id,
         result: run.result,
         createdAt: run.createdAt.toISOString(),

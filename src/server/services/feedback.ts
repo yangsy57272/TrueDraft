@@ -1,5 +1,5 @@
 import "server-only";
-import { and, desc, eq } from "drizzle-orm";
+import { and, sql, desc, eq } from "drizzle-orm";
 import { db } from "@/db";
 import { feedbackRun } from "@/db/schema";
 import { decryptJson, encryptJson } from "../crypto";
@@ -111,11 +111,34 @@ export async function getRun<T = unknown>(userId: string, essayId: string, runId
     modelName: row.modelName,
     promptVersion: row.promptVersion,
     redactionCount: row.redactionCount,
+    taskStates: row.taskStates,
     createdAt: row.createdAt,
     completedAt: row.completedAt,
     request: row.encryptedRequest ? decryptJson(row.encryptedRequest, "feedback_request") : null,
     result: row.encryptedStructuredResult ? decryptJson<T>(row.encryptedStructuredResult, "feedback_result") : null,
   };
+}
+
+export const TASK_STATES = ["todo", "doing", "done"] as const;
+export type TaskState = (typeof TASK_STATES)[number];
+
+/** Set one revision task's state. A single atomic jsonb merge, so concurrent clicks don't collide. */
+export async function setTaskState(userId: string, essayId: string, runId: string, index: number, state: TaskState) {
+  await assertOwnedEssay(userId, essayId);
+  const [row] = await db
+    .select({ result: feedbackRun.encryptedStructuredResult, kind: feedbackRun.kind })
+    .from(feedbackRun)
+    .where(and(eq(feedbackRun.id, runId), eq(feedbackRun.essayId, essayId)))
+    .limit(1);
+  if (!row || row.kind !== "full_feedback" || !row.result) throw new ApiError(404, "not_found");
+  const plan = (decryptJson<{ revision_plan?: unknown[] }>(row.result, "feedback_result").revision_plan ?? []).length;
+  if (index < 0 || index >= plan) throw new ApiError(404, "not_found");
+  const [updated] = await db
+    .update(feedbackRun)
+    .set({ taskStates: sql`${feedbackRun.taskStates} || jsonb_build_object(${String(index)}::text, ${state}::text)` })
+    .where(and(eq(feedbackRun.id, runId), eq(feedbackRun.essayId, essayId)))
+    .returning({ taskStates: feedbackRun.taskStates });
+  return updated.taskStates;
 }
 
 export async function deleteRun(userId: string, essayId: string, runId: string) {

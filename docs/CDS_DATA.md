@@ -29,7 +29,7 @@ TrueDraft shows students figures from each college's own **Common Data Set**: th
 
 ### Imported 2025-2026 data (`data/cds/2025-2026.json`)
 
-`npm run cds:import` loads 14 datasets from that file: Caltech, Columbia, Cornell, Dartmouth, Duke, Emory, Harvard, Rice, Stanford, UChicago, Michigan, USC, WashU, and Yale. Each record includes:
+`npm run cds:import` loads 18 datasets from that file: Caltech, Columbia, Cornell, Dartmouth, Duke, Emory, Harvard, MIT, Penn, Rice, Stanford, UC Berkeley, UChicago, Michigan, USC, Vanderbilt, WashU, and Yale. Each record includes:
 
 - the URL of the official document;
 - the source line each value was read from (`sourceLines`), so any value can be checked against the document;
@@ -37,24 +37,28 @@ TrueDraft shows students figures from each college's own **Common Data Set**: th
 
 The importer validates every record with the same rules as the admin form. Re-running it updates the datasets in place.
 
-How the values were produced: the official PDFs were converted with `pdftotext -layout` and read by a field parser. Each value was then checked against its source line. Fields that couldn't be read unambiguously were left out rather than guessed. C7 (admission factors) is included only when at least 17 factors were read, and the school page shows only the factors that were captured. J1 (degrees by field) isn't included in this import. Caltech's PDF uses a font that garbles extraction, so its dataset is partial (no C1 or C7).
+How the values were produced: most official PDFs were converted with `pdftotext -layout` and read by a field parser. MIT's CDS is a web page, which was converted to one line per table row. Berkeley's and Vanderbilt's are spreadsheets, which were read by cell; for Vanderbilt that's the file's Answer Sheet tab. A record-level `method` says which applies. Each value was then checked against its source line. Fields that couldn't be read unambiguously were left out rather than guessed. C7 (admission factors) is included only when at least 17 factors were read, and the school page shows only the factors that were captured. J1 (degrees by field) isn't included in this import. Caltech's PDF uses a font that garbles extraction, so its dataset is partial (no C1 or C7).
 
 **Review status.** The datasets are marked verified with `verifiedBy` empty and `verificationMethod` set to the method above. They were checked by an automated process against the source text, **not by a named human admin**. Before relying on them publicly, an admin should spot-check each school against its PDF and re-save it from the admin page. That records their name and date.
 
-Two reviewed source-domain exceptions are recorded:
+Four reviewed source-domain exceptions are recorded:
 
 - **Stanford:** the file is on Google Drive, linked from irds.stanford.edu's CDS page.
 - **WashU:** the file is on washu.edu, the university's current domain (it was formerly wustl.edu).
+- **Penn:** the file is on Penn's Box account, linked from ira.upenn.edu's CDS page.
+- **UC Berkeley:** the CDS is a Google Sheet, linked from opa.berkeley.edu's CDS page.
+
+Partial records:
+
+- **Vanderbilt:** its spreadsheet has formula errors in some cells, so the dates, international aid, and retention rate are omitted.
+- **Berkeley:** its application fee differs for domestic and international applicants, and its international aid section isn't filled in, so both are omitted.
 
 Not imported yet (the school page shows the official link instead):
 
-- **Princeton, Johns Hopkins, NYU:** the sites block automated downloads.
-- **Northwestern:** the download failed.
-- **MIT:** publishes its CDS as HTML pages, not a document.
-- **Penn:** the document is on Box.
-- **Brown, Berkeley:** no document link was found.
+- **Princeton, Johns Hopkins, NYU:** the sites block automated downloads (a Cloudflare challenge or a 403 from the site itself). These weren't bypassed.
+- **Northwestern:** its server's TLS certificate chain doesn't verify through this environment's proxy. Verification wasn't disabled.
+- **Brown:** publishes its 2025-26 CDS as an interactive dashboard, not a document.
 - **Carnegie Mellon:** only a partial 2026-27 edition is available.
-- **Vanderbilt:** its spreadsheet couldn't be read reliably.
 
 These can be added by hand or through the CSV import.
 

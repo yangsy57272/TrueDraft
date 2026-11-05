@@ -18,6 +18,8 @@ type Record_ = {
   sourcePageRef?: string;
   sourceExceptionReason?: string;
   data: Record<string, unknown>;
+  /** How this record was read, when it differs from the file's default (e.g. a spreadsheet or web page). */
+  method?: string;
 };
 
 async function main() {
@@ -55,7 +57,7 @@ async function main() {
         verificationStatus: "verified",
         verifiedAt: new Date(`${doc.extractedOn}T00:00:00Z`),
         verifiedBy: null,
-        verificationMethod: doc.method,
+        verificationMethod: r.method ?? doc.method,
         published: true,
         notes: `Imported from ${file}`,
       };

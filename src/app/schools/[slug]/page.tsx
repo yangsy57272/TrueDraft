@@ -8,6 +8,7 @@ import { getSchoolBySlug } from "@/server/services/schools";
 import { listedSchoolIds } from "@/server/services/college-list";
 import { getProfile } from "@/server/services/profile";
 import { CdsView } from "@/components/cds/CdsView";
+import { FederalView } from "@/components/cds/FederalView";
 import { AddToListButton } from "@/components/cds/SchoolClientBits";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -22,7 +23,7 @@ export default async function SchoolPage({ params, searchParams }: { params: Pro
   if (!found) notFound();
   const { t, locale } = await getT();
   const user = await getCurrentUser();
-  const { school: s, datasets } = found;
+  const { school: s, datasets, federal } = found;
   const dataset = datasets.find((d) => d.academicYear === year) ?? datasets[0] ?? null;
   const onList = user ? (await listedSchoolIds(user.id)).has(s.id) : false;
   const tests = user ? (await getProfile(user.id)).tests : null;
@@ -98,13 +99,25 @@ export default async function SchoolPage({ params, searchParams }: { params: Pro
           <div className="mt-6">
             <CdsView data={dataset.data} t={t} locale={locale} tests={tests} />
           </div>
+          {federal ? (
+            <div className="mt-8">
+              <FederalView data={federal.data} unitid={federal.unitid} fileDate={federal.fileDate} t={t} locale={locale} />
+            </div>
+          ) : null}
         </>
       ) : (
-        <section className="card mt-6 p-6">
-          <h2 className="text-xl font-semibold">{t("schools.school.noDataTitle")}</h2>
-          <p className="mt-2 text-ink-soft">{t("schools.school.noDataBody")}</p>
-          <Link href="/cds" className="mt-4 inline-block">{t("nav.cdsGuide")} →</Link>
-        </section>
+        <>
+          {federal ? (
+            <div className="mt-6">
+              <FederalView data={federal.data} unitid={federal.unitid} fileDate={federal.fileDate} t={t} locale={locale} />
+            </div>
+          ) : null}
+          <section className="card mt-6 p-6">
+            <h2 className="text-xl font-semibold">{t("schools.school.noDataTitle")}</h2>
+            <p className="mt-2 text-ink-soft">{federal ? t("schools.school.noCdsWithFederal") : t("schools.school.noDataBody")}</p>
+            <Link href="/cds" className="mt-4 inline-block">{t("nav.cdsGuide")} →</Link>
+          </section>
+        </>
       )}
       <p className="mt-8 text-sm text-ink-soft">{t("journey.disclaimer")}</p>
     </div>

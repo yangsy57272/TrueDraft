@@ -18,6 +18,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "cds:import": "tsx --conditions=react-server scripts/import-cds.ts",
+    "scorecard:build": "tsx scripts/build-scorecard-extract.ts",
+    "scorecard:import": "tsx --conditions=react-server scripts/import-scorecard.ts",
     "eval:ai": "tsx --conditions=react-server scripts/ai-eval.ts"
   },
   "license": "UNLICENSED",

@@ -70,7 +70,7 @@ jobs:
         run: PGPASSWORD=truedraft psql -h localhost -U truedraft -d truedraft -c "create database truedraft_test"
       - run: npm run test:integration
       - name: Prepare the app database
-        run: npm run db:migrate && npm run db:seed && npm run cds:import
+        run: npm run db:migrate && npm run db:seed && npm run scorecard:import && npm run cds:import
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

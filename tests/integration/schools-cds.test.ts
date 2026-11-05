@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { db } from "@/db";
-import { cdsDataset, school } from "@/db/schema";
+import { cdsDataset, federalProfile, school } from "@/db/schema";
 import { POST as createSchool } from "@/app/api/admin/schools/route";
 import { POST as createDataset } from "@/app/api/admin/schools/[id]/cds/route";
 import { PUT as updateDataset } from "@/app/api/admin/cds/[id]/route";
@@ -96,6 +96,52 @@ describe("CDS administration", () => {
     expect((await searchSchools({ admitRate: "under10" })).results).toHaveLength(0);
     expect((await searchSchools({ regions: ["west"] })).results.map((r) => r.school.slug)).toEqual(["no-data-u"]);
     expect((await searchSchools({ q: "example" })).results).toHaveLength(1);
+  });
+
+  it("uses federal data for schools without a CDS, with filters, sorting, and pages", async () => {
+    await createDataset(req("POST", "/x", { cookie: admin.cookie, body: dataset() }), ctx({ id: schoolId }));
+    // 30 colleges with only U.S. Department of Education data.
+    for (let i = 0; i < 30; i++) {
+      const [row] = await db
+        .insert(school)
+        .values({ slug: `state-college-${i}`, name: `State College ${String(i).padStart(2, "0")}`, state: "OH", control: "public", published: true, unitid: `9${i}` })
+        .returning();
+      await db.insert(federalProfile).values({
+        schoolId: row.id,
+        unitid: `9${i}`,
+        fileDate: "2026-11-02",
+        data: { admissionRate: 60 + i, undergrads: 5000 + i * 100, tuitionOutOfState: 25000 + i * 500, testRequirement: i % 2 ? 5 : 3, degreesByField: { "52": 20 } },
+      });
+    }
+    const all = await searchSchools({});
+    expect(all.matchCount).toBe(31);
+    expect(all.results).toHaveLength(24); // first page
+    expect(all.pages).toBe(2);
+    expect((await searchSchools({ page: 2 })).results).toHaveLength(7);
+    expect(all.withFederal).toBe(30);
+    expect(all.withData).toBe(1);
+
+    // Admission rate over 50% now matches federal-only colleges; the CDS school (15%) doesn't.
+    const open = await searchSchools({ admitRate: "over50" });
+    expect(open.matchCount).toBe(30);
+    expect(open.results.every((r) => r.facts.admitRate?.source === "federal")).toBe(true);
+
+    // Tuition filter and sort by tuition.
+    const cheap = await searchSchools({ tuition: "20to40k", sort: "tuition_low" });
+    expect(cheap.matchCount).toBe(30);
+    expect(cheap.results[0].school.slug).toBe("state-college-0");
+    // "Required" can be ruled out for "neither required nor recommended" schools, but
+    // "considered" can't be confirmed for them, so they go to the can't-check list.
+    const required = await searchSchools({ testPolicy: "considered" });
+    expect(required.matchCount).toBe(1 + 15); // CDS school + federal "considered" (code 5)
+    expect(required.unassessable).toHaveLength(15);
+    // Early plans are CDS-only: federal-only schools can't be checked.
+    const ed = await searchSchools({ round: "ed" });
+    expect(ed.matchCount).toBe(1);
+    expect(ed.unassessable).toHaveLength(30);
+    const found = (await getSchoolBySlug("state-college-3"))!;
+    expect(found.federal?.data).toMatchObject({ admissionRate: 63 });
+    expect(found.datasets).toHaveLength(0);
   });
 
   it("imports CSV rows as unpublished drafts and reports row errors", async () => {

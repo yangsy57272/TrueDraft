@@ -66,6 +66,33 @@ These can be added by hand or through the CSV import.
 
 The `/cds` guide includes a worked example for "Northfield College". Both the college and its numbers are **fictional**, and the page labels them as such.
 
+## U.S. Department of Education data (every college)
+
+The Common Data Set is detailed, but every college publishes it differently, so importing it is slow, careful work. To make the explorer useful for every student, not just applicants to the most selective schools, the directory also includes **every currently operating, predominantly bachelor's-degree, public or private nonprofit U.S. college with at least 200 undergraduates: 1,573 colleges**, with figures from the U.S. Department of Education's [College Scorecard](https://collegescorecard.ed.gov/data/).
+
+- **Source.** The official "Most Recent Cohorts – Institution" file, dated 2026-11-02. Colleges report these figures to the federal IPEDS survey. They're comparable across schools, but some definitions differ slightly from the CDS.
+- **Values.** `data/scorecard/institutions.json` holds admission rate, SAT/ACT ranges, test requirement, undergraduates, international share, in-state and out-of-state tuition, cost of attendance, graduation and retention rates, and degrees by field. Values are copied as published. Suppressed or missing values stay empty, and nothing is estimated.
+- **Periods.** Each value's period comes from the official data dictionary, and the school page shows it beside the value:
+  - admissions, test scores, and enrollment: fall 2024;
+  - tuition: 2025-26;
+  - cost of attendance: 2024-25;
+  - graduation rate: students who started in 2019;
+  - degrees: those awarded in 2024-25.
+- **How it combines with the CDS.** The college's own CDS value wins wherever one is imported. Every number in the explorer and on the compare page is marked "CDS" or "Fed". Early decision and early action plans, admission factors (C7), and international aid exist only in the CDS. So those filters list most schools under "Can't check these filters yet", rather than excluding them.
+- **Test policy.** The federal category "neither required nor recommended" can mean test-optional or test-blind, so it never counts as a match for "considered" or "not considered".
+- **Not listed.** For-profit institutions, distance-only institutions, and colleges that mainly award associate degrees or certificates. These are deliberate scope choices for undergraduate applicants. Recorded in `selection` in the data file.
+
+To refresh when a new Scorecard file is published:
+
+```bash
+# download and unzip Most-Recent-Cohorts-Institution_<date>.zip from https://collegescorecard.ed.gov/data/
+npm run scorecard:build -- path/to/Most-Recent-Cohorts-Institution.csv YYYY-MM-DD
+# check the periods in scripts/build-scorecard-extract.ts against the new data dictionary
+npm run scorecard:import
+```
+
+The import matches existing schools by IPEDS UNITID, adds new ones, and refreshes everyone's federal figures. It never touches CDS datasets.
+
 ## How to add data
 
 All three paths below start at **Admin → Schools and Common Data Set** (`/admin/schools`).

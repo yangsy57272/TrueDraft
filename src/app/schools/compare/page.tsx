@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getT } from "@/i18n/server";
 import { getSchoolsByIds } from "@/server/services/schools";
 import { isUuid } from "@/server/page-data";
+import { federalTestPolicy } from "@/lib/federal";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getT();
@@ -34,7 +35,33 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
   const nf = new Intl.NumberFormat(locale === "zh-CN" ? "zh-CN" : "en-US");
   const zh = locale === "zh-CN";
 
-  const cell = (entry: (typeof schools)[number], row: (typeof ROWS)[number]) => {
+  /** The same measure from U.S. Department of Education data, where one exists. */
+  const federalCell = (entry: (typeof schools)[number], row: (typeof ROWS)[number]): string | null => {
+    const f = entry.federal?.data;
+    if (!f) return null;
+    switch (row.key) {
+      case "admitRate":
+        return f.admissionRate != null ? f.admissionRate + "%" : null;
+      case "testPolicy": {
+        const p = federalTestPolicy(f.testRequirement ?? null);
+        return p ? t(("schools.testPolicyShort." + p) as never) : null;
+      }
+      case "actRange":
+        return f.actComposite25 != null && f.actComposite75 != null ? f.actComposite25 + "–" + f.actComposite75 : null;
+      case "undergradTotal":
+        return f.undergrads != null ? nf.format(f.undergrads) : null;
+      case "intlShare":
+        return f.intlSharePct != null ? f.intlSharePct + "%" : null;
+      case "tuition":
+        return f.tuitionOutOfState != null ? "$" + nf.format(f.tuitionOutOfState) : null;
+      case "gradRate6yr":
+        return f.gradRatePct != null ? f.gradRatePct + "%" : null;
+      default:
+        return null;
+    }
+  };
+
+  const cdsCell = (entry: (typeof schools)[number], row: (typeof ROWS)[number]) => {
     const latest = entry.latest;
     if (!latest) return null;
     const d = latest.data as Record<string, unknown>;
@@ -72,7 +99,9 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
                 {schools.map((e) => (
                   <th key={e.school.id} scope="col" className="px-4 py-3">
                     <Link href={"/schools/" + e.school.slug}>{zh && e.school.nameZh ? e.school.nameZh : e.school.name}</Link>
-                    <span className="block text-xs font-normal text-ink-faint">{e.latest ? t("schools.dataYear", { year: e.latest.academicYear }) : t("schools.noData")}</span>
+                    <span className="block text-xs font-normal text-ink-faint">
+                      {e.latest ? t("schools.dataYear", { year: e.latest.academicYear }) : e.federal ? t("schools.federalOnly") : t("schools.noData")}
+                    </span>
                   </th>
                 ))}
               </tr>
@@ -84,10 +113,16 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
                     {label(row.key)} <span className="ml-1 font-mono text-[0.7rem] text-ink-faint">{row.item}</span>
                   </th>
                   {schools.map((e) => {
-                    const value = cell(e, row);
+                    const fromCds = cdsCell(e, row);
+                    const value = fromCds ?? federalCell(e, row);
                     return (
                       <td key={e.school.id} className={value ? "px-4 py-2 font-semibold" : "px-4 py-2 text-ink-faint"}>
                         {value ?? t("schools.notReported")}
+                        {value && !fromCds ? (
+                          <abbr title={t("schools.sourceTitle.federal")} className="ml-1 align-super text-[0.65rem] font-normal text-ink-faint no-underline">
+                            {t("schools.sourceMark.federal")}
+                          </abbr>
+                        ) : null}
                       </td>
                     );
                   })}
@@ -97,6 +132,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
           </table>
         </div>
       )}
+      {schools.length ? <p className="mt-3 text-xs text-ink-faint">{t("schools.sourceLegend")}</p> : null}
       <p className="mt-6 text-sm text-ink-soft">{t("journey.disclaimer")}</p>
     </div>
   );

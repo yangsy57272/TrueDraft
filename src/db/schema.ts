@@ -329,6 +329,8 @@ export const school = pgTable("school", {
   country: text("country").notNull().default("US"),
   control: text("control"), // public | private
   website: text("website"),
+  /** IPEDS institution id (UNITID), used to match U.S. Department of Education data. */
+  unitid: text("unitid").unique(),
   /** The institution's own Common Data Set page. */
   cdsPageUrl: text("cds_page_url"),
   /** Most recent CDS edition the operator has seen listed on that page (not necessarily imported). */
@@ -336,6 +338,21 @@ export const school = pgTable("school", {
   linkCheckedAt: timestamp("link_checked_at", { withTimezone: true }),
   published: boolean("published").notNull().default(true),
   createdAt: createdAt(),
+  updatedAt: updatedAt(),
+});
+
+/**
+ * U.S. Department of Education data (College Scorecard / IPEDS) for one school, copied as published.
+ * A broad, comparable baseline for every college; the Common Data Set, where imported, is more detailed.
+ */
+export const federalProfile = pgTable("federal_profile", {
+  schoolId: uuid("school_id")
+    .primaryKey()
+    .references(() => school.id, { onDelete: "cascade" }),
+  unitid: text("unitid").notNull(),
+  /** Date of the College Scorecard file the values came from. */
+  fileDate: text("file_date").notNull(),
+  data: jsonb("data").$type<Record<string, unknown>>().notNull(),
   updatedAt: updatedAt(),
 });
 
@@ -403,4 +420,5 @@ export type FeedbackRun = typeof feedbackRun.$inferSelect;
 export type Resource = typeof resource.$inferSelect;
 export type School = typeof school.$inferSelect;
 export type CdsDataset = typeof cdsDataset.$inferSelect;
+export type FederalProfile = typeof federalProfile.$inferSelect;
 export type CollegeListEntry = typeof collegeListEntry.$inferSelect;

@@ -72,7 +72,9 @@ For a demo with fictional data only, set `TRUEDRAFT_DEMO_MODE=true`. The server 
 npm ci
 npm run build
 npm run db:migrate
-npm run db:seed        # optional: original writing resources
+npm run db:seed        # optional: original writing resources and the starter schools
+npm run scorecard:import   # U.S. Department of Education data: adds ~1,570 colleges
+npm run cds:import     # Common Data Set datasets in data/cds/
 npm run start          # listens on $PORT or 3000
 ```
 

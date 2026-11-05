@@ -34,9 +34,15 @@ test("journey: profile → majors → schools → list → linked supplemental e
 
   // Schools directory: official links, no invented numbers
   await page.goto("/schools");
-  await expect(page.getByText("24 schools", { exact: true })).toBeVisible();
-  await expect(page.getByText(/CDS data read from the college’s own document is available for \d+ of 24 schools/)).toBeVisible();
-  await expect(page.getByText("CDS data not yet imported").first()).toBeVisible();
+  // A broad directory: U.S. Department of Education data for well over a thousand colleges.
+  await expect(page.getByText(/^[\d,]+ schools$/)).toBeVisible();
+  await expect(page.getByText(/U\.S\. Department of Education data covers [\d,]+; the more detailed Common Data Set is imported for \d+/)).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Result pages" })).toBeVisible();
+  // Less selective, lower-cost colleges are easy to find.
+  await page.goto("/schools?admitRate=over50&tuition=20to40k&sort=tuition_low");
+  await expect(page.locator("li.card").first()).toBeVisible();
+  await expect(page.getByText("Fed").first()).toBeVisible();
+  await page.goto("/schools?q=Harvard");
   const harvard = page.locator("li", { has: page.getByRole("link", { name: "Harvard University" }) });
   await expect(harvard.getByRole("link", { name: /Official CDS page/ })).toHaveAttribute("href", "https://oira.harvard.edu/common-data-set/");
   await harvard.getByRole("button", { name: "+ Add to my list" }).click();
@@ -48,8 +54,13 @@ test("journey: profile → majors → schools → list → linked supplemental e
   // Imported data says plainly that no person has reviewed it yet.
   await expect(page.getByText("Automated check")).toBeVisible();
   await expect(page.getByText(/Not yet reviewed by a person/)).toBeVisible();
+  await expect(page.getByRole("heading", { name: "U.S. Department of Education data" })).toBeVisible();
   await page.goto("/schools/princeton-university");
   await expect(page.getByRole("heading", { name: "No CDS data imported yet" })).toBeVisible();
+  // Without a CDS, the federal figures are still there, with their period and source.
+  await expect(page.getByRole("heading", { name: "U.S. Department of Education data" })).toBeVisible();
+  await expect(page.getByText("Fall 2024").first()).toBeVisible();
+  await expect(page.getByRole("link", { name: /This college on College Scorecard/ })).toHaveAttribute("href", /collegescorecard\.ed\.gov\/school\/\?186131/);
 
   // My list: set category/round/deadline, toggle checklist, start a linked essay
   await page.goto("/my-list");

@@ -26,7 +26,7 @@ TrueDraft is a bilingual (English / Simplified Chinese) web app that gives stude
 | Application journey | A 7-step hub (`/journey`): profile → majors → read the CDS → explore schools → college list → essays → track applications. Each step's status is computed from the student's own data, with no streaks or pressure. |
 | Profile | Courses (IB/A-Level/AP/Chinese national/OSSD levels), Common App-style activities (150-char descriptions, grades, hours), honors, interests and values, optional scores, and college preferences. Encrypted at rest. **CV import:** paste CV text, the AI extracts items, the student ticks which to add, and the CV itself is never stored. |
 | Major Explorer | AI suggests fields of study grounded in the student's own entries. Every cited entry is checked against the profile and flagged if not found. Includes ways to test each interest. No prestige ranking or admission talk. Scores and GPA are never sent. Shortlist "majors I'm considering". |
-| Common Data Set | `/cds` explains every CDS section and the key items (C1, C2, C7, C8–C9, C11–C12, C13–C22, G1, H6, J1), with a fictional worked example. `/schools` is a directory of 24 universities, each linked to its **official** CDS page. Filters cover region, size, test policy, admission rate, ED/EA, international aid, and field of study. School pages show C7 factor tables, score ranges, international aid, and degrees by field, all with source links and verification dates. Students can compare up to 4 schools. |
+| Common Data Set | `/cds` explains every CDS section and the key items (C1, C2, C7, C8–C9, C11–C12, C13–C22, G1, H6, J1), with a fictional worked example. `/schools` is a directory of 1,573 U.S. colleges of every kind (public and private nonprofit, any selectivity). It has U.S. Department of Education figures (College Scorecard) for every college, and imported Common Data Set editions for 18 of them; every value is marked with its source and period. Filters cover region, size, admission rate, tuition, test policy, early plans, international aid, and field. Results can be sorted and are paginated. Schools whose data can't answer a filter are listed separately, never silently dropped. School pages, side-by-side compare, and admin CDS entry, CSV import, and AI pre-fill (drafts only) are included. |
 | College list | Add directory or custom schools. The student chooses their own reach/target/likely labels (never computed). Tracks round, platform, deadline, intended major, status, private notes (encrypted), a checklist with defaults (recommendations, transcript, English test, CSS/ISFAA, …), linked supplemental essays, and upcoming deadlines. |
 | Admin | Aggregate counts only (no essay browsing). Resource management with source, author, license status, permission notes, knowledge collection, access level, and an AI-retrieval switch that is off by default. |
 | Accessibility | Semantic HTML, skip link, labelled fields with associated errors, visible focus, keyboard-operable Radix tabs/dialogs/menus with focus return, non-colour cues on all statuses, reduced-motion support, no horizontal overflow at 375px. |
@@ -61,6 +61,8 @@ cp .env.example .env
 
 npm run db:migrate      # create tables
 npm run db:seed         # original writing resources (no student data)
+npm run scorecard:import # ~1,570 U.S. colleges with U.S. Department of Education data
+npm run cds:import       # imported Common Data Set editions
 npm run dev             # http://localhost:3000
 ```
 

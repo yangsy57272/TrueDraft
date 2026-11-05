@@ -1,7 +1,8 @@
 import "server-only";
 import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { cdsDataset, school, type CdsDataset, type School } from "@/db/schema";
+import { cdsDataset, federalProfile, school, type CdsDataset, type School } from "@/db/schema";
+import { schoolFacts, SORTS, testPolicyMatches, TUITION_BANDS, type FederalData, type SchoolFacts, type SortKey } from "@/lib/federal";
 import {
   C7_FACTORS,
   C7_LEVELS,
@@ -9,7 +10,6 @@ import {
   CIP_CODES,
   cdsDataSchema,
   derived,
-  num,
   REGIONS,
   sizeBand,
   STATE_REGIONS,
@@ -83,54 +83,80 @@ export type SchoolFilters = {
   sizes?: string[];
   testPolicy?: string;
   admitRate?: string; // under10 | 10to25 | 25to50 | over50
+  tuition?: string; // under20k | 20to40k | 40to60k | over60k
   round?: string; // ed | ea
   intlAid?: string; // need | any
   field?: string; // CIP family
+  sort?: string;
+  page?: number;
 };
 
 const ADMIT_BANDS: Record<string, [number, number]> = { under10: [0, 10], "10to25": [10, 25], "25to50": [25, 50], over50: [50, 101] };
+export const PAGE_SIZE = 24;
 
-/** True when a filter needs CDS data (so schools without imported data can't be judged). */
+/** True when a filter needs school data (so schools without it can't be judged). */
 export function usesDataFilters(f: SchoolFilters) {
-  return Boolean(f.sizes?.length || f.testPolicy || f.admitRate || f.round || f.intlAid || f.field);
+  return Boolean(f.sizes?.length || f.testPolicy || f.admitRate || f.tuition || f.round || f.intlAid || f.field);
 }
+
+export type FederalView = { data: FederalData; fileDate: string; unitid: string };
+
+async function federalProfilesFor(schoolIds?: string[]) {
+  const rows = schoolIds
+    ? schoolIds.length
+      ? await db.select().from(federalProfile).where(inArray(federalProfile.schoolId, schoolIds))
+      : []
+    : await db.select().from(federalProfile);
+  return new Map(rows.map((r) => [r.schoolId, { data: r.data as FederalData, fileDate: r.fileDate, unitid: r.unitid } satisfies FederalView]));
+}
+
+export type SchoolEntry = { school: School; latest: PublicDataset | null; federal: FederalView | null; facts: SchoolFacts };
 
 /**
  * Three outcomes per school: it matches, it doesn't, or it can't be assessed because the data a
- * filter needs hasn't been verified for it. Unassessable schools are returned separately so
- * students never mistake "no data" for "doesn't match".
+ * filter needs isn't available for it. Unassessable schools are returned separately so students
+ * never mistake "no data" for "doesn't match". Values come from the college's own CDS when imported,
+ * otherwise from U.S. Department of Education data; each carries its source.
  */
-export type FilterKey = "size" | "testPolicy" | "admitRate" | "round" | "intlAid" | "field";
+export type FilterKey = "size" | "testPolicy" | "admitRate" | "tuition" | "round" | "intlAid" | "field";
 
 export async function searchSchools(filters: SchoolFilters) {
   const schools = await db.select().from(school).where(eq(school.published, true)).orderBy(asc(school.name));
-  const datasets = await publishedDatasetsFor(schools.map((s) => s.id));
+  const [datasets, federal] = await Promise.all([publishedDatasetsFor(schools.map((s) => s.id)), federalProfilesFor()]);
   const q = filters.q?.trim().toLowerCase();
   const regions = (filters.regions ?? []).filter((r) => (REGIONS as readonly string[]).includes(r));
-  const results: { school: School; latest: PublicDataset | null }[] = [];
-  const unassessable: { school: School; latest: PublicDataset | null; missing: FilterKey[] }[] = [];
+  const results: SchoolEntry[] = [];
+  const unassessable: (SchoolEntry & { missing: FilterKey[] })[] = [];
 
   for (const s of schools) {
     const latest = datasets.get(s.id)?.[0] ?? null;
+    const fed = federal.get(s.id) ?? null;
     if (q && !`${s.name} ${s.nameZh ?? ""} ${s.city ?? ""}`.toLowerCase().includes(q)) continue;
     if (regions.length && !regions.includes(STATE_REGIONS[s.state ?? ""] ?? "")) continue;
     if (filters.control && s.control !== filters.control) continue;
 
+    const facts = schoolFacts(latest, fed?.data ?? null);
     const d = (latest?.data ?? {}) as CdsData;
-    // Each check returns true (match), false (no match), or null (can't tell from verified data).
+    // Each check returns true (match), false (no match), or null (can't tell from the data we have).
     const checks: [FilterKey, boolean | null][] = [];
     if (filters.sizes?.length) {
-      const band = sizeBand(num(d, "undergradTotal"));
+      const band = sizeBand(facts.undergrads?.value ?? null);
       checks.push(["size", band == null ? null : filters.sizes.includes(band)]);
     }
     if (filters.testPolicy && (TEST_POLICIES as readonly string[]).includes(filters.testPolicy)) {
-      checks.push(["testPolicy", d.testPolicy == null ? null : d.testPolicy === filters.testPolicy]);
+      checks.push(["testPolicy", testPolicyMatches(facts.testPolicy, filters.testPolicy)]);
     }
     if (filters.admitRate && ADMIT_BANDS[filters.admitRate]) {
-      const rate = latest?.derived.admitRate ?? null;
+      const rate = facts.admitRate?.value ?? null;
       const [lo, hi] = ADMIT_BANDS[filters.admitRate];
       checks.push(["admitRate", rate == null ? null : rate >= lo && rate < hi]);
     }
+    if (filters.tuition && TUITION_BANDS[filters.tuition]) {
+      const tuition = facts.tuition?.value ?? null;
+      const [lo, hi] = TUITION_BANDS[filters.tuition];
+      checks.push(["tuition", tuition == null ? null : tuition >= lo && tuition < hi]);
+    }
+    // Early plans and international aid are only in the Common Data Set.
     if (filters.round === "ed") checks.push(["round", typeof d.earlyDecision === "boolean" ? d.earlyDecision : null]);
     if (filters.round === "ea") checks.push(["round", typeof d.earlyAction === "boolean" ? d.earlyAction : null]);
     if (filters.intlAid) {
@@ -140,35 +166,74 @@ export async function searchSchools(filters: SchoolFilters) {
       else checks.push(["intlAid", need === true || merit === true ? true : need === false && merit === false ? false : d.intlAidNotAvailable === true ? false : null]);
     }
     if (filters.field && CIP_CODES.includes(filters.field)) {
-      const degrees = d.degreesByField;
+      const degrees = facts.degreesByField?.value;
       checks.push(["field", !degrees ? null : (degrees[filters.field] ?? 0) > 0]);
     }
 
     if (checks.some(([, c]) => c === false)) continue;
     const missing = checks.filter(([, c]) => c === null).map(([k]) => k);
-    if (missing.length) unassessable.push({ school: s, latest, missing });
-    else results.push({ school: s, latest });
+    const entry = { school: s, latest, federal: fed, facts };
+    if (missing.length) unassessable.push({ ...entry, missing });
+    else results.push(entry);
   }
 
-  const withData = schools.filter((s) => datasets.has(s.id)).length;
-  return { results, unassessable, hiddenForMissingData: unassessable.length, total: schools.length, withData };
+  sortEntries(results, (filters.sort as SortKey) ?? "name");
+  const pages = Math.max(1, Math.ceil(results.length / PAGE_SIZE));
+  const page = Math.min(Math.max(1, Math.floor(filters.page ?? 1)), pages);
+  return {
+    results: results.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+    matchCount: results.length,
+    page,
+    pages,
+    unassessable,
+    hiddenForMissingData: unassessable.length,
+    total: schools.length,
+    withData: schools.filter((s) => datasets.has(s.id)).length,
+    withFederal: schools.filter((s) => federal.has(s.id)).length,
+  };
+}
+
+/** Sort in place. Schools missing the sort value go last, then by name. */
+function sortEntries(list: SchoolEntry[], sort: SortKey) {
+  const key: Record<SortKey, ((e: SchoolEntry) => number | null) | null> = {
+    name: null,
+    admit_high: (e) => (e.facts.admitRate ? -e.facts.admitRate.value : null),
+    admit_low: (e) => e.facts.admitRate?.value ?? null,
+    tuition_low: (e) => e.facts.tuition?.value ?? null,
+    size_small: (e) => e.facts.undergrads?.value ?? null,
+    size_large: (e) => (e.facts.undergrads ? -e.facts.undergrads.value : null),
+  };
+  const f = key[(SORTS as readonly string[]).includes(sort) ? sort : "name"];
+  if (!f) return;
+  list.sort((a, b) => {
+    const va = f(a);
+    const vb = f(b);
+    if (va === null && vb === null) return a.school.name.localeCompare(b.school.name);
+    if (va === null) return 1;
+    if (vb === null) return -1;
+    return va - vb || a.school.name.localeCompare(b.school.name);
+  });
 }
 
 export async function getSchoolBySlug(slug: string) {
   const [row] = await db.select().from(school).where(and(eq(school.slug, slug), eq(school.published, true))).limit(1);
   if (!row) return null;
-  const datasets = (await publishedDatasetsFor([row.id])).get(row.id) ?? [];
-  return { school: row, datasets };
+  const [datasets, federal] = await Promise.all([publishedDatasetsFor([row.id]), federalProfilesFor([row.id])]);
+  return { school: row, datasets: datasets.get(row.id) ?? [], federal: federal.get(row.id) ?? null };
 }
 
 export async function getSchoolsByIds(ids: string[]) {
   if (!ids.length) return [];
   const rows = await db.select().from(school).where(and(inArray(school.id, ids), eq(school.published, true)));
-  const datasets = await publishedDatasetsFor(rows.map((r) => r.id));
+  const [datasets, federal] = await Promise.all([publishedDatasetsFor(rows.map((r) => r.id)), federalProfilesFor(rows.map((r) => r.id))]);
   return ids
     .map((id) => rows.find((r) => r.id === id))
     .filter((r): r is School => Boolean(r))
-    .map((s) => ({ school: s, latest: datasets.get(s.id)?.[0] ?? null }));
+    .map((s) => {
+      const latest = datasets.get(s.id)?.[0] ?? null;
+      const fed = federal.get(s.id) ?? null;
+      return { school: s, latest, federal: fed, facts: schoolFacts(latest, fed?.data ?? null) };
+    });
 }
 
 /* --------------------------------- admin --------------------------------- */

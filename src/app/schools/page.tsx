@@ -2,21 +2,24 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getT } from "@/i18n/server";
 import { CIP_CODES, CIP_FAMILIES, REGIONS, SIZE_PREFS, TEST_POLICIES } from "@/lib/planning";
+import { SORTS, TUITION_BANDS, type Sourced } from "@/lib/federal";
 import { getCurrentUser } from "@/server/session";
-import { searchSchools, type FilterKey, type PublicDataset, type SchoolFilters } from "@/server/services/schools";
-import type { School } from "@/db/schema";
+import { searchSchools, usesDataFilters, type FilterKey, type SchoolEntry, type SchoolFilters } from "@/server/services/schools";
+import { listedSchoolIds } from "@/server/services/college-list";
+import { getProfile } from "@/server/services/profile";
+import { AddToListButton, CompareBar, CompareProvider, CompareToggle } from "@/components/cds/SchoolClientBits";
 
 const MISSING_LABEL = {
   size: "schools.size",
   testPolicy: "schools.testPolicy",
   admitRate: "schools.admitRate",
+  tuition: "schools.tuition",
   round: "schools.round",
   intlAid: "schools.intlAid",
   field: "schools.fieldShort",
-} as const;
-import { listedSchoolIds } from "@/server/services/college-list";
-import { getProfile } from "@/server/services/profile";
-import { AddToListButton, CompareBar, CompareProvider, CompareToggle } from "@/components/cds/SchoolClientBits";
+} as const satisfies Record<FilterKey, string>;
+
+const UNASSESSABLE_SHOWN = 12;
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getT();
@@ -38,12 +41,15 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
     control: one(sp.control),
     testPolicy: one(sp.testPolicy),
     admitRate: one(sp.admitRate),
+    tuition: one(sp.tuition),
     round: one(sp.round),
     intlAid: one(sp.intlAid),
     field: one(sp.field),
+    sort: one(sp.sort),
+    page: Number(one(sp.page) ?? 1) || 1,
   };
-  const { results, unassessable, total, withData } = await searchSchools(filters);
-  const anyCdsFilter = Boolean(filters.sizes?.length || filters.testPolicy || filters.admitRate || filters.round || filters.intlAid || filters.field);
+  const { results, matchCount, page, pages, unassessable, total, withData, withFederal } = await searchSchools(filters);
+  const anyDataFilter = usesDataFilters(filters);
   const listed = user ? await listedSchoolIds(user.id) : new Set<string>();
   let prefsHref: string | null = null;
   if (user) {
@@ -55,58 +61,90 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
     if (q.toString()) prefsHref = `/schools?${q.toString()}`;
   }
   const zh = locale === "zh-CN";
-  const sel = (name: string, label: string, value: string | undefined, options: [string, string][]) => (
+  const nf = new Intl.NumberFormat(zh ? "zh-CN" : "en-US");
+  const money = (v: number) => `$${nf.format(v)}`;
+
+  /** The current query with a different page number. */
+  const pageHref = (n: number) => {
+    const q = new URLSearchParams();
+    for (const [k, v] of Object.entries(sp)) {
+      if (k === "page" || v === undefined) continue;
+      for (const x of Array.isArray(v) ? v : [v]) q.append(k, x);
+    }
+    if (n > 1) q.set("page", String(n));
+    const s = q.toString();
+    return s ? `/schools?${s}` : "/schools";
+  };
+
+  const sel = (name: string, label: string, value: string | undefined, options: [string, string][], anyLabel = t("schools.any")) => (
     <div>
       <label htmlFor={`f-${name}`} className="field-label text-sm">{label}</label>
       <select id={`f-${name}`} name={name} defaultValue={value ?? ""} className="input">
-        <option value="">{t("schools.any")}</option>
+        {anyLabel ? <option value="">{anyLabel}</option> : null}
         {options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
       </select>
     </div>
   );
 
-  const card = ({ school: s, latest, missing }: { school: School; latest: PublicDataset | null; missing?: FilterKey[] }) => (
-      <li key={s.id} className="card flex flex-col p-5">
-        <h2 className="text-lg font-semibold">
-          <Link href={`/schools/${s.slug}`} className="text-ink">{zh && s.nameZh ? s.nameZh : s.name}</Link>
-        </h2>
-        <p className="text-sm text-ink-soft">
-          {zh && s.nameZh ? `${s.name} · ` : ""}
-          {[s.city, s.state].filter(Boolean).join(", ")}
-          {s.control ? ` · ${t(`schools.controls.${s.control}` as never)}` : ""}
+  /** A value with a small mark saying whether it came from the college's CDS or federal data. */
+  const sourced = (v: Sourced<number | string> | null, format: (x: never) => string) =>
+    v ? (
+      <>
+        {format(v.value as never)}
+        <abbr title={t(`schools.sourceTitle.${v.source}` as never)} className="ml-1 align-super text-[0.65rem] font-normal text-ink-faint no-underline">
+          {t(`schools.sourceMark.${v.source}` as never)}
+        </abbr>
+      </>
+    ) : (
+      <span className="font-normal text-ink-faint">{t("schools.notReported")}</span>
+    );
+
+  const card = ({ school: s, latest, federal, facts, missing }: SchoolEntry & { missing?: FilterKey[] }) => (
+    <li key={s.id} className="card flex flex-col p-5">
+      <h2 className="text-lg font-semibold">
+        <Link href={`/schools/${s.slug}`} className="text-ink">{zh && s.nameZh ? s.nameZh : s.name}</Link>
+      </h2>
+      <p className="text-sm text-ink-soft">
+        {zh && s.nameZh ? `${s.name} · ` : ""}
+        {[s.city, s.state].filter(Boolean).join(", ")}
+        {s.control ? ` · ${t(`schools.controls.${s.control}` as never)}` : ""}
+      </p>
+      <div className="mt-3 flex-1 text-sm">
+        {latest || federal ? (
+          <dl className="grid grid-cols-2 gap-x-3 gap-y-1">
+            <dt className="text-ink-soft">{t("cdsFields.admitRate")}</dt>
+            <dd className="text-right font-semibold">{sourced(facts.admitRate, (x: number) => `${x}%`)}</dd>
+            <dt className="text-ink-soft">{t("cdsFields.testPolicy")}</dt>
+            <dd className="text-right font-semibold">{sourced(facts.testPolicy, (x: string) => t(`schools.testPolicyShort.${x}` as never))}</dd>
+            <dt className="text-ink-soft">{t("cdsFields.undergradTotal")}</dt>
+            <dd className="text-right font-semibold">{sourced(facts.undergrads, (x: number) => nf.format(x))}</dd>
+            <dt className="text-ink-soft">{t("schools.tuitionIntl")}</dt>
+            <dd className="text-right font-semibold">{sourced(facts.tuition, money)}</dd>
+            <dt className="col-span-2 mt-1 text-xs text-ink-faint">
+              {latest ? t("schools.dataYear", { year: latest.academicYear }) : t("schools.federalOnly")}
+            </dt>
+          </dl>
+        ) : (
+          <p><span className="badge badge-neutral">{t("schools.noData")}</span></p>
+        )}
+      </div>
+      {missing?.length ? (
+        <p className="mt-3 text-xs text-ink-soft">
+          {t("schools.missingFor", { filters: missing.map((k) => t(MISSING_LABEL[k])).join(zh ? "、" : ", ") })}
         </p>
-        <div className="mt-3 flex-1 text-sm">
-          {latest ? (
-            <dl className="grid grid-cols-2 gap-x-3 gap-y-1">
-              <dt className="text-ink-soft">{t("cdsFields.admitRate")}</dt>
-              <dd className="text-right font-semibold">{latest.derived.admitRate != null ? `${latest.derived.admitRate}%` : t("schools.notReported")}</dd>
-              <dt className="text-ink-soft">{t("cdsFields.testPolicy")}</dt>
-              <dd className="text-right font-semibold">{latest.data.testPolicy ? t(`testPolicies.${latest.data.testPolicy}` as never) : t("schools.notReported")}</dd>
-              <dt className="text-ink-soft">{t("cdsFields.undergradTotal")}</dt>
-              <dd className="text-right font-semibold">{typeof latest.data.undergradTotal === "number" ? latest.data.undergradTotal.toLocaleString() : t("schools.notReported")}</dd>
-              <dt className="col-span-2 mt-1 text-xs text-ink-faint">{t("schools.dataYear", { year: latest.academicYear })}</dt>
-            </dl>
-          ) : (
-            <p><span className="badge badge-neutral">{t("schools.noData")}</span></p>
-          )}
-        </div>
-        {missing?.length ? (
-          <p className="mt-3 text-xs text-ink-soft">
-            {t("schools.missingFor", { filters: missing.map((k) => t(MISSING_LABEL[k])).join(zh ? "、" : ", ") })}
-          </p>
-        ) : null}
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <Link href={`/schools/${s.slug}`} className="btn btn-primary btn-sm">{t("schools.view")}</Link>
-          <AddToListButton schoolId={s.id} onList={listed.has(s.id)} signedIn={Boolean(user)} />
-          <CompareToggle schoolId={s.id} name={s.name} />
-        </div>
-        {s.cdsPageUrl ? (
-          <a href={s.cdsPageUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-sm">
-            {t("schools.officialCds")} <span className="sr-only">{t("schools.opensNewTab")}</span>
-            <span aria-hidden="true">↗</span>
-          </a>
-        ) : null}
-      </li>
+      ) : null}
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <Link href={`/schools/${s.slug}`} className="btn btn-primary btn-sm">{t("schools.view")}</Link>
+        <AddToListButton schoolId={s.id} onList={listed.has(s.id)} signedIn={Boolean(user)} />
+        <CompareToggle schoolId={s.id} name={s.name} />
+      </div>
+      {s.cdsPageUrl ? (
+        <a href={s.cdsPageUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-sm">
+          {t("schools.officialCds")} <span className="sr-only">{t("schools.opensNewTab")}</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      ) : null}
+    </li>
   );
 
   return (
@@ -120,14 +158,15 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
       </div>
 
       <form method="get" className="card mt-6 p-4">
-        <div className="grid gap-4 sm:grid-cols-[2fr_1fr]">
+        <div className="grid gap-4 sm:grid-cols-[2fr_1fr_1fr]">
           <div>
             <label htmlFor="f-q" className="field-label text-sm">{t("schools.search")}</label>
             <input id="f-q" name="q" defaultValue={filters.q ?? ""} className="input" />
           </div>
           {sel("control", t("schools.control"), filters.control, [["public", t("schools.controls.public")], ["private", t("schools.controls.private")]])}
+          {sel("sort", t("schools.sortLabel"), filters.sort ?? "name", SORTS.map((k) => [k, t(`schools.sorts.${k}` as never)]), "")}
         </div>
-        <details className="mt-3" open={Boolean(filters.regions?.length || filters.sizes?.length || filters.testPolicy || filters.admitRate || filters.round || filters.intlAid || filters.field)}>
+        <details className="mt-3" open={anyDataFilter || Boolean(filters.regions?.length)}>
           <summary className="cursor-pointer text-sm font-semibold">{t("schools.filters")}</summary>
           <div className="mt-3 grid gap-4 md:grid-cols-3">
             <fieldset>
@@ -149,11 +188,18 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
               ))}
             </fieldset>
             <div className="space-y-3">
-              {sel("testPolicy", t("schools.testPolicy"), filters.testPolicy, TEST_POLICIES.map((p) => [p, t(`testPolicies.${p}` as never)]))}
               {sel("admitRate", t("schools.admitRate"), filters.admitRate, (["under10", "10to25", "25to50", "over50"] as const).map((b) => [b, t(`schools.admitRates.${b}` as never)]))}
+              {sel("tuition", t("schools.tuition"), filters.tuition, Object.keys(TUITION_BANDS).map((b) => [b, t(`schools.tuitionBands.${b}` as never)]))}
+              {sel("testPolicy", t("schools.testPolicy"), filters.testPolicy, TEST_POLICIES.map((p) => [p, t(`testPolicies.${p}` as never)]))}
             </div>
-            {sel("round", t("schools.round"), filters.round, [["ed", t("schools.rounds.ed")], ["ea", t("schools.rounds.ea")]])}
-            {sel("intlAid", t("schools.intlAid"), filters.intlAid, [["need", t("schools.intlAids.need")], ["any", t("schools.intlAids.any")]])}
+            <div>
+              {sel("round", t("schools.round"), filters.round, [["ed", t("schools.rounds.ed")], ["ea", t("schools.rounds.ea")]])}
+              <p className="mt-1 text-xs text-ink-soft">{t("schools.cdsOnlyFilter")}</p>
+            </div>
+            <div>
+              {sel("intlAid", t("schools.intlAid"), filters.intlAid, [["need", t("schools.intlAids.need")], ["any", t("schools.intlAids.any")]])}
+              <p className="mt-1 text-xs text-ink-soft">{t("schools.cdsOnlyFilter")}</p>
+            </div>
             <div>
               {sel("field", t("schools.field"), filters.field, CIP_CODES.map((c) => [c, CIP_FAMILIES[c][zh ? "zh" : "en"]]))}
               <p className="mt-1 text-xs text-ink-soft">{t("schools.fieldHelp")}</p>
@@ -169,21 +215,37 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
 
       <CompareProvider>
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-          <p className="font-semibold" role="status">{results.length === 1 ? t("schools.resultsOne") : t("schools.results", { count: results.length })}</p>
+          <p className="font-semibold" role="status">{matchCount === 1 ? t("schools.resultsOne") : t("schools.results", { count: nf.format(matchCount) })}</p>
           <CompareBar />
         </div>
-        <p className="mt-2 text-sm text-ink-soft">{t("schools.coverage", { withData, total })}</p>
-        {results.length === 0 ? <p className="notice mt-4">{anyCdsFilter && unassessable.length ? t("schools.noConfirmedMatches") : t("schools.noResults")}</p> : null}
+        <p className="mt-2 text-sm text-ink-soft">{t("schools.coverageBoth", { total: nf.format(total), withFederal: nf.format(withFederal), withData })}</p>
+        <p className="mt-1 text-xs text-ink-faint">
+          {t("schools.sourceLegend")}{" "}
+          <a href="https://collegescorecard.ed.gov/data/" target="_blank" rel="noopener noreferrer">
+            College Scorecard <span className="sr-only">{t("schools.opensNewTab")}</span>↗
+          </a>
+        </p>
+        {matchCount === 0 ? <p className="notice mt-4">{anyDataFilter && unassessable.length ? t("schools.noConfirmedMatches") : t("schools.noResults")}</p> : null}
         <ul className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {results.map((r) => card(r))}
         </ul>
+        {pages > 1 ? (
+          <nav aria-label={t("schools.pagination")} className="mt-6 flex flex-wrap items-center justify-center gap-2">
+            {page > 1 ? <Link href={pageHref(page - 1)} className="btn btn-secondary btn-sm" rel="prev">← {t("schools.prevPage")}</Link> : null}
+            <span className="text-sm text-ink-soft">{t("schools.pageOf", { page, pages })}</span>
+            {page < pages ? <Link href={pageHref(page + 1)} className="btn btn-secondary btn-sm" rel="next">{t("schools.nextPage")} →</Link> : null}
+          </nav>
+        ) : null}
         {unassessable.length ? (
           <section className="mt-10" aria-labelledby="unassessable-h">
-            <h2 id="unassessable-h" className="text-xl font-semibold">{t("schools.unassessableTitle", { count: unassessable.length })}</h2>
+            <h2 id="unassessable-h" className="text-xl font-semibold">{t("schools.unassessableTitle", { count: nf.format(unassessable.length) })}</h2>
             <p className="mt-1 max-w-3xl text-sm text-ink-soft">{t("schools.unassessableNote")}</p>
             <ul className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {unassessable.map((r) => card(r))}
+              {unassessable.slice(0, UNASSESSABLE_SHOWN).map((r) => card(r))}
             </ul>
+            {unassessable.length > UNASSESSABLE_SHOWN ? (
+              <p className="mt-3 text-sm text-ink-soft">{t("schools.unassessableMore", { count: nf.format(unassessable.length - UNASSESSABLE_SHOWN) })}</p>
+            ) : null}
           </section>
         ) : null}
       </CompareProvider>

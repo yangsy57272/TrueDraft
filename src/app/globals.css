@@ -1,24 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #faf7f2;
-  --color-paper-2: #f3eee5;
-  --color-card: #fffdf9;
-  --color-ink: #1b2838;
-  --color-ink-soft: #46546a;
-  --color-ink-faint: #5d6878;
-  --color-line: #e2dacd;
-  --color-line-strong: #c9bfae;
-  --color-teal: #2b6a64;
-  --color-teal-dark: #1f524d;
-  --color-teal-soft: #e2eeeb;
-  --color-sage: #6f8c79;
-  --color-sage-soft: #e9f0ea;
-  --color-coral: #b0472f;
-  --color-coral-dark: #923823;
-  --color-coral-soft: #f8e7e1;
-  --color-amber: #7d5a0f;
-  --color-amber-soft: #f9eed5;
+  --color-paper: #f6f7fb;
+  --color-paper-2: #eceff7;
+  --color-card: #ffffff;
+  --color-ink: #172033;
+  --color-ink-soft: #475569;
+  --color-ink-faint: #5b6577;
+  --color-line: #e2e6ef;
+  --color-line-strong: #c3cadb;
+  --color-teal: #4f46e5;
+  --color-teal-dark: #3730a3;
+  --color-teal-soft: #e0e7ff;
+  --color-sage: #0f766e;
+  --color-sage-soft: #ccfbf1;
+  --color-coral: #e11d48;
+  --color-coral-dark: #be123c;
+  --color-coral-soft: #ffe4e6;
+  --color-amber: #92400e;
+  --color-amber-soft: #fef3c7;
   --color-focus: #1f5fbf;
 
   --font-serif: "Source Serif 4 Variable", "Source Serif 4", "Iowan Old Style", Georgia, "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;
@@ -67,7 +67,7 @@
     border-radius: 4px;
   }
   ::selection {
-    background: #cfe3de;
+    background: #c7d2fe;
   }
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -104,9 +104,10 @@
     background: var(--color-card);
     border: 1px solid var(--color-line);
     border-radius: var(--radius-card);
+    box-shadow: 0 1px 2px rgba(23, 32, 51, 0.04), 0 1px 8px rgba(23, 32, 51, 0.03);
   }
   .paper-lines {
-    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, rgba(43, 106, 100, 0.07) 31px, rgba(43, 106, 100, 0.07) 32px);
+    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, rgba(79, 70, 229, 0.07) 31px, rgba(79, 70, 229, 0.07) 32px);
   }
 
   .btn {
@@ -131,18 +132,20 @@
     cursor: not-allowed;
   }
   .btn-primary {
-    background: var(--color-teal);
+    background: linear-gradient(135deg, #4f46e5, #6d28d9);
     color: #fff;
+    box-shadow: 0 1px 2px rgba(79, 70, 229, 0.3);
   }
   .btn-primary:hover:not(:disabled) {
-    background: var(--color-teal-dark);
+    background: linear-gradient(135deg, #4338ca, #5b21b6);
   }
   .btn-accent {
-    background: var(--color-coral);
+    background: linear-gradient(135deg, #e11d48, #c2410c);
     color: #fff;
+    box-shadow: 0 1px 2px rgba(225, 29, 72, 0.3);
   }
   .btn-accent:hover:not(:disabled) {
-    background: var(--color-coral-dark);
+    background: linear-gradient(135deg, #be123c, #9a3412);
   }
   .btn-secondary {
     background: var(--color-card);
@@ -222,8 +225,8 @@
     white-space: nowrap;
   }
   .badge-strong {
-    background: var(--color-teal-soft);
-    color: var(--color-teal-dark);
+    background: #dcfce7;
+    color: #166534;
   }
   .badge-developing {
     background: var(--color-amber-soft);
@@ -246,18 +249,18 @@
     font-size: 0.925rem;
   }
   .notice-info {
-    background: var(--color-teal-soft);
-    border-color: #c4dcd7;
+    background: #eef2ff;
+    border-color: #c7d2fe;
   }
   .notice-warn {
     background: var(--color-amber-soft);
-    border-color: #ead9ab;
+    border-color: #fcd34d;
     color: #4f3a08;
   }
   .notice-error {
     background: var(--color-coral-soft);
-    border-color: #e8c3b8;
-    color: #6e2a1a;
+    border-color: #fda4af;
+    color: #881337;
   }
 
   .quote {

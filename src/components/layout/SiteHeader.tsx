@@ -5,6 +5,7 @@ import { Logo } from "./Logo";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileNav } from "./MobileNav";
 import { SignOutButton } from "./SignOutButton";
+import { StepBar } from "./StepBar";
 
 export async function SiteHeader() {
   const { t } = await getT();
@@ -43,7 +44,9 @@ export async function SiteHeader() {
   const mobileExtra = user ? publicLinks.filter((l) => l.href !== "/schools") : publicLinks;
 
   return (
-    <header className="border-b border-line bg-paper/95">
+    <header className="border-b border-line bg-card">
+      {/* One colour per journey step, as a thin stripe across the top. */}
+      <div aria-hidden="true" className="h-1 w-full" style={{ background: "linear-gradient(90deg,#4338ca 0%,#6d28d9 16%,#0369a1 33%,#0f766e 50%,#c2410c 66%,#be185d 83%,#15803d 100%)" }} />
       <a href="#main" className="sr-only-focusable btn btn-primary absolute left-3 top-3 z-50">
         {t("nav.skipToContent")}
       </a>
@@ -55,7 +58,7 @@ export async function SiteHeader() {
           <ul className="flex items-center gap-1 text-sm">
             {desktopLinks.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="whitespace-nowrap rounded-md px-2.5 py-2 text-ink-soft no-underline hover:bg-paper-2 hover:text-ink">
+                <Link href={l.href} className="whitespace-nowrap rounded-md px-2.5 py-2 font-medium text-ink-soft no-underline hover:bg-indigo-50 hover:text-indigo-800">
                   {l.label}
                 </Link>
               </li>
@@ -84,6 +87,7 @@ export async function SiteHeader() {
         </div>
         <MobileNav links={mobileExtra} accountLinks={accountLinks} signedIn={Boolean(user)} />
       </div>
+      {user ? <StepBar /> : null}
     </header>
   );
 }

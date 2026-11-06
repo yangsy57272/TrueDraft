@@ -5,13 +5,15 @@ test("majors can be saved for later, and the next-step suggestion moves on", asy
   await signIn(page);
   await page.goto("/journey");
   // A new student starts with their profile.
-  await expect(page.getByText("A good next step").locator("..")).toContainText("Build your profile");
+  await expect(page.getByText(/Next up · Step 1/).locator("..")).toContainText("Build your profile");
   const majorsStep = page.getByRole("listitem").filter({ has: page.getByRole("heading", { name: /Explore majors/ }) });
   await majorsStep.getByRole("button", { name: "I’ll explore majors later" }).click();
   await expect(majorsStep.getByText("Saved for later")).toBeVisible();
   await expect(majorsStep.getByText(/Many students decide in college/)).toBeVisible();
   await page.goto("/majors");
   await page.getByRole("button", { name: "Explore majors now" }).click();
+  // Wait for the change to be saved before leaving the page.
+  await expect(page.getByRole("button", { name: "I’ll explore majors later" })).toBeVisible();
   await page.goto("/journey");
   await expect(page.getByRole("listitem").filter({ has: page.getByRole("heading", { name: /Explore majors/ }) }).getByText("Not started")).toBeVisible();
 });

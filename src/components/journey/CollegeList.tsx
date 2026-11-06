@@ -397,7 +397,7 @@ export function CollegeList({ entries }: { entries: ListEntry[] }) {
           <button type="submit" className="btn btn-secondary" disabled={adding}>{t("list.add")}</button>
         </form>
       </div>
-      <aside className="card h-fit p-5" aria-labelledby="upcoming">
+      <aside id="deadlines" className="card h-fit scroll-mt-24 border-t-4 p-5" style={{ borderTopColor: "#15803d" }} aria-labelledby="upcoming">
         <h2 id="upcoming" className="text-lg font-semibold">{t("list.upcoming")}</h2>
         <DeadlineOverview entries={items.map((e) => ({ id: e.id, name: locale === "zh-CN" && e.schoolNameZh ? e.schoolNameZh : e.schoolName, deadlines: e.deadlines }))} />
       </aside>

@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { signIn } from "./helpers";
+import { createEssay, signIn } from "./helpers";
 
 test("majors can be saved for later, and the next-step suggestion moves on", async ({ page }) => {
   await signIn(page);
@@ -30,6 +30,26 @@ test("the homepage offers separate application and essay paths", async ({ page }
   await expect(page.getByRole("link", { name: "Start with your draft" }).first()).toHaveAttribute("href", essaySignIn);
   await signIn(page, undefined, { from: essaySignIn, to: "/essays/new" });
   await expect(page.getByLabel(/Essay title/)).toBeVisible();
+});
+
+test("the journey resumes the latest essay that is still in progress", async ({ page }) => {
+  await signIn(page);
+  const resume = page.getByRole("region", { name: "Continue your latest essay" });
+  await expect(resume).toHaveCount(0);
+  const older = await createEssay(page);
+  const newer = await createEssay(page);
+  await page.goto("/journey");
+  await resume.getByRole("link", { name: "Open draft" }).click();
+  await expect(page).toHaveURL(newer);
+
+  const saved = page.waitForResponse((response) =>
+    response.request().method() === "PATCH" && response.url() === newer.replace("/essays/", "/api/essays/"),
+  );
+  await page.getByLabel("Status", { exact: true }).selectOption("submitted");
+  expect((await saved).ok()).toBe(true);
+  await page.goto("/journey");
+  await resume.getByRole("link", { name: "Open draft" }).click();
+  await expect(page).toHaveURL(older);
 });
 
 test("sample feedback is available in English, bilingual, and Chinese", async ({ page }) => {

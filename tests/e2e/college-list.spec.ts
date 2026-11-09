@@ -3,11 +3,17 @@ import { signIn } from "./helpers";
 
 test("custom school, deadline edit, and rapid checklist clicks all persist", async ({ page }) => {
   await signIn(page);
+  await page.goto("/my-list/deadlines");
+  await expect(page.getByText(/Start by saving a school/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Explore schools", exact: true })).toHaveAttribute("href", "/schools");
   await page.goto("/my-list");
   await page.getByLabel("Add a school not in the directory").fill("Fictional Lakeside College");
   await page.getByRole("button", { name: "Add", exact: true }).click();
   const card = page.locator("li.card", { has: page.getByRole("heading", { name: "Fictional Lakeside College" }) });
   await expect(card).toBeVisible(); // appears without a reload
+  await page.getByRole("link", { name: "View my deadlines" }).click();
+  await expect(page.getByText(/Open a school’s entry and add the dates/)).toBeVisible();
+  await page.getByRole("link", { name: "Manage applications in my college list" }).click();
 
   await card.getByRole("button", { name: "+ Add a deadline" }).click();
   await card.getByLabel("Type").selectOption("early_decision");
@@ -51,8 +57,11 @@ test("custom school, deadline edit, and rapid checklist clicks all persist", asy
   await expect(page).toHaveURL(/\/my-list\/deadlines$/);
   await expect(stepNav.getByRole("link", { name: /Track applications/ })).toHaveAttribute("aria-current", "step");
   const tracker = page.getByRole("region", { name: "Your deadlines" });
-  await expect(tracker.getByText("Fictional Lakeside College")).toBeVisible();
   await expect(tracker.getByText("1 completed")).toBeVisible();
+  await tracker.getByRole("link", { name: "Fictional Lakeside College" }).click();
+  await expect(page).toHaveURL(/\/my-list#school-deadlines-[0-9a-f-]+$/);
+  const deadlineSection = card.locator(":target");
+  await expect(deadlineSection.getByRole("button", { name: "+ Add a deadline" })).toBeInViewport();
 });
 
 test("a failed checklist update is rolled back and reported", async ({ page }) => {

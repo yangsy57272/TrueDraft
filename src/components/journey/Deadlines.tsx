@@ -206,6 +206,10 @@ export function DeadlineList({ deadlines, ops }: { deadlines: Deadline[]; ops: D
   );
 }
 
+export function schoolDeadlinesId(entryId: string) {
+  return `school-deadlines-${entryId}`;
+}
+
 /** All deadlines across the list, grouped by state. */
 export function DeadlineOverview({ entries }: { entries: { id: string; name: string; deadlines: Deadline[] }[] }) {
   const { t } = useI18n();
@@ -228,9 +232,10 @@ export function DeadlineOverview({ entries }: { entries: { id: string; name: str
           <section key={g} aria-label={t(`list.deadlineGroups.${g}` as never)}>
             <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">{t(`list.deadlineGroups.${g}` as never)} ({items.length})</h3>
             <ol className="mt-1 space-y-2 text-sm">
-              {items.map(({ d, name, state }) => (
-                <li key={d.id} className="border-t border-line pt-2 first:border-t-0">
-                  <p className="font-medium">{name}</p>
+              {items.map(({ d, name, state, entryId }) => (
+                <li key={`${entryId}-${d.id}`} className="border-t border-line pt-2 first:border-t-0">
+                  {/* Let the browser focus the fragment and apply the target highlight. */}
+                  <a href={`/my-list#${schoolDeadlinesId(entryId)}`} className="font-medium wrap-anywhere">{name}</a>
                   <p className="text-ink-soft">{deadlineLabel(t as never, d)} · {describe(d)}</p>
                   <StateBadge state={state} days={daysUntil(d, clock.now, clock.tz)} />
                 </li>

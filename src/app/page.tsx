@@ -2,20 +2,21 @@ import Link from "next/link";
 import { getT } from "@/i18n/server";
 import { getCurrentUser } from "@/server/session";
 import { listPublishedResources } from "@/server/services/resources";
-import { SAMPLE_FEEDBACK } from "@/content/sample";
-import { DiagnosticBadge } from "@/components/feedback/bits";
+import { SAMPLE_FEEDBACK, SAMPLE_FEEDBACK_ZH } from "@/content/sample";
+import { JOURNEY_STEPS } from "@/lib/journey-steps";
 
 export default async function HomePage() {
   const { t, messages, locale } = await getT();
   const user = await getCurrentUser();
   const resources = (await listPublishedResources(null, locale).catch(() => [])).slice(0, 3);
-  const startHref = user ? "/essays/new" : "/sign-in";
+  const startHref = user ? "/essays/new" : "/sign-in?intent=essay";
+  const sample = (locale === "zh-CN" ? SAMPLE_FEEDBACK_ZH : SAMPLE_FEEDBACK).passage_comments[0];
   const m = messages.home;
 
   return (
     <>
       <section className="paper-lines border-b border-line">
-        <div className="container-page grid gap-10 py-14 md:grid-cols-[1.25fr_1fr] md:py-20">
+        <div className="container-page grid items-center gap-10 py-12 md:grid-cols-[1.25fr_1fr] md:py-20">
           <div>
             <p className="text-sm font-semibold uppercase tracking-wider text-teal">{m.eyebrow}</p>
             <h1 className="mt-3 text-4xl font-semibold sm:text-5xl">{m.heroTitle}</h1>
@@ -25,29 +26,29 @@ export default async function HomePage() {
               </p>
             ) : null}
             <p className="mt-5 max-w-xl text-lg text-ink-soft">{m.heroBody}</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-wrap gap-3">
               <Link href={startHref} className="btn btn-accent">
                 {m.ctaPrimary}
               </Link>
-              <Link href="/sample-feedback" className="btn btn-secondary">
-                {m.ctaSecondary}
+              <Link href={user ? "/journey" : "#application-journey"} className="btn btn-secondary">
+                {t("journey.homeExplore")}
               </Link>
             </div>
             <p className="mt-6 max-w-xl text-sm text-ink-soft">{t("disclaimer.main")}</p>
           </div>
-          <div className="card self-start p-5 shadow-sm" aria-label={t("common.fictional")}>
-            <p className="badge badge-neutral">{t("common.fictional")}</p>
-            <p className="mt-3 text-sm font-semibold uppercase tracking-wide text-coral-dark">{t("feedback.primaryPriority")}</p>
-            <p className="mt-1 font-serif text-lg font-semibold">{SAMPLE_FEEDBACK.primary_priority.title}</p>
-            <ul className="mt-4 space-y-2">
-              {SAMPLE_FEEDBACK.categories.slice(1, 4).map((c) => (
-                <li key={c.key} className="flex flex-wrap items-center justify-between gap-2 border-t border-line pt-2 text-sm">
-                  <span>{t(`feedback.category.${c.key}` as never)}</span>
-                  <DiagnosticBadge label={c.label} />
-                </li>
-              ))}
-            </ul>
-          </div>
+          <section className="card border-t-4 border-t-teal p-5 sm:p-7" aria-labelledby="sample-title">
+            <span className="badge badge-neutral">{t("common.fictional")}</span>
+            <h2 id="sample-title" className="mt-3 text-xl font-semibold">{m.sampleTitle}</h2>
+            <blockquote className="quote mt-4" lang="en">“{sample.quote}”</blockquote>
+            <p className="mt-4 text-sm text-ink-soft">{sample.observation}</p>
+            <p className="mt-3 rounded-lg bg-teal-soft/60 p-3 text-sm">
+              <strong className="mb-1 block text-teal-dark">{t("feedback.tryThis")}</strong>
+              {sample.revision_question}
+            </p>
+            <Link href={`/sample-feedback?lang=${locale === "zh-CN" ? "zh" : "en"}`} className="btn btn-secondary btn-sm mt-4">
+              {m.ctaSecondary} <span aria-hidden="true">→</span>
+            </Link>
+          </section>
         </div>
       </section>
 
@@ -56,20 +57,20 @@ export default async function HomePage() {
         <p className="mt-4 text-lg text-ink-soft">{t("home.ethicalBody")}</p>
       </section>
 
-      <section className="container-page mb-16" aria-labelledby="journey-title">
+      <section id="application-journey" className="container-page mb-16 scroll-mt-6" aria-labelledby="journey-title">
         <div className="card p-6 sm:p-8">
           <h2 id="journey-title" className="text-2xl font-semibold">{t("journey.homeTitle")}</h2>
           <p className="mt-2 max-w-3xl text-ink-soft">{t("journey.homeBody")}</p>
           <ol className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {(["profile", "majors", "cds", "schools", "list", "essays", "track"] as const).map((k, i) => (
-              <li key={k} className="flex gap-3 rounded-lg border border-line bg-paper p-3">
-                <span className="font-serif text-xl text-teal" aria-hidden="true">{i + 1}</span>
-                <span className="text-sm font-semibold">{t(`journey.steps.${k}.title` as never)}</span>
+            {JOURNEY_STEPS.map(({ key, color, soft }, i) => (
+              <li key={key} className="flex items-center gap-3 rounded-lg border border-line bg-paper p-3">
+                <span className="grid size-8 shrink-0 place-items-center rounded-full text-sm font-semibold" style={{ background: soft, color }} aria-hidden="true">{i + 1}</span>
+                <span className="text-sm font-semibold">{t(`journey.steps.${key}.title`)}</span>
               </li>
             ))}
           </ol>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link href={user ? "/journey" : "/sign-in"} className="btn btn-accent">{t("home.ctaPrimary")}</Link>
+            <Link href={user ? "/journey" : "/sign-in"} className="btn btn-primary">{t("journey.homeStart")}</Link>
             <Link href="/schools" className="btn btn-secondary">{t("journey.homeCta")}</Link>
             <Link href="/cds" className="btn btn-ghost">{t("nav.cdsGuide")}</Link>
           </div>
@@ -89,20 +90,10 @@ export default async function HomePage() {
         </ol>
       </section>
 
-      <section className="container-page mt-16 grid gap-6 md:grid-cols-2">
-        <div className="card p-6">
-          <h2 className="text-2xl font-semibold">{m.sampleTitle}</h2>
-          <p className="mt-2 text-ink-soft">{m.sampleBody}</p>
-          <blockquote className="quote mt-4">“{SAMPLE_FEEDBACK.passage_comments[0].quote}”</blockquote>
-          <p className="mt-3">{SAMPLE_FEEDBACK.passage_comments[0].observation}</p>
-          <p className="mt-2 text-sm">
-            <strong>{t("feedback.tryThis")}:</strong> {SAMPLE_FEEDBACK.passage_comments[0].revision_question}
-          </p>
-          <Link href="/sample-feedback" className="btn btn-secondary mt-5">{m.sampleCta}</Link>
-        </div>
-        <div className="card bg-teal-soft/50 p-6">
+      <section className="container-page mt-16">
+        <div className="card bg-teal-soft/50 p-6 sm:p-8">
           <h2 className="text-2xl font-semibold">{m.privacyTitle}</h2>
-          <ul className="mt-4 space-y-3">
+          <ul className="mt-4 grid gap-3 md:grid-cols-2 md:gap-x-8">
             {m.privacyPoints.map((p, i) => (
               <li key={i} className="flex gap-3">
                 <span aria-hidden="true" className="text-teal">✓</span>

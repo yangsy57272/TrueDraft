@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useI18n } from "@/i18n/client";
 import { authClient } from "@/lib/auth-client";
 
-export function SignInForm({ showDevHint }: { showDevHint: boolean }) {
+export function SignInForm({ showDevHint, callbackURL, errorCallbackURL }: { showDevHint: boolean; callbackURL: string; errorCallbackURL: string }) {
   const { t } = useI18n();
   const [email, setEmail] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "sent">("idle");
@@ -19,7 +19,7 @@ export function SignInForm({ showDevHint }: { showDevHint: boolean }) {
       return;
     }
     setState("sending");
-    const result = await authClient.signIn.magicLink({ email: value, callbackURL: "/journey", errorCallbackURL: "/sign-in?error=link" });
+    const result = await authClient.signIn.magicLink({ email: value, callbackURL, errorCallbackURL });
     if (result.error) {
       setState("idle");
       setError(result.error.status === 429 ? t("auth.tooMany") : t("common.unknownError"));

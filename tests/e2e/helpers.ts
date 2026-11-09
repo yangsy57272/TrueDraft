@@ -7,8 +7,8 @@ export function uniqueEmail(prefix = "e2e") {
 }
 
 /** Sign in through the real UI; the sign-in link is read from the file mailbox. */
-export async function signIn(page: Page, email = uniqueEmail()) {
-  await page.goto("/sign-in");
+export async function signIn(page: Page, email = uniqueEmail(), { from = "/sign-in", to = "/journey" } = {}) {
+  await page.goto(from);
   await page.getByLabel("Email address").fill(email);
   await page.getByRole("button", { name: "Email me a sign-in link" }).click();
   await expect(page.getByText("Check your email")).toBeVisible();
@@ -16,7 +16,7 @@ export async function signIn(page: Page, email = uniqueEmail()) {
   await expect.poll(() => existsSync(file), { timeout: 10_000 }).toBe(true);
   const { url } = JSON.parse(readFileSync(file, "utf8"));
   await page.goto(url);
-  await page.waitForURL("**/journey");
+  await page.waitForURL(`**${to}`);
   return email;
 }
 

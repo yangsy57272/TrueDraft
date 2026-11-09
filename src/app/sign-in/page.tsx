@@ -10,9 +10,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function SignInPage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
-  if (await getCurrentUser()) redirect("/journey");
-  const { t } = await getT();
   const params = await searchParams;
+  const essayIntent = params.intent === "essay";
+  const destination = essayIntent ? "/essays/new" : "/journey";
+  if (await getCurrentUser()) redirect(destination);
+  const { t } = await getT();
   const showDevHint = process.env.NODE_ENV !== "production" && (process.env.EMAIL_TRANSPORT ?? "console") === "console";
   return (
     <div className="container-prose max-w-lg py-14">
@@ -21,7 +23,11 @@ export default async function SignInPage({ searchParams }: { searchParams: Promi
       {params.error ? <p className="notice notice-error mt-6" role="alert">{t("auth.linkError")}</p> : null}
       {params.signedOut ? <p className="notice notice-info mt-6" role="status">{t("auth.signedOut")}</p> : null}
       {params.deleted ? <p className="notice notice-info mt-6" role="status">{t("settings.deleted")}</p> : null}
-      <SignInForm showDevHint={showDevHint} />
+      <SignInForm
+        showDevHint={showDevHint}
+        callbackURL={destination}
+        errorCallbackURL={essayIntent ? "/sign-in?error=link&intent=essay" : "/sign-in?error=link"}
+      />
     </div>
   );
 }

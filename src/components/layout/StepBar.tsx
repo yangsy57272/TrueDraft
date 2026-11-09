@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useI18n } from "@/i18n/client";
-import { JOURNEY_STEPS, stepForPath } from "@/lib/journey-steps";
+import { JOURNEY_STEPS, stepForPath, type JourneyStepKey } from "@/lib/journey-steps";
 
 /**
  * "Step 3 of 7" bar shown under the header on each journey step's page (signed-in students only):
@@ -16,13 +16,13 @@ export function StepBar() {
   const step = JOURNEY_STEPS[index];
   const prev = index > 0 ? JOURNEY_STEPS[index - 1] : null;
   const next = index < JOURNEY_STEPS.length - 1 ? JOURNEY_STEPS[index + 1] : null;
-  const title = (key: string) => t(`journey.steps.${key}.title` as never);
+  const title = (key: JourneyStepKey) => t(`journey.steps.${key}.title`);
 
   return (
     <nav aria-label={t("journey.stepNav")} className="border-b border-line" style={{ background: step.soft }}>
       <div className="container-page flex flex-wrap items-center gap-x-5 gap-y-2 py-2.5">
         <p className="flex items-center gap-2 text-sm font-semibold" style={{ color: step.color }}>
-          <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-xs text-white" style={{ background: step.color }}>
+          <span aria-hidden="true" className="inline-flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-xs text-white" style={{ background: step.color }}>
             {index + 1}/{JOURNEY_STEPS.length}
           </span>
           <span>
@@ -47,22 +47,22 @@ export function StepBar() {
                 {i + 1}
                 <span className="sr-only">. {title(s.key)}</span>
               </Link>
-              {i < JOURNEY_STEPS.length - 1 ? <span aria-hidden="true" className="mx-0.5 h-0.5 w-4 rounded" style={{ background: i < index ? step.color : "#cbd5e1" }} /> : null}
+              {i < JOURNEY_STEPS.length - 1 ? <span aria-hidden="true" className="mx-0.5 h-0.5 w-4 rounded bg-line-strong" /> : null}
             </li>
           ))}
         </ol>
-        <div className="ml-auto flex items-center gap-2 text-sm">
-          <Link href="/journey" className="rounded-md px-2 py-1 font-medium text-ink-soft no-underline hover:bg-white/70">
+        <div className="flex flex-wrap items-center gap-2 text-sm sm:ml-auto">
+          <Link href="/journey" className="btn btn-ghost btn-sm text-ink-soft">
             {t("journey.allSteps")}
           </Link>
           {prev ? (
-            <Link href={prev.href} className="rounded-md px-2 py-1 font-medium text-ink no-underline hover:bg-white/70">
-              ← {t("journey.prevStep")}
+            <Link href={prev.href} className="btn btn-ghost btn-sm">
+              <span aria-hidden="true">←</span> {t("journey.prevStep")}<span className="sr-only">, {title(prev.key)}</span>
             </Link>
           ) : null}
           {next ? (
-            <Link href={next.href} className="rounded-md px-3 py-1 font-semibold text-white no-underline" style={{ background: next.color }}>
-              {t("journey.nextStep", { title: title(next.key) })} →
+            <Link href={next.href} className="btn btn-secondary btn-sm">
+              {t("journey.nextStep", { title: title(next.key) })} <span aria-hidden="true">→</span>
             </Link>
           ) : null}
         </div>

@@ -95,8 +95,6 @@ const zhCN: Messages = {
       { title: "修改并对比", body: "直接在页面上修改，保存不同版本，并排对比，准备好后再申请新的反馈。" },
     ],
     sampleTitle: "反馈长什么样",
-    sampleBody: "本站所有示例都使用专门为演示而写的完全虚构的文书。",
-    sampleCta: "查看完整的虚构示例",
     privacyTitle: "从设计上保护隐私",
     privacyPoints: [
       "你的草稿在数据库中加密保存，只有你的账户能打开。",

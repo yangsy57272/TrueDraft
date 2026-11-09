@@ -6,6 +6,9 @@ test("majors can be saved for later, and the next-step suggestion moves on", asy
   await page.goto("/journey");
   // A new student starts with their profile.
   await expect(page.getByText(/Next up · Step 1/).locator("..")).toContainText("Build your profile");
+  await expect(page.getByText("0 of 6 planning steps started")).toBeVisible();
+  const cdsStep = page.getByRole("listitem").filter({ has: page.getByRole("heading", { name: /Learn to read the Common Data Set/ }) });
+  await expect(cdsStep.getByText("Read anytime")).toBeVisible();
   const majorsStep = page.getByRole("listitem").filter({ has: page.getByRole("heading", { name: /Explore majors/ }) });
   await majorsStep.getByRole("button", { name: "I’ll explore majors later" }).click();
   await expect(majorsStep.getByText("Saved for later")).toBeVisible();
@@ -16,6 +19,17 @@ test("majors can be saved for later, and the next-step suggestion moves on", asy
   await expect(page.getByRole("button", { name: "I’ll explore majors later" })).toBeVisible();
   await page.goto("/journey");
   await expect(page.getByRole("listitem").filter({ has: page.getByRole("heading", { name: /Explore majors/ }) }).getByText("Not started")).toBeVisible();
+});
+
+test("the homepage offers separate application and essay paths", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "Explore the application journey" }).click();
+  await expect(page).toHaveURL(/#application-journey$/);
+  await expect(page.getByRole("link", { name: "Start my application plan" })).toHaveAttribute("href", "/sign-in");
+  const essaySignIn = "/sign-in?intent=essay";
+  await expect(page.getByRole("link", { name: "Start with your draft" }).first()).toHaveAttribute("href", essaySignIn);
+  await signIn(page, undefined, { from: essaySignIn, to: "/essays/new" });
+  await expect(page.getByLabel(/Essay title/)).toBeVisible();
 });
 
 test("sample feedback is available in English, bilingual, and Chinese", async ({ page }) => {

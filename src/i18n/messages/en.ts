@@ -96,8 +96,6 @@ const en = {
       { title: "Revise and compare", body: "Edit in place, save versions, compare drafts side by side, and ask for fresh feedback when you are ready." },
     ],
     sampleTitle: "What feedback looks like",
-    sampleBody: "Every example on this site uses a completely fictional essay written for demonstration.",
-    sampleCta: "Read the full fictional example",
     privacyTitle: "Private by design",
     privacyPoints: [
       "Your drafts are encrypted in our database and only your account can open them.",

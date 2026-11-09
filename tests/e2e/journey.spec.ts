@@ -141,7 +141,7 @@ for (const path of ["/cds", "/schools", "/schools/harvard-university", "/schools
 
 test("no serious accessibility violations on signed-in journey pages", async ({ page }) => {
   await signIn(page);
-  for (const path of ["/journey", "/profile", "/majors", "/my-list"]) {
+  for (const path of ["/journey", "/profile", "/majors", "/my-list", "/my-list/deadlines"]) {
     await page.goto(path);
     const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
     const serious = results.violations.filter((v) => v.impact === "serious" || v.impact === "critical");
@@ -156,7 +156,7 @@ test.describe("journey on mobile @mobile", () => {
       expect(await noHorizontalOverflow(page), path).toBe(true);
     }
     await signIn(page);
-    for (const path of ["/journey", "/profile", "/majors", "/my-list"]) {
+    for (const path of ["/journey", "/profile", "/majors", "/my-list", "/my-list/deadlines"]) {
       await page.goto(path);
       expect(await noHorizontalOverflow(page), path).toBe(true);
     }

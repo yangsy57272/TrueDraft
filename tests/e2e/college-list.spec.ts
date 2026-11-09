@@ -45,6 +45,14 @@ test("custom school, deadline edit, and rapid checklist clicks all persist", asy
   await expect(again.getByText(/2 of \d+ done/)).toBeVisible();
   await expect(page.getByRole("complementary").filter({ hasText: "Your deadlines" }).getByText("Fictional Lakeside College")).toBeVisible();
   await expect(page.getByRole("complementary").filter({ hasText: "Your deadlines" }).getByText("1 completed")).toBeVisible();
+  const stepNav = page.getByRole("navigation", { name: "Application journey navigation" });
+  await expect(stepNav.getByRole("link", { name: /Build your college list/ })).toHaveAttribute("aria-current", "step");
+  await page.getByRole("link", { name: "View my deadlines" }).click();
+  await expect(page).toHaveURL(/\/my-list\/deadlines$/);
+  await expect(stepNav.getByRole("link", { name: /Track applications/ })).toHaveAttribute("aria-current", "step");
+  const tracker = page.getByRole("region", { name: "Your deadlines" });
+  await expect(tracker.getByText("Fictional Lakeside College")).toBeVisible();
+  await expect(tracker.getByText("1 completed")).toBeVisible();
 });
 
 test("a failed checklist update is rolled back and reported", async ({ page }) => {

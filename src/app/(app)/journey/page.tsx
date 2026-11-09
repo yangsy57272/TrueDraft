@@ -65,6 +65,7 @@ export default async function JourneyPage() {
   const startedCount = planningSteps.filter((s) => statuses[s.key] === "started").length;
   const nextStep = steps.findIndex((s) => statuses[s.key] === "not_started");
   const next = nextStep >= 0 ? steps[nextStep] : undefined;
+  const resumeEssay = essays.find((essay) => essay.status !== "submitted");
 
   return (
     <div className="container-prose max-w-4xl py-10">
@@ -81,21 +82,28 @@ export default async function JourneyPage() {
         <p className="mt-2 text-xs text-ink-soft">{t("journey.progressHelp")}</p>
       </div>
 
-      {next ? (
-        <section className="card mt-6 border-l-4 p-5 sm:p-6" style={{ borderLeftColor: next.color, background: next.soft }} aria-labelledby="next-step">
-          <p className="text-sm font-semibold" style={{ color: next.color }}>
-            {t("journey.nextUp")} · {t("journey.stepLabel", { n: nextStep + 1 })}
-          </p>
-          <h2 id="next-step" className="mt-1 text-2xl font-semibold">{t(`journey.steps.${next.key}.title`)}</h2>
-          <p className="mt-2 max-w-2xl text-ink-soft">{t(`journey.steps.${next.key}.body`)}</p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <Link href={next.href} className="btn btn-primary">{t(`journey.actions.${next.key}`)} <span aria-hidden="true">→</span></Link>
-            {next.key === "majors" ? <DeferStep step="majors" deferred={false} /> : null}
-          </div>
-        </section>
-      ) : (
-        <p className="notice notice-info mt-6">{t("journey.keepGoing")}</p>
-      )}
+      <div className={`mt-6 grid gap-4 ${resumeEssay && next ? "md:grid-cols-2" : ""}`}>
+        {next ? (
+          <section className="card border-l-4 p-5 sm:p-6" style={{ borderLeftColor: next.color, background: next.soft }} aria-labelledby="next-step">
+            <p className="text-sm font-semibold" style={{ color: next.color }}>
+              {t("journey.nextUp")} · {t("journey.stepLabel", { n: nextStep + 1 })}
+            </p>
+            <h2 id="next-step" className="mt-1 text-2xl font-semibold">{t(`journey.steps.${next.key}.title`)}</h2>
+            <p className="mt-2 max-w-2xl text-ink-soft">{t(`journey.steps.${next.key}.body`)}</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link href={next.href} className="btn btn-primary">{t(`journey.actions.${next.key}`)} <span aria-hidden="true">→</span></Link>
+              {next.key === "majors" ? <DeferStep step="majors" deferred={false} /> : null}
+            </div>
+          </section>
+        ) : <p className="notice notice-info">{t("journey.keepGoing")}</p>}
+        {resumeEssay ? (
+          <section className="card flex min-w-0 flex-col items-start border-l-4 border-l-coral p-5 sm:p-6" aria-labelledby="resume-essay">
+            <h2 id="resume-essay" className="text-xl font-semibold">{t("journey.resumeEssay")}</h2>
+            <p className="mt-2 mb-4 wrap-anywhere text-ink-soft" dir="auto">{resumeEssay.title}</p>
+            <Link href={`/essays/${resumeEssay.id}`} className="btn btn-secondary mt-auto">{t("journey.openDraft")} <span aria-hidden="true">→</span></Link>
+          </section>
+        ) : null}
+      </div>
 
       {/* Timeline: numbered circles in each step's colour, joined by a line. */}
       <h2 className="mt-10 text-xl font-semibold">{t("journey.allSteps")}</h2>

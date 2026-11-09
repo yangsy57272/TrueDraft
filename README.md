@@ -52,21 +52,27 @@ Next.js 16 (App Router, server components, route handlers) · TypeScript · Post
 
 ## Quick start (local development)
 
-Requirements: Node.js ≥ 20.9, PostgreSQL ≥ 14.
+1. Install Node.js **22.22.0** (the version in `.nvmrc`) and PostgreSQL **14 or newer**. Start PostgreSQL, then run these commands from the repository folder.
 
-```bash
-npm install
-cp .env.example .env
-# Edit .env: DATABASE_URL, BETTER_AUTH_SECRET, ENCRYPTION_KEYS (see comments in the file)
+   ```bash
+   node --version
+   npm ci
+   cp .env.example .env
+   ```
 
-npm run db:migrate      # create tables
-npm run db:seed         # original writing resources (no student data)
-npm run scorecard:import # ~1,570 U.S. colleges with U.S. Department of Education data
-npm run cds:import       # imported Common Data Set editions
-npm run dev             # http://localhost:3000
-```
+2. Create a local database named `truedraft`. If your PostgreSQL user can create databases, run `createdb truedraft`. Open `.env` and set `DATABASE_URL` to the connection URL for that database with your PostgreSQL username and password. The example URL assumes you already have a database user named `truedraft`.
+3. Run `openssl rand -base64 32` twice. Use the first result for `BETTER_AUTH_SECRET` and the second for `ENCRYPTION_KEYS`, with `k1:` before the second result. Keep `EMAIL_TRANSPORT=console` for local sign-in. Set `AI_PROVIDER=mock` to try the feedback workflow with fictional text, or leave it empty to try the editor without AI. Keep `.env` local.
+4. Create the tables, load the starter data, and start the app.
 
-Sign in with any email. With `EMAIL_TRANSPORT=console`, the sign-in link is printed in the server console.
+   ```bash
+   npm run db:migrate
+   npm run db:seed
+   npm run scorecard:import
+   npm run cds:import
+   npm run dev
+   ```
+
+5. Open `http://localhost:3000` and sign in with `demo@example.test`. Open the one-time link printed in the terminal where `npm run dev` is running. Create a fictional essay, then go to **My journey** and use **Open draft** to return to it. Add a school and a deadline in **My college list**, then open **View my deadlines** and select the school name to jump back to its deadline controls.
 
 ### AI provider options
 

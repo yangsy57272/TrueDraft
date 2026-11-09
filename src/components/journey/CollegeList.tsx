@@ -6,7 +6,7 @@ import { apiFetch, newId } from "@/lib/api-client";
 import { APPLICATION_PLATFORMS, APPLICATION_ROUNDS, APPLICATION_STATUSES, LIST_CATEGORIES } from "@/lib/planning";
 import { ConfirmDialog } from "@/components/ui/Dialog";
 import type { Deadline } from "@/lib/deadlines";
-import { DeadlineList, DeadlineOverview, type DeadlineOps } from "./Deadlines";
+import { DeadlineList, DeadlineOverview, schoolDeadlinesId, type DeadlineOps } from "./Deadlines";
 import { useToast } from "@/components/ui/Toaster";
 
 export type ListEntry = {
@@ -181,7 +181,7 @@ function EntryCard({ entry, ops }: { entry: ListEntry; ops: ListOps }) {
             <button type="submit" className="btn btn-secondary btn-sm">{t("list.addItem")}</button>
           </form>
         </fieldset>
-        <div className="md:col-span-2">
+        <div id={schoolDeadlinesId(entry.id)} tabIndex={-1} className="scroll-mt-6 rounded-lg target:ring-2 target:ring-focus target:ring-offset-4 md:col-span-2">
           <DeadlineList deadlines={v.deadlines} ops={ops.deadlines(entry.id)} />
         </div>
         <div>

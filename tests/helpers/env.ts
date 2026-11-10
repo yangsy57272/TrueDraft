@@ -1,7 +1,7 @@
 /** Environment for the automated test suite. Uses a dedicated test database. */
 export const TEST_ENV: Record<string, string> = {
   NODE_ENV: "test",
-  DATABASE_URL: process.env.TEST_DATABASE_URL ?? "postgres://truedraft:truedraft@localhost:5432/truedraft_test",
+  DATABASE_PATH: ":memory:",
   APP_URL: "http://localhost:3000",
   BETTER_AUTH_URL: "http://localhost:3000",
   BETTER_AUTH_SECRET: "test-secret-test-secret-test-secret-1234",

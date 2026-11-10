@@ -17,7 +17,7 @@ export const FEEDBACK_KINDS = [
 ] as const;
 export type FeedbackKind = (typeof FEEDBACK_KINDS)[number];
 
-export async function createPendingRun(values: {
+export function createPendingRun(values: {
   essayId: string;
   essayVersionId: string | null;
   kind: FeedbackKind;
@@ -31,7 +31,7 @@ export async function createPendingRun(values: {
   redactionCount: number;
   inputHash?: string | null;
 }, exec: Pick<typeof db, "insert"> = db) {
-  const [row] = await exec
+  const row = exec
     .insert(feedbackRun)
     .values({
       essayId: values.essayId,
@@ -48,7 +48,7 @@ export async function createPendingRun(values: {
       inputHash: values.inputHash ?? null,
       status: "pending",
     })
-    .returning();
+    .returning().get();
   return row;
 }
 
@@ -146,7 +146,7 @@ export async function getReusableRun(essayId: string, hash: string, since: Date)
 export const TASK_STATES = ["todo", "doing", "done"] as const;
 export type TaskState = (typeof TASK_STATES)[number];
 
-/** Set one revision task's state. A single atomic jsonb merge, so concurrent clicks don't collide. */
+/** Set one revision task's state. A single atomic JSON update, so concurrent clicks don't collide. */
 export async function setTaskState(userId: string, essayId: string, runId: string, index: number, state: TaskState) {
   await assertOwnedEssay(userId, essayId);
   const [row] = await db
@@ -159,7 +159,7 @@ export async function setTaskState(userId: string, essayId: string, runId: strin
   if (index < 0 || index >= plan) throw new ApiError(404, "not_found");
   const [updated] = await db
     .update(feedbackRun)
-    .set({ taskStates: sql`${feedbackRun.taskStates} || jsonb_build_object(${String(index)}::text, ${state}::text)` })
+    .set({ taskStates: sql`json_set(${feedbackRun.taskStates}, ${`$."${index}"`}, ${state})` })
     .where(and(eq(feedbackRun.id, runId), eq(feedbackRun.essayId, essayId)))
     .returning({ taskStates: feedbackRun.taskStates });
   return updated.taskStates;

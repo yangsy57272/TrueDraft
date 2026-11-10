@@ -51,10 +51,10 @@ test("workspace tabs, dialogs, and menus work with the keyboard", async ({ page 
   await expect(page.getByRole("menuitem").nth(1)).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("menu")).toHaveCount(0);
+  await expect(exportBtn).toBeFocused();
 
   // Consent checkbox is operable with Space and errors are announced.
-  await page.getByRole("button", { name: "Get feedback" }).focus();
-  await page.keyboard.press("Enter");
+  await page.getByRole("button", { name: "Get feedback" }).press("Enter");
   await page.getByRole("button", { name: "Agree and get feedback" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("dialog").getByRole("alert")).toBeVisible();

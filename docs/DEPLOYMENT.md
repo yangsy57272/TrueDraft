@@ -1,10 +1,10 @@
 # Deployment
 
-TrueDraft is a standard Next.js server application backed by PostgreSQL. It runs on any Node.js host (Render, Fly.io, Railway, a VM, a container platform, or Vercel with an external Postgres).
+TrueDraft runs as a Next.js server with a local SQLite database. Use a single Node.js instance with a writable persistent disk. For a desktop install, see [Desktop app](DESKTOP.md).
 
 ## 1. Provision
 
-- PostgreSQL 14+ with TLS and encryption at rest. Choose a region that matches your legal review.
+- A persistent disk with encryption at rest and a directory writable by the app. Choose a region that matches your legal review.
 - An SMTP provider for sign-in emails.
 - An AI provider account (Anthropic recommended), with data-use terms you have verified.
 
@@ -16,8 +16,7 @@ Copy `.env.example` and set at least:
 APP_URL=https://your-domain.example          # must be set at BUILD time too
 BETTER_AUTH_URL=https://your-domain.example
 BETTER_AUTH_SECRET=$(openssl rand -base64 32)
-DATABASE_URL=postgres://user:pass@host:5432/truedraft
-DATABASE_SSL=require
+DATABASE_PATH=/var/lib/truedraft/truedraft.sqlite
 ENCRYPTION_KEYS=k1:$(node -e "console.log(require('crypto').randomBytes(32).toString('base64'))")
 
 AI_PROVIDER=anthropic
@@ -78,7 +77,7 @@ npm run cds:import     # Common Data Set datasets in data/cds/
 npm run start          # listens on $PORT or 3000
 ```
 
-Run `db:migrate` on every deploy before starting the new version. It also encrypts any version notes stored before notes were encrypted. Migrations live in `drizzle/`; generate new ones with `npm run db:generate` after changing `src/db/schema.ts`.
+Run `db:migrate` on every deploy before starting the new version. It also encrypts any version notes stored before notes were encrypted. Migrations live in `drizzle-sqlite/`; generate new ones with `npm run db:generate` after changing `src/db/schema.ts`.
 
 ## 4. Schedule retention
 
@@ -102,5 +101,11 @@ The retention job also marks AI runs left "pending" by a crash or restart as fai
 
 ## Scaling notes
 
-- The app is stateless apart from Postgres, so it can run as multiple instances. Rate limits are stored in Postgres. Better Auth's own auth rate limiter is in-memory per instance, so add edge rate limiting for `/api/auth/*` as well.
+- Keep the SQLite file and its WAL files on the same local disk. Back up with SQLite’s backup facilities or stop the app before copying its data directory. Better Auth’s rate limiter is in memory. Add edge rate limiting for `/api/auth/*` on a public deployment.
 - AI requests stream for up to `AI_TIMEOUT_MS` (default 120 s) per attempt. Make sure your platform's request timeout is longer than that (the route sets `maxDuration = 300`).
+
+## Import an existing PostgreSQL database
+
+Stop writes to the old app and back up PostgreSQL and the original `ENCRYPTION_KEYS`. Update the source schema to the last PostgreSQL revision with its own migration command. In the SQLite checkout, set `LEGACY_DATABASE_URL` to that database, `DATABASE_PATH` to a new file, and `ENCRYPTION_KEYS` to the original keyring. Run `npm run db:import-postgres`. The command preserves IDs, encrypted data, and references, and rejects an existing destination file. It leaves the source database available for rollback. Users sign in again after the switch.
+
+For a desktop migration, quit TrueDraft and import to `truedraft.sqlite` in a fresh data directory. Before opening it, create `settings.json` in that directory with `email` set to the imported account, `encryptionKeys` set to the original keyring, and `authSecret` set to a fresh value from `openssl rand -hex 32`. Launch with `TRUEDRAFT_DESKTOP_DATA_DIR` pointing to that directory. Back up `settings.json` with the database.

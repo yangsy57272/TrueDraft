@@ -1,10 +1,10 @@
 import "server-only";
-import { sql } from "drizzle-orm";
+import { lt, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { rateLimitBucket } from "@/db/schema";
 
 /**
- * Fixed-window rate limiter backed by Postgres, so limits hold across multiple app instances.
+ * Fixed-window rate limiter backed by the shared SQLite database.
  * Returns whether the request is allowed and when the window resets.
  */
 export async function consumeRateLimit(key: string, limit: number, windowSeconds: number) {
@@ -25,5 +25,5 @@ export async function consumeRateLimit(key: string, limit: number, windowSeconds
 
 /** Remove expired buckets. Called opportunistically by the retention job. */
 export async function pruneRateLimits() {
-  await db.delete(rateLimitBucket).where(sql`${rateLimitBucket.windowStart} < now() - interval '2 days'`);
+  await db.delete(rateLimitBucket).where(lt(rateLimitBucket.windowStart, new Date(Date.now() - 2 * 86_400_000)));
 }

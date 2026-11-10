@@ -35,7 +35,7 @@ export async function hasProfile(userId: string) {
 
 /* ------------------------------ planning AI runs ------------------------------ */
 
-export async function createPlanningRun(values: {
+export function createPlanningRun(values: {
   userId: string;
   kind: string;
   feedbackLanguage: string;
@@ -45,8 +45,7 @@ export async function createPlanningRun(values: {
   schemaVersion: string;
   redactionCount: number;
 }, exec: Pick<typeof db, "insert"> = db) {
-  const [row] = await exec.insert(planningRun).values({ ...values, status: "pending" }).returning();
-  return row;
+  return exec.insert(planningRun).values({ ...values, status: "pending" }).returning().get();
 }
 
 export async function completePlanningRun(runId: string, result: unknown | null, modelName: string, usage?: { inputTokens: number; outputTokens: number } | null, costMicroUsd?: number | null) {
@@ -95,7 +94,7 @@ export const PLANNING_PAGE_SIZE = 20;
 export async function listPlanningRuns(userId: string, kind: string, opts: { cursor?: string | null; limit?: number } = {}) {
   const limit = Math.min(Math.max(opts.limit ?? PLANNING_PAGE_SIZE, 1), 100);
   if (opts.cursor && !/^[0-9a-f-]{36}$/.test(opts.cursor)) throw new ApiError(400, "validation_failed", { field: "cursor", reason: "invalid" });
-  // Compare against the cursor row's own stored timestamp (microsecond precision) in SQL.
+  // Compare against the cursor row's own stored timestamp in SQL.
   const afterCursor = opts.cursor
     ? sql`(${planningRun.createdAt}, ${planningRun.id}) < (select pr.created_at, pr.id from planning_run pr where pr.id = ${opts.cursor} and pr.user_id = ${userId})`
     : undefined;

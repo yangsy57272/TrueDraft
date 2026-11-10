@@ -339,6 +339,7 @@ const zhCN: Messages = {
     sentBody: "如果 {email} 可以正常收信，登录链接正在发送中，15 分钟内有效。",
     useDifferent: "换一个邮箱",
     devHint: "开发模式：登录链接会打印在服务器控制台中。",
+    desktopIntro: "请重新打开 TrueDraft 应用，在这台设备上登录。",
     invalidEmail: "请输入有效的邮箱地址。",
     tooMany: "尝试次数过多，请稍等一分钟再试。",
     linkError: "这个登录链接无效或已过期，请在下方重新获取。",

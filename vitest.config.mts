@@ -19,14 +19,12 @@ export default defineConfig({
         test: { name: "unit", include: ["tests/unit/**/*.test.ts"], setupFiles: ["tests/helpers/unit-setup.ts"] },
       },
       {
-        // Route handlers and services against a real PostgreSQL test database.
+        // Route handlers and services against a fresh SQLite database for each test.
         extends: true,
         test: {
           name: "integration",
           include: ["tests/integration/**/*.test.ts"],
-          globalSetup: ["tests/helpers/global-setup.ts"],
           setupFiles: ["tests/helpers/setup.ts"],
-          fileParallelism: false,
         },
       },
     ],

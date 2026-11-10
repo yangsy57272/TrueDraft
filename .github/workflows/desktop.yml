@@ -1,0 +1,68 @@
+name: Desktop packages
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: windows-2025
+            artifact: TrueDraft-Windows-x64.exe
+          - runner: macos-15
+            artifact: TrueDraft-macOS-arm64.zip
+          - runner: macos-15-intel
+            artifact: TrueDraft-macOS-x64.zip
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies with bundled native binaries
+        run: npm ci --ignore-scripts
+      - name: Install NSIS
+        if: runner.os == 'Windows'
+        run: choco install nsis -y --no-progress
+      - run: npm run desktop:build
+      - name: Install and test on Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $install = Join-Path $env:RUNNER_TEMP 'TrueDraft Install'
+          $env:TRUEDRAFT_DESKTOP_DATA_DIR = Join-Path $env:RUNNER_TEMP 'TrueDraft Data'
+          $installer = Start-Process -FilePath 'dist/TrueDraft-Windows-x64.exe' -ArgumentList "/S /D=$install" -Wait -PassThru
+          if ($installer.ExitCode -ne 0) { throw "Installer failed: $($installer.ExitCode)" }
+          foreach ($testArgs in @('--verify', '--verify --expect-existing')) {
+            $test = Start-Process -FilePath "$install/TrueDraft.exe" -ArgumentList $testArgs -Wait -PassThru
+            if ($test.ExitCode -ne 0) {
+              Get-Content "$env:TRUEDRAFT_DESKTOP_DATA_DIR/desktop.log" -ErrorAction SilentlyContinue
+              throw "Desktop smoke failed: $($test.ExitCode)"
+            }
+          }
+      - name: Extract and test on macOS
+        if: runner.os == 'macOS'
+        env:
+          PACKAGE: ${{ matrix.artifact }}
+        run: |
+          ditto -x -k "dist/$PACKAGE" "$RUNNER_TEMP"
+          codesign --verify --deep --strict "$RUNNER_TEMP/TrueDraft.app"
+          export TRUEDRAFT_DESKTOP_DATA_DIR="$RUNNER_TEMP/TrueDraft Data"
+          "$RUNNER_TEMP/TrueDraft.app/Contents/MacOS/TrueDraft" --verify
+          "$RUNNER_TEMP/TrueDraft.app/Contents/MacOS/TrueDraft" --verify --expect-existing
+      - uses: actions/upload-artifact@v6
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist/${{ matrix.artifact }}
+          if-no-files-found: error

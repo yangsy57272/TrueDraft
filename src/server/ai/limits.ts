@@ -10,7 +10,7 @@ export { aiLimitSettings, costMicroUsd, inputHash, type AiLimitSettings } from "
 
 /*
  * Operational limits for AI calls:
- * - concurrency: at most N runs in flight per student (default 1), enforced under an advisory lock;
+ * - concurrency: at most N runs in flight per student (default 1), enforced inside a write transaction;
  * - deduplication: an identical request for the same saved version reuses the recent result;
  * - usage and spend: provider-reported tokens are recorded per run, with an optional daily
  *   ceiling on tokens or estimated cost across the whole deployment;
@@ -50,9 +50,9 @@ export async function usageToday() {
   const sum = async (table: typeof feedbackRun | typeof planningRun) => {
     const [row] = await db
       .select({
-        tokens: sql<number>`coalesce(sum(coalesce(${table.inputTokens}, 0) + coalesce(${table.outputTokens}, 0)), 0)::bigint`,
-        cost: sql<number>`coalesce(sum(${table.costMicroUsd}), 0)::bigint`,
-        runs: sql<number>`count(*)::int`,
+        tokens: sql<number>`coalesce(sum(coalesce(${table.inputTokens}, 0) + coalesce(${table.outputTokens}, 0)), 0)`,
+        cost: sql<number>`coalesce(sum(${table.costMicroUsd}), 0)`,
+        runs: sql<number>`count(*)`,
       })
       .from(table)
       .where(gte(table.createdAt, since));
@@ -80,19 +80,17 @@ export async function assertWithinBudget(settings = aiLimitSettings()) {
 type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
 
 /**
- * Create a pending run only if the student has a free slot. A per-student advisory lock makes the
- * count-then-insert atomic, so two simultaneous requests can't both get through.
+ * Count and insert in the same SQLite write transaction so concurrent runs cannot share a slot.
  */
-export async function withRunSlot<T>(userId: string, insert: (tx: Tx) => Promise<T>, settings = aiLimitSettings()): Promise<T> {
+export async function withRunSlot<T>(userId: string, insert: (tx: Tx) => T, settings = aiLimitSettings()): Promise<T> {
   await recoverStuckRuns(userId, settings);
-  return db.transaction(async (tx) => {
-    await tx.execute(sql`select pg_advisory_xact_lock(hashtext(${`ai-run:${userId}`}))`);
-    const [{ pending }] = await tx.execute<{ pending: number }>(sql`
+  return db.transaction((tx) => {
+    const [{ pending }] = tx.all<{ pending: number }>(sql`
       select (
         (select count(*) from ${feedbackRun} fr join ${essay} e on e.id = fr.essay_id where e.user_id = ${userId} and fr.status = 'pending')
         + (select count(*) from ${planningRun} pr where pr.user_id = ${userId} and pr.status = 'pending')
-      )::int as pending`).then((r) => r.rows);
+      ) as pending`);
     if (pending >= settings.maxConcurrentPerUser) throw new ApiError(409, "ai_run_in_progress");
     return insert(tx);
-  });
+  }, { behavior: "immediate" });
 }

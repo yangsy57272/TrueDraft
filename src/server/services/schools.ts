@@ -1,6 +1,6 @@
 import "server-only";
 import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
-import { db } from "@/db";
+import { db, isUniqueViolation } from "@/db";
 import { cdsDataset, federalProfile, school, type CdsDataset, type School } from "@/db/schema";
 import { schoolFacts, SORTS, testPolicyMatches, TUITION_BANDS, type FederalData, type SchoolFacts, type SortKey } from "@/lib/federal";
 import {
@@ -255,8 +255,8 @@ export async function adminListSchools() {
   const rows = await db
     .select({
       school,
-      datasets: sql<number>`(select count(*)::int from cds_dataset cd where cd.school_id = "school"."id")`,
-      published: sql<number>`(select count(*)::int from cds_dataset cd where cd.school_id = "school"."id" and cd.published)`,
+      datasets: sql<number>`(select count(*) from cds_dataset cd where cd.school_id = "school"."id")`,
+      published: sql<number>`(select count(*) from cds_dataset cd where cd.school_id = "school"."id" and cd.published)`,
     })
     .from(school)
     .orderBy(asc(school.name));
@@ -268,11 +268,6 @@ export async function adminGetSchool(id: string) {
   if (!row) throw new ApiError(404, "not_found");
   const datasets = await db.select().from(cdsDataset).where(eq(cdsDataset.schoolId, id)).orderBy(desc(cdsDataset.academicYear));
   return { school: row, datasets };
-}
-
-function uniqueViolation(error: unknown) {
-  const e = error as { code?: string; cause?: { code?: string } };
-  return e?.code === "23505" || e?.cause?.code === "23505";
 }
 
 export async function adminUpsertSchool(adminId: string, id: string | null, input: SchoolInput) {
@@ -287,7 +282,7 @@ export async function adminUpsertSchool(adminId: string, id: string | null, inpu
     await recordAudit(adminId, "admin_resource_changed", { action: "school_create", schoolId: row.id });
     return row;
   } catch (error) {
-    if (uniqueViolation(error)) throw new ApiError(409, "slug_taken");
+    if (isUniqueViolation(error)) throw new ApiError(409, "slug_taken");
     throw error;
   }
 }
@@ -384,7 +379,7 @@ export async function adminUpsertDataset(adminId: string, schoolId: string, data
     await recordAudit(adminId, "admin_resource_changed", { action: "cds_create", datasetId: row.id });
     return row;
   } catch (error) {
-    if (uniqueViolation(error)) throw new ApiError(409, "dataset_year_exists");
+    if (isUniqueViolation(error)) throw new ApiError(409, "dataset_year_exists");
     throw error;
   }
 }

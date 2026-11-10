@@ -34,7 +34,8 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
-  serverExternalPackages: ["pg"],
+  serverExternalPackages: ["better-sqlite3"],
+  ...(process.env.TRUEDRAFT_DESKTOP_BUILD === "1" ? { output: "standalone", outputFileTracingRoot: process.cwd() } : {}),
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

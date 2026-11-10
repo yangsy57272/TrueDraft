@@ -1,6 +1,6 @@
 import "server-only";
 import { and, asc, eq, inArray } from "drizzle-orm";
-import { db } from "@/db";
+import { db, isUniqueViolation } from "@/db";
 import { resource, type Resource } from "@/db/schema";
 import { ApiError } from "../errors";
 import { recordAudit } from "./audit";
@@ -136,7 +136,7 @@ export async function adminUpsertResource(adminUserId: string, id: string | null
     return row;
   } catch (error) {
     if (error instanceof ApiError) throw error;
-    if ((error as { code?: string })?.code === "23505" || (error as { cause?: { code?: string } })?.cause?.code === "23505") {
+    if (isUniqueViolation(error)) {
       throw new ApiError(409, "slug_taken");
     }
     throw error;

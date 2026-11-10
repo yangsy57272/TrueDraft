@@ -42,15 +42,11 @@ export async function assertOwnedEssay(userId: string, essayId: string) {
 
 export async function createEssay(userId: string, input: EssayInput) {
   if (input.listEntryId) await assertOwnedEntry(userId, input.listEntryId);
-  const [{ count }] = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(essay)
-    .where(eq(essay.userId, userId));
-  if (count >= limits.maxEssaysPerUser) throw new ApiError(409, "too_many_essays");
-
   const wordCount = countWords(input.draft);
-  return db.transaction(async (tx) => {
-    const [created] = await tx
+  return db.transaction((tx) => {
+    const [{ count }] = tx.select({ count: sql<number>`count(*)` }).from(essay).where(eq(essay.userId, userId)).all();
+    if (count >= limits.maxEssaysPerUser) throw new ApiError(409, "too_many_essays");
+    const [created] = tx
       .insert(essay)
       .values({
         userId,
@@ -66,18 +62,18 @@ export async function createEssay(userId: string, input: EssayInput) {
         encryptedDraft: encryptText(input.draft, "essay_draft"),
         draftWordCount: wordCount,
       })
-      .returning();
+      .returning().all();
     if (input.draft.trim()) {
-      await tx.insert(essayVersion).values({
+      tx.insert(essayVersion).values({
         essayId: created.id,
         versionNumber: 1,
         encryptedContent: encryptText(input.draft, "essay_version"),
         wordCount,
         encryptedVersionNote: null,
-      });
+      }).run();
     }
     return created;
-  });
+  }, { behavior: "immediate" });
 }
 
 export async function listEssays(userId: string) {
@@ -92,7 +88,7 @@ export async function listEssays(userId: string) {
       status: essay.status,
       updatedAt: essay.updatedAt,
       // Correlated subqueries use explicit aliases: unqualified column names would bind to the inner table.
-      versionCount: sql<number>`(select count(*)::int from essay_version ev where ev.essay_id = "essay"."id")`,
+      versionCount: sql<number>`(select count(*) from essay_version ev where ev.essay_id = "essay"."id")`,
       latestFeedbackId: sql<string | null>`(select fr.id from feedback_run fr where fr.essay_id = "essay"."id" and fr.kind = 'full_feedback' and fr.status = 'completed' order by fr.created_at desc limit 1)`,
     })
     .from(essay)
@@ -175,29 +171,29 @@ export async function autosaveDraft(userId: string, essayId: string, draft: stri
 }
 
 /**
- * Save an immutable snapshot. Version numbers are allocated while holding a row lock on the
- * essay so concurrent saves can't collide; older versions are never overwritten.
+ * Save an immutable snapshot. Allocate version numbers in a write transaction so concurrent saves
+ * can't collide or overwrite older versions.
  */
 export async function saveVersion(userId: string, essayId: string, content: string, note: string | null) {
-  return db.transaction(async (tx) => {
-    const locked = await tx
+  return db.transaction((tx) => {
+    const locked = tx
       .select({ id: essay.id })
       .from(essay)
       .where(and(eq(essay.id, essayId), eq(essay.userId, userId)))
-      .for("update");
+      .all();
     if (locked.length === 0) throw new ApiError(404, "not_found");
 
-    const [{ maxVersion, total }] = await tx
+    const [{ maxVersion, total }] = tx
       .select({
-        maxVersion: sql<number>`coalesce(max(${essayVersion.versionNumber}), 0)::int`,
-        total: sql<number>`count(*)::int`,
+        maxVersion: sql<number>`coalesce(max(${essayVersion.versionNumber}), 0)`,
+        total: sql<number>`count(*)`,
       })
       .from(essayVersion)
-      .where(eq(essayVersion.essayId, essayId));
+      .where(eq(essayVersion.essayId, essayId)).all();
     if (total >= limits.maxVersionsPerEssay) throw new ApiError(409, "too_many_versions");
 
     const wordCount = countWords(content);
-    const [version] = await tx
+    const [version] = tx
       .insert(essayVersion)
       .values({
         essayId,
@@ -206,11 +202,11 @@ export async function saveVersion(userId: string, essayId: string, content: stri
         wordCount,
         encryptedVersionNote: note ? encryptText(note, "version_note") : null,
       })
-      .returning();
+      .returning().all();
     // The working draft is deliberately left alone: a version is a snapshot, and writing it back
     // to the draft could overwrite newer text the student typed while the request was in flight.
     return version;
-  });
+  }, { behavior: "immediate" });
 }
 
 /** A version's note, decrypted; falls back to a legacy plaintext note not yet migrated. */

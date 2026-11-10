@@ -20,12 +20,12 @@ let me: { cookie: string; userId: string };
 let essayId: string;
 
 async function counts() {
-  const r = await db.execute<{ versions: number; runs: number; notes: number; essays: number }>(sql`select
-    (select count(*)::int from essay_version) as versions,
-    (select count(*)::int from feedback_run) as runs,
-    (select count(*)::int from brainstorm_note) as notes,
-    (select count(*)::int from essay) as essays`);
-  return r.rows[0];
+  const [row] = db.all<{ versions: number; runs: number; notes: number; essays: number }>(sql`select
+    (select count(*) from essay_version) as versions,
+    (select count(*) from feedback_run) as runs,
+    (select count(*) from brainstorm_note) as notes,
+    (select count(*) from essay) as essays`);
+  return row;
 }
 
 beforeEach(async () => {

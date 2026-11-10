@@ -213,7 +213,7 @@ export async function exportUserData(userId: string) {
  */
 export async function deleteAccount(userId: string) {
   const [{ essays }] = await db
-    .select({ essays: sql<number>`count(*)::int` })
+    .select({ essays: sql<number>`count(*)` })
     .from(essay)
     .where(eq(essay.userId, userId));
   const deleted = await db.delete(user).where(eq(user.id, userId)).returning({ id: user.id });
@@ -223,18 +223,18 @@ export async function deleteAccount(userId: string) {
 
 /** Admin-safe aggregate metrics. Counts only; no content, titles, or emails. */
 export async function getAggregateMetrics() {
-  const [row] = await db.execute<{
+  const [row] = db.all<{
     users: number;
     essays: number;
     versions: number;
     feedback_completed: number;
     feedback_failed: number;
   }>(sql`select
-      (select count(*)::int from "user") as users,
-      (select count(*)::int from essay) as essays,
-      (select count(*)::int from essay_version) as versions,
-      (select count(*)::int from feedback_run where status = 'completed') as feedback_completed,
-      (select count(*)::int from feedback_run where status = 'failed') as feedback_failed`).then((r) => r.rows);
+      (select count(*) from "user") as users,
+      (select count(*) from essay) as essays,
+      (select count(*) from essay_version) as versions,
+      (select count(*) from feedback_run where status = 'completed') as feedback_completed,
+      (select count(*) from feedback_run where status = 'failed') as feedback_failed`);
   return row;
 }
 

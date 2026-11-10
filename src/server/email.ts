@@ -4,7 +4,7 @@ import path from "node:path";
 import nodemailer from "nodemailer";
 import { brand } from "@/config/brand";
 import { logger } from "./logger";
-import { isDemoMode } from "@/config/production-guard";
+import { isDemoMode, isDesktopMode } from "@/config/production-guard";
 
 /**
  * Email delivery for sign-in links.
@@ -23,7 +23,8 @@ function transportKind(): Transport {
 
 export function mailboxFileFor(email: string) {
   const safe = email.toLowerCase().replace(/[^a-z0-9@._-]/g, "_");
-  return path.join(process.cwd(), ".dev-mailbox", `${safe}.json`);
+  const directory = isDesktopMode() ? process.env.TRUEDRAFT_MAILBOX_DIR! : path.join(process.cwd(), ".dev-mailbox");
+  return path.join(directory, `${safe}.json`);
 }
 
 function renderMagicLink(url: string, locale: string) {
@@ -46,7 +47,7 @@ export async function sendMagicLinkEmail(email: string, url: string, locale: str
   const message = renderMagicLink(url, locale);
 
   // Defense in depth: the startup guard already refuses these in production outside demo mode.
-  if ((kind === "console" || kind === "file") && process.env.NODE_ENV === "production" && !isDemoMode()) {
+  if ((kind === "console" || kind === "file") && process.env.NODE_ENV === "production" && !isDemoMode() && !isDesktopMode()) {
     logger.error("email.dev_transport_in_production");
     throw new Error("Development email transport is not allowed in production");
   }
@@ -59,7 +60,7 @@ export async function sendMagicLinkEmail(email: string, url: string, locale: str
   if (kind === "file") {
     const file = mailboxFileFor(email);
     await mkdir(path.dirname(file), { recursive: true });
-    await writeFile(file, JSON.stringify({ to: email, url, sentAt: new Date().toISOString() }));
+    await writeFile(file, JSON.stringify({ to: email, url, sentAt: new Date().toISOString() }), { mode: 0o600 });
     return;
   }
 

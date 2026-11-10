@@ -36,6 +36,22 @@ describe("production guard", () => {
     expect(() => assertProductionConfig({ ...demo, TRUEDRAFT_DEMO_MODE: "1" })).toThrow();
   });
 
+  it("allows local sign-in only for a correctly configured desktop server", () => {
+    const desktop = {
+      ...good,
+      TRUEDRAFT_DESKTOP: "1",
+      TRUEDRAFT_DESKTOP_TOKEN: "a".repeat(64),
+      TRUEDRAFT_MAILBOX_DIR: "/local/mailbox",
+      HOSTNAME: "127.0.0.1",
+      APP_URL: "http://127.0.0.1:3100",
+      BETTER_AUTH_URL: "http://127.0.0.1:3100",
+      EMAIL_TRANSPORT: "file",
+    };
+    expect(productionConfigProblems(desktop)).toEqual([]);
+    expect(() => assertProductionConfig({ ...desktop, HOSTNAME: "0.0.0.0" })).toThrow(/loopback/);
+    expect(() => assertProductionConfig({ ...desktop, TRUEDRAFT_DESKTOP_TOKEN: "" })).toThrow(/launcher token/);
+  });
+
   it("ignores non-production environments", () => {
     expect(productionConfigProblems({ NODE_ENV: "development", AI_PROVIDER: "mock" })).toEqual([]);
   });

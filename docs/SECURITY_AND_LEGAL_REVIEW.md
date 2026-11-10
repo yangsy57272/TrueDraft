@@ -11,7 +11,7 @@ This document lists what the code already does, and what an operator still must 
 | Magic-link sign-in: single-use, 15-minute, hashed tokens | `src/server/auth.ts` |
 | Session cookies: HTTP-only, SameSite=Lax, `Secure` when `APP_URL` is https; IP tracking disabled | Better Auth config |
 | CSRF: Better Auth origin checks + same-origin/Sec-Fetch-Site check on all mutating API routes | `assertSameOrigin` |
-| Rate limits: auth endpoints (Better Auth), AI per hour/day, writes per minute (Postgres-backed) | `src/server/rate-limit.ts` |
+| Rate limits: auth endpoints (Better Auth), AI per hour/day, writes per minute (SQLite-backed) | `src/server/rate-limit.ts` |
 | Input limits: body size, draft/prompt/context/selection length, version and essay counts | `src/server/validation.ts`, `limits` |
 | Application-level AES-256-GCM encryption of drafts, versions, version notes, context notes, feedback requests/results, brainstorming notes, profiles, planning results, and college-list notes; purpose-bound AAD; key rotation via `ENCRYPTION_KEYS`. Stored in plaintext (still owner-scoped): essay titles, prompts, target-school names, focus areas, and list metadata (category, round, deadline, status, intended major). Plaintext version notes written before 2026-11-05 are encrypted by `npm run db:migrate` and the retention job. | `src/server/crypto.ts` |
 | AI output validated against strict schemas; no `dangerouslySetInnerHTML`; admin Markdown rendered without raw HTML and sanitized | `schemas.ts`, `Markdown.tsx` |
@@ -32,7 +32,7 @@ This document lists what the code already does, and what an operator still must 
 
 ### Infrastructure
 - [ ] Serve only over HTTPS. Set `APP_URL` to the https origin **at build time**, because the security headers are computed during the build.
-- [ ] Use managed PostgreSQL with encryption at rest, TLS (`DATABASE_SSL=require`), private networking, and least-privilege credentials.
+- [ ] Store SQLite on an encrypted persistent disk. Restrict filesystem access to the application user and back up the database and keyring securely.
 - [ ] **Backups:** define the retention window (for example, 14–35 days) and document that deleted data persists in backups until they expire. Update the Privacy Center text if it differs. Encrypt backups, and test restoring them.
 - [ ] **Key management:** keep `ENCRYPTION_KEYS`, `BETTER_AUTH_SECRET`, `CRON_SECRET`, and provider keys in a secrets manager. To rotate keys, prepend a new key, then re-encrypt old rows (not yet automated). Losing every key makes stored essays unrecoverable.
 - [ ] Configure SMTP with SPF/DKIM/DMARC (`EMAIL_TRANSPORT=smtp`). Never use the `console` or `file` transports in production.

@@ -354,6 +354,7 @@ const en = {
     sentBody: "If {email} can receive email, a sign-in link is on its way. It expires in 15 minutes.",
     useDifferent: "Use a different email",
     devHint: "Development mode: the sign-in link is printed in the server console.",
+    desktopIntro: "Open the TrueDraft app again to sign in on this device.",
     invalidEmail: "Enter a valid email address.",
     tooMany: "Too many attempts. Please wait a minute and try again.",
     linkError: "That sign-in link is invalid or has expired. Request a new one below.",

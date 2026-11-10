@@ -31,19 +31,8 @@ jobs:
     name: Integration and browser tests
     runs-on: ubuntu-24.04
     needs: checks
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: truedraft
-          POSTGRES_PASSWORD: truedraft
-          POSTGRES_DB: truedraft
-        ports: ["5432:5432"]
-        options: >-
-          --health-cmd "pg_isready -U truedraft" --health-interval 5s --health-timeout 5s --health-retries 10
     env:
-      DATABASE_URL: postgres://truedraft:truedraft@localhost:5432/truedraft
-      TEST_DATABASE_URL: postgres://truedraft:truedraft@localhost:5432/truedraft_test
+      DATABASE_PATH: .truedraft/ci.sqlite
       APP_URL: http://localhost:3000
       BETTER_AUTH_URL: http://localhost:3000
       # Fictional data only: the browser tests run the production build with the mock AI and a
@@ -66,8 +55,6 @@ jobs:
         run: |
           echo "BETTER_AUTH_SECRET=$(openssl rand -hex 32)" >> "$GITHUB_ENV"
           echo "ENCRYPTION_KEYS=ci1:$(openssl rand -base64 32)" >> "$GITHUB_ENV"
-      - name: Create the test database
-        run: PGPASSWORD=truedraft psql -h localhost -U truedraft -d truedraft -c "create database truedraft_test"
       - run: npm run test:integration
       - name: Prepare the app database
         run: npm run db:migrate && npm run db:seed && npm run scorecard:import && npm run cds:import

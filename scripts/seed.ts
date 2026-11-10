@@ -1,5 +1,4 @@
 import "dotenv/config";
-import { sql } from "drizzle-orm";
 import { closeDb, getDb } from "../src/db";
 import { resource, school } from "../src/db/schema";
 import { SEED_SCHOOLS } from "../src/content/schools";
@@ -361,7 +360,7 @@ async function main() {
       .values(r)
       .onConflictDoUpdate({
         target: resource.slug,
-        set: { ...r, updatedAt: sql`now()` },
+        set: { ...r, updatedAt: new Date() },
       });
   }
   console.log(`Seeded ${resources.length} original resources and links.`);
@@ -370,7 +369,7 @@ async function main() {
     await db
       .insert(school)
       .values({ ...s, published: true })
-      .onConflictDoUpdate({ target: school.slug, set: { ...s, updatedAt: sql`now()` } });
+      .onConflictDoUpdate({ target: school.slug, set: { ...s, updatedAt: new Date() } });
   }
   console.log(`Seeded ${SEED_SCHOOLS.length} schools (official CDS links; data must be imported and verified).`);
   await closeDb();

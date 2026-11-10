@@ -7,7 +7,7 @@ This document describes exactly what happens when a student asks TrueDraft for A
 1. **Authentication.** The request must carry a valid session cookie. The essay must belong to that account; otherwise the API returns 404.
 2. **Configuration.** If no provider is configured, the API returns `ai_not_configured` and nothing is sent.
 3. **Consent.** The account must have an active `ai_processing` consent for the *current* `PRIVACY_POLICY_VERSION`. Otherwise the API returns `consent_required` and the UI shows the consent dialog. The dialog states what is sent, links to the Privacy Center, and offers “Save without AI analysis”.
-4. **Rate limits.** Per-student hourly and daily limits (Postgres-backed, so they hold across instances).
+4. **Rate limits.** Per-student hourly and daily limits (stored in the local SQLite database).
 5. **Version pinning.** For full feedback, word-count, and final read-through, the current editor text is saved as an immutable version first (unless identical to the latest one), so feedback always refers to a specific version.
 
 ## 2. What is sent

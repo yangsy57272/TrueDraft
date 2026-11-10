@@ -1,7 +1,7 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
 import { and, asc, eq, inArray } from "drizzle-orm";
-import { db } from "@/db";
+import { db, isUniqueViolation } from "@/db";
 import { collegeListEntry, essay, school } from "@/db/schema";
 import { DEFAULT_CHECKLIST, MAX_CHECKLIST_ITEMS, listEntryInputSchema, listEntryPatchSchema, type ListEntryInput } from "@/lib/planning";
 import { decryptText, encryptText } from "../crypto";
@@ -92,8 +92,7 @@ export async function addEntry(userId: string, input: unknown) {
       .returning({ id: collegeListEntry.id });
     return getEntryView(userId, row.id);
   } catch (error) {
-    const e = error as { code?: string; cause?: { code?: string } };
-    if (e?.code === "23505" || e?.cause?.code === "23505") throw new ApiError(409, "already_on_list");
+    if (isUniqueViolation(error)) throw new ApiError(409, "already_on_list");
     throw error;
   }
 }
@@ -121,17 +120,17 @@ export async function updateEntry(userId: string, entryId: string, input: unknow
 
 type ChecklistItem = (typeof collegeListEntry.$inferSelect)["checklist"][number];
 
-/** Change one entry's checklist under a row lock, so concurrent operations never lose each other. */
+/** Change one entry's checklist in a write transaction, so concurrent operations never lose each other. */
 async function mutateChecklist(userId: string, entryId: string, change: (items: ChecklistItem[]) => ChecklistItem[]) {
-  await db.transaction(async (tx) => {
-    const [row] = await tx
+  await db.transaction((tx) => {
+    const [row] = tx
       .select({ checklist: collegeListEntry.checklist })
       .from(collegeListEntry)
       .where(and(eq(collegeListEntry.id, entryId), eq(collegeListEntry.userId, userId)))
-      .for("update");
+      .all();
     if (!row) throw new ApiError(404, "not_found");
-    await tx.update(collegeListEntry).set({ checklist: change(row.checklist) }).where(eq(collegeListEntry.id, entryId));
-  });
+    tx.update(collegeListEntry).set({ checklist: change(row.checklist) }).where(eq(collegeListEntry.id, entryId)).run();
+  }, { behavior: "immediate" });
   return getEntryView(userId, entryId);
 }
 
@@ -153,17 +152,17 @@ export function addChecklistItem(userId: string, entryId: string, label: string,
   });
 }
 
-/** Deadlines use the same row-locked, per-item pattern as the checklist. */
+/** Deadlines use the same transactional, per-item pattern as the checklist. */
 async function mutateDeadlines(userId: string, entryId: string, change: (items: Deadline[]) => Deadline[]) {
-  await db.transaction(async (tx) => {
-    const [row] = await tx
+  await db.transaction((tx) => {
+    const [row] = tx
       .select({ deadlines: collegeListEntry.deadlines })
       .from(collegeListEntry)
       .where(and(eq(collegeListEntry.id, entryId), eq(collegeListEntry.userId, userId)))
-      .for("update");
+      .all();
     if (!row) throw new ApiError(404, "not_found");
-    await tx.update(collegeListEntry).set({ deadlines: change(row.deadlines as Deadline[]) }).where(eq(collegeListEntry.id, entryId));
-  });
+    tx.update(collegeListEntry).set({ deadlines: change(row.deadlines as Deadline[]) }).where(eq(collegeListEntry.id, entryId)).run();
+  }, { behavior: "immediate" });
   return getEntryView(userId, entryId);
 }
 

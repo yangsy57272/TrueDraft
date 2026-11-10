@@ -20,7 +20,7 @@ TrueDraft is a bilingual (English / Simplified Chinese) web app that gives stude
 | AI tools | Prompt Decoder, Brainstorming Coach (stored only if the student saves notes), Sentence Feedback (7 modes, max 2 alternatives, length-capped), Word-Count Assistant, Final Read-Through. |
 | AI safety | Versioned server-side prompts; strict JSON-schema structured output validated with Zod; length-capped fields so no single field can carry an essay; long alternatives discarded; quotes checked against the draft; prompt-injection tag neutralisation; never fabricates feedback on failure; timeouts + limited retries; refusal handling. |
 | Privacy | Consent dialog (with “Learn what is sent” and “Save without AI analysis”) before the first AI call and after any policy-version change; consent records with withdrawal; identifier redaction before sending; AES-256-GCM application-level encryption of drafts, versions and version notes, notes, profiles, and feedback (titles, prompts, and list metadata are stored unencrypted and owner-scoped); retention periods with automatic purge; Privacy Center driven by deployment config; no third-party analytics; logs carry no essay content. |
-| Security | Server-side auth + per-user authorization on every route (foreign IDs → 404), same-origin checks on mutations, Postgres-backed rate limits, CSP and security headers, `no-store` on private data, sanitized Markdown, generic error messages. |
+| Security | Server-side auth + per-user authorization on every route (foreign IDs → 404), same-origin checks on mutations, SQLite-backed rate limits, CSP and security headers, `no-store` on private data, sanitized Markdown, generic error messages. |
 | Localization | Complete English and Simplified Chinese UI; language switcher in the header and Settings; preference stored on the account; i18n architecture ready for more locales. |
 | Content | Original bilingual writing guides (seeded), attributed external links, and a clearly-labelled fictional sample essay with hand-written sample feedback. |
 | Application journey | A 7-step hub (`/journey`): profile → majors → read the CDS → explore schools → college list → essays → track applications. Each step's status is computed from the student's own data, with no streaks or pressure. |
@@ -48,11 +48,17 @@ TrueDraft is a bilingual (English / Simplified Chinese) web app that gives stude
 
 ## Tech stack
 
-Next.js 16 (App Router, server components, route handlers) · TypeScript · PostgreSQL + Drizzle ORM (SQL migrations in `drizzle/`) · Better Auth (magic link) · Tailwind CSS v4 · Radix UI primitives · Zod · Anthropic TypeScript SDK behind a provider-agnostic adapter · Vitest + Playwright + axe-core.
+Next.js 16 (App Router, server components, route handlers) · TypeScript · SQLite + Drizzle ORM (SQL migrations in `drizzle-sqlite/`) · Better Auth (magic link) · Tailwind CSS v4 · Radix UI primitives · Zod · Anthropic TypeScript SDK behind a provider-agnostic adapter · Vitest + Playwright + axe-core.
+
+## Desktop app
+
+Download the Windows x64 installer or the macOS ZIP for your processor from [GitHub Releases](https://github.com/yangsy57272/TrueDraft/releases). On Windows, double-click the installer. On macOS, extract the ZIP and open `TrueDraft.app`. TrueDraft opens in your browser with a local profile and stores data in a SQLite file on your device. The packages include Node.js and the reference data.
+
+See the [desktop guide](docs/DESKTOP.md) for data locations, backup, optional AI settings, and packaging commands.
 
 ## Quick start (local development)
 
-1. Install Node.js **22.22.0** (the version in `.nvmrc`) and PostgreSQL **14 or newer**. Start PostgreSQL, then run these commands from the repository folder.
+1. Install Node.js **22.22.0** (the version in `.nvmrc`), then run these commands from the repository folder.
 
    ```bash
    node --version
@@ -60,7 +66,7 @@ Next.js 16 (App Router, server components, route handlers) · TypeScript · Post
    cp .env.example .env
    ```
 
-2. Create a local database named `truedraft`. If your PostgreSQL user can create databases, run `createdb truedraft`. Open `.env` and set `DATABASE_URL` to the connection URL for that database with your PostgreSQL username and password. The example URL assumes you already have a database user named `truedraft`.
+2. Open `.env`. Keep `DATABASE_PATH=.truedraft/truedraft.sqlite` to store the SQLite database inside this checkout. The first migration creates the file and its tables.
 3. Run `openssl rand -base64 32` twice. Use the first result for `BETTER_AUTH_SECRET` and the second for `ENCRYPTION_KEYS`, with `k1:` before the second result. Keep `EMAIL_TRANSPORT=console` for local sign-in. Set `AI_PROVIDER=mock` to try the feedback workflow with fictional text, or leave it empty to try the editor without AI. Keep `.env` local.
 4. Create the tables, load the starter data, and start the app.
 
@@ -90,8 +96,7 @@ Keys are read only on the server. Model, timeout, retries, token limit, effort/t
 ```bash
 # Unit tests only (no database needed)
 npm run test:unit
-# Unit + integration (uses a separate database: truedraft_test)
-createdb truedraft_test            # once
+# Unit + integration (creates in-memory SQLite databases)
 npm test
 
 # End-to-end (Playwright) against a production build
@@ -116,9 +121,9 @@ src/
     ai/                prompts (versioned), schemas, guardrails, provider adapters, orchestrator
     services/          essays, feedback, consent, account/retention/export, resources, audit
     auth.ts session.ts http.ts crypto.ts redact.ts logger.ts analytics.ts rate-limit.ts
-drizzle/               SQL migrations
+drizzle-sqlite/        SQLite migrations
 scripts/               migrate, seed, retention
-tests/                 unit, integration (real Postgres), e2e (Playwright)
+tests/                 unit, integration (SQLite), e2e (Playwright)
 docs/                  AI data flow, security & legal review, deployment
 ```
 

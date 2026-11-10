@@ -1,10 +1,10 @@
 import "dotenv/config";
-import { migrate } from "drizzle-orm/node-postgres/migrator";
+import { migrate } from "drizzle-orm/better-sqlite3/migrator";
 import { closeDb, getDb } from "../src/db";
 import { encryptLegacyVersionNotes } from "../src/server/services/essays";
 
 async function main() {
-  await migrate(getDb(), { migrationsFolder: "./drizzle" });
+  migrate(getDb(), { migrationsFolder: "./drizzle-sqlite" });
   console.log("Migrations applied.");
   // Data step that SQL can't do: encrypt version notes stored before notes were encrypted.
   const notes = await encryptLegacyVersionNotes();

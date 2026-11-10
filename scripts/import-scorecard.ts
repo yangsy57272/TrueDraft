@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { closeDb, getDb } from "../src/db";
 import { federalProfile, school } from "../src/db/schema";
 import { SEED_SCHOOLS } from "../src/content/schools";
@@ -76,7 +76,7 @@ async function main() {
     await db
       .insert(federalProfile)
       .values({ schoolId, unitid, fileDate: doc.fileDate, data })
-      .onConflictDoUpdate({ target: federalProfile.schoolId, set: { unitid, fileDate: doc.fileDate, data, updatedAt: sql`now()` } });
+      .onConflictDoUpdate({ target: federalProfile.schoolId, set: { unitid, fileDate: doc.fileDate, data, updatedAt: new Date() } });
   }
   console.log(`College Scorecard ${doc.fileDate}: ${added} schools added, ${refreshed} existing schools refreshed.`);
   await closeDb();

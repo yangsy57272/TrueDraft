@@ -41,15 +41,20 @@ function buildPayload() {
   fs.copyFileSync(path.join(import.meta.dirname, 'launch.mjs'), path.join(payload, 'launch.mjs'));
   fs.cpSync(path.join(root, 'drizzle-sqlite'), path.join(payload, 'drizzle-sqlite'), { recursive: true });
   const nativeFile = `${process.platform}-${process.arch}.node`;
+  const sqliteDirectory = path.join(payload, 'node_modules', 'better-sqlite3');
   const tracedModules = path.join(payload, '.next', 'node_modules');
   const aliases = fs.existsSync(tracedModules) ? fs.readdirSync(tracedModules).filter(name => name.startsWith('better-sqlite3-')) : [];
-  for (const moduleDir of [path.join(payload, 'node_modules', 'better-sqlite3'), ...aliases.map(name => path.join(tracedModules, name))]) {
-    const nativePath = path.join(moduleDir, 'prebuilds');
-    fs.mkdirSync(nativePath, { recursive: true });
-    fs.copyFileSync(path.join(root, 'node_modules', 'better-sqlite3', 'prebuilds', nativeFile), path.join(nativePath, nativeFile));
-    for (const file of fs.readdirSync(nativePath)) {
-      if (file !== nativeFile) fs.unlinkSync(path.join(nativePath, file));
-    }
+  const nativePath = path.join(sqliteDirectory, 'prebuilds');
+  fs.mkdirSync(nativePath, { recursive: true });
+  fs.copyFileSync(path.join(root, 'node_modules', 'better-sqlite3', 'prebuilds', nativeFile), path.join(nativePath, nativeFile));
+  for (const file of fs.readdirSync(nativePath)) {
+    if (file !== nativeFile) fs.unlinkSync(path.join(nativePath, file));
+  }
+  for (const name of aliases) {
+    const alias = path.join(tracedModules, name);
+    // Turbopack uses a directory link here. Installers and signed bundles need actual files.
+    fs.rmSync(alias, { recursive: true, force: true });
+    fs.cpSync(sqliteDirectory, alias, { recursive: true });
   }
 
   const starter = path.join(payload, 'starter.sqlite');

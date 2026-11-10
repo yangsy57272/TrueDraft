@@ -5,6 +5,7 @@ import { useId, useState } from "react";
 import { useI18n } from "@/i18n/client";
 import { formatDate } from "@/i18n/translate";
 import { apiFetch, runStreamingTool } from "@/lib/api-client";
+import { INITIAL_AI_PROGRESS, type AiProgress } from "@/lib/ai-progress";
 import { CIP_CODES, CIP_FAMILIES } from "@/lib/planning";
 import { useConsentGate } from "@/components/ai/useConsentGate";
 import { ProgressStages } from "@/components/editor/ProgressStages";
@@ -51,7 +52,7 @@ export function MajorExplorer({
   const notify = useToast();
   const uid = useId();
   const gate = useConsentGate(ai);
-  const [stage, setStage] = useState<string | null>(null);
+  const [progress, setProgress] = useState<AiProgress | null>(null);
   const [error, setError] = useState<string | null>(null);
   // Older pages are appended below the server-rendered first page.
   const [older, setOlder] = useState<{ runs: Run[]; cursor: string | null; forFirst: string | undefined }>({ runs: [], cursor: firstCursor, forFirst: firstPage[0]?.id });
@@ -84,9 +85,9 @@ export function MajorExplorer({
   async function run() {
     setError(null);
     if (!(await gate.ensure())) return;
-    setStage("checking");
-    const res = await runStreamingTool<MajorResult>("/api/planning/major_explorer", {}, setStage);
-    setStage(null);
+    setProgress(INITIAL_AI_PROGRESS);
+    const res = await runStreamingTool<MajorResult>("/api/planning/major_explorer", {}, setProgress);
+    setProgress(null);
     if (!res.ok) {
       if (res.code === "consent_required") gate.revoke();
       setError(t(`errors.${res.code}` as never));
@@ -130,16 +131,16 @@ export function MajorExplorer({
           </div>
         ) : (
           <div className="flex flex-wrap items-center gap-3">
-            <button type="button" className="btn btn-accent" disabled={!ai.configured || stage !== null} onClick={run}>
+            <button type="button" className="btn btn-accent" disabled={!ai.configured || progress !== null} onClick={run}>
               {current ? t("majors.rerun") : t("majors.run")}
             </button>
             {!ai.configured ? <p className="text-sm text-ink-soft">{t("editor.aiDisabled")}</p> : null}
           </div>
         )}
-        {stage ? <ProgressStages stage={stage} kind="major_explorer" /> : null}
+        {progress ? <ProgressStages progress={progress} kind="major_explorer" /> : null}
         {error ? <p className="notice notice-error" role="alert">{error}</p> : null}
 
-        {current && !stage ? (
+        {current && !progress ? (
           <div className="space-y-6">
             {current.isMock ? <p className="notice notice-warn text-sm">{t("feedback.mockBanner")}</p> : null}
             <p className="notice text-sm">{t("feedback.aiNote")}</p>

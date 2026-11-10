@@ -22,6 +22,13 @@ export function SupplementsSection({
   return (
     <section id="supplements" className="card mt-6 scroll-mt-24 p-5" aria-labelledby="supp-h">
       <h2 id="supp-h" className="text-xl font-semibold">{t("supplements.title", { cycle: cycle || "2026–2027" })}</h2>
+      {supplements?.verification ? (
+        <div className="notice mt-3 text-sm">
+          <p className="font-semibold">{t("supplements.checked", { date: supplements.verification.checkedAt })}</p>
+          <p className="mt-1" lang="en">{supplements.verification.note}</p>
+          {supplements.verification.result === "unavailable" ? <p className="mt-1">{t("supplements.unavailable")}</p> : null}
+        </div>
+      ) : null}
       {!supplements ? (
         <p className="mt-2 text-sm text-ink-soft">{t("supplements.notImported")}</p>
       ) : supplements.status !== "confirmed" ? (
@@ -36,6 +43,7 @@ export function SupplementsSection({
                 {p.limitText ? <span className="badge badge-strong">{p.limitText}</span> : null}
                 {p.notes ? <span className="text-ink-soft">{p.notes}</span> : null}
               </div>
+              {p.wording === "summary" ? <p className="mt-2 text-xs font-semibold text-amber">{t("supplements.summary")}</p> : null}
               <p className="mt-2 whitespace-pre-line text-sm">{p.prompt}</p>
               {signedIn ? (
                 <Link href={`/essays/new?supp=${encodeURIComponent(slug)}&n=${p.order}`} className="btn btn-secondary btn-sm mt-3">

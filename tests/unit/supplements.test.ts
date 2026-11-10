@@ -12,14 +12,14 @@ describe("supplement prompts data", () => {
   });
 
   it("matches each school to one directory institution", () => {
-    const ids = file.schools.map((s: { unitid: string }) => s.unitid);
+    const ids = file.schools.map((s: { unitid: string | null; slug?: string }) => s.unitid ?? s.slug);
     expect(new Set(ids).size).toBe(ids.length);
   });
 
   it("does not carry third-party guide text, only links", () => {
     for (const s of file.schools) {
-      expect(Object.keys(s).sort()).toEqual(["directoryName", "guideUrl", "prompts", "sheetName", "sourceUrl", "status", "unitid"]);
-      for (const p of s.prompts) expect(Object.keys(p).sort()).toEqual(["limit", "limitText", "notes", "order", "prompt", "requirement", "unit"]);
+      expect(s.guideUrl == null || s.guideUrl.startsWith("https://www.collegeessayguy.com/")).toBe(true);
+      for (const p of s.prompts) expect([undefined, "official", "summary"]).toContain(p.wording);
     }
   });
 

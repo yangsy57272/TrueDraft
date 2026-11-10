@@ -1,6 +1,7 @@
 import "server-only";
 import { getPrivacyFacts, limits } from "@/config/deployment";
 import type { FeedbackLanguage } from "@/i18n/config";
+import { INITIAL_AI_PROGRESS, type AiProgress } from "@/lib/ai-progress";
 import { CDS_FIELDS, CIP_FAMILIES, type StudentProfile } from "@/lib/planning";
 import type { AppUser } from "../session";
 import { ApiError } from "../errors";
@@ -12,7 +13,7 @@ import { hasCurrentConsent } from "../services/consent";
 import { completePlanningRun, createPlanningRun, failPlanningRun, getProfile } from "../services/profile";
 import { buildSystemPrompt, buildUserMessage, PROMPT_VERSION } from "./prompts";
 import { getProvider } from "./provider";
-import { callModel, ModelCallError, type AiStage } from "./run";
+import { callModel, ModelCallError } from "./run";
 import { aiLimitSettings, assertWithinBudget, costMicroUsd, withRunSlot } from "./limits";
 import { SCHEMA_VERSION, type CvImport, type MajorExplorer, type PlanningToolKind } from "./schemas";
 import { guardCvImport, guardMajorExplorer, profileToText } from "./planning-guard";
@@ -61,7 +62,7 @@ export async function preparePlanningRun(
   return { user, kind, language: input.feedbackLanguage ?? user.feedbackLanguage, profile, text: redacted.text, redactionCount: redacted.count };
 }
 
-export async function executePlanningRun(prepared: PreparedPlanning, onStage: (stage: AiStage) => void) {
+export async function executePlanningRun(prepared: PreparedPlanning, onProgress: (progress: AiProgress) => void) {
   const provider = await getProvider();
   const limitSettings = aiLimitSettings();
   await assertWithinBudget(limitSettings);
@@ -84,7 +85,7 @@ export async function executePlanningRun(prepared: PreparedPlanning, onStage: (s
     limitSettings,
   );
   const logFields = { userId: prepared.user.id, runId: run.id, kind: prepared.kind, provider: provider.kind };
-  onStage("checking");
+  onProgress(INITIAL_AI_PROGRESS);
   try {
     const response = await callModel({
       kind: prepared.kind,
@@ -92,7 +93,7 @@ export async function executePlanningRun(prepared: PreparedPlanning, onStage: (s
       userMessage: buildUserMessage(
         prepared.kind === "major_explorer" ? { kind: prepared.kind, profileText: prepared.text } : { kind: prepared.kind, cvText: prepared.text },
       ),
-      onStage,
+      onProgress,
       logFields,
     });
     let result: unknown;
@@ -122,7 +123,7 @@ export async function executePlanningRun(prepared: PreparedPlanning, onStage: (s
  * Turn pasted CDS document text into a DRAFT for an administrator to check field by field.
  * Nothing is saved here; the admin reviews the values against the document before saving.
  */
-export async function extractCdsDraft(adminId: string, cdsText: string, onStage: (stage: AiStage) => void) {
+export async function extractCdsDraft(adminId: string, cdsText: string, onProgress: (progress: AiProgress) => void) {
   const fields = new Map(CDS_FIELDS.map((f) => [f.key, f]));
   const provider = await getProvider();
   const limitSettings = aiLimitSettings();
@@ -137,14 +138,14 @@ export async function extractCdsDraft(adminId: string, cdsText: string, onStage:
       ),
     limitSettings,
   );
-  onStage("checking");
+  onProgress(INITIAL_AI_PROGRESS);
   let response: Awaited<ReturnType<typeof callModel>>;
   try {
     response = await callModel({
       kind: "cds_extract",
       system: buildSystemPrompt("cds_extract", "en"),
       userMessage: buildUserMessage({ kind: "cds_extract", cdsText }),
-      onStage,
+      onProgress,
       logFields: { userId: adminId, runId: run.id, kind: "cds_extract" },
     });
   } catch (error) {

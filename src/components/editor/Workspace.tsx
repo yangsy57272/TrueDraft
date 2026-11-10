@@ -6,6 +6,7 @@ import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from
 import { useI18n } from "@/i18n/client";
 import { formatDate } from "@/i18n/translate";
 import { apiFetch, runAiTool } from "@/lib/api-client";
+import { INITIAL_AI_PROGRESS } from "@/lib/ai-progress";
 import { ESSAY_STATUSES } from "@/lib/constants";
 import { countWords } from "@/lib/wordcount";
 import { DraftSaver, type SaveStatus } from "@/lib/draft-saver";
@@ -17,7 +18,7 @@ import { FeedbackPanel, type LatestFeedback } from "./FeedbackPanel";
 import { VersionsPanel } from "./VersionsPanel";
 import { ToolsPanel } from "@/components/tools/ToolsPanel";
 import { ShowPassageContext } from "@/components/feedback/bits";
-import type { SavedNote, WorkspaceAi, WorkspaceEssay, WorkspaceRun, WorkspaceVersion } from "./types";
+import type { ActiveAiRun, SavedNote, WorkspaceAi, WorkspaceEssay, WorkspaceRun, WorkspaceVersion } from "./types";
 
 export type RunToolFn = (
   kind: string,
@@ -55,7 +56,7 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [status, setStatus] = useState(essay.status);
-  const [activeRun, setActiveRun] = useState<{ kind: string; stage: string } | null>(null);
+  const [activeRun, setActiveRun] = useState<ActiveAiRun | null>(null);
   const [feedback, setFeedback] = useState<LatestFeedback | null>(latestFeedback);
   const [feedbackError, setFeedbackError] = useState<string | null>(null);
 
@@ -211,8 +212,8 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
   const executeTool = useCallback(
     async (kind: string, body: Record<string, unknown>): ReturnType<RunToolFn> => {
       void save();
-      setActiveRun({ kind, stage: "checking" });
-      const result = await runAiTool(essay.id, kind, body, (stage) => setActiveRun({ kind, stage }));
+      setActiveRun({ kind, ...INITIAL_AI_PROGRESS });
+      const result = await runAiTool(essay.id, kind, body, (progress) => setActiveRun({ kind, ...progress }));
       setActiveRun(null);
       if (!result.ok && result.code === "consent_required") setConsentCurrent(false);
       router.refresh();

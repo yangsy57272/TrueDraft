@@ -1,7 +1,7 @@
 {
  "cycle": "2026-2027",
  "description": "Supplemental essay prompts for the 2026–27 application cycle. Prompts are the colleges' own words. Always confirm in the Common App or on the college's website before writing.",
- "provenance": "Imported from a spreadsheet the TrueDraft operator provided: a public quick-reference list compiled by College Essay Guy (last updated 2026-08-21). Only rows marked 'Confirmed for 2026–27' are imported as prompts; the compiler's own guides and commentary are not imported.",
+ "provenance": "Imported from a spreadsheet the TrueDraft operator provided: a public quick-reference list compiled by College Essay Guy (last updated 2026-08-21). Only rows marked 'Confirmed for 2026–27' are imported as prompts; the compiler's own guides and commentary are not imported. Public first-year admission pages for previously pending and no-supplement entries were reviewed on 2026-11-11. Newly researched questions are original task summaries linked to the official wording. Unresolved requirements are marked portal, not no-essay.",
  "compiledListUpdated": "2026-08-21",
  "schools": [
   {
@@ -109,10 +109,47 @@
    "unitid": "104151",
    "directoryName": "Arizona State University Campus Immersion",
    "sheetName": "Arizona State",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://barretthonors.asu.edu/why-barrett/faqs",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Explain a question you keep exploring and how that curiosity connects you to Barrett.",
+     "limitText": "300–500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Barrett first-year applicants — choose one of three",
+     "notes": null,
+     "wording": "summary"
+    },
+    {
+     "order": 2,
+     "prompt": "Reflect on your response when a plan failed and connect that response to your fit with Barrett.",
+     "limitText": "300–500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Barrett first-year applicants — choose one of three",
+     "notes": null,
+     "wording": "summary"
+    },
+    {
+     "order": 3,
+     "prompt": "Discuss a meaningful object linking you to family or community, and connect that relationship to Barrett.",
+     "limitText": "300–500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Barrett first-year applicants — choose one of three",
+     "notes": null,
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Barrett honors has a separate first-year essay; ordinary ASU admission and other honors entry routes differ. Barrett explicitly says AI should not be used.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "164580",
@@ -184,18 +221,41 @@
    "directoryName": "Bates College",
    "sheetName": "Bates College",
    "status": "none",
-   "sourceUrl": null,
+   "sourceUrl": "https://www.bates.edu/admission/apply/",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "156295",
    "directoryName": "Berea College",
    "sheetName": "Berea College",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://www.berea.edu/admissions/admission-information/apply/checklist-items/international-faqs",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Explain your background, educational path, future plans and reasons for applying to Berea. Consult the portal for the complete required topics.",
+     "limitText": "2–5 pages; follow portal instructions",
+     "limit": null,
+     "unit": null,
+     "requirement": "International applicants",
+     "notes": null,
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "International applicants submit a 2–5 page essay. Berea prohibits assistance with writing or editing this essay. Follow the application portal instructions.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "164924",
@@ -431,10 +491,27 @@
    "unitid": "211273",
    "directoryName": "Bryn Mawr College",
    "sheetName": "Bryn Mawr College",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://www.brynmawr.edu/admissions-aid/apply",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Reflect on an authentic truth about yourself and the background or experiences that helped you discover it.",
+     "limitText": "250–500 words, single-spaced",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null,
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "211291",
@@ -541,10 +618,27 @@
    "unitid": "173258",
    "directoryName": "Carleton College",
    "sheetName": "Carleton College",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://www.admissions.carleton.edu/register/supplement",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Share relevant additional information or context absent from the rest of your application.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional",
+     "notes": null,
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "The public 2026–27 supplement includes an optional space for additional information. No word limit is published on that form.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "211440",
@@ -615,10 +709,16 @@
    "unitid": "156408",
    "directoryName": "Centre College",
    "sheetName": "Centre",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.centre.edu/apply/admission-requirements",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 202,
+    "result": "unavailable"
+   }
   },
   {
    "unitid": "111948",
@@ -725,28 +825,57 @@
    "unitid": "161086",
    "directoryName": "Colby College",
    "sheetName": "Colby College",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://afa.colby.edu/apply/faq/",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 403,
+    "result": "search_evidence"
+   }
   },
   {
    "unitid": "190099",
    "directoryName": "Colgate University",
    "sheetName": "Colgate",
-   "status": "none",
-   "sourceUrl": "https://www.colgate.edu/admission-aid/apply/regular-decision",
+   "status": "portal",
+   "sourceUrl": "https://www.colgate.edu/admission-aid/apply/first-year-applicants",
    "guideUrl": "https://www.collegeessayguy.com/blog/colgate-supplemental-essay",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 0,
+    "result": "unavailable"
+   }
   },
   {
    "unitid": "126678",
    "directoryName": "Colorado College",
    "sheetName": "Colorado College",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://www.coloradocollege.edu/admission/apply/supplemental-essay.html",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Describe an academic or extracurricular experience of sustained concentration, your actions and its outcome.",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": "You may also share the resulting project or a URL.",
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 0,
+    "result": "unavailable"
+   }
   },
   {
    "unitid": "190150",
@@ -1080,19 +1209,52 @@
    "unitid": "198385",
    "directoryName": "Davidson College",
    "sheetName": "Davidson College",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://www.davidson.edu/admission-and-financial-aid/apply/first-year-applicants",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Explain your specific reasons for choosing Davidson and what attracts you to the college.",
+     "limitText": "250–300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null,
+     "wording": "summary"
+    },
+    {
+     "order": 2,
+     "prompt": "Explore an idea, pursuit or subject you find exciting and explain the source of your interest.",
+     "limitText": "250–300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null,
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "212054",
    "directoryName": "Drexel University",
    "sheetName": "Drexel",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://drexel.edu/admissions/apply/undergrad-instructions/first-year-instructions",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "The general application requires a personal essay. Westphal, honors, accelerated and other special programs may require additional work.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "198419",
@@ -1208,19 +1370,31 @@
    "unitid": "133650",
    "directoryName": "Florida Agricultural and Mechanical University",
    "sheetName": "Florida A&M - HBCU",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://admissions.famu.edu/student-types/freshman.php",
    "guideUrl": "https://www.collegeessayguy.com/blog/applying-to-florida-am-university-famu",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "134097",
    "directoryName": "Florida State University",
    "sheetName": "Florida State University",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.admissions.fsu.edu/first-year/apply",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "191241",
@@ -1392,36 +1566,71 @@
    "directoryName": "Georgia Institute of Technology-Main Campus",
    "sheetName": "Georgia Tech",
    "status": "none",
-   "sourceUrl": null,
+   "sourceUrl": "https://admission.gatech.edu/first-year/personal-essays",
    "guideUrl": "https://www.collegeessayguy.com/blog/georgia-tech-supplemental-essays",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "The current page explicitly identifies the 2026–27 cycle and requires a Common App personal essay. No separate general short answer is listed on that page.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "153384",
    "directoryName": "Grinnell College",
    "sheetName": "Grinnell College",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.grinnell.edu/admission/apply/international/faq",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "191515",
    "directoryName": "Hamilton College",
    "sheetName": "Hamilton College",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://my.hamilton.edu/admission/apply/first-year",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "An optional supplemental short answer is explicitly listed. It can be submitted in the application or applicant portal. The old no-supplement label was incomplete.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "232265",
    "directoryName": "Hampton University",
    "sheetName": "Hampton - HBCU",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://home.hamptonu.edu/admissions/freshmen/",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "For the video option, explain your interpretation of character and why it matters to you.",
+     "limitText": "Video up to 90 seconds",
+     "limit": null,
+     "unit": null,
+     "requirement": "Alternative to the written Common App essay",
+     "notes": null,
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "166027",
@@ -1585,10 +1794,16 @@
    "unitid": "203535",
    "directoryName": "Kenyon College",
    "sheetName": "Kenyon College",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.kenyon.edu/admissions-aid/apply-to-kenyon/deadlines-requirements/",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "213543",
@@ -1685,10 +1900,16 @@
    "unitid": "209056",
    "directoryName": "Lewis & Clark College",
    "sheetName": "Lewis & Clark",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://college.lclark.edu/offices/admissions/apply/FAQs/",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "117946",
@@ -1713,10 +1934,37 @@
    "unitid": "173902",
    "directoryName": "Macalester College",
    "sheetName": "Macalester",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://www.macalester.edu/admissions/us-admissions/first-year/",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Explain how studying in Minneapolis–Saint Paul would improve your learning, relationships or community involvement.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional",
+     "notes": "Confirm the response limit in the application.",
+     "wording": "summary"
+    },
+    {
+     "order": 2,
+     "prompt": "Connect your experiences, perspective or educational hopes with Macalester’s mission and community.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional",
+     "notes": "Confirm the response limit in the application.",
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "170976",
@@ -1751,9 +1999,15 @@
    "directoryName": "Middlebury College",
    "sheetName": "Middlebury College",
    "status": "none",
-   "sourceUrl": null,
+   "sourceUrl": "https://www.middlebury.edu/college/admissions/application-instructions-and-deadlines",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "166683",
@@ -1850,46 +2104,87 @@
    "unitid": "140553",
    "directoryName": "Morehouse College",
    "sheetName": "Morehouse - HBCU",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://morehouse.edu/admissions/requirements-and-deadlines",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "163453",
    "directoryName": "Morgan State University",
    "sheetName": "Morgan State - HBCU",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.morgan.edu/office-of-undergraduate-admission-and-recruitment/how-to-apply/international-applicants/application-requirements/other-documentation",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "The international requirements page calls the essay optional but also uses mandatory wording for a 500-word submission. Resolve this inconsistency in the applicant portal.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "166939",
    "directoryName": "Mount Holyoke College",
    "sheetName": "Mount Holyoke",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.mtholyoke.edu/admission/apply-undergraduate-first-year/application-process",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "An optional writing supplement is listed. Merit scholarships do not require a separate essay, which does not remove the optional general writing supplement.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "199193",
    "directoryName": "North Carolina State University at Raleigh",
    "sheetName": "NC State",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.ncsu.edu/apply/first-year/",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Explain your interest in your selected academic programs and your reasons for pursuing them at NC State.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "The public page does not state the general short-answer word limit; check the application.",
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "The public page lists a required academic-program short answer. The optional University Honors application adds a required response of at most 600 words, with its own question in the application.",
+    "httpStatus": 0,
+    "result": "unavailable"
+   }
   },
   {
    "unitid": "167358",
    "directoryName": "Northeastern University",
    "sheetName": "Northeastern",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://admissions.northeastern.edu/application-information/required-materials/",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 403,
+    "result": "search_evidence"
+   }
   },
   {
    "unitid": "147767",
@@ -2042,37 +2337,82 @@
    "unitid": "120254",
    "directoryName": "Occidental College",
    "sheetName": "Occidental",
-   "status": "coming_soon",
-   "sourceUrl": "https://www.oxy.edu/admission-aid/apply/application-requirements/required-short-answers",
+   "status": "confirmed",
+   "sourceUrl": "https://www.oxy.edu/admission-aid/first-year/application-requirements",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Explain your reasons for applying to Occidental and how it supports the interests you want to pursue.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": null,
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "204796",
    "directoryName": "Ohio State University-Main Campus",
    "sheetName": "Ohio State University - Columbus",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://undergrad.osu.edu/cost-and-aid/merit-based-Scholarships",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Stamps Eminence and Morrill scholarship applicants have additional essay requirements. Check the program application even if no general supplement is requested.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "441982",
    "directoryName": "Franklin W Olin College of Engineering",
    "sheetName": "Olin College of Engineering",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://olin.edu/admission/faq",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "result": "search_evidence",
+    "note": "The official admission FAQ identifies an Olin-specific essay in addition to the Common App essay. Confirm the complete current question and limit in your application. The FAQ permits limited brainstorming, research and proofreading assistance while requiring your authentic writing."
+   }
   },
   {
    "unitid": "214777",
    "directoryName": "Pennsylvania State University-Main Campus",
    "sheetName": "Pennsylvania State University",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://www.shc.psu.edu/admissions/first-year/index.cfm/1000",
    "guideUrl": "https://www.collegeessayguy.com/blog/penn-state-supplemental-essays",
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Identify an overlooked problem, explain why it lacks attention, and assess a practical response, including its limits, trade-offs and potential consequences.",
+     "limitText": "Up to 800 words",
+     "limit": 800,
+     "unit": "words",
+     "requirement": "Schreyer Honors applicants",
+     "notes": "Additional shorter honors prompts are in the application.",
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "The public Schreyer page identifies the 2027 essay. Honors admission is separate from Penn State admission and also includes shorter responses; check the application for that complete set.",
+    "result": "search_evidence",
+    "httpStatus": 403
+   }
   },
   {
    "unitid": "121150",
@@ -2097,10 +2437,16 @@
    "unitid": "121257",
    "directoryName": "Pitzer College",
    "sheetName": "Pitzer College",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.pitzer.edu/admission-aid/how-apply",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "121345",
@@ -2464,37 +2810,82 @@
    "unitid": "123165",
    "directoryName": "Scripps College",
    "sheetName": "Scripps",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.scrippscollege.edu/admission/apply/first-year-applicants",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 403,
+    "result": "search_evidence"
+   }
   },
   {
    "unitid": "167835",
    "directoryName": "Smith College",
    "sheetName": "Smith College",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.smith.edu/admission-aid/apply-smith/first-year-applicants",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 0,
+    "result": "unavailable"
+   }
   },
   {
    "unitid": "399911",
    "directoryName": "Soka University of America",
    "sheetName": "Soka University of America",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.soka.edu/portal/essays",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Connect Soka’s approach to developing wisdom with your educational interests and the contribution you hope to make.",
+     "limitText": "500–750 words, double-spaced",
+     "limit": 750,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null,
+     "wording": "summary"
+    },
+    {
+     "order": 2,
+     "prompt": "Briefly explain any circumstances that admissions should consider alongside the rest of your application.",
+     "limitText": "1–2 paragraphs",
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional",
+     "notes": null,
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "The official Fall 2027 page lists a required 500–750 word response and an optional 1–2 paragraph special-circumstances response.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "228246",
    "directoryName": "Southern Methodist University",
    "sheetName": "Southern Methodist",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.smu.edu/admission/apply/undergraduate-admission/requirements-guidelines",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "141060",
@@ -2776,10 +3167,27 @@
    "unitid": "130590",
    "directoryName": "Trinity College",
    "sheetName": "Trinity College",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://www.trincoll.edu/admissions/undergraduate-admissions/application-process/",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Discuss a dimension of your background that you would like to contribute to or explore within Trinity’s community, and explain why.",
+     "limitText": "Fewer than 300 words",
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional",
+     "notes": null,
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "168148",
@@ -2840,19 +3248,31 @@
    "unitid": "160755",
    "directoryName": "Tulane University of Louisiana",
    "sheetName": "Tulane",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://admission.tulane.edu/apply/status",
    "guideUrl": "https://www.collegeessayguy.com/blog/tulane-university-supplemental-essays",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 403,
+    "result": "search_evidence"
+   }
   },
   {
    "unitid": "102377",
    "directoryName": "Tuskegee University",
    "sheetName": "Tuskegee - HBCU",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.tuskegee.edu/admissions/Criteria-for-Freshmen.html",
    "guideUrl": "https://www.collegeessayguy.com/blog/tuskegee-supplemental-essays",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "144050",
@@ -3152,109 +3572,190 @@
    "unitid": "199120",
    "directoryName": "University of North Carolina at Chapel Hill",
    "sheetName": "UNC Chapel Hill",
-   "status": "none",
-   "sourceUrl": "https://admissions.unc.edu/application-prompts-for-2024-2025/",
+   "status": "portal",
+   "sourceUrl": "https://admissions.unc.edu/apply/types-of-applications/first-year/",
    "guideUrl": "https://www.collegeessayguy.com/blog/unc-chapel-hill-supplemental-essays",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "197036",
    "directoryName": "United States Military Academy",
    "sheetName": "United States Military Academy",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://apply.westpoint.edu/portal/candidate",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "The official Class of 2031 application is open for July 2027 entry. Candidate instructions and writing requirements must be checked inside the candidate portal.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "164155",
    "directoryName": "United States Naval Academy",
    "sheetName": "United States Naval Academy",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.usna.edu/Admissions/Candidate-Instructions.php",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "The official candidate instructions require two essay questions in the application. The previous no-supplement status was incorrect.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "110635",
    "directoryName": "University of California-Berkeley",
    "sheetName": "University of California (all campuses)",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/personal-insight-questions.html",
    "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "First-year applicants select four of eight responses, each at most 350 words. Responses are shared across selected UC campuses; check additional program requirements.",
+    "httpStatus": 200,
+    "result": "public_page"
+   },
+   "promptSet": "uc-first-year"
   },
   {
    "unitid": "110644",
    "directoryName": "University of California-Davis",
    "sheetName": "University of California (all campuses)",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/personal-insight-questions.html",
    "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "First-year applicants select four of eight responses, each at most 350 words. Responses are shared across selected UC campuses; check additional program requirements.",
+    "httpStatus": 200,
+    "result": "public_page"
+   },
+   "promptSet": "uc-first-year"
   },
   {
    "unitid": "110653",
    "directoryName": "University of California-Irvine",
    "sheetName": "University of California (all campuses)",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/personal-insight-questions.html",
    "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "First-year applicants select four of eight responses, each at most 350 words. Responses are shared across selected UC campuses; check additional program requirements.",
+    "httpStatus": 200,
+    "result": "public_page"
+   },
+   "promptSet": "uc-first-year"
   },
   {
    "unitid": "110662",
    "directoryName": "University of California-Los Angeles",
    "sheetName": "University of California (all campuses)",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/personal-insight-questions.html",
    "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "First-year applicants select four of eight responses, each at most 350 words. Responses are shared across selected UC campuses; check additional program requirements.",
+    "httpStatus": 200,
+    "result": "public_page"
+   },
+   "promptSet": "uc-first-year"
   },
   {
    "unitid": "445188",
    "directoryName": "University of California-Merced",
    "sheetName": "University of California (all campuses)",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/personal-insight-questions.html",
    "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "First-year applicants select four of eight responses, each at most 350 words. Responses are shared across selected UC campuses; check additional program requirements.",
+    "httpStatus": 200,
+    "result": "public_page"
+   },
+   "promptSet": "uc-first-year"
   },
   {
    "unitid": "110671",
    "directoryName": "University of California-Riverside",
    "sheetName": "University of California (all campuses)",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/personal-insight-questions.html",
    "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "First-year applicants select four of eight responses, each at most 350 words. Responses are shared across selected UC campuses; check additional program requirements.",
+    "httpStatus": 200,
+    "result": "public_page"
+   },
+   "promptSet": "uc-first-year"
   },
   {
    "unitid": "110680",
    "directoryName": "University of California-San Diego",
    "sheetName": "University of California (all campuses)",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/personal-insight-questions.html",
    "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "First-year applicants select four of eight responses, each at most 350 words. Responses are shared across selected UC campuses; check additional program requirements.",
+    "httpStatus": 200,
+    "result": "public_page"
+   },
+   "promptSet": "uc-first-year"
   },
   {
    "unitid": "110705",
    "directoryName": "University of California-Santa Barbara",
    "sheetName": "University of California (all campuses)",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/personal-insight-questions.html",
    "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "First-year applicants select four of eight responses, each at most 350 words. Responses are shared across selected UC campuses; check additional program requirements.",
+    "httpStatus": 200,
+    "result": "public_page"
+   },
+   "promptSet": "uc-first-year"
   },
   {
    "unitid": "110714",
    "directoryName": "University of California-Santa Cruz",
    "sheetName": "University of California (all campuses)",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/personal-insight-questions.html",
    "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "First-year applicants select four of eight responses, each at most 350 words. Responses are shared across selected UC campuses; check additional program requirements.",
+    "httpStatus": 200,
+    "result": "public_page"
+   },
+   "promptSet": "uc-first-year"
   },
   {
    "unitid": "134130",
@@ -3316,36 +3817,111 @@
    "directoryName": "University of Georgia",
    "sheetName": "University of Georgia",
    "status": "none",
-   "sourceUrl": "https://www.admissions.uga.edu/blog/fall-2025-uga-essay-questions/",
+   "sourceUrl": "https://admissions.uga.edu/blog/fall-2027-essay-questions/",
    "guideUrl": "https://www.collegeessayguy.com/blog/university-of-georgia-supplemental-essay",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "The official Fall 2027 announcement explicitly removes the second essay. Only the Common App personal essay is required for general first-year admission.",
+    "httpStatus": 403,
+    "result": "search_evidence"
+   }
   },
   {
    "unitid": "145637",
    "directoryName": "University of Illinois Urbana-Champaign",
    "sheetName": "University of Illinois Urbana-Champaign",
-   "status": "coming_soon",
-   "sourceUrl": "https://www.admissions.illinois.edu/apply/freshman/essays",
+   "status": "confirmed",
+   "sourceUrl": "https://www.admissions.illinois.edu/essays/",
    "guideUrl": "https://www.collegeessayguy.com/blog/university-illinois-urbana-champaign-supplemental-essays",
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Describe a recent experience related to the major you ranked first, including what you learned.",
+     "limitText": "About 150 words",
+     "limit": null,
+     "unit": null,
+     "requirement": "First-choice major — required",
+     "notes": null,
+     "wording": "summary"
+    },
+    {
+     "order": 2,
+     "prompt": "Connect your plans after university to the first-choice major you selected at Illinois.",
+     "limitText": "About 150 words",
+     "limit": null,
+     "unit": null,
+     "requirement": "First-choice major — required",
+     "notes": null,
+     "wording": "summary"
+    },
+    {
+     "order": 3,
+     "prompt": "Explain your educational or professional aspirations and the high-school experiences that influenced them.",
+     "limitText": "About 150 words",
+     "limit": null,
+     "unit": null,
+     "requirement": "Undeclared applicants — replaces first-choice major essays",
+     "notes": null,
+     "wording": "summary"
+    },
+    {
+     "order": 4,
+     "prompt": "Discuss two or three possible Illinois majors and why they appeal to you.",
+     "limitText": "About 150 words",
+     "limit": null,
+     "unit": null,
+     "requirement": "Undeclared applicants — replaces first-choice major essays",
+     "notes": null,
+     "wording": "summary"
+    },
+    {
+     "order": 5,
+     "prompt": "Explain your interest in the alternative major you selected or its connection to your longer-term goals.",
+     "limitText": "About 150 words",
+     "limit": null,
+     "unit": null,
+     "requirement": "Required when selecting a second-choice major",
+     "notes": null,
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "First-year applicants answer two major-related essays, or two undeclared essays instead. A second-choice major adds another essay. Each response is about 150 words.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "135726",
    "directoryName": "University of Miami",
    "sheetName": "University of Miami",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://admissions.miami.edu/undergraduate/application-process/admission-requirements/freshman/index.html",
    "guideUrl": "https://www.collegeessayguy.com/blog/university-of-miami-supplemental-essays",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "215293",
    "directoryName": "University of Pittsburgh-Pittsburgh Campus",
    "sheetName": "University of Pittsburgh",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://admissions.pitt.edu/first-year-student/",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 0,
+    "result": "unavailable"
+   }
   },
   {
    "unitid": "233374",
@@ -3388,10 +3964,16 @@
    "unitid": "231174",
    "directoryName": "University of Vermont",
    "sheetName": "University of Vermont",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.uvm.edu/admissions/undergraduate/how-apply-first-years",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "236948",
@@ -3974,10 +4556,67 @@
    "unitid": "234207",
    "directoryName": "Washington and Lee University",
    "sheetName": "Washington and Lee University",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "confirmed",
+   "sourceUrl": "https://www.wlu.edu/admissions/apply/supplemental-application-prompts",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Explain how you explored Washington and Lee and which features of its community appeal to you.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional Why W&L response",
+     "notes": null,
+     "wording": "summary"
+    },
+    {
+     "order": 2,
+     "prompt": "Describe an important pursuit, job or family responsibility beyond school, including your growth and effect on others.",
+     "limitText": "Up to 250 words or a video up to 2 minutes",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional — choose one of four",
+     "notes": null,
+     "wording": "summary"
+    },
+    {
+     "order": 3,
+     "prompt": "Explain a perspective or aspect of your identity that would contribute to the university’s diverse learning community.",
+     "limitText": "Up to 250 words or a video up to 2 minutes",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional — choose one of four",
+     "notes": null,
+     "wording": "summary"
+    },
+    {
+     "order": 4,
+     "prompt": "Explore a subject that occupies your curiosity and how you pursue learning about it.",
+     "limitText": "Up to 250 words or a video up to 2 minutes",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional — choose one of four",
+     "notes": null,
+     "wording": "summary"
+    },
+    {
+     "order": 5,
+     "prompt": "Tell the story and personal meaning of a name that you use.",
+     "limitText": "Up to 250 words or a video up to 2 minutes",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional — choose one of four",
+     "notes": null,
+     "wording": "summary"
+    }
+   ],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "179867",
@@ -4039,10 +4678,16 @@
    "unitid": "130697",
    "directoryName": "Wesleyan University",
    "sheetName": "Wesleyan University",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.wesleyan.edu/admission/undergraduate-admission/first-year.html",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 0,
+    "result": "unavailable"
+   }
   },
   {
    "unitid": "231624",
@@ -4113,27 +4758,45 @@
    "directoryName": "Williams College",
    "sheetName": "Williams College",
    "status": "none",
-   "sourceUrl": null,
+   "sourceUrl": "https://www.williams.edu/admission-aid/how-to-apply/first-year/",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "The college explicitly does not require a writing supplement, but accepts an optional academic paper with an assignment description. Lab reports are excluded.",
+    "httpStatus": 403,
+    "result": "search_evidence"
+   }
   },
   {
    "unitid": "206589",
    "directoryName": "The College of Wooster",
    "sheetName": "Wooster",
-   "status": "coming_soon",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://wooster.edu/apply",
    "guideUrl": null,
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 200,
+    "result": "public_page"
+   }
   },
   {
    "unitid": "168421",
    "directoryName": "Worcester Polytechnic Institute",
    "sheetName": "Worcester Polytechnic Institute",
-   "status": "none",
-   "sourceUrl": null,
+   "status": "portal",
+   "sourceUrl": "https://www.wpi.edu/apply",
    "guideUrl": "https://www.collegeessayguy.com/blog/worcester-polytechnic-institute-wpi-supplemental-essay",
-   "prompts": []
+   "prompts": [],
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "Reviewed the public first-year admission information. Confirm current writing, optional and special-program requirements in your application; the public page does not establish a complete cycle-specific prompt set.",
+    "httpStatus": 0,
+    "result": "unavailable"
+   }
   },
   {
    "unitid": "130794",
@@ -4216,6 +4879,117 @@
      "notes": "Essay · Common App and Coalition App only."
     }
    ]
+  },
+  {
+   "unitid": null,
+   "slug": "university-of-st-andrews",
+   "directoryName": "University of St Andrews",
+   "sheetName": "University of St. Andrews",
+   "status": "confirmed",
+   "sourceUrl": "https://www.st-andrews.ac.uk/study/undergraduate/apply/personal-statement/",
+   "guideUrl": null,
+   "verification": {
+    "checkedAt": "2026-11-11",
+    "note": "The official Common Application page explicitly covers 2027 entry and requires a course-focused writing supplement. UCAS and Direct Application have different instructions. Confirm the route-specific limit in your application.",
+    "httpStatus": 200,
+    "result": "public_page"
+   },
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Explain your enthusiasm and preparation for your chosen subjects, your interest in St Andrews’ teaching or research, and how its flexible degree structure supports your development.",
+     "limitText": "Check the Common Application or Direct Application form",
+     "limit": null,
+     "unit": null,
+     "requirement": "Common Application / Direct Application",
+     "notes": "For UCAS, follow the separate structured personal-statement instructions on the official page.",
+     "wording": "summary"
+    }
+   ]
   }
- ]
+ ],
+ "promptSets": {
+  "uc-first-year": [
+   {
+    "order": 1,
+    "prompt": "Describe leadership through helping people, resolving disagreement or supporting a shared effort, including the effect over time.",
+    "limitText": "350 words",
+    "limit": 350,
+    "unit": "words",
+    "requirement": "Choose four of eight — shared across UC campuses",
+    "notes": null,
+    "wording": "summary"
+   },
+   {
+    "order": 2,
+    "prompt": "Explore how you apply imagination, original thinking or artistic expression in your life.",
+    "limitText": "350 words",
+    "limit": 350,
+    "unit": "words",
+    "requirement": "Choose four of eight — shared across UC campuses",
+    "notes": null,
+    "wording": "summary"
+   },
+   {
+    "order": 3,
+    "prompt": "Identify an important ability, explain your development of it and show how you put it into practice.",
+    "limitText": "350 words",
+    "limit": 350,
+    "unit": "words",
+    "requirement": "Choose four of eight — shared across UC campuses",
+    "notes": null,
+    "wording": "summary"
+   },
+   {
+    "order": 4,
+    "prompt": "Reflect on making use of an educational opening or responding to a barrier to learning.",
+    "limitText": "350 words",
+    "limit": 350,
+    "unit": "words",
+    "requirement": "Choose four of eight — shared across UC campuses",
+    "notes": null,
+    "wording": "summary"
+   },
+   {
+    "order": 5,
+    "prompt": "Discuss a major difficulty, your response and the effect it had on your studies.",
+    "limitText": "350 words",
+    "limit": 350,
+    "unit": "words",
+    "requirement": "Choose four of eight — shared across UC campuses",
+    "notes": null,
+    "wording": "summary"
+   },
+   {
+    "order": 6,
+    "prompt": "Trace your enthusiasm for an academic field and your efforts to explore it in or beyond class.",
+    "limitText": "350 words",
+    "limit": 350,
+    "unit": "words",
+    "requirement": "Choose four of eight — shared across UC campuses",
+    "notes": null,
+    "wording": "summary"
+   },
+   {
+    "order": 7,
+    "prompt": "Explain your actions to improve a group, school or community and the difference they made.",
+    "limitText": "350 words",
+    "limit": 350,
+    "unit": "words",
+    "requirement": "Choose four of eight — shared across UC campuses",
+    "notes": null,
+    "wording": "summary"
+   },
+   {
+    "order": 8,
+    "prompt": "Add a dimension of your candidacy that other application sections have not yet captured.",
+    "limitText": "350 words",
+    "limit": 350,
+    "unit": "words",
+    "requirement": "Choose four of eight — shared across UC campuses",
+    "notes": null,
+    "wording": "summary"
+   }
+  ]
+ }
 }

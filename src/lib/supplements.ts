@@ -2,7 +2,7 @@ import { z } from "zod";
 
 /** The current application cycle for supplemental essay prompts. */
 export const SUPPLEMENT_CYCLE = "2026-2027";
-export const SUPPLEMENT_STATUSES = ["confirmed", "coming_soon", "none"] as const;
+export const SUPPLEMENT_STATUSES = ["confirmed", "coming_soon", "none", "portal"] as const;
 
 const promptSchema = z.object({
   order: z.number().int().min(1).max(50),
@@ -12,6 +12,7 @@ const promptSchema = z.object({
   unit: z.enum(["words", "characters"]).nullable(),
   requirement: z.string().max(200).nullable(),
   notes: z.string().max(1000).nullable(),
+  wording: z.enum(["official", "summary"]).optional(),
 });
 
 export const supplementFileSchema = z.object({
@@ -19,10 +20,18 @@ export const supplementFileSchema = z.object({
   description: z.string(),
   provenance: z.string().min(20),
   compiledListUpdated: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  promptSets: z.record(z.string(), z.array(promptSchema)).default({}),
   schools: z.array(
     z
       .object({
-        unitid: z.string().regex(/^\d+$/),
+        unitid: z.string().regex(/^\d+$/).nullable(),
+        slug: z.string().regex(/^[a-z0-9-]+$/).optional(),
+        verification: z.object({
+          checkedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+          note: z.string().max(2000),
+          result: z.enum(["public_page", "search_evidence", "unavailable"]).optional(),
+          httpStatus: z.number().int().optional(),
+        }).optional(),
         directoryName: z.string(),
         sheetName: z.string(),
         status: z.enum(SUPPLEMENT_STATUSES),
@@ -30,14 +39,25 @@ export const supplementFileSchema = z.object({
         /** Optional external guide (College Essay Guy's free article), linked with attribution, never copied. */
         guideUrl: z.url().startsWith("https://www.collegeessayguy.com/").nullable(),
         prompts: z.array(promptSchema),
+        promptSet: z.string().optional(),
       })
-      .refine((s) => (s.status === "confirmed" ? s.prompts.length > 0 : s.prompts.length === 0), {
+      .refine((s) => Boolean(s.unitid || s.slug), { message: "school needs a UNITID or slug" })
+      .refine((s) => (s.status === "confirmed" ? s.prompts.length > 0 || Boolean(s.promptSet) : s.prompts.length === 0 && !s.promptSet), {
         message: "confirmed schools need prompts; others must have none",
       })
       .refine((s) => s.prompts.every((p, i) => p.order === i + 1), { message: "prompt order must be 1..n" })
       .refine((s) => s.prompts.every((p) => (p.limit == null) === (p.unit == null)), { message: "limit and unit go together" }),
   ),
-});
+}).superRefine((doc, context) => {
+  for (const [index, entry] of doc.schools.entries()) {
+    if (entry.promptSet && !doc.promptSets[entry.promptSet]?.length) {
+      context.addIssue({ code: "custom", path: ["schools", index, "promptSet"], message: "Unknown or empty prompt set" });
+    }
+  }
+}).transform((doc) => ({
+  ...doc,
+  schools: doc.schools.map((entry) => ({ ...entry, prompts: entry.promptSet ? doc.promptSets[entry.promptSet] : entry.prompts })),
+}));
 export type SupplementFile = z.infer<typeof supplementFileSchema>;
 
 /**

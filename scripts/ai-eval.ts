@@ -46,7 +46,7 @@ async function main() {
         kind: c.kind,
         system: buildSystemPrompt(c.kind, c.language),
         userMessage: buildUserMessage(input),
-        onStage: () => {},
+        onProgress: () => {},
         logFields: { kind: c.kind },
       });
       const result = applyGuards(c.kind, response.parsed, {

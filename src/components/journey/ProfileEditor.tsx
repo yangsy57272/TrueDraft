@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useId, useState, type ReactNode } from "react";
 import { useI18n } from "@/i18n/client";
 import { apiFetch, newId, runStreamingTool } from "@/lib/api-client";
+import { INITIAL_AI_PROGRESS, type AiProgress } from "@/lib/ai-progress";
 import {
   ACTIVITY_TYPES,
   AID_NEEDS,
@@ -106,7 +107,7 @@ export function ProfileEditor({ initial, ai }: { initial: StudentProfile; ai: Wo
 
   /* ------------------------------- CV import ------------------------------ */
   const [cvText, setCvText] = useState("");
-  const [cvStage, setCvStage] = useState<string | null>(null);
+  const [cvProgress, setCvProgress] = useState<AiProgress | null>(null);
   const [cvError, setCvError] = useState<string | null>(null);
   const [extracted, setExtracted] = useState<Extracted | null>(null);
   const [cvMock, setCvMock] = useState(false);
@@ -114,9 +115,9 @@ export function ProfileEditor({ initial, ai }: { initial: StudentProfile; ai: Wo
   async function runCv() {
     setCvError(null);
     if (!(await gate.ensure())) return;
-    setCvStage("checking");
-    const res = await runStreamingTool<Extracted>("/api/planning/cv_import", { cvText }, setCvStage);
-    setCvStage(null);
+    setCvProgress(INITIAL_AI_PROGRESS);
+    const res = await runStreamingTool<Extracted>("/api/planning/cv_import", { cvText }, setCvProgress);
+    setCvProgress(null);
     if (!res.ok) {
       if (res.code === "consent_required") gate.revoke();
       setCvError(t(`errors.${res.code}` as never));
@@ -144,13 +145,13 @@ export function ProfileEditor({ initial, ai }: { initial: StudentProfile; ai: Wo
       {/* CV import */}
       <Section id={id("cv")} title={t("profile.cv.title")}>
         <p className="text-sm text-ink-soft">{t("profile.cv.intro")}</p>
-        {cvStage ? <div className="mt-3"><ProgressStages stage={cvStage} kind="cv_import" /></div> : null}
+        {cvProgress ? <div className="mt-3"><ProgressStages progress={cvProgress} kind="cv_import" /></div> : null}
         {!extracted ? (
           <>
             <label htmlFor={id("cvtext")} className="field-label mt-4">{t("profile.cv.label")}</label>
             <textarea id={id("cvtext")} className="input" rows={6} maxLength={12000} value={cvText} onChange={(e) => setCvText(e.target.value)} aria-describedby={id("cvhelp")} />
             <p id={id("cvhelp")} className="field-help">{t("profile.cv.help")}</p>
-            <button type="button" className="btn btn-primary btn-sm mt-3" disabled={!ai.configured || !cvText.trim() || cvStage !== null} onClick={runCv}>
+            <button type="button" className="btn btn-primary btn-sm mt-3" disabled={!ai.configured || !cvText.trim() || cvProgress !== null} onClick={runCv}>
               {t("profile.cv.run")}
             </button>
             {!ai.configured ? <p className="mt-2 text-sm text-ink-soft">{t("editor.aiDisabled")}</p> : null}

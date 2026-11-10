@@ -1,4 +1,7 @@
 import type { FeedbackLanguage } from "@/i18n/config";
+import type { AiProgress } from "@/lib/ai-progress";
+
+export type ActiveAiRun = AiProgress & { kind: string };
 
 export type WorkspaceEssay = {
   id: string;

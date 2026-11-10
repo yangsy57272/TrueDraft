@@ -46,7 +46,7 @@ export interface AiProvider {
 
 export function aiSettings() {
   return {
-    timeoutMs: Number(process.env.AI_TIMEOUT_MS ?? 120_000),
+    timeoutMs: Number(process.env.AI_TIMEOUT_MS ?? 240_000),
     maxRetries: Math.min(3, Number(process.env.AI_MAX_RETRIES ?? 1)),
     maxOutputTokens: Number(process.env.AI_MAX_OUTPUT_TOKENS ?? 16_000),
   };

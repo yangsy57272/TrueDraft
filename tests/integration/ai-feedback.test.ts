@@ -37,7 +37,8 @@ function fakeProvider(respond: (r: StructuredRequest) => unknown | Promise<unkno
     model: "fake-model",
     async generate(request) {
       calls.push(request);
-      request.onProgress?.('{"summary":"x","categories":[],"passage_comments":[],"revision_plan":[]');
+      request.onProgress?.('{"summary":"中🙂');
+      request.onProgress?.('{"summary":"中🙂","categories":[],"passage_comments":[],"revision_plan":[]');
       return { json: await respond(request), model: "fake-model-2026", providerRef: "msg_123" };
     },
   };
@@ -59,6 +60,10 @@ describe("AI feedback", () => {
     const stages = events.filter((e) => e.type === "stage").map((e) => e.stage);
     expect(stages).toContain("checking");
     expect(stages).toContain("structure");
+    const progress = events.filter((e) => e.type === "stage");
+    expect(progress).toContainEqual({ type: "stage", stage: "structure", generatedChars: 14 });
+    expect(progress.at(-1)?.generatedChars).toBeGreaterThan(14);
+    expect(JSON.stringify(progress)).not.toContain("中🙂");
     const done = events.find((e) => e.type === "done");
     expect(done.result.summary).toBe("Clear topic.");
     expect(done.result.passage_comments[0].located).toBe(true);
@@ -131,6 +136,9 @@ describe("AI feedback", () => {
     const events = await readStream(await run("full_feedback", { content: sampleEssay.draft }));
     const done = events.find((e) => e.type === "done");
     expect(calls).toBe(2);
+    const progress = events.filter((e) => e.type === "stage");
+    const firstOutput = progress.findIndex((e) => e.generatedChars > 0);
+    expect(progress.slice(firstOutput + 1)).toContainEqual({ type: "stage", stage: "checking", generatedChars: 0 });
     expect(done.result.categories).toHaveLength(8);
 
     calls = 0;

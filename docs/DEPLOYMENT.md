@@ -102,7 +102,7 @@ The retention job also marks AI runs left "pending" by a crash or restart as fai
 ## Scaling notes
 
 - Keep the SQLite file and its WAL files on the same local disk. Back up with SQLite’s backup facilities or stop the app before copying its data directory. Better Auth’s rate limiter is in memory. Add edge rate limiting for `/api/auth/*` on a public deployment.
-- AI requests stream for up to `AI_TIMEOUT_MS` (default 120 s) per attempt. Make sure your platform's request timeout is longer than that (the route sets `maxDuration = 300`).
+- Each AI attempt has an `AI_TIMEOUT_MS` deadline (default 240 s). The AI routes request a 600 s platform limit to allow for the default single retry. If you change the timeout or `AI_MAX_RETRIES`, allow for all attempts and retry delays in your hosting limits.
 
 ## Import an existing PostgreSQL database
 

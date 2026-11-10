@@ -2,6 +2,7 @@ import "server-only";
 import { getPrivacyFacts, limits } from "@/config/deployment";
 import type { FeedbackLanguage } from "@/i18n/config";
 import { countWords } from "@/lib/wordcount";
+import { INITIAL_AI_PROGRESS, type AiProgress } from "@/lib/ai-progress";
 import type { AppUser } from "../session";
 import { ApiError } from "../errors";
 import { errorName, logger } from "../logger";
@@ -19,7 +20,7 @@ import { applyGuards, quoteAppearsIn } from "./guard";
 import { aiLimitSettings, assertWithinBudget, costMicroUsd, inputHash, withRunSlot } from "./limits";
 import { getReusableRun } from "../services/feedback";
 
-export type AiStage = "checking" | "structure" | "detail" | "priorities" | "reviewing" | "preparing";
+type AiStage = "checking" | "structure" | "detail" | "priorities" | "reviewing" | "preparing";
 
 export type AiRequestOptions = {
   /** Current editor content. Saved as a new version first if it differs from the latest one. */
@@ -220,7 +221,7 @@ export async function callModel(opts: {
   kind: ToolKind;
   system: string;
   userMessage: string;
-  onStage: (stage: AiStage) => void;
+  onProgress: (progress: AiProgress) => void;
   logFields: Record<string, string | number>;
   firstStage?: AiStage;
 }) {
@@ -237,7 +238,16 @@ export async function callModel(opts: {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), settings.timeoutMs);
     let reached = -1;
-    opts.onStage(opts.firstStage ?? "reviewing");
+    let stage = opts.firstStage ?? "reviewing";
+    let snapshot = "";
+    let reportedLength = 0;
+    let lastReportedAt = 0;
+    const report = () => {
+      reportedLength = snapshot.length;
+      lastReportedAt = Date.now();
+      opts.onProgress({ stage, generatedChars: [...snapshot].length });
+    };
+    report();
     try {
       const response = await provider.generate({
         system: opts.system,
@@ -246,16 +256,20 @@ export async function callModel(opts: {
         jsonSchema: jsonSchemaFor(opts.kind),
         maxOutputTokens: settings.maxOutputTokens,
         signal: controller.signal,
-        onProgress: (snapshot) => {
+        onProgress: (text) => {
+          snapshot = text;
           for (let i = reached + 1; i < markers.length; i++) {
             if (snapshot.includes(markers[i][0])) {
               reached = i;
-              opts.onStage(markers[i][1]);
+              stage = markers[i][1];
+              report();
             }
           }
+          if (snapshot.length !== reportedLength && (reportedLength === 0 || Date.now() - lastReportedAt >= 500)) report();
         },
       });
       clearTimeout(timer);
+      if (snapshot.length !== reportedLength) report();
       addUsage(response.usage);
       const parsed = SCHEMAS[opts.kind].safeParse(response.json);
       if (!parsed.success) {
@@ -274,8 +288,8 @@ export async function callModel(opts: {
       const retryable = error instanceof AiProviderError ? error.retryable : false;
       logger.warn("ai.attempt_failed", { ...opts.logFields, attempt, code: errorCodeFor(error), errorName: errorName(error) });
       if (!retryable || attempt === settings.maxRetries) break;
+      opts.onProgress(INITIAL_AI_PROGRESS);
       await new Promise((r) => setTimeout(r, 1000 * 2 ** attempt));
-      opts.onStage("checking");
     }
   }
   throw new ModelCallError(errorCodeFor(lastError), usage);
@@ -292,7 +306,7 @@ export const EPHEMERAL_KINDS: ReadonlySet<ToolKind> = new Set<ToolKind>(["brains
  * Call the provider, validate the structured result, apply guardrails, and persist.
  * On any failure the run is marked failed and NO feedback is fabricated.
  */
-export async function executeAiRun(prepared: Prepared, onStage: (stage: AiStage) => void) {
+export async function executeAiRun(prepared: Prepared, onProgress: (progress: AiProgress) => void) {
   const provider = await getProvider();
   const limitSettings = aiLimitSettings();
   const system = buildSystemPrompt(prepared.kind, prepared.language);
@@ -334,14 +348,14 @@ export async function executeAiRun(prepared: Prepared, onStage: (stage: AiStage)
   const logFields = { userId: prepared.user.id, essayId: prepared.essayId, runId: run.id, kind: prepared.kind, provider: provider.kind };
   track("feedback_requested", { kind: prepared.kind, language: prepared.language, wordCountBucket: wordCountBucket(prepared.wordCount) });
 
-  onStage("checking");
+  onProgress(INITIAL_AI_PROGRESS);
   const started = Date.now();
   try {
     const response = await callModel({
       kind: prepared.kind,
       system,
       userMessage,
-      onStage,
+      onProgress,
       logFields,
       firstStage: prepared.kind === "full_feedback" ? "structure" : "reviewing",
     });

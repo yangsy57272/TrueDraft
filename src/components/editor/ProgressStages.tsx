@@ -1,18 +1,23 @@
 "use client";
 import { useI18n } from "@/i18n/client";
+import type { AiProgress } from "@/lib/ai-progress";
 
 const FULL = ["checking", "structure", "detail", "priorities"] as const;
 const TOOL = ["checking", "reviewing", "preparing"] as const;
 
-/** Honest progress: shows which real processing stage is underway. No fake percentages. */
-export function ProgressStages({ stage, kind }: { stage: string; kind: string }) {
-  const { t } = useI18n();
+export function ProgressStages({ progress, kind }: { progress: AiProgress; kind: string }) {
+  const { t, locale } = useI18n();
   const stages: readonly string[] = kind === "full_feedback" ? FULL : TOOL;
-  const current = Math.max(0, stages.indexOf(stage));
+  const current = Math.max(0, stages.indexOf(progress.stage));
   return (
-    <div className="card p-4" role="status" aria-live="polite">
-      <p className="font-semibold">{t("feedback.stages.title")}</p>
-      <ol className="mt-3 space-y-2">
+    <div className="card p-4">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+        <p className="font-semibold">{t("feedback.stages.title")}</p>
+        <p className="text-sm tabular-nums text-ink-soft">
+          {t("feedback.stages.generated", { count: progress.generatedChars.toLocaleString(locale) })}
+        </p>
+      </div>
+      <ol className="mt-3 space-y-2" aria-live="polite">
         {stages.map((s, i) => {
           const state = i < current ? "done" : i === current ? "active" : "todo";
           return (

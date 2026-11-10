@@ -9,7 +9,8 @@ import { setTimeout as delay } from 'node:timers/promises';
 
 const dataDir = path.resolve(process.env.TRUEDRAFT_DESKTOP_DATA_DIR || (
   process.platform === 'win32' ? path.join(process.env.LOCALAPPDATA, 'TrueDraft')
-    : path.join(os.homedir(), 'Library', 'Application Support', 'TrueDraft')
+    : process.platform === 'darwin' ? path.join(os.homedir(), 'Library', 'Application Support', 'TrueDraft')
+      : path.join(process.env.XDG_DATA_HOME && path.isAbsolute(process.env.XDG_DATA_HOME) ? process.env.XDG_DATA_HOME : path.join(os.homedir(), '.local', 'share'), 'TrueDraft')
 ));
 const settingsFile = path.join(dataDir, 'settings.json');
 const instanceId = createHash('sha256').update(dataDir).digest('hex').slice(0, 24);
@@ -127,7 +128,7 @@ async function signInLink({ origin, mailbox }, email) {
 }
 
 function openBrowser(url) {
-  const command = process.platform === 'win32' ? 'rundll32.exe' : 'open';
+  const command = process.platform === 'win32' ? 'rundll32.exe' : process.platform === 'darwin' ? 'open' : 'xdg-open';
   const args = process.platform === 'win32' ? ['url.dll,FileProtocolHandler', url] : [url];
   const child = spawn(command, args, { detached: true, stdio: 'ignore', windowsHide: true });
   child.on('error', () => console.error('Unable to open the default browser.'));
@@ -148,6 +149,14 @@ async function verifyApp(app, url) {
   assert.equal(journey.status, 200);
   const schools = await fetch(`${origin}/schools?q=Harvard`);
   assert.match(await schools.text(), /Harvard University/);
+  const recommendations = await fetch(`${origin}/schools/recommended?field=11`, { headers: { cookie } });
+  assert.equal(recommendations.status, 200);
+  const guide = await fetch(`${origin}/guides/personal-statement`);
+  assert.equal(guide.status, 200);
+  const stAndrews = await fetch(`${origin}/schools/university-of-st-andrews`);
+  assert.match(await stAndrews.text(), /course|subjects/);
+  const supplements = await fetch(`${origin}/schools/university-of-california-berkeley`);
+  assert.match(await supplements.text(), /350 words/);
   const essays = async () => {
     const response = await fetch(`${origin}/api/essays`, { headers: { cookie } });
     assert.equal(response.status, 200);

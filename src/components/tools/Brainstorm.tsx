@@ -9,12 +9,12 @@ import { BoundaryNote } from "@/components/feedback/bits";
 import { ProgressStages } from "@/components/editor/ProgressStages";
 import { useToast } from "@/components/ui/Toaster";
 import type { RunToolFn } from "@/components/editor/Workspace";
-import type { BrainstormTurn, SavedNote } from "@/components/editor/types";
+import type { ActiveAiRun, BrainstormTurn, SavedNote } from "@/components/editor/types";
 
 type Props = {
   essayId: string;
   runTool: RunToolFn;
-  activeRun: { kind: string; stage: string } | null;
+  activeRun: ActiveAiRun | null;
   aiConfigured: boolean;
   notes: SavedNote[];
 };
@@ -79,7 +79,7 @@ export function Brainstorm({ essayId, runTool, activeRun, aiConfigured, notes }:
 
   return (
     <div>
-      {activeRun?.kind === "brainstorm" ? <div className="mb-3"><ProgressStages stage={activeRun.stage} kind="brainstorm" /></div> : null}
+      {activeRun?.kind === "brainstorm" ? <div className="mb-3"><ProgressStages progress={activeRun} kind="brainstorm" /></div> : null}
       {isMock ? <p className="notice notice-warn mb-3 text-sm">{t("feedback.mockBanner")}</p> : null}
       {turns.length === 0 ? (
         <button type="button" className="btn btn-primary btn-sm" disabled={!aiConfigured || busy} onClick={() => ask([])}>

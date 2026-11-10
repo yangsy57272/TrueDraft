@@ -1,0 +1,1 @@
+ALTER TABLE `school_supplements` ADD `verification` text;

@@ -10,7 +10,7 @@ import { useToast } from "@/components/ui/Toaster";
 import { FeedbackView, type FullFeedbackResult } from "@/components/feedback/FeedbackView";
 import { RevisionOverview } from "@/components/feedback/RevisionOverview";
 import { ProgressStages } from "./ProgressStages";
-import type { WorkspaceRun, WorkspaceVersion } from "./types";
+import type { ActiveAiRun, WorkspaceRun, WorkspaceVersion } from "./types";
 
 export type LatestFeedback = {
   runId: string;
@@ -31,7 +31,7 @@ type Props = {
   feedback: LatestFeedback | null;
   runs: WorkspaceRun[];
   versions: WorkspaceVersion[];
-  activeRun: { kind: string; stage: string } | null;
+  activeRun: ActiveAiRun | null;
   error: string | null;
   onRetry: () => void;
   aiConfigured: boolean;
@@ -71,7 +71,7 @@ export function FeedbackPanel({ essayId, feedback, runs, versions, activeRun, er
 
   return (
     <div className="space-y-4">
-      {activeRun?.kind === "full_feedback" ? <ProgressStages stage={activeRun.stage} kind="full_feedback" /> : null}
+      {activeRun?.kind === "full_feedback" ? <ProgressStages progress={activeRun} kind="full_feedback" /> : null}
       {error ? (
         <div className="notice notice-error" role="alert">
           <p>{error}</p>

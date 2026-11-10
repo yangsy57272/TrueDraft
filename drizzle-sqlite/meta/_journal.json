@@ -15,6 +15,13 @@
       "when": 1794320418600,
       "tag": "0001_school_supplements",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1794353363460,
+      "tag": "0002_supplement_verification",
+      "breakpoints": true
     }
   ]
 }

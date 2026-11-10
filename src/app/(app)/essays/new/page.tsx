@@ -33,6 +33,7 @@ export default async function NewEssayPage({ searchParams }: { searchParams: Pro
       title: `${supp.schoolName} supplement #${supp.prompt.order}`.slice(0, 160),
       promptText: promptText.slice(0, 4000),
       wordLimit: limit ? String(limit) : "",
+      context: [supp.prompt.requirement, supp.prompt.limitText, supp.prompt.notes].filter(Boolean).join(" · "),
     };
   } else if (sp.type === "personal_statement") {
     initial = { ...initial, applicationType: "personal_statement", title: t("guide.essayTitle"), wordLimit: "650" };
@@ -41,6 +42,12 @@ export default async function NewEssayPage({ searchParams }: { searchParams: Pro
     <div className="container-prose py-10">
       <h1 className="text-3xl font-semibold">{t("essayForm.newTitle")}</h1>
       <p className="mt-2 text-ink-soft">{t("essayForm.newIntro")}</p>
+      {supp?.prompt.wording === "summary" ? (
+        <div className="notice mt-4 text-sm">
+          <p>{t("supplements.summary")}</p>
+          {supp.sourceUrl ? <a href={supp.sourceUrl} target="_blank" rel="noopener noreferrer">{t("supplements.officialPage")} ↗</a> : null}
+        </div>
+      ) : null}
       <div className="card mt-8 p-5 sm:p-8">
         <EssayForm mode={{ kind: "create" }} defaultLanguage={user.feedbackLanguage} listOptions={listOptions} initial={initial} />
       </div>

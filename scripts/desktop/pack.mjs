@@ -39,6 +39,7 @@ function buildPayload() {
     }
   }
   fs.copyFileSync(path.join(import.meta.dirname, 'launch.mjs'), path.join(payload, 'launch.mjs'));
+  fs.cpSync(path.join(root, 'data', 'supplements'), path.join(payload, 'data', 'supplements'), { recursive: true });
   fs.cpSync(path.join(root, 'drizzle-sqlite'), path.join(payload, 'drizzle-sqlite'), { recursive: true });
   const nativeFile = `${process.platform}-${process.arch}.node`;
   const sqliteDirectory = path.join(payload, 'node_modules', 'better-sqlite3');
@@ -84,6 +85,21 @@ function packMac() {
   run('ditto', ['-c', '-k', '--keepParent', bundle, zip]);
 }
 
+function packLinux() {
+  const directory = path.join(dist, 'TrueDraft');
+  fs.rmSync(directory, { recursive: true, force: true });
+  fs.mkdirSync(directory, { recursive: true });
+  fs.cpSync(payload, path.join(directory, 'payload'), { recursive: true });
+  for (const [source, target] of [['linux-launch.sh', 'TrueDraft'], ['linux-install.sh', 'install.sh'], ['linux-install.mjs', 'install.mjs']]) {
+    fs.copyFileSync(path.join(import.meta.dirname, source), path.join(directory, target));
+    fs.chmodSync(path.join(directory, target), 0o755);
+  }
+  fs.copyFileSync(path.join(root, 'docs', 'DESKTOP.md'), path.join(directory, 'README.md'));
+  run('tar', ['-czf', path.join(dist, `TrueDraft-Linux-${process.arch}.tar.gz`), '-C', dist, 'TrueDraft']);
+}
+
 buildPayload();
 if (windows) run('pwsh', ['-NoProfile', '-File', path.join(import.meta.dirname, 'pack-windows.ps1')]);
 else if (process.platform === 'darwin') packMac();
+
+else if (process.platform === 'linux') packLinux();

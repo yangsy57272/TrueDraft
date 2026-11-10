@@ -360,6 +360,7 @@ export const federalProfile = sqliteTable("federal_profile", {
 });
 
 export type SupplementPrompt = {
+  wording?: "official" | "summary";
   order: number;
   prompt: string;
   /** The limit as the college states it, e.g. "100-250 words" or "350 characters". */
@@ -387,6 +388,7 @@ export const schoolSupplements = sqliteTable(
     sourceUrl: text("source_url"),
     /** Optional external guide to these prompts, linked with attribution (never copied). */
     guideUrl: text("guide_url"),
+    verification: json("verification").$type<{ checkedAt: string; note: string; result?: string; httpStatus?: number }>(),
     prompts: json("prompts").$type<SupplementPrompt[]>().notNull().default([]),
     /** When the compiled list this came from was last updated (YYYY-MM-DD). */
     listUpdated: text("list_updated"),

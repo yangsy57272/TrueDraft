@@ -2,6 +2,7 @@ import "server-only";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getAppUrl } from "@/config/deployment";
+import type { AiProgress } from "@/lib/ai-progress";
 import { ApiError } from "./errors";
 import { errorName, logger } from "./logger";
 import { getUserFromHeaders, type AppUser } from "./session";
@@ -103,7 +104,7 @@ export function assertUuid(value: string) {
  * {"type":"stage",...} … then {"type":"done",...} or {"type":"error","code":...}.
  * The task keeps running (and its result is saved) even if the client disconnects.
  */
-export function ndjsonStream(task: (stage: (stage: string) => void) => Promise<Record<string, unknown>>) {
+export function ndjsonStream(task: (onProgress: (progress: AiProgress) => void) => Promise<Record<string, unknown>>) {
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
@@ -115,7 +116,7 @@ export function ndjsonStream(task: (stage: (stage: string) => void) => Promise<R
         }
       };
       try {
-        const outcome = await task((stage) => send({ type: "stage", stage }));
+        const outcome = await task((progress) => send({ type: "stage", ...progress }));
         send({ type: "done", ...outcome });
       } catch (error) {
         send({ type: "error", code: error instanceof ApiError ? error.code : "ai_unavailable" });

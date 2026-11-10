@@ -1,5 +1,7 @@
 "use client";
 
+import type { AiProgress } from "./ai-progress";
+
 export type ApiResult<T> = { ok: true; data: T } | { ok: false; status: number; code: string; details?: Record<string, string | number> };
 
 /** JSON fetch helper for same-origin API calls. Never logs request or response bodies. */
@@ -24,7 +26,7 @@ export async function apiFetch<T = unknown>(url: string, init: { method?: string
 }
 
 export type AiStreamEvent =
-  | { type: "stage"; stage: string }
+  | { type: "stage"; stage: string; generatedChars?: number }
   | { type: "done"; runId?: string; result?: unknown; isMock?: boolean; redactionCount?: number; [key: string]: unknown }
   | { type: "error"; code: string };
 
@@ -33,12 +35,12 @@ export type StreamOutcome<T = unknown> =
   | { ok: false; code: string; status: number; details?: Record<string, string | number> };
 
 /** Call an essay AI tool endpoint and surface its NDJSON progress events. */
-export function runAiTool(essayId: string, kind: string, body: Record<string, unknown>, onStage: (stage: string) => void) {
-  return runStreamingTool(`/api/essays/${essayId}/ai/${kind}`, body, onStage);
+export function runAiTool(essayId: string, kind: string, body: Record<string, unknown>, onProgress: (progress: AiProgress) => void) {
+  return runStreamingTool(`/api/essays/${essayId}/ai/${kind}`, body, onProgress);
 }
 
 /** POST to any NDJSON-streaming AI endpoint and resolve with the final event. */
-export async function runStreamingTool<T = unknown>(url: string, body: Record<string, unknown>, onStage: (stage: string) => void): Promise<StreamOutcome<T>> {
+export async function runStreamingTool<T = unknown>(url: string, body: Record<string, unknown>, onProgress: (progress: AiProgress) => void): Promise<StreamOutcome<T>> {
   let response: Response;
   try {
     response = await fetch(url, {
@@ -66,7 +68,7 @@ export async function runStreamingTool<T = unknown>(url: string, body: Record<st
       for (const line of lines) {
         if (!line.trim()) continue;
         const event = JSON.parse(line) as AiStreamEvent;
-        if (event.type === "stage") onStage(event.stage);
+        if (event.type === "stage") onProgress({ stage: event.stage, generatedChars: event.generatedChars ?? 0 });
         if (event.type === "done") {
           const { type: _type, ...rest } = event as Record<string, unknown>;
           return { ok: true, runId: "", result: undefined as T, isMock: false, redactionCount: 0, ...rest } as StreamOutcome<T>;

@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useI18n } from "@/i18n/client";
 import { apiFetch, runStreamingTool } from "@/lib/api-client";
+import { INITIAL_AI_PROGRESS, type AiProgress } from "@/lib/ai-progress";
 import { C7_FACTORS, C7_LEVELS, CDS_FIELDS, CIP_CODES, CIP_FAMILIES, type CdsFieldDef } from "@/lib/planning";
 import { ProgressStages } from "@/components/editor/ProgressStages";
 import { useToast } from "@/components/ui/Toaster";
@@ -73,7 +74,7 @@ export function DatasetEditor({ schoolId, datasetId, initial }: { schoolId: stri
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [text, setText] = useState("");
-  const [stage, setStage] = useState<string | null>(null);
+  const [progress, setProgress] = useState<AiProgress | null>(null);
   const [uncertain, setUncertain] = useState<string[]>([]);
   const [prefilled, setPrefilled] = useState<Set<string>>(new Set());
   const set = (key: string, value: string) => setValues((v) => ({ ...v, [key]: value }));
@@ -97,9 +98,9 @@ export function DatasetEditor({ schoolId, datasetId, initial }: { schoolId: stri
 
   async function prefill() {
     setError(null);
-    setStage("checking");
-    const res = await runStreamingTool<undefined>("/api/admin/cds/extract", { text }, setStage);
-    setStage(null);
+    setProgress(INITIAL_AI_PROGRESS);
+    const res = await runStreamingTool<undefined>("/api/admin/cds/extract", { text }, setProgress);
+    setProgress(null);
     if (!res.ok) {
       setError(t(`errors.${res.code}` as never));
       return;
@@ -196,10 +197,10 @@ export function DatasetEditor({ schoolId, datasetId, initial }: { schoolId: stri
         <p className="mt-1 text-sm text-ink-soft">{t("adminSchools.extractIntro")}</p>
         <label htmlFor="ds-text" className="sr-only">{t("adminSchools.extractTitle")}</label>
         <textarea id="ds-text" className="input mt-3 font-mono text-xs" rows={5} value={text} onChange={(e) => setText(e.target.value)} />
-        <button type="button" className="btn btn-secondary btn-sm mt-2" disabled={text.trim().length < 20 || stage !== null} onClick={prefill}>
+        <button type="button" className="btn btn-secondary btn-sm mt-2" disabled={text.trim().length < 20 || progress !== null} onClick={prefill}>
           {t("adminSchools.extractButton")}
         </button>
-        {stage ? <div className="mt-3"><ProgressStages stage={stage} kind="cds_extract" /></div> : null}
+        {progress ? <div className="mt-3"><ProgressStages progress={progress} kind="cds_extract" /></div> : null}
         {uncertain.length ? <p className="notice notice-warn mt-3 text-sm">{t("adminSchools.extractUncertain", { fields: uncertain.join(", ") })}</p> : null}
       </section>
 

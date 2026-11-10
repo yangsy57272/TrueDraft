@@ -7,13 +7,13 @@ import { SENTENCE_MODES, type SentenceMode } from "@/lib/constants";
 import { PromptDecoderView, SentenceView, WordCountView, FinalReadView, type SentenceResult, type WordCountResult, type FinalReadResult } from "@/components/feedback/ToolResults";
 import { ProgressStages } from "@/components/editor/ProgressStages";
 import type { RunToolFn } from "@/components/editor/Workspace";
-import type { SavedNote } from "@/components/editor/types";
+import type { ActiveAiRun, SavedNote } from "@/components/editor/types";
 import { Brainstorm } from "./Brainstorm";
 
 type Props = {
   essayId: string;
   runTool: RunToolFn;
-  activeRun: { kind: string; stage: string } | null;
+  activeRun: ActiveAiRun | null;
   selection: string;
   onUseSelection: () => void;
   words: number;
@@ -69,7 +69,7 @@ export function ToolsPanel({ essayId, runTool, activeRun, selection, onUseSelect
   const busy = activeRun !== null;
   const tooLong = selection.length > MAX_SELECTION;
 
-  const progress = (kind: string) => (activeRun?.kind === kind ? <div className="mb-3"><ProgressStages stage={activeRun.stage} kind={kind} /></div> : null);
+  const progress = (kind: string) => (activeRun?.kind === kind ? <div className="mb-3"><ProgressStages progress={activeRun} kind={kind} /></div> : null);
   const err = (msg: string | null) => (msg ? <p className="notice notice-error mt-3 text-sm" role="alert">{msg}</p> : null);
   const mock = (on: boolean) => (on ? <p className="notice notice-warn mb-3 text-sm">{t("feedback.mockBanner")}</p> : null);
 

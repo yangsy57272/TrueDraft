@@ -16,4 +16,4 @@ To enable AI feedback, stop the app and create `.env` in its data directory. Set
 
 ## Build a package
 
-Install the Node version in `.nvmrc` and run `npm ci`, then `npm run desktop:build` on the target operating system. Windows builds also require PowerShell 7 and NSIS. macOS builds use the bundled `codesign` and `ditto` tools. Outputs are under `dist/`. The Desktop packages GitHub workflow tests a clean install and verifies that a draft survives a restart before uploading the artifact.
+Install the Node version in `.nvmrc` and run `npm ci --ignore-scripts`, then `npm run desktop:build` on the target operating system. The SQLite package supplies a native binary for each supported platform. Windows builds also require PowerShell 7 and NSIS. macOS builds use the bundled `codesign` and `ditto` tools. Outputs are under `dist/`. The Desktop packages GitHub workflow tests a clean install and verifies that a draft survives a restart before uploading the artifact.

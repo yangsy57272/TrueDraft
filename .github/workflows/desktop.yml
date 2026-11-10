@@ -30,7 +30,8 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-      - run: npm ci
+      - name: Install dependencies with bundled native binaries
+        run: npm ci --ignore-scripts
       - name: Install NSIS
         if: runner.os == 'Windows'
         run: choco install nsis -y --no-progress

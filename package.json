@@ -20,6 +20,7 @@
     "cds:import": "tsx --conditions=react-server scripts/import-cds.ts",
     "scorecard:build": "tsx scripts/build-scorecard-extract.ts",
     "scorecard:import": "tsx --conditions=react-server scripts/import-scorecard.ts",
+    "supplements:import": "tsx --conditions=react-server scripts/import-supplements.ts",
     "eval:ai": "tsx --conditions=react-server scripts/ai-eval.ts",
     "desktop:build": "node scripts/desktop/pack.mjs",
     "db:import-postgres": "tsx --conditions=react-server scripts/import-postgres.ts"

@@ -359,6 +359,42 @@ export const federalProfile = sqliteTable("federal_profile", {
   updatedAt: updatedAt(),
 });
 
+export type SupplementPrompt = {
+  order: number;
+  prompt: string;
+  /** The limit as the college states it, e.g. "100-250 words" or "350 characters". */
+  limitText: string | null;
+  limit: number | null;
+  unit: "words" | "characters" | null;
+  /** e.g. "Required", "Choose one of 3", "Required for Engineering applicants". */
+  requirement: string | null;
+  notes: string | null;
+};
+
+/**
+ * One application cycle's supplemental essay prompts for one school, imported from
+ * data/supplements/<cycle>.json. status: confirmed (prompts listed), coming_soon, or none
+ * (the school lists no supplemental essays). Prompts are the colleges' own words.
+ */
+export const schoolSupplements = sqliteTable(
+  "school_supplements",
+  {
+    schoolId: text("school_id")
+      .notNull()
+      .references(() => school.id, { onDelete: "cascade" }),
+    cycle: text("cycle").notNull(),
+    status: text("status").notNull(),
+    sourceUrl: text("source_url"),
+    /** Optional external guide to these prompts, linked with attribution (never copied). */
+    guideUrl: text("guide_url"),
+    prompts: json("prompts").$type<SupplementPrompt[]>().notNull().default([]),
+    /** When the compiled list this came from was last updated (YYYY-MM-DD). */
+    listUpdated: text("list_updated"),
+    importedAt: timestamp("imported_at").notNull().default(now),
+  },
+  (t) => [primaryKey({ columns: [t.schoolId, t.cycle] })],
+);
+
 /** One CDS edition for one school. Values come only from the official document and are verified by an admin. */
 export const cdsDataset = sqliteTable(
   "cds_dataset",
@@ -425,3 +461,4 @@ export type School = typeof school.$inferSelect;
 export type CdsDataset = typeof cdsDataset.$inferSelect;
 export type FederalProfile = typeof federalProfile.$inferSelect;
 export type CollegeListEntry = typeof collegeListEntry.$inferSelect;
+export type SchoolSupplements = typeof schoolSupplements.$inferSelect;

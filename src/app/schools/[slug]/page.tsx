@@ -10,6 +10,11 @@ import { getProfile } from "@/server/services/profile";
 import { CdsView } from "@/components/cds/CdsView";
 import { FederalView } from "@/components/cds/FederalView";
 import { AddToListButton } from "@/components/cds/SchoolClientBits";
+import { FitPanel } from "@/components/schools/FitBadge";
+import { SupplementsSection } from "@/components/schools/SupplementsSection";
+import { getSupplements } from "@/server/services/supplements";
+import { schoolFacts } from "@/lib/federal";
+import { scoreRanges, studentScores, suggestFit } from "@/lib/fit";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const found = await getSchoolBySlug((await params).slug);
@@ -25,8 +30,16 @@ export default async function SchoolPage({ params, searchParams }: { params: Pro
   const user = await getCurrentUser();
   const { school: s, datasets, federal } = found;
   const dataset = datasets.find((d) => d.academicYear === year) ?? datasets[0] ?? null;
+  const supplements = await getSupplements(s.id);
   const onList = user ? (await listedSchoolIds(user.id)).has(s.id) : false;
-  const tests = user ? (await getProfile(user.id)).tests : null;
+  const profile = user ? await getProfile(user.id) : null;
+  const tests = profile?.tests ?? null;
+  const fit = profile
+    ? suggestFit(schoolFacts(dataset, federal?.data ?? null).admitRate?.value ?? null, scoreRanges(dataset?.data ?? null, federal?.data ?? null), {
+        ...studentScores(profile.tests),
+        testPlan: profile.preferences.testPlan,
+      })
+    : null;
   const zh = locale === "zh-CN";
 
   return (
@@ -41,8 +54,16 @@ export default async function SchoolPage({ params, searchParams }: { params: Pro
             {s.control ? ` · ${t(`schools.controls.${s.control}` as never)}` : ""}
           </p>
         </div>
-        <AddToListButton schoolId={s.id} onList={onList} signedIn={Boolean(user)} />
+        <AddToListButton
+          schoolId={s.id}
+          onList={onList}
+          signedIn={Boolean(user)}
+          category={fit?.category}
+          label={fit ? t("recommend.addAs", { category: t(`recommend.buckets.${fit.category}.title`) }) : undefined}
+        />
       </div>
+      {fit ? <FitPanel fit={fit} t={t} /> : null}
+      <SupplementsSection supplements={supplements} slug={s.slug} signedIn={Boolean(user)} t={t} locale={locale} />
 
       <div className="mt-4 flex flex-wrap gap-3 text-sm">
         {s.cdsPageUrl ? (

@@ -5,7 +5,7 @@ import { useId, useState } from "react";
 import { useI18n } from "@/i18n/client";
 import { formatDate } from "@/i18n/translate";
 import { apiFetch, runStreamingTool } from "@/lib/api-client";
-import { CIP_FAMILIES } from "@/lib/planning";
+import { CIP_CODES, CIP_FAMILIES } from "@/lib/planning";
 import { useConsentGate } from "@/components/ai/useConsentGate";
 import { ProgressStages } from "@/components/editor/ProgressStages";
 import { useToast } from "@/components/ui/Toaster";
@@ -78,6 +78,7 @@ export function MajorExplorer({
   );
   const [majors, setMajors] = useState<Major[]>(initialMajors);
   const [own, setOwn] = useState("");
+  const [ownField, setOwnField] = useState("");
   const cipName = (code: string | null) => (code && CIP_FAMILIES[code] ? CIP_FAMILIES[code][locale === "zh-CN" ? "zh" : "en"] : null);
 
   async function run() {
@@ -249,18 +250,30 @@ export function MajorExplorer({
               </li>
             ))}
           </ul>
+          {majors.some((m) => m.cipFamily) ? (
+            <div className="mt-4 rounded-xl p-3" style={{ background: "#ede9fe" }}>
+              <p className="text-sm text-ink-soft">{t("recommend.ctaBody")}</p>
+              <Link href="/schools/recommended" className="btn btn-primary btn-sm mt-2">{t("recommend.cta")} →</Link>
+            </div>
+          ) : null}
           <form
-            className="mt-3 flex gap-2"
+            className="mt-3 flex flex-wrap gap-2"
             onSubmit={(e) => {
               e.preventDefault();
               if (own.trim()) {
-                void addMajor(own.trim(), null);
+                void addMajor(own.trim(), ownField || null);
                 setOwn("");
+                setOwnField("");
               }
             }}
           >
             <label htmlFor={`${uid}-own`} className="sr-only">{t("majors.addOwnLabel")}</label>
-            <input id={`${uid}-own`} className="input" maxLength={80} placeholder={t("majors.addOwnLabel")} value={own} onChange={(e) => setOwn(e.target.value)} />
+            <input id={`${uid}-own`} className="input min-w-0 flex-1" maxLength={80} placeholder={t("majors.addOwnLabel")} value={own} onChange={(e) => setOwn(e.target.value)} />
+            <label htmlFor={`${uid}-ownField`} className="sr-only">{t("majors.ownFieldLabel")}</label>
+            <select id={`${uid}-ownField`} className="input w-full" value={ownField} onChange={(e) => setOwnField(e.target.value)}>
+              <option value="">{t("majors.ownFieldLabel")}</option>
+              {CIP_CODES.map((c) => <option key={c} value={c}>{cipName(c)}</option>)}
+            </select>
             <button type="submit" className="btn btn-secondary btn-sm">{t("majors.addOwn")}</button>
           </form>
         </section>

@@ -24,6 +24,7 @@ export type ListEntry = {
   notes: string;
   checklist: { id: string; key?: string | null; label?: string; done: boolean }[];
   essays: { id: string; title: string; status: string; draftWordCount: number; wordLimit: number | null }[];
+  supplements?: { status: string; count: number } | null;
 };
 
 const CATEGORY_ICON: Record<string, string> = { reach: "▲", target: "●", likely: "▼", unsure: "?" };
@@ -197,6 +198,15 @@ function EntryCard({ entry, ops }: { entry: ListEntry; ops: ListOps }) {
               </li>
             ))}
           </ul>
+          {v.schoolSlug && v.supplements ? (
+            <p className="mt-2 text-sm">
+              {v.supplements.status === "confirmed" ? (
+                <Link href={`/schools/${v.schoolSlug}#supplements`}>{t("supplements.listCount", { count: v.supplements.count })} →</Link>
+              ) : (
+                <span className="text-ink-soft">{t(`supplements.status.${v.supplements.status}` as never)}</span>
+              )}
+            </p>
+          ) : null}
           <Link href={essayHref} className="btn btn-secondary btn-sm mt-3">+ {t("list.startEssay")}</Link>
         </div>
       </div>

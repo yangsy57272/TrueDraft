@@ -59,7 +59,7 @@ function buildPayload() {
 
   const starter = path.join(payload, 'starter.sqlite');
   const env = { ...process.env, DATABASE_PATH: starter };
-  for (const script of ['migrate', 'seed', 'import-scorecard', 'import-cds']) {
+  for (const script of ['migrate', 'seed', 'import-scorecard', 'import-cds', 'import-supplements']) {
     run(process.execPath, [fileURLToPath(import.meta.resolve('tsx/cli')), '--conditions=react-server', `scripts/${script}.ts`], env);
   }
   buildSync({

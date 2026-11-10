@@ -7,7 +7,20 @@ import { apiFetch } from "@/lib/api-client";
 import { useToast } from "@/components/ui/Toaster";
 
 /** "Add to my list" button; shows the saved state and a sign-in prompt when signed out. */
-export function AddToListButton({ schoolId, onList, signedIn }: { schoolId: string; onList: boolean; signedIn: boolean }) {
+export function AddToListButton({
+  schoolId,
+  onList,
+  signedIn,
+  category,
+  label,
+}: {
+  schoolId: string;
+  onList: boolean;
+  signedIn: boolean;
+  /** Pre-filled list category (e.g. a suggested Reach / Target / Safety); the student can change it later. */
+  category?: "reach" | "target" | "likely";
+  label?: string;
+}) {
   const { t } = useI18n();
   const notify = useToast();
   const router = useRouter();
@@ -28,7 +41,7 @@ export function AddToListButton({ schoolId, onList, signedIn }: { schoolId: stri
       disabled={busy}
       onClick={async () => {
         setBusy(true);
-        const res = await apiFetch("/api/list", { method: "POST", body: { schoolId } });
+        const res = await apiFetch("/api/list", { method: "POST", body: category ? { schoolId, category } : { schoolId } });
         setBusy(false);
         if (res.ok || res.code === "already_on_list") {
           setAdded(true);
@@ -37,7 +50,7 @@ export function AddToListButton({ schoolId, onList, signedIn }: { schoolId: stri
         } else notify(t(`errors.${res.code}` as never), "error");
       }}
     >
-      + {t("schools.addToList")}
+      + {label ?? t("schools.addToList")}
     </button>
   );
 }

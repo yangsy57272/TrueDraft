@@ -1,0 +1,4221 @@
+{
+ "cycle": "2026-2027",
+ "description": "Supplemental essay prompts for the 2026–27 application cycle. Prompts are the colleges' own words. Always confirm in the Common App or on the college's website before writing.",
+ "provenance": "Imported from a spreadsheet the TrueDraft operator provided: a public quick-reference list compiled by College Essay Guy (last updated 2026-08-21). Only rows marked 'Confirmed for 2026–27' are imported as prompts; the compiler's own guides and commentary are not imported.",
+ "compiledListUpdated": "2026-08-21",
+ "schools": [
+  {
+   "unitid": "131159",
+   "directoryName": "American University",
+   "sheetName": "American University",
+   "status": "confirmed",
+   "sourceUrl": "https://www.american.edu/admissions/first-year/",
+   "guideUrl": "https://www.collegeessayguy.com/blog/american-university-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "American University students identify as changemakers and describe themselves as passionate. Describe a belief, hobby, idea, issue, or topic about which you’re excited.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "164465",
+   "directoryName": "Amherst College",
+   "sheetName": "Amherst",
+   "status": "confirmed",
+   "sourceUrl": "https://www.amherst.edu/admission/apply/firstyear/writingsupplement",
+   "guideUrl": "https://www.collegeessayguy.com/blog/amherst-college-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "“Hope and curiosity — these are qualities that are the foundation of what Amherst College means, of everything that we do here. Curiosity is at the core of a liberal arts education — a spirit of inquiry that shapes not only what our students do in the classroom, but also how they learn from and about each other.” — Michael A. Elliott, 20th President of Amherst College, address at Amherst College’s 203rd Commencement\n\nPrompt 1 Question: What does curiosity mean to you? How do you experience curiosity in your own life?",
+     "limitText": "350 words",
+     "limit": 350,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": "Option A · Writing supplement: complete Option A, B, or C. Option A: choose one of the three quotations and respond to its question; personal essay, not argumentative; no research needed."
+    },
+    {
+     "order": 2,
+     "prompt": "“We seek an Amherst made stronger because it includes those whose experiences can enhance our understanding of our nation and our world. We do so in the faith that our humanity is an identity forged from diversity, and that our different perspectives enrich our inquiry, deepen our knowledge, strengthen our community, and prepare students to engage with an ever-changing world.” \n– from the Trustee Statement on Diversity and Community\n\nPrompt  2 Question: In what ways could your unique experiences enhance our understanding of our nation and our world?",
+     "limitText": "350 words",
+     "limit": 350,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": "Option A · Writing supplement: complete Option A, B, or C. Option A: choose one of the three quotations and respond to its question; personal essay, not argumentative; no research needed."
+    },
+    {
+     "order": 3,
+     "prompt": "“We are working together to build a community that makes room for both true disagreement and true connection, one that practices the kind of recognition and robust negotiation that the everyday life of democracy requires, and one that explicitly prepares our students to work for the greater good in their professional and personal endeavors.” — Presidential Priorities: Serving the Greater Good\n\nPrompt 3 Question: Tell us about a time that you engaged with a viewpoint different from your own. How did you enter that engagement, and what did you learn about yourself from it?",
+     "limitText": "350 words",
+     "limit": 350,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": "Option A · Writing supplement: complete Option A, B, or C. Option A: choose one of the three quotations and respond to its question; personal essay, not argumentative; no research needed."
+    },
+    {
+     "order": 4,
+     "prompt": "Submit a graded paper from your junior or senior year that best represents your writing skills and analytical abilities. We are particularly interested in your ability to construct a tightly reasoned, persuasive argument that calls upon literary, sociological or historical evidence. You should NOT  submit a laboratory report, journal entry, creative writing sample or in-class essay. Also, if you have submitted an analytical essay in response to the \"essay topic of your choice\" prompt in the Common Application writing section, you should not select Option B. Instead, you should respond to one of the four quotation prompts in Option A.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Choose one of 3",
+     "notes": "Option B · Alternative to Options A and C (graded paper). FAQ: https://www.amherst.edu/admission/apply/firstyear/writingsupplement/optionb-faq"
+    },
+    {
+     "order": 5,
+     "prompt": "If you are/were an applicant to Amherst's Access to Amherst (A2A) program, you may use your A2A application essay in satisfaction of our Writing Supplement requirement. If you would like to do so, please select Option C. However, if you would prefer not to use your A2A essay for this purpose and you want to submit a different writing supplement, select either Option A or Option B. Option A, Prompt 2 is the same prompt as the A2A application essay; if you would like to submit an updated version of your A2A application essay, please choose Option A.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Choose one of 3",
+     "notes": "Option C · Only for Access to Amherst (A2A) program applicants; uses your A2A application essay."
+    },
+    {
+     "order": 6,
+     "prompt": "If you would like to share more about yourself that is not captured elsewhere in your application, please tell us more here.",
+     "limitText": "175 words",
+     "limit": 175,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": null
+    },
+    {
+     "order": 7,
+     "prompt": "Please briefly elaborate on an extracurricular activity or work experience of particular significance to you.",
+     "limitText": "175 words",
+     "limit": 175,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 8,
+     "prompt": "If you have engaged in significant research in the natural sciences, mathematics, computer science, social sciences or humanities that was undertaken independently of your high school curriculum, please provide a brief description of the research project.",
+     "limitText": "75 words",
+     "limit": 75,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": "Only complete if you have done significant independent research outside your high school curriculum."
+    }
+   ]
+  },
+  {
+   "unitid": "104151",
+   "directoryName": "Arizona State University Campus Immersion",
+   "sheetName": "Arizona State",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "164580",
+   "directoryName": "Babson College",
+   "sheetName": "Babson College",
+   "status": "confirmed",
+   "sourceUrl": "https://www.babson.edu/undergraduate/admission/advice-for-high-school-students/how-to-write-a-college-essay/",
+   "guideUrl": "https://www.collegeessayguy.com/blog/babson-college-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "If you have indicated interest in the January Enrollment option, please address why you would like to be a candidate for this option and what you might choose to do in the fall. Please note if you would prefer to enroll at Babson through January Enrollment over Fall Enrollment.",
+     "limitText": "25-200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required if applying for January Enrollment",
+     "notes": "Only complete if you indicated interest in the January Enrollment option."
+    },
+    {
+     "order": 2,
+     "prompt": "The Babson education prepares students for all types of careers across business, entrepreneurship, social innovation, and more. Tell us about your interest in this area of study and in Babson specifically. (500 words maximum) We invite you to submit your answer in either essay OR video format. If you choose to submit a video, please limit your response to a 1-minute video, which can be submitted via a shared link to YouTube or another video hosting website. Please ensure your video is set to public and is accessible to the Admission Committee.",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "May be submitted as an essay OR a 1-minute public video link."
+    },
+    {
+     "order": 3,
+     "prompt": "A defining element of the Babson experience is learning and thriving in an equitable and inclusive community with a wide range of perspectives and interests. Please share something about your background, lived experiences, or viewpoint(s) that speaks to how you will contribute to and learn from Babson's collaborative community.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "189097",
+   "directoryName": "Barnard College",
+   "sheetName": "Barnard",
+   "status": "confirmed",
+   "sourceUrl": "https://barnard.edu/barnard-writing-supplement-questions",
+   "guideUrl": "https://www.collegeessayguy.com/blog/barnard-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "At Barnard, inquiry starts with asking bold questions about the world. What is one bold question on your mind and what about it piques your curiosity?",
+     "limitText": "50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Barnard College is shaped by trailblazing women with a multitude of perspectives. Think of a woman - historical, fictional, contemporary, or personally significant - whose views or approach to problem-solving differ from your own, but who excels at bringing people together. What lesson from her approach would shape how you show up at Barnard both inside and outside of the classroom?",
+     "limitText": "200-250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "160977",
+   "directoryName": "Bates College",
+   "sheetName": "Bates College",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "156295",
+   "directoryName": "Berea College",
+   "sheetName": "Berea College",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "164924",
+   "directoryName": "Boston College",
+   "sheetName": "Boston College",
+   "status": "confirmed",
+   "sourceUrl": "https://www.bc.edu/content/bc-web/admission/apply.html",
+   "guideUrl": "https://www.collegeessayguy.com/blog/boston-college-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Strong communities are sustained by traditions. Boston College's annual calendar is marked with both long-standing and newer traditions that help shape our community. Tell us about a meaningful tradition in your family or community. Why is it important to you, and how does it bring people together or strengthen the bonds of those who participate?",
+     "limitText": "400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Choose one of 4",
+     "notes": "Respond to one of the first four prompts; Human-Centered Engineering applicants respond to Prompt 5 instead."
+    },
+    {
+     "order": 2,
+     "prompt": "The late BC theology professor, Father Michael Himes, argued that a university is not a place to which you go, but instead, a \"rigorous and sustained conversation about the great questions of human existence, among the widest possible circle of the best possible conversation partners.” Who has been your most meaningful conversation partner, and what profound questions have you considered together?",
+     "limitText": "400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Choose one of 4",
+     "notes": "Respond to one of the first four prompts; Human-Centered Engineering applicants respond to Prompt 5 instead."
+    },
+    {
+     "order": 3,
+     "prompt": "In her July 2009 Ted Talk, “The Danger of a Single Story,” Chimamanda Ngozi Adichie warned viewers against assigning people a “single story” through assumptions about their nationality, appearance, or background.  Discuss a time when someone defined you by a single story. What challenges did this present and how did you overcome them?",
+     "limitText": "400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Choose one of 4",
+     "notes": "Respond to one of the first four prompts; Human-Centered Engineering applicants respond to Prompt 5 instead."
+    },
+    {
+     "order": 4,
+     "prompt": "Boston College’s Jesuit mission highlights “the three Be’s”: be attentive, be reflective, be loving – core to Jesuit education (see A Pocket Guide to Jesuit Education). If you could add a fourth “Be,” what would it be and why? How would this new value support your personal development and enrich the BC community?",
+     "limitText": "400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Choose one of 4",
+     "notes": "Respond to one of the first four prompts; Human-Centered Engineering applicants respond to Prompt 5 instead."
+    },
+    {
+     "order": 5,
+     "prompt": "Human-Centered Engineering (HCE) Applicants only: One goal of a Jesuit education is to prepare students to serve the Common Good. Human-Centered Engineering at Boston College integrates technical knowledge, creativity, and a humanistic perspective to address societal challenges and opportunities. What societal problems are important to you and how will you use your HCE education to solve them?",
+     "limitText": "400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Required for Human-Centered Engineering applicants",
+     "notes": "Only complete if applying to the Human-Centered Engineering major; replaces Prompts 1-4."
+    }
+   ]
+  },
+  {
+   "unitid": "164988",
+   "directoryName": "Boston University",
+   "sheetName": "Boston University",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/boston-university-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Boston University is dedicated to our founding principles: “that higher education should be accessible to all and that research, scholarship, artistic creation, and professional practice should be conducted in the service of the wider community—local and international. These principles endure in the University’s insistence on the value of diversity in its tradition and standards of excellence and its dynamic engagement with the City of Boston and the world.” With this mission in mind, please respond to the following question in 300 words or less: \nWhat about being a student at BU most excites you? How do you hope to contribute to our campus community?",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "What about the Kilachand Honors College resonates with you, and how would Kilachand's curriculum fulfill your academic, creative, intellectual, and/or professional goals?",
+     "limitText": "600 words",
+     "limit": 600,
+     "unit": "words",
+     "requirement": "Choose one of 2",
+     "notes": "Kilachand Honors College · Only complete if applying to Kilachand Honors College; respond to one of the two questions. See https://www.bu.edu/khc/about/"
+    },
+    {
+     "order": 3,
+     "prompt": "If you could create a new Kilachand course, what would it be? How would your imagined course align with the core values of Kilachand?",
+     "limitText": "600 words",
+     "limit": 600,
+     "unit": "words",
+     "requirement": "Choose one of 2",
+     "notes": "Kilachand Honors College · Only complete if applying to Kilachand Honors College; respond to one of the two questions. See https://www.bu.edu/khc/about/"
+    }
+   ]
+  },
+  {
+   "unitid": "161004",
+   "directoryName": "Bowdoin College",
+   "sheetName": "Bowdoin",
+   "status": "confirmed",
+   "sourceUrl": "https://www.bowdoin.edu/admissions/apply/deadlines-requirements/index.html",
+   "guideUrl": "https://www.collegeessayguy.com/blog/bowdoin-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "How did you first learn about Bowdoin?",
+     "limitText": "140 characters",
+     "limit": 140,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Generations of students have found connection and meaning in Bowdoin's “The Offer of the College,” written in 1906 by Bowdoin President William DeWitt Hyde.\n\nTo be at home in all lands and all ages;\nto count Nature a familiar acquaintance,\nand Art an intimate friend;\nto gain a standard for the appreciation of others' work\nand the criticism of your own;\nto carry the keys of the world's library in your pocket,\nand feel its resources behind you in whatever task you undertake;\nto make hosts of friends...who are to be leaders in all walks of life;\nto lose yourself in generous enthusiasms and cooperate with others for common ends –\nthis is the offer of the college for the best four years of your life.\n\nOptional: The Offer represents Bowdoin’s values. Please reflect on the line you selected and how it has meaning to you.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional",
+     "notes": "The Offer of the College · Select a line from The Offer and reflect on its meaning to you."
+    },
+    {
+     "order": 3,
+     "prompt": "Bowdoin believes that its broadly diverse and inclusive campus community prepares graduates to be contributing and useful citizens of the world. Every graduate of this institution should be confident in their preparation to be able to navigate through differences and in all sorts of situations. A Bowdoin education does not guarantee these skills, but it does impart a set of tools necessary to bravely enter unfamiliar conditions with the confidence to deal effectively with ambiguity.\n\nIf you wish, you may share anything about the unique experiences and perspectives that you would bring with you to the Bowdoin campus and community or an experience you have had that required you to navigate across or through difference.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional",
+     "notes": "Optional Writing About Navigating Differences"
+    }
+   ]
+  },
+  {
+   "unitid": "165015",
+   "directoryName": "Brandeis University",
+   "sheetName": "Brandeis",
+   "status": "confirmed",
+   "sourceUrl": "https://www.brandeis.edu/admissions/apply/application-process/first-year.html",
+   "guideUrl": "https://www.collegeessayguy.com/blog/brandeis-university-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Brandeis believes in taking your education out of the classroom and into the world. Imagine your learning extended beyond the classroom. What topic would you want to explore, and how would you pursue it?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "International Applicants only",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "217156",
+   "directoryName": "Brown University",
+   "sheetName": "Brown",
+   "status": "confirmed",
+   "sourceUrl": "https://admission.brown.edu/apply/how-apply",
+   "guideUrl": "https://www.collegeessayguy.com/blog/brown-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "“There is something distinctive about Brown students. It is a blend of intellectual curiosity, creativity, and humility. A commitment to collaboration. An openness to new ideas and perspectives. A desire to make the world better. And it is resilience: the ability to recover and thrive after experiencing difficulties.” President Christina Paxson 2025 Convocation Address  How will you use these characteristics or others to shape your approach to the Open Curriculum?",
+     "limitText": "150-250 words (suggested)",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Students entering Brown often find that making their home on College Hill naturally invites reflection on where they came from. Share how an aspect of your growing up has inspired or challenged you, and what unique contributions this might allow you to make to the Brown community.",
+     "limitText": "150-250 words (suggested)",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "If you could teach a class on any one thing, whether academic or otherwise, what would it be?",
+     "limitText": "100-150 words (suggested)",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 4,
+     "prompt": "Brown students care deeply about their work and the world around them. Students find contentment, satisfaction, and meaning in daily interactions and major discoveries. Whether big or small, mundane or spectacular, tell us about something that brings you joy.",
+     "limitText": "100-150 words (suggested)",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 5,
+     "prompt": "Why medicine?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required for PLME applicants",
+     "notes": "PLME (Program in Liberal Medical Education)"
+    },
+    {
+     "order": 6,
+     "prompt": "Why PLME?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required for PLME applicants",
+     "notes": "PLME (Program in Liberal Medical Education)"
+    },
+    {
+     "order": 7,
+     "prompt": "Tell us something about yourself, beyond your interest in medicine, that you think will make you a great doctor.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required for PLME applicants",
+     "notes": "PLME (Program in Liberal Medical Education)"
+    },
+    {
+     "order": 8,
+     "prompt": "The Brown|RISD Dual Degree Program draws on the complementary strengths of Brown University and Rhode Island School of Design (RISD) to provide students with the opportunity to explore and engage with diverse spheres of academic and creative inquiry.\n\nConsidering your understanding of the academic programs at Brown and RISD, describe how and why the specific blend of RISD's experimental, immersive art and design program and Brown's wide-ranging courses and curricula could constitute an optimal undergraduate education for you. Reflect on how you might integrate or synthesize content, approaches, and methods from these two distinct learning experiences.\n\nAdditionally, how might you contribute to the Dual Degree community and its commitment to interdisciplinary work?",
+     "limitText": "650 words",
+     "limit": 650,
+     "unit": "words",
+     "requirement": "Required for BRDD applicants",
+     "notes": "Brown|RISD Dual Degree (BRDD) · BRDD applicants must apply to both Brown and RISD and submit the same BRDD supplemental essay with both applications."
+    }
+   ]
+  },
+  {
+   "unitid": "211273",
+   "directoryName": "Bryn Mawr College",
+   "sheetName": "Bryn Mawr College",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "211291",
+   "directoryName": "Bucknell University",
+   "sheetName": "Bucknell",
+   "status": "confirmed",
+   "sourceUrl": "https://www.bucknell.edu/gsearch?query=supplemental+essay&referrerPageUrl=https%3A%2F%2Fwww.bucknell.edu%2Facademics%2Fcollege-arts-sciences&tabOrder=.%2Findex.html%2Cfaqs%2Clinks%2Clocations%2Cmajors&facetFilters=%7B%7D&filters=%7B%7D&verticalUrl=faqs.html",
+   "guideUrl": "https://www.collegeessayguy.com/blog/bucknell-university-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Please explain your interest in your first-choice major/undecided status and your second-choice major (should you opt to list one) and why you would choose Bucknell University to pursue your interest(s).",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "110404",
+   "directoryName": "California Institute of Technology",
+   "sheetName": "Caltech",
+   "status": "confirmed",
+   "sourceUrl": "https://www.admissions.caltech.edu/apply/first-year-applicants/supplemental-application-essays",
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Caltech has a rigorous core curriculum and students don't declare a major until the end of their first year. However, some students arrive knowing which academic fields and areas already most excite them, or which novel fields and areas they most want to explore.\n\nIf you had to choose an area of interest or two today, what would you choose?\n\n*Note that you are under no obligation to follow this choice if admitted.\n\nWhy did you choose your proposed area of interest? If you selected 'other', what topics are you interested in pursuing?",
+     "limitText": "100-200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Your STEM Future - STEM Academic Interests"
+    },
+    {
+     "order": 2,
+     "prompt": "Collaboration: STEM as shared learning\nTell us about a time your learning in STEM was shaped by another person or group — either because you needed help, offered help, changed your thinking through collaboration, or contributed to someone else’s understanding. What did that experience teach you about learning and working with others",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Choose one of 2",
+     "notes": "Scholarly Chracter: How do you learn when there is no easy answer? Caltech’s learning environment asks students to work through difficulty, collaborate around hard ideas, and contribute to one another’s understanding. Pick one of these responses to show us how you learn and grow."
+    },
+    {
+     "order": 3,
+     "prompt": "Process: The thought behind the outcome \nTell us about a time your approach to a STEM problem, concept, or project mattered as much as the outcome. How did you work through uncertainty or persist creatively in tackling the problem? What would you still defend about your process, regardless of the outcome",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Choose one of 2",
+     "notes": "Scholarly Chracter: How do you learn when there is no easy answer? Caltech’s learning environment asks students to work through difficulty, collaborate around hard ideas, and contribute to one another’s understanding. Pick one of these responses to show us how you learn and grow."
+    },
+    {
+     "order": 4,
+     "prompt": "Learning: STEM as a never-ending rabbit hole\nRegardless of your STEM interest listed above, take this opportunity to nerd out and talk to us about whatever STEM rabbit hole you have found yourself falling into. Be as specific or broad as you would like",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Choose two of 3",
+     "notes": "Scientific Drive: How does STEM come alive in your life through learning, pursuing, or making? Pick two of these prompts to respond to. Caltech faculty review applications, so feel free to get technical in your response!"
+    },
+    {
+     "order": 5,
+     "prompt": "Pursuing: STEM as sustained intellectual engagement\nTell us about a STEM question, problem, idea, or project that has held your attention over time. What drew you to it, how have you pursued it, and what do you still want to understand",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Choose two of 3",
+     "notes": "Scientific Drive: How does STEM come alive in your life through learning, pursuing, or making? Pick two of these prompts to respond to. Caltech faculty review applications, so feel free to get technical in your response!"
+    },
+    {
+     "order": 6,
+     "prompt": "Making: STEM as creation\nTell us about something you created, tested, repaired, modeled, coded, built, or redesigned. What problem were you trying to solve and what did the process reveal to you",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Choose two of 3",
+     "notes": "Scientific Drive: How does STEM come alive in your life through learning, pursuing, or making? Pick two of these prompts to respond to. Caltech faculty review applications, so feel free to get technical in your response!"
+    },
+    {
+     "order": 7,
+     "prompt": "Caltech students bring more than academic ability to the communities they join. What is something you would be excited to do, share, teach, make, start, or contribute as part of the Caltech community?",
+     "limitText": "150-200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 8,
+     "prompt": "OPTIONAL: Caltech cares about context. Is there anything about your academic preparation, coursework, school context, or learning experiences that would help us better understand your readiness for Caltech?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": "Optional Academic Short Answer Question"
+    }
+   ]
+  },
+  {
+   "unitid": "173258",
+   "directoryName": "Carleton College",
+   "sheetName": "Carleton College",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "211440",
+   "directoryName": "Carnegie Mellon University",
+   "sheetName": "Carnegie Mellon",
+   "status": "confirmed",
+   "sourceUrl": "https://www.cmu.edu/admission/admission/admission-consideration",
+   "guideUrl": "https://www.collegeessayguy.com/blog/carnegie-mellon-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Most students choose their intended major or area of study based on a passion or inspiration that’s developed over time – what passion or inspiration led you to choose this area of study?",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Many students pursue college for a specific degree, career opportunity or personal goal. Whichever it may be, learning will be critical to achieve your ultimate goal. As you think ahead to the process of learning during your college years, how will you define a successful college experience?",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "Consider your application as a whole. What do you personally want to emphasize about your application for the admission committee’s consideration? Highlight something that’s important to you or something you haven’t had a chance to share. Tell us, don’t show us (no websites please).",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "201645",
+   "directoryName": "Case Western Reserve University",
+   "sheetName": "Case Western Reserve",
+   "status": "confirmed",
+   "sourceUrl": "https://case.edu/admission/apply/deadlines-and-requirements",
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "By applying to the Pre-Professional Scholars Program, you are applying to gain admission to professional school earlier than students who apply in the traditional way. Please indicate why you’re interested in your chosen profession. How do you see yourself being particularly suited to this field? What events and/or experiences have led you to your choice? This essay should be between 250 and 500 words in length.",
+     "limitText": "250-500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Required for Pre-Professional Scholars Program applicants",
+     "notes": "Pre-Professional Scholars Program (PPSP)"
+    },
+    {
+     "order": 2,
+     "prompt": "In the college application process, you are constantly prompted for a list of your achievements, awards, and accomplishments. While this information is useful to us, we are interested in hearing more about you. Describe an event, achievement, or experience of which you are particularly proud but that will not show up on a resume, may not garner any recognition, and does not appear anywhere else on your admission application. This essay should not exceed 750 words in length.",
+     "limitText": "750 words",
+     "limit": 750,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "156408",
+   "directoryName": "Centre College",
+   "sheetName": "Centre",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "111948",
+   "directoryName": "Chapman University",
+   "sheetName": "Chapman U",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "The \"Chapman Challenge\" combines going to the mountains, Disneyland, and the beach in one day. If you designed a challenge to showcase your hometown or community, what three stops would be on the itinerary?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "Panther Profile (short answers) · The Panther Profile is a set of quick, fun questions — don't overthink them."
+    },
+    {
+     "order": 2,
+     "prompt": "Chapman students often line up at Philz Coffee, Bruxie, or The Taco Stand. What is a place that attracts a line in your community?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "Panther Profile (short answers)"
+    },
+    {
+     "order": 3,
+     "prompt": "Chapman students often gather with friends at the Attallah Piazza (heart of campus), Argyros Forum (student union) or the Masson Family Beach Club (on-campus outdoor pool). Where do you gather with friends?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "Panther Profile (short answers)"
+    },
+    {
+     "order": 4,
+     "prompt": "Pete the Panther (our mascot), our students, and our community love to show Chapman pride by using the catchphrase \"Paws Up!\" What is your catchphrase?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "Panther Profile (short answers)"
+    },
+    {
+     "order": 5,
+     "prompt": "Chapman's location puts students in the heart of Southern California, with access to beaches, major cities, entertainment, outdoor recreation, and career opportunities. What part of the SoCal experience are you most excited to explore?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "Panther Profile (short answers)"
+    },
+    {
+     "order": 6,
+     "prompt": "Chapman's student-led University Program Board hosts a concert each fall for students. If you could choose any artist, band, or entertainer to headline the fall event, who would you pick?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "Panther Profile (short answers)"
+    },
+    {
+     "order": 7,
+     "prompt": "Chapman’s Dodge College of Film and Media Arts hosts many Master Classes featuring celebrities, open to all students, each year. This year’s classes included, amongst others,  Ariana Grande, the Duffer Brothers of Stranger Things fame (Chapman BFA, 2007), Dwayne “The Rock” Johnson and Spike Lee. Who would you like to hear from in your first year at Chapman?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "Panther Profile (short answers)"
+    }
+   ]
+  },
+  {
+   "unitid": "112260",
+   "directoryName": "Claremont McKenna College",
+   "sheetName": "Claremont McKenna College",
+   "status": "confirmed",
+   "sourceUrl": "https://www.cmc.edu/admission/first-year-application-instructions",
+   "guideUrl": "https://www.collegeessayguy.com/blog/claremont-mckenna-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "CMC’s mission is to prepare students for thoughtful and productive lives and responsible leadership in business, government, and the professions. With this mission in mind, please explain why you want to attend Claremont McKenna College.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "A critical part of fulfilling our mission is living out the commitments of CMC’s Open Academy: Freedom of Expression, Viewpoint Diversity, and Constructive Dialogue. We want to learn more about your commitment to listening and learning from others with different viewpoints, perspectives, and life experiences from your own. \nDescribe a time when engaging with someone about a specific topic resulted in you changing your attitude, belief, or behavior, or you changed the belief or behavior of someone else. What was the change that occurred for you, and what facilitated that change? What did you learn from that experience, and how has it informed how you engage with others?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "161086",
+   "directoryName": "Colby College",
+   "sheetName": "Colby College",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "190099",
+   "directoryName": "Colgate University",
+   "sheetName": "Colgate",
+   "status": "none",
+   "sourceUrl": "https://www.colgate.edu/admission-aid/apply/regular-decision",
+   "guideUrl": "https://www.collegeessayguy.com/blog/colgate-supplemental-essay",
+   "prompts": []
+  },
+  {
+   "unitid": "126678",
+   "directoryName": "Colorado College",
+   "sheetName": "Colorado College",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "190150",
+   "directoryName": "Columbia University in the City of New York",
+   "sheetName": "Columbia",
+   "status": "confirmed",
+   "sourceUrl": "https://undergrad.admissions.columbia.edu/apply/process/columbia-questions",
+   "guideUrl": "https://www.collegeessayguy.com/blog/columbia-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "List the titles of texts, resources and outlets that have contributed to your intellectual development outside of academic courses, including but not limited to books, journals, websites, podcasts, essays, plays, presentations, videos, museums and other content that you enjoy.",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "List question · Answer as a list of items separated by commas or semicolons; no numbering or specific order needed, no italics/underlining for titles, and no author names, subtitles, or explanatory remarks."
+    },
+    {
+     "order": 2,
+     "prompt": "Tell us about an aspect of your life so far or your lived experience that is important to you, and describe how it has shaped the way you would learn from and contribute to Columbia's multidimensional and collaborative environment.",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short answer questions"
+    },
+    {
+     "order": 3,
+     "prompt": "At Columbia, students representing a wide range of perspectives are invited to live and learn together. In such a community, questions and debates naturally arise. Please describe a time when you did not agree with someone and discuss how you engaged with them and what you took away from the interaction.",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short answer questions"
+    },
+    {
+     "order": 4,
+     "prompt": "In college/university, students are often challenged in ways that they could not anticipate. Please describe a situation in which you have navigated through adversity and discuss how you changed as a result.",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short answer questions"
+    },
+    {
+     "order": 5,
+     "prompt": "Why are you interested in attending Columbia University? We encourage you to consider the aspect(s) that you find unique and compelling about Columbia.",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short answer questions"
+    },
+    {
+     "order": 6,
+     "prompt": "What attracts you to your preferred areas of study at Columbia College or Columbia Engineering?",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short answer questions"
+    }
+   ]
+  },
+  {
+   "unitid": "190415",
+   "directoryName": "Cornell University",
+   "sheetName": "Cornell",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.cornell.edu/how-to-apply/first-year-applicants/cornell-first-year-writing-supplement-prompts",
+   "guideUrl": "https://www.collegeessayguy.com/blog/cornell-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "By applying to Cornell’s College of Agriculture and Life Sciences (CALS), you are also applying directly to one of our majors. From here, you would be part of a community dedicated to purpose-driven science; working within your major and across disciplines to tackle complex, real-world challenges.",
+     "limitText": "350 words",
+     "limit": 350,
+     "unit": "words",
+     "requirement": "Required for CALS applicants",
+     "notes": "College of Agriculture and Life Sciences (CALS)"
+    },
+    {
+     "order": 2,
+     "prompt": "What draws you to Cornell’s College of Agriculture and Life Sciences (CALS)? Reflect on the learning, community, or impact opportunities that matter most to you, and share how they align with Cornell CALS (as you understand it currently).",
+     "limitText": "350 words",
+     "limit": 350,
+     "unit": "words",
+     "requirement": "Required for CALS applicants",
+     "notes": "College of Agriculture and Life Sciences (CALS)"
+    },
+    {
+     "order": 3,
+     "prompt": "Required: How do your interests directly connect with your intended major at the College of Architecture, Art and Planning (AAP)? Why architecture (B.Arch), art (BFA) or urban and regional studies (URS)? B.Arch applicants, please provide an example of how a creative project or passion sparks your motivation to pursue a 5-year professional degree program. BFA applicants may want to consider how they could integrate a range of interests and available resources at Cornell into a coherent art practice. URS students may want to emphasize their enthusiasm and depth of interest in the study of urban and regional issues.",
+     "limitText": "650 words",
+     "limit": 650,
+     "unit": "words",
+     "requirement": "Required for AAP applicants",
+     "notes": "College of Architecture, Art & Planning (AAP)"
+    },
+    {
+     "order": 4,
+     "prompt": "At the College of Arts & Sciences, your education is yours to shape. Describe an intellectual passion, question, or idea that has captured your attention – whether it emerges from your studies or extends beyond your coursework. What specific aspects of our liberal arts curriculum would you draw on to explore and connect your varied interests?",
+     "limitText": "650 words",
+     "limit": 650,
+     "unit": "words",
+     "requirement": "Required for Arts & Sciences applicants",
+     "notes": "College of Arts & Sciences"
+    },
+    {
+     "order": 5,
+     "prompt": "Discuss your interest in pursuing a major in policy at the Cornell Jeb E. Brooks School of Public Policy and what draws you to this field of study. You are encouraged to consider including details related to your personal experiences, values, academic influences, or extracurricular activities that have shaped your perspective and future goals.",
+     "limitText": "650 words",
+     "limit": 650,
+     "unit": "words",
+     "requirement": "Required for Brooks School of Public Policy applicants",
+     "notes": "Jeb E. Brooks School of Public Policy"
+    },
+    {
+     "order": 6,
+     "prompt": "What kind of business student are you? Using your personal, academic, or volunteer/work experiences, describe the topics or issues that you care about and why they are important to you. Your response should convey how your interests align with the school to which you are applying within the Cornell SC Johnson College of Business (the Charles H. Dyson School of Applied Economics and Management or the Cornell Peter and Stephanie Nolan School of Hotel Administration).",
+     "limitText": "650 words",
+     "limit": 650,
+     "unit": "words",
+     "requirement": "Required for SC Johnson College of Business applicants",
+     "notes": "Cornell SC Johnson College of Business"
+    },
+    {
+     "order": 7,
+     "prompt": "What three words best describe you?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required for Engineering applicants",
+     "notes": "College of Engineering · Appears in the \"Academics\" tab."
+    },
+    {
+     "order": 8,
+     "prompt": "What three words would you use to describe Cornell Engineering?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required for Engineering applicants",
+     "notes": "College of Engineering · Appears in the \"Academics\" tab."
+    },
+    {
+     "order": 9,
+     "prompt": "Fundamentally, engineering is the application of math, science, and technology to solve complex problems. Why do you want to study engineering?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required for Engineering applicants",
+     "notes": "College of Engineering — Long Essay Responses"
+    },
+    {
+     "order": 10,
+     "prompt": "Why do you think you would love to study at Cornell Engineering?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required for Engineering applicants",
+     "notes": "College of Engineering — Long Essay Responses"
+    },
+    {
+     "order": 11,
+     "prompt": "What brings you joy?",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required for Engineering applicants",
+     "notes": "College of Engineering — Short Answer Responses"
+    },
+    {
+     "order": 12,
+     "prompt": "What do you believe you will contribute to the Cornell Engineering community beyond what you’ve already detailed in your application? What unique voice will you bring?",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required for Engineering applicants",
+     "notes": "College of Engineering — Short Answer Responses"
+    },
+    {
+     "order": 13,
+     "prompt": "What is one activity, club, team, organization, work/volunteer experience or family responsibility that is especially meaningful to you? Please briefly tell us about its significance for you.",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required for Engineering applicants",
+     "notes": "College of Engineering — Short Answer Responses"
+    },
+    {
+     "order": 14,
+     "prompt": "What is one award you have received or achievement you have attained that has meant the most to you? Please briefly describe its importance to you.",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required for Engineering applicants",
+     "notes": "College of Engineering — Short Answer Responses"
+    },
+    {
+     "order": 15,
+     "prompt": "The College of Human Ecology prepares students to respond to human needs through an education organized around the interconnected issues that profoundly affect individuals, communities, and the institutions that shape our lives. \n\nThink about an extracurricular/community engagement/work experience that most closely connects you to the CHE mission and your intended choice of major. Tell us what that experience taught you about your broader community and its needs, and the impact you can make. How will your intended CHE major help you make that impact? (Refer to our essay application tips as you write your essay.)",
+     "limitText": "550 words",
+     "limit": 550,
+     "unit": "words",
+     "requirement": "Required for Human Ecology applicants",
+     "notes": "College of Human Ecology (CHE)"
+    },
+    {
+     "order": 16,
+     "prompt": "Using your personal, academic, or volunteer/work experiences, describe the topics or issues that you care about and why they are important to you. Your response should show us that your interests align with the ILR School.",
+     "limitText": "650 words",
+     "limit": 650,
+     "unit": "words",
+     "requirement": "Required for ILR applicants",
+     "notes": "School of Industrial and Labor Relations (ILR)"
+    }
+   ]
+  },
+  {
+   "unitid": "126614",
+   "directoryName": "University of Colorado Boulder",
+   "sheetName": "CU Boulder",
+   "status": "confirmed",
+   "sourceUrl": "https://www.colorado.edu/admissions/process/first-year/faqs",
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "What do you hope to study, and why, at CU Boulder?  Or if you don't know quite yet, think about your studies so far, extracurricular/after-school activities, jobs, volunteering, future goals, or anything else that has shaped your interests.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "182670",
+   "directoryName": "Dartmouth College",
+   "sheetName": "Dartmouth",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.dartmouth.edu/glossary-term/writing-supplement",
+   "guideUrl": "https://www.collegeessayguy.com/blog/dartmouth-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "As you seek admission to Dartmouth’s Class of 2031, what aspects of the college’s academic program, community, and/or campus environment attract your interest? How is Dartmouth a good fit for you?",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Prompt 1"
+    },
+    {
+     "order": 2,
+     "prompt": "There is a Quaker saying: Let your life speak. Describe the environment in which you were raised and the impact it has had on the person you are today.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 2",
+     "notes": "Prompt 2"
+    },
+    {
+     "order": 3,
+     "prompt": "\"Be yourself,\" Oscar Wilde advised. \"Everyone else is taken.\" Introduce yourself.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 2",
+     "notes": "Prompt 2"
+    },
+    {
+     "order": 4,
+     "prompt": "What excites you?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 6",
+     "notes": "Prompt 3"
+    },
+    {
+     "order": 5,
+     "prompt": "Labor leader and civil rights activist Dolores Huerta recommended a life of purpose. \"We must use our lives to make the world a better place to live, not just to acquire things,\" she said. \"That is what we are put on the earth for.\" In what ways do you hope to make—or are you already making—an impact? Why? How?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 6",
+     "notes": "Prompt 3"
+    },
+    {
+     "order": 6,
+     "prompt": "In an Instagram post, best-selling British author Matt Haig cheered the impact of reading. “A good novel is the best invention humans have ever created for imagining other lives,” he wrote. How have you experienced such insight from reading? What did you read and how did it alter the way you understand yourself and others?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 6",
+     "notes": "Prompt 3"
+    },
+    {
+     "order": 7,
+     "prompt": "The social and family interactions of wild chimpanzees have been the focus of Dame Jane Goodall's research for decades. Her understanding of animal behavior prompted the English primatologist to see a lesson for human communities as well: \"Change happens by listening and then starting a dialogue with the people who are doing something you don't believe is right.\" Channel Dame Goodall: Tell us about a moment when you engaged in a difficult conversation or encountered someone with an opinion or perspective that was different from your own. How did you find common ground?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 6",
+     "notes": "Prompt 3"
+    },
+    {
+     "order": 8,
+     "prompt": "Celebrate your nerdy side.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 6",
+     "notes": "Prompt 3"
+    },
+    {
+     "order": 9,
+     "prompt": "\"It's not easy being green…\" was the frequent refrain of Kermit the Frog. How has difference been a part of your life, and how have you embraced it as part of your identity, outlook, or sense of purpose?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 6",
+     "notes": "Prompt 3"
+    }
+   ]
+  },
+  {
+   "unitid": "198385",
+   "directoryName": "Davidson College",
+   "sheetName": "Davidson College",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "212054",
+   "directoryName": "Drexel University",
+   "sheetName": "Drexel",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "198419",
+   "directoryName": "Duke University",
+   "sheetName": "Duke",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.duke.edu/apply/",
+   "guideUrl": "https://www.collegeessayguy.com/blog/duke-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "What is your impression of Duke as a university and community, and why do you believe it is a good match for your goals, values, and interests? If there is something specific that attracts you to our academic offerings in Trinity College of Arts and Sciences or the Pratt School of Engineering, or to our co-curricular opportunities, feel free to include that too.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "We all belong to communities defined by place, faith, family, culture, interests or shared experience. Tell us about a community that has shaped who you are, any way it has set you apart, and what you've learned from being part of it that you hope to bring to Duke.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "We believe a wide range of viewpoints and experiences is essential to maintaining Duke’s vibrant living and learning community. Please share anything in this context that might help us better understand you and your potential contributions to Duke.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional (answer at most one of the two)",
+     "notes": "Optional prompts · Optional set: answer at most one of these prompts."
+    },
+    {
+     "order": 4,
+     "prompt": "Meaningful dialogue often involves respectful disagreement. Provide an example of a difference of opinion you’ve had with someone you care about. What did you learn from it?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional (answer at most one of the two)",
+     "notes": "Optional prompts · Optional set: answer at most one of these prompts."
+    },
+    {
+     "order": 5,
+     "prompt": "What’s the last thing that you’ve been really excited about?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional (answer at most one of the two)",
+     "notes": "Optional prompts · Optional set: answer at most one of these prompts."
+    }
+   ]
+  },
+  {
+   "unitid": "139658",
+   "directoryName": "Emory University",
+   "sheetName": "Emory",
+   "status": "confirmed",
+   "sourceUrl": "https://blog.emoryadmission.com/2023/07/emorys-short-answer-questions-2023-24/?_gl=1*17arg8w*_ga*MTI2MTUzMzE3NC4xNzIxNDA1OTQ2*_ga_97CMFVM5QQ*MTcyMTQwNTk0Ni4xLjEuMTcyMTQwNTk5Ny4wLjAuMA",
+   "guideUrl": "https://www.collegeessayguy.com/blog/emory-university-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "What academic areas are you interested in exploring at Emory University and why?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Emory University has a strong commitment to building community. Tell us about a community that you have been part of where your personal participation helped to change or shape the community for the better.",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Choose one of 4",
+     "notes": "“Getting to know you”"
+    },
+    {
+     "order": 3,
+     "prompt": "Reflect on a personal experience where you intentionally expanded your cultural awareness.",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Choose one of 4",
+     "notes": "“Getting to know you”"
+    },
+    {
+     "order": 4,
+     "prompt": "Emory University’s unique mission calls for service to humanity. Share how you might personally contribute to this mission of service to humanity.",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Choose one of 4",
+     "notes": "“Getting to know you”"
+    },
+    {
+     "order": 5,
+     "prompt": "In a scholarly community, differing ideas often collide before they converge. How do you personally navigate disagreement in a way that promotes progress and deepens meaningful dialogue?",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Choose one of 4",
+     "notes": "“Getting to know you”"
+    }
+   ]
+  },
+  {
+   "unitid": "133650",
+   "directoryName": "Florida Agricultural and Mechanical University",
+   "sheetName": "Florida A&M - HBCU",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/applying-to-florida-am-university-famu",
+   "prompts": []
+  },
+  {
+   "unitid": "134097",
+   "directoryName": "Florida State University",
+   "sheetName": "Florida State University",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "191241",
+   "directoryName": "Fordham University",
+   "sheetName": "Fordham University",
+   "status": "confirmed",
+   "sourceUrl": "https://www.fordham.edu/undergraduate-admission/apply/what-were-looking-for/writing-for-the-common-application/",
+   "guideUrl": "https://www.collegeessayguy.com/blog/fordham-university-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Our motto is “New York is my campus, Fordham is my school.” New York City is a diverse and global city that provides Fordham students with a special kind of educational experience, full of both challenge and opportunity. What has prepared you to embrace the unique opportunity of living and learning in New York City?",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Optional (choose one of 3)",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "At Fordham, we have a tradition of having our graduating seniors send a message to their younger selves. What will the future “you” tell the “you” of today about what you accomplished as a Fordham student?",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Optional (choose one of 3)",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "At Fordham, we expect students to care for and engage with their communities and be active citizens for positive change. Please share an experience you had that caused you to develop a new perspective, change your point of view, and/or empower you to take an action or be courageous. Your response should include examples of your personal growth (e.g., what did you learn, did your point of view change, did you develop new skills or strengths?).",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Optional (choose one of 3)",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "131469",
+   "directoryName": "George Washington University",
+   "sheetName": "George Washington University",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/george-washington-university-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "At the George Washington University, our students frequently interact with policymakers and world leaders. These experiences and those of our alumni can shape the future of global affairs. If you had the power to change the course of history in your community or the world, what would you do and why?",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Choose one of 2",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "The George Washington University encourages students to think critically and to challenge the status quo. Thus, civil discourse is a key characteristic of our community. Describe a time when you engaged others in meaningful dialogue around an issue that was important to you. Did this exchange create change, new perspectives, or deeper relationships?",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Choose one of 2",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "131496",
+   "directoryName": "Georgetown University",
+   "sheetName": "Georgetown",
+   "status": "confirmed",
+   "sourceUrl": "https://uapply.georgetown.edu/register/firstyearapplication",
+   "guideUrl": "https://www.collegeessayguy.com/blog/georgetown-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Briefly discuss the significance to you of the school or summer activity in which you have been most involved.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short Essay One · Approximately one-half page, single-spaced."
+    },
+    {
+     "order": 2,
+     "prompt": "In all our lives, we interact with people who hold different viewpoints than our own. Describe such an event you experienced. What did you learn from the experience?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short Essay Two"
+    },
+    {
+     "order": 3,
+     "prompt": "As Georgetown is a diverse community, the Admissions Committee would like to know more about you in your own words. Please submit a brief personal or creative essay which you feel best describes you and reflects on your personal background and individual experiences, skills, and talents.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "Essay One"
+    },
+    {
+     "order": 4,
+     "prompt": "Founded in 1789, the Georgetown College of Arts & Sciences is committed to the Jesuit traditions of an integrated education and of productive research in the natural sciences, humanities, social sciences, and fine arts. Describe your interest in studying in the College of Arts & Sciences. Applicants interested in the sciences, mathematics, or languages are encouraged to make specific reference to their choice of major.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required for College of Arts & Sciences applicants",
+     "notes": "Essay Two – College of Arts & Sciences"
+    },
+    {
+     "order": 5,
+     "prompt": "Georgetown University’s Berkley School of Nursing is committed to the formation of ethical, empathetic, and transformational nursing leaders. Describe the factors that have influenced your interest in studying Nursing at Georgetown University.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required for Berkley School of Nursing applicants",
+     "notes": "Essay Two – Berkley School of Nursing"
+    },
+    {
+     "order": 6,
+     "prompt": "Georgetown University’s Walsh School of Foreign Service was founded more than a century ago to prepare generations of leaders with the foundational skills to address global issues. Describe your primary motivations for studying international affairs at Georgetown University and dedicating your undergraduate studies toward a future in global service.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required for Walsh School of Foreign Service applicants",
+     "notes": "Essay Two – Walsh School of Foreign Service"
+    },
+    {
+     "order": 7,
+     "prompt": "Georgetown University’s McDonough School of Business provides graduates with essential global, ethical, analytical, financial, and diverse perspectives on the economies of our nation and the world. Describe your primary motivations for studying business at Georgetown University.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required for McDonough School of Business applicants",
+     "notes": "Essay Two – McDonough School of Business"
+    },
+    {
+     "order": 8,
+     "prompt": "For nearly 50 years, Georgetown University’s McCourt School of Public Policy has equipped leaders and changemakers with the interdisciplinary skills to address local, national and global policy problems. Undergraduate public policy students at Georgetown will have the unique opportunity to live and study on two campuses, spending their first two years immersed on the Hilltop, before completing the second half of their time at Georgetown on the Capitol Campus, immersed in the policy world. Describe your primary motivations for studying public policy at Georgetown University and dedicating your undergraduate studies toward a future related to public service.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required for McCourt School of Public Policy applicants",
+     "notes": "Essay Two – McCourt School of Public Policy · Joint program with the College of Arts & Sciences."
+    },
+    {
+     "order": 9,
+     "prompt": "Through this joint program between the College of Arts & Sciences and the Earth Commons, you’ll explore theories and practical skills in the classroom, in the field, and around the world, and put it all together to make a difference. Describe your primary motivations for studying environment and sustainability at Georgetown University to effect positive change in the world.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required for Environment and Sustainability applicants",
+     "notes": "Essay Two – Environment and Sustainability · Joint degree program with the College of Arts & Sciences and the Earth Commons."
+    },
+    {
+     "order": 10,
+     "prompt": "Georgetown University’s School of Health was founded to advance the health and well-being of people locally, nationally, and globally through innovative research, the delivery of interdisciplinary education, and transformative engagement of communities. Describe the factors that influenced your interest in studying health care at Georgetown University, specifically addressing your intended related major: Global Health, Health Care Management & Policy, or Human Science.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required for School of Health applicants",
+     "notes": "Essay Two – School of Health"
+    }
+   ]
+  },
+  {
+   "unitid": "139755",
+   "directoryName": "Georgia Institute of Technology-Main Campus",
+   "sheetName": "Georgia Tech",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/georgia-tech-supplemental-essays",
+   "prompts": []
+  },
+  {
+   "unitid": "153384",
+   "directoryName": "Grinnell College",
+   "sheetName": "Grinnell College",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "191515",
+   "directoryName": "Hamilton College",
+   "sheetName": "Hamilton College",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "232265",
+   "directoryName": "Hampton University",
+   "sheetName": "Hampton - HBCU",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "166027",
+   "directoryName": "Harvard University",
+   "sheetName": "Harvard",
+   "status": "confirmed",
+   "sourceUrl": "https://college.harvard.edu/admissions/apply/application-requirements",
+   "guideUrl": "https://www.collegeessayguy.com/blog/harvard-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Harvard has long recognized the importance of enrolling a diverse student body. How will the life experiences that shape who you are today enable you to contribute to Harvard?",
+     "limitText": "10-150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Describe a time when you strongly disagreed with someone about an idea or issue. How did you communicate or engage with this person? What did you learn from this experience?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "Briefly describe any of your extracurricular activities, employment experience, travel, or family responsibilities that have shaped who you are.",
+     "limitText": "10-150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 4,
+     "prompt": "How do you hope to use your Harvard education in the future?",
+     "limitText": "10-150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 5,
+     "prompt": "Top 3 things your roommates might like to know about you.",
+     "limitText": "10-150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "115409",
+   "directoryName": "Harvey Mudd College",
+   "sheetName": "Harvey Mudd",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/harvey-mudd-college-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Harvey Mudd College seeks to educate engineers, scientists, and mathematicians well versed in all of these areas and in the humanities, social sciences and the arts so that they may assume leadership in their fields with a clear understanding of the impact of their work on society. – HMC Mission Statement.\n\n“Scientific research is a human endeavor. The choices of topics that we research are based on our biases, our beliefs, and what we bring: our cultures and our families. The kinds of problems that people put their talents to solving depends on their values.” – Dr. Clifton Poodry\n\nHMC’s collaborative community is guided by our mission statement. Through an intentional interdisciplinary curriculum, our students seek to build a skillset adaptable to society’s needs. How has your own background influenced the types of problems you want to solve, the people you want to work with, and the impact you hope your work can have?",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Prompt includes the HMC mission statement and Dr. Clifton Poodry quote as framing."
+    },
+    {
+     "order": 2,
+     "prompt": "Many students choose HMC because they don’t want to give up their interests in the Humanities, Social Sciences and the Arts – or HSA as we call it at HMC. Briefly describe what you’d like to learn about in your dream HSA class. Your class can either be one chosen from existing classes at HMC, or you are welcome to create your own.”",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "212911",
+   "directoryName": "Haverford College",
+   "sheetName": "Haverford College",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/haverford-college-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Tell us about a topic or issue that sparks your curiosity and gets you intellectually excited. How do you hope to engage with this topic or issue at Haverford? Please limit your response to 150-200 words.",
+     "limitText": "150-200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "We have highlighted for you some of the values that shape the Haverford community. What are some of the values you seek in your next community? How do Haverford’s values, as demonstrated through our Honor Code, resonate with you?\n\nAs you think about how to answer this question, you might draw from how you have been influenced by other communities you have been a part of, experiences you may have had within your communities, or opportunities you have had to shape or even change your communities.  Please limit your response to 150-200 words",
+     "limitText": "150-200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "131520",
+   "directoryName": "Howard University",
+   "sheetName": "Howard - HBCU",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/howard-university-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Diversity of all kinds is important to enriching the educational experience at Howard University. Please share with us anything in your background or lived experience that has shaped your perspectives and how that would contribute to the classroom and community at Howard.",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Please describe the major you intend to study and how you hope to use your Howard education to support you in achieving your passions and goals. Please address your first-choice and second-choice major selections.",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "162928",
+   "directoryName": "Johns Hopkins University",
+   "sheetName": "Johns Hopkins",
+   "status": "confirmed",
+   "sourceUrl": "https://apply.jhu.edu/how-to-apply/application-deadlines-requirements/",
+   "guideUrl": "https://www.collegeessayguy.com/blog/johns-hopkins-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "At Johns Hopkins, community is built through dialogue, collaboration, and a willingness to engage across differences. \nWhether on campus or in the broader world, community depends on bridge builders who can listen to differing perspectives, challenge their own assumptions, or work together toward shared goals.\n \nDrawing on your own experiences, what have you learned about engaging across differences and how has it shaped the way you think about building bridges, enhancing community, and working with others?",
+     "limitText": "350 words",
+     "limit": 350,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "203535",
+   "directoryName": "Kenyon College",
+   "sheetName": "Kenyon College",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "213543",
+   "directoryName": "Lehigh University",
+   "sheetName": "Lehigh",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/lehigh-university-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "How will the 5-year dual degree Arts-Engineering program, which requires a major in both the College of Arts and Sciences and the College of Engineering, allow you to achieve your educational or professional goals?*",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "5-year dual degree Arts-Engineering applicants",
+     "notes": "Prompt #1 · Answer the version of Prompt #1 that matches your program."
+    },
+    {
+     "order": 2,
+     "prompt": "What makes the Computer Science and Business (CSB) program the best fit for your academic and/or professional goals?",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Computer Science & Business applicants",
+     "notes": "Prompt #1"
+    },
+    {
+     "order": 3,
+     "prompt": "What makes the Integrated Degree in Engineering, Arts & Sciences (IDEAS) Honors Program the best fit for your academic and/or professional goals?",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "IDEAS Honors Program applicants",
+     "notes": "Prompt #1"
+    },
+    {
+     "order": 4,
+     "prompt": "What makes the Integrated Business & Engineering (IBE) Honors Program the best fit for your academic and/or professional goals?",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "IBE Honors Program applicants",
+     "notes": "Prompt #1"
+    },
+    {
+     "order": 5,
+     "prompt": "How will the unique combination of college, program, major and/or 4+1 program that you selected above allow you to achieve your educational or professional goals?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "College of Arts and Science applicants",
+     "notes": "Prompt #1"
+    },
+    {
+     "order": 6,
+     "prompt": "How will the unique combination of college, program, major and/or 4+1 program that you selected above allow you to achieve your educational or professional goals?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "College of Business applicants",
+     "notes": "Prompt #1"
+    },
+    {
+     "order": 7,
+     "prompt": "What makes the Integrated Business & Health (IBH) Program the best fit for your academic and/or professional goals?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Integrated Business and Health (IBH) applicants",
+     "notes": "Prompt #1"
+    },
+    {
+     "order": 8,
+     "prompt": "How did you first learn about Lehigh University and what motivated you to apply?",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Prompt #2 · Source listed both 200 and 150 words; confirm current limit."
+    },
+    {
+     "order": 9,
+     "prompt": "At Lehigh, we believe in pausing to celebrate the good—meaningful moments that bring joy, pride or motivation.\n\nWhat’s something great happening in your life right now?\n\nIt could be an accomplishment, a personal win (big or small) or something you’re genuinely excited about. If it matters to you, we’d love to hear about it.",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Prompt #3"
+    }
+   ]
+  },
+  {
+   "unitid": "209056",
+   "directoryName": "Lewis & Clark College",
+   "sheetName": "Lewis & Clark",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "117946",
+   "directoryName": "Loyola Marymount University",
+   "sheetName": "Loyola Marymount",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Share with us why you are interested in LMU and/or why you chose your specific area of study or major.",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "173902",
+   "directoryName": "Macalester College",
+   "sheetName": "Macalester",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "170976",
+   "directoryName": "University of Michigan-Ann Arbor",
+   "sheetName": "Michigan",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.umich.edu/apply/first-year-applicants/essay-questions",
+   "guideUrl": "https://www.collegeessayguy.com/blog/university-michigan-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "At the University of Michigan, we are focused on developing leaders and citizens who will challenge the present and enrich the future. In your essay, share with us how you are prepared to contribute to these goals. This could include the people, places, experiences or aspirations that have shaped your journey and future plans.",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Essay #1"
+    },
+    {
+     "order": 2,
+     "prompt": "Describe the unique qualities that attract you to the specific undergraduate College or School (including preferred admission and dual degree programs) to which you are applying at the University of Michigan. How would that curriculum support your interests?",
+     "limitText": "550 words",
+     "limit": 550,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Essay #2"
+    }
+   ]
+  },
+  {
+   "unitid": "230959",
+   "directoryName": "Middlebury College",
+   "sheetName": "Middlebury College",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "166683",
+   "directoryName": "Massachusetts Institute of Technology",
+   "sheetName": "MIT",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/mit-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "What field of study appeals to you the most right now? (Note: Applicants select from a drop-down list.) Reflect on what has led you to this interest.",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short answer essays · Approximately 100-200 words, depending on the question."
+    },
+    {
+     "order": 2,
+     "prompt": "While some reach their goals following well-trodden paths, others blaze their own trails achieving the unexpected. In what ways have you done something different than what was expected in your educational journey?",
+     "limitText": "225 words",
+     "limit": 225,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short answer essays"
+    },
+    {
+     "order": 3,
+     "prompt": "How have your personal and academic experiences influenced the types of problems you would want to tackle with an MIT education and the impact you aim to make on your community?",
+     "limitText": "225 words",
+     "limit": 225,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short answer essays"
+    },
+    {
+     "order": 4,
+     "prompt": "How did you manage a situation or challenge that you didn’t expect? What did you learn from it?",
+     "limitText": "100-200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short answer essays"
+    },
+    {
+     "order": 5,
+     "prompt": "There is also one final, open-ended, additional-information text box where you can tell us anything else you think we really ought to know.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": "Additional information"
+    },
+    {
+     "order": 6,
+     "prompt": "What do you do just for fun?",
+     "limitText": "40-50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short response questions · Short responses designed to get to know you better."
+    },
+    {
+     "order": 7,
+     "prompt": "Who is someone you admire, whether you know them personally or look up to them from afar? Tell us why.",
+     "limitText": "40-50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short response questions"
+    },
+    {
+     "order": 8,
+     "prompt": "What’s a topic, academic or non-academic, that you could talk about for hours?",
+     "limitText": "40-50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short response questions"
+    },
+    {
+     "order": 9,
+     "prompt": "MIT values both “generalists” with varied interests and “specialists” who focus deeply on one or a few passions. Which do you think best describes you, and why?",
+     "limitText": "40-50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short response questions"
+    }
+   ]
+  },
+  {
+   "unitid": "140553",
+   "directoryName": "Morehouse College",
+   "sheetName": "Morehouse - HBCU",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "163453",
+   "directoryName": "Morgan State University",
+   "sheetName": "Morgan State - HBCU",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "166939",
+   "directoryName": "Mount Holyoke College",
+   "sheetName": "Mount Holyoke",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "199193",
+   "directoryName": "North Carolina State University at Raleigh",
+   "sheetName": "NC State",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "167358",
+   "directoryName": "Northeastern University",
+   "sheetName": "Northeastern",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "147767",
+   "directoryName": "Northwestern University",
+   "sheetName": "Northwestern",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.northwestern.edu/apply/requirements.html",
+   "guideUrl": "https://www.collegeessayguy.com/blog/northwestern-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "We want to be sure we’re considering your application in the context of your personal experiences: What aspects of your background (your identity, your school setting, your community, your household, etc.) have most shaped how you see yourself engaging in Northwestern’s community, be it academically, extracurricularly, culturally, politically, socially, or otherwise?",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Required for Common App and Coalition with Scoir applicants; optional for QuestBridge applicants. Northwestern no longer requires the personal essay but welcomes it (you may repurpose essays from other applications)."
+    },
+    {
+     "order": 2,
+     "prompt": "Painting “The Rock” is a tradition at Northwestern that invites all forms of expression—students promote campus events or extracurricular groups, support social or activist causes, show their Wildcat spirit (what we call “Purple Pride”), celebrate their culture, and more. What would you paint on The Rock, and why?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Choose 1-2 of 5",
+     "notes": "Choose 1-2 of the following · Answer at least one and no more than two; fewer than 200 words per question."
+    },
+    {
+     "order": 3,
+     "prompt": "Northwestern fosters a distinctively interdisciplinary culture. We believe discovery and innovation thrive at the intersection of diverse ideas, perspectives, and academic interests. Within this setting, if you could dream up an undergraduate class, research project, or creative effort (a start-up, a design prototype, a performance, etc.), what would it be? Who might be some ideal classmates or collaborators?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Choose 1-2 of 5",
+     "notes": "Choose 1-2 of the following"
+    },
+    {
+     "order": 4,
+     "prompt": "Community and belonging matter at Northwestern. Tell us about one or more communities, networks, or student groups you see yourself connecting with on campus.",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Choose 1-2 of 5",
+     "notes": "Choose 1-2 of the following"
+    },
+    {
+     "order": 5,
+     "prompt": "Northwestern’s location is special: on the shore of Lake Michigan, steps from downtown Evanston, just a few miles from Chicago. What aspects of our location are most compelling to you, and why?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Choose 1-2 of 5",
+     "notes": "Choose 1-2 of the following"
+    },
+    {
+     "order": 6,
+     "prompt": "Northwestern is a place where people with diverse backgrounds from all over the world can study, live, and talk with one another. This range of experiences and viewpoints immeasurably enriches learning. How might your individual background contribute to this diversity of perspectives in Northwestern’s classrooms and around our campus?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Choose 1-2 of 5",
+     "notes": "Choose 1-2 of the following"
+    }
+   ]
+  },
+  {
+   "unitid": "152080",
+   "directoryName": "University of Notre Dame",
+   "sheetName": "Notre Dame",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.nd.edu/apply/application-overview/",
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Briefly share what draws you to the area(s) of study you listed.",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Prompt 1 · Appears in the “Academics” tab."
+    },
+    {
+     "order": 2,
+     "prompt": "Everyone has different priorities when considering their higher education options and building their college or university list. Tell us about your “non-negotiable” factor(s) when searching for your future college home.*",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Prompt 2 · Maximum of 150 words."
+    },
+    {
+     "order": 3,
+     "prompt": "How does faith influence the decisions you make?",
+     "limitText": "50-100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Choose 3 of 4",
+     "notes": "Short-answer questions"
+    },
+    {
+     "order": 4,
+     "prompt": "What is distinctive about your personal experiences and development (eg, family support, culture, disability, personal background, community)? Why are these experiences important to you and how will you enrich the Notre Dame community?",
+     "limitText": "50-100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Choose 3 of 4",
+     "notes": "Short-answer questions"
+    },
+    {
+     "order": 5,
+     "prompt": "Notre Dame’s undergraduate experience is characterized by a collective sense of care for every person. How do you foster service to others in your community?",
+     "limitText": "50-100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Choose 3 of 4",
+     "notes": "Short-answer questions"
+    },
+    {
+     "order": 6,
+     "prompt": "What would you fight for?",
+     "limitText": "50-100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Choose 3 of 4",
+     "notes": "Short-answer questions"
+    }
+   ]
+  },
+  {
+   "unitid": "193900",
+   "directoryName": "New York University",
+   "sheetName": "NYU",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/new-york-university-nyu-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "We are looking for students who want to be bridge builders—students who can connect people, groups, and ideas to span divides, foster understanding, and promote collaboration within a dynamic, interconnected, and vibrant global academic community. We are eager for you to tell us how your experiences have helped you understand what qualities and efforts are needed to bridge divides so that people can better learn and work together.\n\nPlease consider one or more of the following questions in your essay:\n- Tell us about a time you encountered a perspective different from your own. What did you learn—about yourself, the other person, or the world?\n- Tell us about an experience you've had working with others who have different perspectives. What role did you play in helping people to work together, and what did you learn from your efforts?\n- Tell us about someone you've observed who does a particularly good job helping people think or work together. How does this person set the stage for common exploration or work? How do they react when challenges arise? What qualities do you admire in this person?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": "One essay; the bulleted questions are optional angles to consider, not separate prompts."
+    }
+   ]
+  },
+  {
+   "unitid": "120254",
+   "directoryName": "Occidental College",
+   "sheetName": "Occidental",
+   "status": "coming_soon",
+   "sourceUrl": "https://www.oxy.edu/admission-aid/apply/application-requirements/required-short-answers",
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "204796",
+   "directoryName": "Ohio State University-Main Campus",
+   "sheetName": "Ohio State University - Columbus",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "441982",
+   "directoryName": "Franklin W Olin College of Engineering",
+   "sheetName": "Olin College of Engineering",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "214777",
+   "directoryName": "Pennsylvania State University-Main Campus",
+   "sheetName": "Pennsylvania State University",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/penn-state-supplemental-essays",
+   "prompts": []
+  },
+  {
+   "unitid": "121150",
+   "directoryName": "Pepperdine University",
+   "sheetName": "Pepperdine",
+   "status": "confirmed",
+   "sourceUrl": "https://seaver.pepperdine.edu/admission/application/undergraduate/firstyear.htm",
+   "guideUrl": "https://www.collegeessayguy.com/blog/pepperdine-university-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Pepperdine is a Christian university where all are welcomed and encouraged to challenge each other in the pursuit of truth. Students, faculty, and staff members from all backgrounds participate in conversations of faith inside and outside of the classroom. Considering that Pepperdine is a Christian university, why are you interested in attending and how would you contribute to conversations of faith on campus?",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Prompt #1"
+    }
+   ]
+  },
+  {
+   "unitid": "121257",
+   "directoryName": "Pitzer College",
+   "sheetName": "Pitzer College",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "121345",
+   "directoryName": "Pomona College",
+   "sheetName": "Pomona College",
+   "status": "confirmed",
+   "sourceUrl": "https://www.pomona.edu/admissions/apply/how-apply",
+   "guideUrl": "https://www.collegeessayguy.com/blog/pomona-college-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "What draws you to the subject(s) you selected as potential major(s)? If Undecided, share more about one of your academic passions or interests.",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Academic Interest Statement · Prompt is in the “Academics” tab."
+    },
+    {
+     "order": 2,
+     "prompt": "Reflecting on a community that you are part of, what values or perspectives from that community would you bring to Pomona?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": "Longer-Response Essay"
+    },
+    {
+     "order": 3,
+     "prompt": "Describe an experience you had outside the classroom that changed the way you think or how you engage with your peers. What was that experience and what did you learn from it?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": "Longer-Response Essay"
+    },
+    {
+     "order": 4,
+     "prompt": "Choose any person or group of people in your life and share how they would describe you.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "186131",
+   "directoryName": "Princeton University",
+   "sheetName": "Princeton",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/princeton-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Princeton values community and encourages students, faculty, staff and leadership to engage in respectful conversations that can expand their perspectives and challenge their ideas and beliefs. As a prospective member of this community, reflect on how your lived experiences will impact the conversations you will have in the classroom, the dining hall or other campus spaces. What lessons have you learned in life thus far? What will your classmates learn from you? In short, how has your lived experience shaped you?",
+     "limitText": "400-500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Princeton has a longstanding commitment to understanding our responsibility to society through service and civic engagement. How does your own story intersect with these ideals?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "What is a new skill you would like to learn in college?",
+     "limitText": "50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 4,
+     "prompt": "What brings you joy?",
+     "limitText": "50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 5,
+     "prompt": "What song represents the soundtrack of your life at this moment?",
+     "limitText": "50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 6,
+     "prompt": "As a research institution that also prides itself on its liberal arts curriculum, Princeton allows students to explore areas across the humanities and the arts, the natural sciences, and the social sciences. What academic areas most pique your curiosity, and how do the programs offered at Princeton suit your particular interests?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": null,
+     "notes": "For Applicants Pursuing an A.B. Degree (or are Undecided)"
+    },
+    {
+     "order": 7,
+     "prompt": "Please describe why you are interested in studying engineering at Princeton. Include any of your experiences in, or exposure to engineering, and how you think the programs offered at the University suit your particular interests.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": null,
+     "notes": "For Applicants Pursuing a B.S.E. Degree"
+    }
+   ]
+  },
+  {
+   "unitid": "243780",
+   "directoryName": "Purdue University-Main Campus",
+   "sheetName": "Purdue",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.purdue.edu/apply/essay.php",
+   "guideUrl": "https://www.collegeessayguy.com/blog/purdue-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "How will opportunities at Purdue support your interests, both in and out of the classroom?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Briefly discuss your reasons for pursuing the major you have selected.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "Briefly discuss your reasons for pursuing the alternate major you have selected.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": "Only if you selected an alternate major"
+    },
+    {
+     "order": 4,
+     "prompt": "Tell us about an experience you had which connected ideas from more than one discipline or subject. How did it impact you?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Honors College applicants",
+     "notes": "Honors College · Interdisciplinary Academics"
+    },
+    {
+     "order": 5,
+     "prompt": "Tell us about a time you were able to get involved with or explore a topic you are passionate about. What did you take away from that experience?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Honors College applicants",
+     "notes": "Honors College · Undergraduate Research"
+    },
+    {
+     "order": 6,
+     "prompt": "Share about a destination you would like to travel to, why it interests you, and how you would engage with the culture while there.",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Honors College applicants",
+     "notes": "Honors College - Community & Global Engagement"
+    },
+    {
+     "order": 7,
+     "prompt": "Describe a leadership experience you have had in your school or community. How did this shape your approach to leadership?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Honors College applicants",
+     "notes": "Honors College - Leadership Development"
+    }
+   ]
+  },
+  {
+   "unitid": "209922",
+   "directoryName": "Reed College",
+   "sheetName": "Reed College",
+   "status": "confirmed",
+   "sourceUrl": "https://www.reed.edu/admission-aid/how-to-apply/",
+   "guideUrl": "https://www.collegeessayguy.com/blog/reed-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "For one week at the end of January, Reed students upend the traditional classroom hierarchy and teach classes about any topic they love, academic or otherwise. This week is known as Paideia after the Greek term signifying “education” – the complete education of mind, body and spirit. What would you teach that would contribute to the Reed community?",
+     "limitText": "200-500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "194824",
+   "directoryName": "Rensselaer Polytechnic Institute",
+   "sheetName": "Rensselaer Polytechnic Institute",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/rensselaer-polytechnic-institute-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Why are you interested in Rensselaer Polytechnic Institute?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Please briefly elaborate on one of your extracurricular activities or work experiences.",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "State your reasons for aspiring to a career in medicine.",
+     "limitText": "500-750 words",
+     "limit": 750,
+     "unit": "words",
+     "requirement": "B.S./M.D. applicants",
+     "notes": "Accelerated Physician-Scientist (B.S./M.D.) Program"
+    },
+    {
+     "order": 4,
+     "prompt": "State your reasons for choosing architecture as your profession.",
+     "limitText": "500-750 words",
+     "limit": 750,
+     "unit": "words",
+     "requirement": "Architecture applicants",
+     "notes": "Architecture"
+    },
+    {
+     "order": 5,
+     "prompt": "Discuss your interests in the field of electronic arts, and state how this is reflected in your portfolio, if one has been submitted.",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Electronic Arts applicants",
+     "notes": "Electronic Arts"
+    },
+    {
+     "order": 6,
+     "prompt": "State your reasons for choosing the field of games and simulation arts and sciences, making reference to your portfolio if one has been submitted.",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Games and Simulation Arts and Sciences applicants",
+     "notes": "Games and Simulation Arts and Sciences"
+    },
+    {
+     "order": 7,
+     "prompt": "Describe your interest in the music major and your goals. Please include completed course work in music, private music instruction, musical performance and production experience, or completed independent projects.",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Music applicants",
+     "notes": "Music"
+    }
+   ]
+  },
+  {
+   "unitid": "227757",
+   "directoryName": "Rice University",
+   "sheetName": "Rice",
+   "status": "confirmed",
+   "sourceUrl": "https://admission.rice.edu/apply/first-year-domestic-applicants",
+   "guideUrl": "https://www.collegeessayguy.com/blog/rice-university-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Please explain what draws you to the academic areas you selected above and how you hope to explore them at Rice University.",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Based upon your exploration of Rice University, what elements of the Rice experience appeal to you?",
+     "limitText": "150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "The Residential College System is at the heart of Rice student life and is heavily influenced by the particular cultural traditions and unique life experiences each student brings. What life experiences and/or unique perspectives are you looking forward to sharing with fellow Owls in the residential college system?",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Choose one of 2",
+     "notes": "Community contribution (choose one)"
+    },
+    {
+     "order": 4,
+     "prompt": "Rice is strengthened by its diverse community of learning and discovery that produces leaders and change agents across the spectrum of human endeavor. What perspectives shaped by your background, experiences, upbringing, and/or cultural identity inspire you to join our community of change agents at Rice?",
+     "limitText": "500 words",
+     "limit": 500,
+     "unit": "words",
+     "requirement": "Choose one of 2",
+     "notes": "Community contribution (choose one)"
+    },
+    {
+     "order": 5,
+     "prompt": "One of Rice's long-standing traditions is “The Box,” a question on our application where we ask all of our applicants to share an image of something that appeals to them. The Box gives you the opportunity to present us with an image that shares something about yourself, your interests or what is meaningful to you. This image is not used for evaluative purposes in the application, but allows you to put your stamp on the application about who you are aside from what you have achieved. Be sure to choose an image that speaks for itself and does not need an explanation. The Box must be a two-dimensional image that is uploaded in the Common Application or uploaded in the Rice Admission Student Portal.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "Rice Box · Image upload, not a written essay"
+    }
+   ]
+  },
+  {
+   "unitid": "122931",
+   "directoryName": "Santa Clara University",
+   "sheetName": "Santa Clara",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Why are you interested in pursuing the [Division or Major] selected above?",
+     "limitText": "50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "123165",
+   "directoryName": "Scripps College",
+   "sheetName": "Scripps",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "167835",
+   "directoryName": "Smith College",
+   "sheetName": "Smith College",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "399911",
+   "directoryName": "Soka University of America",
+   "sheetName": "Soka University of America",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "228246",
+   "directoryName": "Southern Methodist University",
+   "sheetName": "Southern Methodist",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "141060",
+   "directoryName": "Spelman College",
+   "sheetName": "Spelman - HBCU",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/applying-to-spelman-college",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "The Spelman College tagline is “A Choice to Change the World”. If you could create meaningful change around one issue in your school, community or globally, what would it be and how would you approach making this change?",
+     "limitText": "150-300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "243744",
+   "directoryName": "Stanford University",
+   "sheetName": "Stanford",
+   "status": "confirmed",
+   "sourceUrl": "https://admission.stanford.edu/apply/first-year/apply.html",
+   "guideUrl": "https://www.collegeessayguy.com/blog/stanford-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "What is the most significant challenge that society faces today?",
+     "limitText": "3-50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short questions"
+    },
+    {
+     "order": 2,
+     "prompt": "How did you spend your last two summers?",
+     "limitText": "3-50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short questions"
+    },
+    {
+     "order": 3,
+     "prompt": "What historical moment or event do you wish you could have witnessed?",
+     "limitText": "3-50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short questions"
+    },
+    {
+     "order": 4,
+     "prompt": "Briefly elaborate on one of your extracurricular activities, a job you hold, or responsibilities you have for your family.",
+     "limitText": "3-50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short questions"
+    },
+    {
+     "order": 5,
+     "prompt": "List five things that are important to you.",
+     "limitText": "3-50 words",
+     "limit": 50,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short questions"
+    },
+    {
+     "order": 6,
+     "prompt": "The Stanford community is deeply curious and driven to learn in and out of the classroom. Reflect on an idea or experience that makes you genuinely excited about learning.",
+     "limitText": "100-250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short essays"
+    },
+    {
+     "order": 7,
+     "prompt": "Virtually all of Stanford's undergraduates live on campus. Write a note to your future roommate that reveals something about you or that will help your roommate—and us—get to know you better.",
+     "limitText": "100-250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short essays"
+    },
+    {
+     "order": 8,
+     "prompt": "Please describe what aspects of your life experiences, interests, and character would help you make a distinctive contribution as an undergraduate to Stanford University.",
+     "limitText": "100-250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short essays"
+    }
+   ]
+  },
+  {
+   "unitid": "196097",
+   "directoryName": "Stony Brook University",
+   "sheetName": "SUNY Stony Brook",
+   "status": "confirmed",
+   "sourceUrl": "https://www.stonybrook.edu/undergraduate-admissions/apply/first-year.php",
+   "guideUrl": "https://www.collegeessayguy.com/blog/suny-stony-book-university-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Please discuss why you are a good fit for your preferred University Honors Program (Honors College, University Scholars, or WISE). Applicants should keep their statement to approximately 250 words. The honors essay is a required document for Honors Program consideration.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Honors Program applicants",
+     "notes": "University Honors Program"
+    },
+    {
+     "order": 2,
+     "prompt": "What aspects about medicine/dental medicine intrigue you? Describe how these aspects influence your life.",
+     "limitText": "650 words",
+     "limit": 650,
+     "unit": "words",
+     "requirement": "Scholars for Medicine/Dental Medicine applicants",
+     "notes": "Scholars for Medicine & Scholars for Dental Medicine"
+    },
+    {
+     "order": 3,
+     "prompt": "Tell us more about yourself; in particular, how your academic, extracurricular and life experiences have influenced your desire to pursue a career in STEM. Additionally, explain how the Stony Brook Simons STEM program will help you achieve these goals.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "STEM Scholars applicants",
+     "notes": "STEM Scholars"
+    },
+    {
+     "order": 4,
+     "prompt": "Please tell us how pursuing a Phd in STEM will help you achieve your educational and professional aspirations?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "STEM Scholars applicants",
+     "notes": "STEM Scholars"
+    },
+    {
+     "order": 5,
+     "prompt": "How are the perspectives of multiple communities helpful to the advancement of STEM research?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "STEM Scholars applicants",
+     "notes": "STEM Scholars"
+    }
+   ]
+  },
+  {
+   "unitid": "216287",
+   "directoryName": "Swarthmore College",
+   "sheetName": "Swarthmore",
+   "status": "confirmed",
+   "sourceUrl": "https://www.swarthmore.edu/admissions-aid/apply-a-first-year-student",
+   "guideUrl": "https://www.collegeessayguy.com/blog/swarthmore-college-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Swarthmore College maintains an ongoing commitment of building a diverse, equitable, and inclusive residential community dedicated to rigorous intellectual inquiry.\n\nAll who engage in our community are empowered through the open exchange of ideas guided by equity and social responsibility to thrive and contribute as bridge builders within global communities.\n\nOur identities and perspectives are supported and developed by our immediate contexts and lived experiences – in our neighborhoods, families, classrooms, communities of faith, and more.\n\nWhat aspects of your self-identity or personal background are most significant to you? Reflecting on the elements of your home, school, or other communities that have shaped your life, explain how you have grown in your ability to navigate differences when engaging with others, or demonstrated your ability to collaborate in communities other than your own.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "Topic 1 · Both prompts must be completed"
+    },
+    {
+     "order": 2,
+     "prompt": "Swarthmore’s community of learners inspire one another through their collaborative and flexible approach to learning. Swarthmore students are comfortable with intellectual experimentation and connection of ideas across the humanities, social sciences, natural sciences, and interdisciplinary studies through a liberal arts education.\n\nTell us about a topic that has fascinated you recently – either inside or outside of the classroom. What made you curious about this? Has this topic connected across other areas of your interests? How has this experience shaped you and what encourages you to keep exploring?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "Topic 2 · Both prompts must be completed"
+    }
+   ]
+  },
+  {
+   "unitid": "196413",
+   "directoryName": "Syracuse University",
+   "sheetName": "Syracuse",
+   "status": "confirmed",
+   "sourceUrl": "https://www.syracuse.edu/admissions-aid/application-process/undergraduate/first-year/requirements/",
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Why is Syracuse university a good match for your interests and goals?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "228723",
+   "directoryName": "Texas A&M University-College Station",
+   "sheetName": "Texas A&M",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.tamu.edu/resources/future-students/college-readiness",
+   "guideUrl": "https://www.collegeessayguy.com/blog/texas-am-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Tell us your story. What unique opportunities or challenges have you experienced throughout your high school career that have shaped who you are today?",
+     "limitText": "750 words",
+     "limit": 750,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Describe a life event which you feel has prepared you to be successful in college.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short Answer"
+    },
+    {
+     "order": 3,
+     "prompt": "In a few words, what are some of your life goals and objectives?",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short Answer"
+    },
+    {
+     "order": 4,
+     "prompt": "In a few words, why have you chosen your academic major(s)?",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short Answer"
+    },
+    {
+     "order": 5,
+     "prompt": "We know you have a lot of options.  In a few words, why did you choose to apply to Texas A&M?",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short Answer"
+    },
+    {
+     "order": 6,
+     "prompt": "Briefly describe any educational plans you have beyond earning your bachelor’s degree.",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Short Answer"
+    },
+    {
+     "order": 7,
+     "prompt": "Are there experiences or opportunities that have shaped or influenced your abilities or academic record, which you have not already written about?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": "Short Answer"
+    }
+   ]
+  },
+  {
+   "unitid": "130590",
+   "directoryName": "Trinity College",
+   "sheetName": "Trinity College",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "168148",
+   "directoryName": "Tufts University",
+   "sheetName": "Tufts",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.tufts.edu/apply/short-answer-questions/",
+   "guideUrl": "https://www.collegeessayguy.com/blog/tufts-university-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Please describe how you have learned about and engaged with Tufts during your college search process",
+     "limitText": "75-150 words",
+     "limit": 150,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Applicants to the School of Arts and Sciences are required to answer the following question in 100-200 words:\nTell us about one of your favorite school assignments in the past two years. What was the assignment and why did you enjoy it?",
+     "limitText": "100-200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "School of Arts and Sciences · Prompt #2: answer the one version matching your intended school/program."
+    },
+    {
+     "order": 3,
+     "prompt": "Applicants to the School of Engineering are required to answer the following question in 100-200 words:\nTell us about an engineering or science-related project that you have helped build, design, create, or iterate in the past two years. What was the project and what was your role?",
+     "limitText": "100-200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "School of Engineering · Prompt #2: answer the one version matching your intended school/program."
+    },
+    {
+     "order": 4,
+     "prompt": "Applicants to the Bachelor of Fine Arts (BFA) program are required to answer the following question in 100-200 words:\nTell us more about a specific piece in your portfolio. What were the ideas you intended to explore, and how did those ideas inform the process of making the piece?",
+     "limitText": "100-200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "BFA program · Prompt #2: answer the one version matching your intended school/program."
+    },
+    {
+     "order": 5,
+     "prompt": "Applicants to the Combined Degree (BFA+BA/BS) program are required to answer the following question in 100-200 words:\nTell us more about a specific piece in your portfolio. How did an academic course, project, or interest inspire the ideas that you explored in this piece? Or, how did making this piece influence your academic interests?",
+     "limitText": "100-200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Combined Degree (BFA+BA/BS) program · Prompt #2: answer the one version matching your intended school/program."
+    }
+   ]
+  },
+  {
+   "unitid": "160755",
+   "directoryName": "Tulane University of Louisiana",
+   "sheetName": "Tulane",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/tulane-university-supplemental-essays",
+   "prompts": []
+  },
+  {
+   "unitid": "102377",
+   "directoryName": "Tuskegee University",
+   "sheetName": "Tuskegee - HBCU",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/tuskegee-supplemental-essays",
+   "prompts": []
+  },
+  {
+   "unitid": "144050",
+   "directoryName": "University of Chicago",
+   "sheetName": "U Chicago",
+   "status": "confirmed",
+   "sourceUrl": "https://collegeadmissions.uchicago.edu/apply/essay/",
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "How does the University of Chicago, as you know it now, satisfy your desire for a particular kind of learning, community, and future? Please address with some specificity your own wishes and how they relate to UChicago.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Food for thought: How do thoughts eat?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Choose one of 6",
+     "notes": "Extended Essay"
+    },
+    {
+     "order": 3,
+     "prompt": "The James Webb Space Telescope, launched in 2021, utilized origami-inspired techniques to compactly store and deploy its sunshield in space. Choose an artistic practice and use its principles to propose an elegant solution to a problem.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Choose one of 6",
+     "notes": "Extended Essay"
+    },
+    {
+     "order": 4,
+     "prompt": "Sometimes metaphors get mixed up. For one reason or another, one could say, “we'll burn that bridge when we get there” or “the world is your china shop”. Make up your own mixed metaphor. Explain how it could make sense, be understood, or even applied.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Choose one of 6",
+     "notes": "Extended Essay"
+    },
+    {
+     "order": 5,
+     "prompt": "The Olympics have long celebrated the pinnacle of human athletic achievement. But what if they expanded to honor the mundane? Imagine a new Olympic event built around an everyday activity like speed dishwashing or competitive grocery bagging. How is it scored, officiated, and judged? Why is it a worthy addition?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Choose one of 6",
+     "notes": "Extended Essay"
+    },
+    {
+     "order": 6,
+     "prompt": "AI: Allen Iverson. NASA, or the North American Saxophone Alliance. Share a potentially confounding, comedic, or captivating example of MIA (Mistaken Identity of Acronym) and tell us its backstory.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Choose one of 6",
+     "notes": "Extended Essay"
+    },
+    {
+     "order": 7,
+     "prompt": "And, as always… the classic choose your own adventure option! In the spirit of adventurous inquiry, choose one of our past prompts (or create a question of your own). Be original, creative, thought provoking. Draw on your best qualities as a writer, thinker, visionary, social critic, sage, citizen of the world, or future citizen of the University of Chicago; take a little risk, and have fun!",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Choose one of 6",
+     "notes": "Extended Essay"
+    }
+   ]
+  },
+  {
+   "unitid": "195030",
+   "directoryName": "University of Rochester",
+   "sheetName": "U Rochester",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.rochester.edu/applying/how-to-apply/",
+   "guideUrl": "https://www.collegeessayguy.com/blog/university-Rochester-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "What field/area of study are you interested in researching?",
+     "limitText": "20 words",
+     "limit": 20,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Rochester discourages the use of AI to compose application essays or short answer responses."
+    },
+    {
+     "order": 2,
+     "prompt": "If you are interested in applying to one of the Combined Degree Program, please answer the following essay prompt and limit your response to no more than 250 words.\n\nWhat relevant experiences or insight have led to your interest in this particular program? Describe how Rochester’s resources: facilities, faculty, peers and research will meet your academic and personal ambitions. Describe how you see yourself contributing to the challenging field you want to enter as a Rochester graduate.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Combined Degree Program applicants",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "The University of Rochester is a place where curiosity and creativity meet. How will you combine our academic flexibility and co-curricular opportunities to create an experience that reflects your interests and ambitions?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "122436",
+   "directoryName": "University of San Diego",
+   "sheetName": "U San Diego",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/university-of-san-diego-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "How did you first learn about the University of San Diego, and what inspired you to apply?",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "USD is committed to fostering a community where everyone feels a sense of belonging and purpose. What does community mean to you and how have you helped create a welcoming environment for others?",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "As a Changemaker Campus, USD challenges students to utilize their learning to actively pursue a more just, sustainable and equitable world. What is a challenge facing humanity today and why does it matter to you?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Choose one of 3",
+     "notes": null
+    },
+    {
+     "order": 4,
+     "prompt": "As a contemporary Catholic university, students from all backgrounds and faith traditions are welcomed and celebrated. Share an experience that highlights the ways faith or spirituality–either your own or someone else’s–have influenced your life.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Choose one of 3",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "240444",
+   "directoryName": "University of Wisconsin-Madison",
+   "sheetName": "U Wisconsin Madison",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.wisc.edu/apply-as-a-freshman/",
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "If you apply with the Universities of Wisconsin Application, you will need to answer the following prompt:\n\nEach student is unique. Please tell us about the particular life experiences, talents, commitments, and/or interests you will bring to our campus.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Universities of Wisconsin Application applicants",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "All applicants will also need to respond to this prompt:\n\nTell us why you would like to attend the University of Wisconsin–Madison. In addition, please include why you are interested in studying the major(s) you have selected. If you selected undecided, please describe your areas of possible academic interest.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "163286",
+   "directoryName": "University of Maryland-College Park",
+   "sheetName": "UMaryland",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/university-of-maryland-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "If I could travel anywhere, I would go to…",
+     "limitText": "650 characters",
+     "limit": 650,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "The most interesting fact I ever learned from research was…",
+     "limitText": "650 characters",
+     "limit": 650,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "n addition to my major, my academic interests include…",
+     "limitText": "650 characters",
+     "limit": 650,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 4,
+     "prompt": "My favorite thing about last Tuesday was…",
+     "limitText": "650 characters",
+     "limit": 650,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 5,
+     "prompt": "Something you might not know about me is…",
+     "limitText": "650 characters",
+     "limit": 650,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 6,
+     "prompt": "Because we know that diversity benefits the educational experience of all students, the University of Maryland values diversity in all of its many forms. This includes (but is not limited to) racial, socio-economic, gender, geographical, and sexual orientation. We are interested in hearing about your own individual life experiences. In a few sentences, will you please describe how you have learned, grown, been inspired or developed skills through one or more components of diversity.",
+     "limitText": "650 characters",
+     "limit": 650,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "166629",
+   "directoryName": "University of Massachusetts-Amherst",
+   "sheetName": "UMass Amherst",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Please tell us why you want to attend UMass Amherst?",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Please tell us why you chose the Major(s) you did.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "At UMass Amherst, no two students are alike. Our communities and groups often define us and shape our individual worlds. Community can refer to various aspects, including shared geography, religion, race/ethnicity, income, ideology, and more. Please choose one of your communities or groups and describe its significance. Explain how, as a product of this community or group, you would enrich our campus.",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Non-Honors College applicants",
+     "notes": null
+    },
+    {
+     "order": 4,
+     "prompt": "Commonwealth Honors College is a community in which students examine complex questions, learn across differences, and connect their academic interests to the world around them. What is one perspective, experience, or question you would bring to this community, and how would you hope to develop it at UMass Amherst?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Honors College applicants",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "199120",
+   "directoryName": "University of North Carolina at Chapel Hill",
+   "sheetName": "UNC Chapel Hill",
+   "status": "none",
+   "sourceUrl": "https://admissions.unc.edu/application-prompts-for-2024-2025/",
+   "guideUrl": "https://www.collegeessayguy.com/blog/unc-chapel-hill-supplemental-essays",
+   "prompts": []
+  },
+  {
+   "unitid": "197036",
+   "directoryName": "United States Military Academy",
+   "sheetName": "United States Military Academy",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "164155",
+   "directoryName": "United States Naval Academy",
+   "sheetName": "United States Naval Academy",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "110635",
+   "directoryName": "University of California-Berkeley",
+   "sheetName": "University of California (all campuses)",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
+   "prompts": []
+  },
+  {
+   "unitid": "110644",
+   "directoryName": "University of California-Davis",
+   "sheetName": "University of California (all campuses)",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
+   "prompts": []
+  },
+  {
+   "unitid": "110653",
+   "directoryName": "University of California-Irvine",
+   "sheetName": "University of California (all campuses)",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
+   "prompts": []
+  },
+  {
+   "unitid": "110662",
+   "directoryName": "University of California-Los Angeles",
+   "sheetName": "University of California (all campuses)",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
+   "prompts": []
+  },
+  {
+   "unitid": "445188",
+   "directoryName": "University of California-Merced",
+   "sheetName": "University of California (all campuses)",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
+   "prompts": []
+  },
+  {
+   "unitid": "110671",
+   "directoryName": "University of California-Riverside",
+   "sheetName": "University of California (all campuses)",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
+   "prompts": []
+  },
+  {
+   "unitid": "110680",
+   "directoryName": "University of California-San Diego",
+   "sheetName": "University of California (all campuses)",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
+   "prompts": []
+  },
+  {
+   "unitid": "110705",
+   "directoryName": "University of California-Santa Barbara",
+   "sheetName": "University of California (all campuses)",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
+   "prompts": []
+  },
+  {
+   "unitid": "110714",
+   "directoryName": "University of California-Santa Cruz",
+   "sheetName": "University of California (all campuses)",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/uc-essay-prompts",
+   "prompts": []
+  },
+  {
+   "unitid": "134130",
+   "directoryName": "University of Florida",
+   "sheetName": "University of Florida",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Please provide more details on your most meaningful commitment outside of the classroom while in high school and explain why it was meaningful. This could be related to an extracurricular activity, work, volunteering, an academic activity, family responsibility, or any other non-classroom activity.",
+     "limitText": "100-250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Do you have any employment or family obligations that limit your participation in extracurricular activities? If so, please describe.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "Have you participated in or been assisted in your college preparation and search by programs outside of the classroom, such as Educational Talent Search, Take Stock in Children, Upward Bound, Boys and Girls Club, etc.? If so, please provide the name of the program, details/benefits of your involvement, and how long your experiences continued.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": null
+    },
+    {
+     "order": 4,
+     "prompt": "Is there any additional information or extenuating circumstances the Admissions Committee should know when reviewing your application? If so, please provide more information in less than 250 words.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": null
+    },
+    {
+     "order": 5,
+     "prompt": "The UF Honors Program’s mission is to connect, nurture and engage the next generation of scholars who change the world. How do you envision yourself contributing to this mission? Consider the people, experiences, resources, and aspirations that have shaped your journey thus far and your future plans.\n\nPlease use a maximum of 400 words in your essay for full consideration.",
+     "limitText": "150-400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Required for UF Honors Program applicants",
+     "notes": "UF Honors Program"
+    }
+   ]
+  },
+  {
+   "unitid": "139959",
+   "directoryName": "University of Georgia",
+   "sheetName": "University of Georgia",
+   "status": "none",
+   "sourceUrl": "https://www.admissions.uga.edu/blog/fall-2025-uga-essay-questions/",
+   "guideUrl": "https://www.collegeessayguy.com/blog/university-of-georgia-supplemental-essay",
+   "prompts": []
+  },
+  {
+   "unitid": "145637",
+   "directoryName": "University of Illinois Urbana-Champaign",
+   "sheetName": "University of Illinois Urbana-Champaign",
+   "status": "coming_soon",
+   "sourceUrl": "https://www.admissions.illinois.edu/apply/freshman/essays",
+   "guideUrl": "https://www.collegeessayguy.com/blog/university-illinois-urbana-champaign-supplemental-essays",
+   "prompts": []
+  },
+  {
+   "unitid": "135726",
+   "directoryName": "University of Miami",
+   "sheetName": "University of Miami",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/university-of-miami-supplemental-essays",
+   "prompts": []
+  },
+  {
+   "unitid": "215293",
+   "directoryName": "University of Pittsburgh-Pittsburgh Campus",
+   "sheetName": "University of Pittsburgh",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "233374",
+   "directoryName": "University of Richmond",
+   "sheetName": "University of Richmond",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.richmond.edu/process/materials.html",
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Richmond is a community that strives to be relentlessly welcoming. Tell us about a time you made a space better for other people by helping them feel welcome, heard, included, or supported.",
+     "limitText": "350-650 words",
+     "limit": 650,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": "One essay response is required; choose one of the three prompts."
+    },
+    {
+     "order": 2,
+     "prompt": "Richmond students turn ideas into actions. Tell us about a time you learned by doing, making, building, testing, helping, or leading and what that experience taught you about yourself, the world, or the kind of impact you want to have.",
+     "limitText": "350-650 words",
+     "limit": 650,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": "One essay response is required; choose one of the three prompts."
+    },
+    {
+     "order": 3,
+     "prompt": "Richmond’s mascot is the Spider. Just as you are unique, this singular mascot represents over 52,680 unique species of spiders. Tell us about the communities, experiences, or ambitions that have shaped you into the unique person you are and how you will make your mark as part of a Spider community.",
+     "limitText": "350-650 words",
+     "limit": 650,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": "One essay response is required; choose one of the three prompts."
+    }
+   ]
+  },
+  {
+   "unitid": "231174",
+   "directoryName": "University of Vermont",
+   "sheetName": "University of Vermont",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "236948",
+   "directoryName": "University of Washington-Seattle Campus",
+   "sheetName": "University of Washington",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "We want to know why you are excited to push your education outside the areas of academic learning with which you are most comfortable. \n\nTo help us understand your enthusiasm for exploring different ways of thinking and learning tell us: What do you pay attention to? What is a unique lens through which you see the world? How does that connect to your current interests and future curiosities?",
+     "limitText": "450 words",
+     "limit": 450,
+     "unit": "words",
+     "requirement": "UW Honors applicants",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "215062",
+   "directoryName": "University of Pennsylvania",
+   "sheetName": "UPenn",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.upenn.edu/how-to-apply/what-penn-looks-for/essays",
+   "guideUrl": "https://www.collegeessayguy.com/blog/upenn-university-pennsylvania-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Write a short thank-you note to someone you have not yet thanked and would like to acknowledge. (We encourage you to share this note with that person, if possible, and reflect on the experience!)",
+     "limitText": "Up to 200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "How will you explore community at Penn? Consider how Penn will help shape your perspective, and how your experiences and perspective will help shape Penn.",
+     "limitText": "Up to 200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "The College of Arts and Sciences is designed to foster discovery and connection. Describe something you are curious about—something you'd like to learn more about or find a new approach to—and how you might pursue that curiosity in the College.",
+     "limitText": "Up to 200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required for College of Arts and Sciences applicants",
+     "notes": "College of Arts and Sciences"
+    },
+    {
+     "order": 4,
+     "prompt": "Penn Engineering prepares its students to become leaders in technology by combining a strong foundation in the natural sciences and mathematics with depth of study in focused disciplinary majors. Describe how you plan to pursue your engineering interests at Penn, particularly within the intended major you selected.",
+     "limitText": "Up to 200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required for School of Engineering applicants",
+     "notes": "School of Engineering"
+    },
+    {
+     "order": 5,
+     "prompt": "Penn Nursing intends to meet the health needs of society in a global and multicultural world by preparing its students to impact healthcare by advancing science. Why are you applying to Nursing, where do you see yourself professionally in the future, and how will you contribute to our mission of promoting equity in healthcare?",
+     "limitText": "Up to 200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required for School of Nursing applicants",
+     "notes": "School of Nursing"
+    },
+    {
+     "order": 6,
+     "prompt": "Wharton prepares its students to make an impact by applying business methods and economic theory to real-world problems, including economic, political, and social issues. Explain a current issue of importance to you and how you hope a Wharton education would help you explore it.",
+     "limitText": "Up to 200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required for Wharton applicants",
+     "notes": "Wharton"
+    },
+    {
+     "order": 7,
+     "prompt": "Describe your experience with the target language you selected. You may wish to share the length of time you’ve studied or used this language, how you’ve learned it, the skills you’ve acquired, and/or the skills you still wish to develop. Please also explain why you are interested in studying this language and the region(s) of the world where it is spoken.",
+     "limitText": "Up to 200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required for Huntsman Program applicants",
+     "notes": "Huntsman Program"
+    },
+    {
+     "order": 8,
+     "prompt": "The Huntsman Program supports the development of globally-minded scholars who become engaged citizens, creative innovators, and ethical leaders in the public, private, and non-profit sectors in the United States and around the world. What draws you to a dual degree in international studies and business, and how would you use what you learn to address a global issue where these two domains intersect?",
+     "limitText": "Up to 400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Required for Huntsman Program applicants",
+     "notes": "Huntsman Program · Penn encourages reviewing the Huntsman Program's curriculum and global focus before writing."
+    },
+    {
+     "order": 9,
+     "prompt": "The Vagelos Life Sciences & Management (LSM) program brings together two powerful modes of understanding—scientific inquiry and strategic thinking—to prepare students to engage thoughtfully and creatively with some of the most complex challenges of our time. What questions, problems, or opportunities would you hope to explore through LSM, and how might the integration of life sciences and management shape your approach to them? Focus on the ideas, values, or questions that draw you to this intersection, rather than how LSM might advance your career, and make sure this essay is distinct from your single-degree application.",
+     "limitText": "Up to 400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Required for LSM applicants",
+     "notes": "Vagelos Life Sciences & Management (LSM) · Penn encourages reviewing the LSM curriculum before writing."
+    },
+    {
+     "order": 10,
+     "prompt": "Explain how you will use the M&T program to pursue problems or opportunities that require both engineering and business perspectives.",
+     "limitText": "Up to 400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Required for M&T applicants",
+     "notes": "Jerome Fisher Program in Management & Technology (M&T) · Penn encourages reviewing the M&T program's curriculum before writing."
+    },
+    {
+     "order": 11,
+     "prompt": "Describe something you created, designed, improved, or built. What motivated you, and what did you learn from the process?",
+     "limitText": "Up to 200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required for M&T applicants",
+     "notes": "Jerome Fisher Program in Management & Technology (M&T)"
+    },
+    {
+     "order": 12,
+     "prompt": "Describe your interest in nursing and health care management, and how Penn's coordinated dual-degree program in nursing and business would help you meet your goals. Please ensure that this essay is distinct from your single-degree application, if applicable.",
+     "limitText": "Up to 400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Required for NHCM applicants",
+     "notes": "Nursing and Health Care Management (NHCM) · Penn encourages reviewing the NHCM program's curriculum and structure before writing."
+    },
+    {
+     "order": 13,
+     "prompt": "VIPER students pursue dual degrees in science or math and engineering. Which major combination(s) interest you most right now and why?",
+     "limitText": "Up to 200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required for VIPER applicants",
+     "notes": "Vagelos Integrated Program in Energy Research (VIPER) · Your response is not binding; students often shift majors as they learn more through the program."
+    },
+    {
+     "order": 14,
+     "prompt": "Describe your interest in the VIPER program, including how any past experiences (academic, research, extracurricular, etc.) have shaped your interest in energy science and technology, and how you envision participation in VIPER fitting into your future goals.",
+     "limitText": "Up to 400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Required for VIPER applicants",
+     "notes": "Vagelos Integrated Program in Energy Research (VIPER) · Penn encourages reviewing VIPER's research and program structure before writing."
+    },
+    {
+     "order": 15,
+     "prompt": "Describe how your academic interests align with the Visual and Interactive Computing (VIC) program at the University of Pennsylvania.",
+     "limitText": "Up to 400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Required for Visual and Interactive Computing applicants",
+     "notes": "Visual and Interactive Computing · VIC applicants are recommended to submit a portfolio; see Penn's guidance on supplementary materials."
+    }
+   ]
+  },
+  {
+   "unitid": "123961",
+   "directoryName": "University of Southern California",
+   "sheetName": "USC",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/university-southern-california-usc-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Describe how you plan to pursue your academic interests and why you want to explore them at USC specifically. Please feel free to address your first- and second-choice major selections.",
+     "limitText": "Approximately 250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "The USC Student Commitment charges Trojans to \"value honest, open communication and robust debate,\" and to \"champion ideological diversity and embrace freedom of expression.\" Describe a time when you disagreed with someone you know about something important to you. Did you change your mind or reach common ground?",
+     "limitText": "Approximately 250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "Starting with the beginning of high school/secondary school, if you have had a gap where you were not enrolled in school during a fall or spring term, please address this gap in your educational history. You do not need to address a summer break.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required if applicable",
+     "notes": null
+    },
+    {
+     "order": 4,
+     "prompt": "Describe yourself in three words.",
+     "limitText": "25 characters each",
+     "limit": 25,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers"
+    },
+    {
+     "order": 5,
+     "prompt": "What is your favorite snack?",
+     "limitText": "100 characters",
+     "limit": 100,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers"
+    },
+    {
+     "order": 6,
+     "prompt": "Best movie of all time",
+     "limitText": "100 characters",
+     "limit": 100,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers"
+    },
+    {
+     "order": 7,
+     "prompt": "Dream job",
+     "limitText": "100 characters",
+     "limit": 100,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers"
+    },
+    {
+     "order": 8,
+     "prompt": "If your life had a theme song, what would it be?",
+     "limitText": "100 characters",
+     "limit": 100,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers"
+    },
+    {
+     "order": 9,
+     "prompt": "Dream trip",
+     "limitText": "100 characters",
+     "limit": 100,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers"
+    },
+    {
+     "order": 10,
+     "prompt": "What TV show will you binge watch next?",
+     "limitText": "100 characters",
+     "limit": 100,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers"
+    },
+    {
+     "order": 11,
+     "prompt": "Which well-known person or fictional character would be your ideal roommate?",
+     "limitText": "100 characters",
+     "limit": 100,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers"
+    },
+    {
+     "order": 12,
+     "prompt": "Favorite Book",
+     "limitText": "100 characters",
+     "limit": 100,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers"
+    },
+    {
+     "order": 13,
+     "prompt": "If you could teach a class on any topic, what would it be?",
+     "limitText": "100 characters",
+     "limit": 100,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers"
+    }
+   ]
+  },
+  {
+   "unitid": "228778",
+   "directoryName": "The University of Texas at Austin",
+   "sheetName": "UT Austin",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.utexas.edu/apply/application-materials/essays-and-short-answers/",
+   "guideUrl": "https://www.collegeessayguy.com/blog/university-texas-austin-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Why are you interested in the major you indicated as your first-choice major? Please limit your response to 250-300 words.",
+     "limitText": "250-300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Think of all the activities — both in and outside of school — that you have been involved with during high school. Which one are you most proud of and why? (Guidance for students: This can include an extracurricular activity, a club/organization, volunteer activity, work or a family responsibility.) Please limit your response to 250-300 words",
+     "limitText": "250-300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "Please share background on events or special circumstances that you feel may have impacted your high school academic performance.",
+     "limitText": "40 lines or approximately 250-300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Optional",
+     "notes": null
+    },
+    {
+     "order": 4,
+     "prompt": "You can upload your resume with your Common App or ApplyTexas application, or you can submit it later, within UT’s MyStatus portal.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional",
+     "notes": "Expanded resume upload; optional but highly recommended."
+    }
+   ]
+  },
+  {
+   "unitid": "234076",
+   "directoryName": "University of Virginia-Main Campus",
+   "sheetName": "UVA",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/uva-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Describe a health care-related experience or another significant interaction that deepened your interest in studying Nursing.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required for School of Nursing applicants",
+     "notes": "School of Nursing"
+    }
+   ]
+  },
+  {
+   "unitid": "221999",
+   "directoryName": "Vanderbilt University",
+   "sheetName": "Vanderbilt",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/vanderbilt-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Vanderbilt University’s motto, Crescere aude, is Latin for “dare to grow.” In your response, reflect on how one or more aspects of your identity, culture, or background has played a role in your personal growth, and how it will contribute to our campus community as you dare to grow at Vanderbilt.",
+     "limitText": "Approximately 250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "197133",
+   "directoryName": "Vassar College",
+   "sheetName": "Vassar",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/vassar-college-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "At Vassar, we aim to foster an inclusive community through our philosophy of engaged pluralism. Engaged pluralism is rooted in “the conviction that collaborating across differences is necessary for social transformation and critical for the well-being of any community and its members.” In short, we believe it's our differences that make us stronger. Tell us a little bit about an important part of your identity and how it has shaped your life and/or interactions with others.",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Choose one of 2",
+     "notes": "Select and respond to one of the two prompts."
+    },
+    {
+     "order": 2,
+     "prompt": "Vassar is a diverse community that inspires positive change through open inquiry, deep dives into society’s most difficult challenges, and collaborative problem solving. We care deeply about one another, the communities that have forged us, and the community we build together on campus. Tell us more about the community (or communities) you come from and how it has shaped your lived experiences and identity.",
+     "limitText": "300 words",
+     "limit": 300,
+     "unit": "words",
+     "requirement": "Choose one of 2",
+     "notes": "Select and respond to one of the two prompts."
+    },
+    {
+     "order": 3,
+     "prompt": "Your Space is your opportunity to allow the Committee on Admission to learn something about you that you have not addressed in another section of the application.  For example, in the past, applicants have shared poetry, short stories, cartoons, digital images of art projects, photography, and collages, and/or links to videos, and short films. It is your space, so if you choose to complete it, send something that is a reflection of you! Your Space is entirely optional.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional",
+     "notes": "Optional uploads"
+    },
+    {
+     "order": 4,
+     "prompt": "If you wish to provide details of circumstances not reflected in the application, please upload a file here. Similarly, if you wish to upload your resume, include it here.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional",
+     "notes": "Optional uploads"
+    }
+   ]
+  },
+  {
+   "unitid": "216597",
+   "directoryName": "Villanova University",
+   "sheetName": "Villanova",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/villanova-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "As Pope Leo XIV (Villanova Class of 1977) has said, “no one can single-handedly bear the weight of the challenges the world is facing, just as no one is so weak that they cannot play their part.” What have you done to play your part in advancing equity and justice in your community?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 5",
+     "notes": "Villanova-specific essay · Choose one of the five topics; respond in about 250 words."
+    },
+    {
+     "order": 2,
+     "prompt": "What is a lesson in life that you have learned that you would want to share with others at Villanova?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 5",
+     "notes": "Villanova-specific essay"
+    },
+    {
+     "order": 3,
+     "prompt": "\"Villanova\" means \"new home.\" Why do you want to call Villanova your new home?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 5",
+     "notes": "Villanova-specific essay"
+    },
+    {
+     "order": 4,
+     "prompt": "Villanova embraces Artificial Intelligence (AI) with a commitment to thoughtful, ethical use rooted in our Augustinian mission and values. How do you see technology helping you to lead, serve, and contribute to the common good?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 5",
+     "notes": "Villanova-specific essay"
+    },
+    {
+     "order": 5,
+     "prompt": "At Villanova, we often say \"each of us strengthens all of us.\" Please detail a time when someone has borrowed some of your strength in their time of need.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Choose one of 5",
+     "notes": "Villanova-specific essay"
+    }
+   ]
+  },
+  {
+   "unitid": "233921",
+   "directoryName": "Virginia Polytechnic Institute and State University",
+   "sheetName": "Virginia Tech",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Virginia Tech's motto is \"Ut Prosim\" which means 'That I May Serve'. Share how you contribute to a community that is important to you. How long have you been involved? What have you learned and how would you like to share that with others at Virginia Tech?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "Have you had an experience when you or someone you know were not being included? Did you reach out to anyone for assistance, direction, or resources? Were you able to affect change and/or influence others? Did this experience change your perspective and if so, how?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 3,
+     "prompt": "Share a time when you were most proud of yourself either as a role model or when you displayed your leadership. What specific skills did you contribute to the experience? How did others rely on you for guidance? What did you learn about yourself during this time?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 4,
+     "prompt": "Describe a goal that you have set and the steps you will take to achieve it. What made you set this goal for yourself? What is your timeline to achieve this goal? Who do you seek encouragement or guidance from and how do they support your progress as you work on this goal?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": null
+    }
+   ]
+  },
+  {
+   "unitid": "199847",
+   "directoryName": "Wake Forest University",
+   "sheetName": "Wake Forest",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/wake-forest-supplemental-essays",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Why have you decided to apply to Wake Forest? Share with us anything that has made you interested in our institution.",
+     "limitText": "100 words",
+     "limit": 100,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": null
+    },
+    {
+     "order": 2,
+     "prompt": "List five books you've read that intrigued you.",
+     "limitText": "150 characters per line",
+     "limit": 150,
+     "unit": "characters",
+     "requirement": "Optional (choose one of 4)",
+     "notes": "Optional short responses · Respond to one of the four optional short-response questions."
+    },
+    {
+     "order": 3,
+     "prompt": "Tell us what piques your intellectual curiosity or has helped you understand the world's complexity. This can include a work you've read, a project you've completed for a class, and even co-curricular activities in which you have been involved.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional (choose one of 4)",
+     "notes": "Optional short responses"
+    },
+    {
+     "order": 4,
+     "prompt": "Dr. Maya Angelou, renowned author, poet, civil-rights activist, and former Wake Forest University Reynolds Professor of American Studies, inspired others to celebrate their identities and to honor each person’s dignity. Choose one of Dr. Angelou’s powerful quotes. How does this quote relate to your lived experience or reflect how you plan to contribute to the Wake Forest community?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional (choose one of 4)",
+     "notes": "Optional short responses"
+    },
+    {
+     "order": 5,
+     "prompt": "Give us your Top Ten list. (The choice of theme is yours).",
+     "limitText": "100 characters per line",
+     "limit": 100,
+     "unit": "characters",
+     "requirement": "Optional (choose one of 4)",
+     "notes": "Optional short responses"
+    }
+   ]
+  },
+  {
+   "unitid": "234207",
+   "directoryName": "Washington and Lee University",
+   "sheetName": "Washington and Lee University",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "179867",
+   "directoryName": "Washington University in St Louis",
+   "sheetName": "Washington University in St. Louis",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/washington-university-st-louis-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Please tell us what you are interested in studying at college and why.",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "If undecided, tell them what excites you about the academic division you selected; all first-year students enter officially \"undeclared.\""
+    },
+    {
+     "order": 2,
+     "prompt": "The Beyond Boundaries Program equips students with a set of tools to critically understand and make a difference in a complicated world where challenges require diverse perspectives and skill sets. \n\nWhat is the big societal issue you would like to tackle? What academic expertise would you need on your team? What would you contribute to the team?",
+     "limitText": "250 words",
+     "limit": 250,
+     "unit": "words",
+     "requirement": "Beyond Boundaries applicants",
+     "notes": "Beyond Boundaries Program"
+    },
+    {
+     "order": 3,
+     "prompt": "Students in the Joint Program in Business and Computer Science will be equipped with the fundamental knowledge and perspectives of computer science and business and will have unique opportunities to converge these two disciplines. \n\nThis is a distinctive degree program that captures the intersection of business and computer science and the growing demand for people with this special and sought-after skill set. Graduates of the program will be able to pursue careers in technology, data analytics, finance, consulting and business development, to name a few. \n\nTell us how you would use this combined degree to explore the intersection of these two disciplines?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Joint Program in Business & CS applicants",
+     "notes": "Joint Program in Business and Computer Science"
+    }
+   ]
+  },
+  {
+   "unitid": "168218",
+   "directoryName": "Wellesley College",
+   "sheetName": "Wellesley College",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/wellesley-college-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Wellesley students actively seek ways to build bridges and to change the world for the better. Tell us about an experience working with and alongside people of different backgrounds and/or perspectives from your own. Why was this important to you, and what lessons from this will you bring with you to Wellesley?",
+     "limitText": "250-400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Two thoughtful paragraphs; minimum 250 words, maximum 400 words."
+    }
+   ]
+  },
+  {
+   "unitid": "130697",
+   "directoryName": "Wesleyan University",
+   "sheetName": "Wesleyan University",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "231624",
+   "directoryName": "William & Mary",
+   "sheetName": "William and Mary",
+   "status": "confirmed",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/william-and-mary-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Are there any particular communities that are important to you, and how do you see yourself being a part of our community?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional (answer up to 2 of 6)",
+     "notes": "Optional short answers · Answer up to two of the six optional short-answer prompts."
+    },
+    {
+     "order": 2,
+     "prompt": "Share more about a personal academic interest or career goal.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional (answer up to 2 of 6)",
+     "notes": "Optional short answers"
+    },
+    {
+     "order": 3,
+     "prompt": "How has your family, culture and/or background shaped your lived experience?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional (answer up to 2 of 6)",
+     "notes": "Optional short answers"
+    },
+    {
+     "order": 4,
+     "prompt": "What led to your interest in William & Mary?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional (answer up to 2 of 6)",
+     "notes": "Optional short answers"
+    },
+    {
+     "order": 5,
+     "prompt": "Tell us about a challenge or adversity you’ve experienced and how that has impacted you as an individual.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional (answer up to 2 of 6)",
+     "notes": "Optional short answers"
+    },
+    {
+     "order": 6,
+     "prompt": "If we visited your town, what would you want to show us?",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Optional (answer up to 2 of 6)",
+     "notes": "Optional short answers"
+    }
+   ]
+  },
+  {
+   "unitid": "168342",
+   "directoryName": "Williams College",
+   "sheetName": "Williams College",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "206589",
+   "directoryName": "The College of Wooster",
+   "sheetName": "Wooster",
+   "status": "coming_soon",
+   "sourceUrl": null,
+   "guideUrl": null,
+   "prompts": []
+  },
+  {
+   "unitid": "168421",
+   "directoryName": "Worcester Polytechnic Institute",
+   "sheetName": "Worcester Polytechnic Institute",
+   "status": "none",
+   "sourceUrl": null,
+   "guideUrl": "https://www.collegeessayguy.com/blog/worcester-polytechnic-institute-wpi-supplemental-essay",
+   "prompts": []
+  },
+  {
+   "unitid": "130794",
+   "directoryName": "Yale University",
+   "sheetName": "Yale",
+   "status": "confirmed",
+   "sourceUrl": "https://admissions.yale.edu/essay-topics",
+   "guideUrl": "https://www.collegeessayguy.com/blog/yale-supplemental-essay",
+   "prompts": [
+    {
+     "order": 1,
+     "prompt": "Students at Yale have time to explore their academic interests before committing to one or more major fields of study. Many students either modify their original academic direction or change their minds entirely. As of this moment, what academic areas seem to fit your interests or goals most comfortably? Please indicate up to three from the list provided.",
+     "limitText": null,
+     "limit": null,
+     "unit": null,
+     "requirement": "Required",
+     "notes": "Academic interests · Selection question: choose up to three academic areas from a provided list."
+    },
+    {
+     "order": 2,
+     "prompt": "Tell us about a topic or idea that excites you and is related to one or more academic areas you selected above. Why are you drawn to it?",
+     "limitText": "200 words",
+     "limit": 200,
+     "unit": "words",
+     "requirement": "Required",
+     "notes": "Academic interests"
+    },
+    {
+     "order": 3,
+     "prompt": "If you could teach any college course, write a book, or create an original piece of art of any kind, what would it be?",
+     "limitText": "200 characters",
+     "limit": 200,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers · Common App and Coalition App only; approximately 35 words."
+    },
+    {
+     "order": 4,
+     "prompt": "What is one aspect of yourself that you hope to grow or develop during college?",
+     "limitText": "200 characters",
+     "limit": 200,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers · Common App and Coalition App only; approximately 35 words."
+    },
+    {
+     "order": 5,
+     "prompt": "What is something about you that is not included anywhere else in your application?",
+     "limitText": "200 characters",
+     "limit": 200,
+     "unit": "characters",
+     "requirement": "Required",
+     "notes": "Short answers · Common App and Coalition App only; approximately 35 words."
+    },
+    {
+     "order": 6,
+     "prompt": "Reflect on a time you discussed an issue important to you with someone holding an opposing view. Why did you find the experience meaningful?",
+     "limitText": "400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": "Essay · Common App and Coalition App only."
+    },
+    {
+     "order": 7,
+     "prompt": "Reflect on your membership in a community to which you feel connected. Why is this community meaningful to you? You may define community however you like.",
+     "limitText": "400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": "Essay · Common App and Coalition App only."
+    },
+    {
+     "order": 8,
+     "prompt": "Reflect on an element of your personal experience that you feel will enrich your college. How has it shaped you?",
+     "limitText": "400 words",
+     "limit": 400,
+     "unit": "words",
+     "requirement": "Choose one of 3",
+     "notes": "Essay · Common App and Coalition App only."
+    }
+   ]
+  }
+ ]
+}

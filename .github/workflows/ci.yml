@@ -57,7 +57,7 @@ jobs:
           echo "ENCRYPTION_KEYS=ci1:$(openssl rand -base64 32)" >> "$GITHUB_ENV"
       - run: npm run test:integration
       - name: Prepare the app database
-        run: npm run db:migrate && npm run db:seed && npm run scorecard:import && npm run cds:import
+        run: npm run db:migrate && npm run db:seed && npm run scorecard:import && npm run cds:import && npm run supplements:import
       - run: npm run build
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e

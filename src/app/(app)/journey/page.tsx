@@ -139,6 +139,12 @@ export default async function JourneyPage() {
                     {t(`journey.actions.${s.key}`)} <span aria-hidden="true">→</span>
                   </Link>
                   {s.key === "majors" && next?.key !== "majors" && !profile.intendedMajors.length ? <DeferStep step="majors" deferred={majorsDeferred} /> : null}
+                  {s.key === "schools" && profile.intendedMajors.some((m) => m.cipFamily) ? (
+                    <Link href="/schools/recommended" className="btn btn-secondary btn-sm">{t("recommend.cta")} →</Link>
+                  ) : null}
+                  {s.key === "essays" ? (
+                    <Link href="/guides/personal-statement" className="btn btn-secondary btn-sm">{t("guide.navLink")}</Link>
+                  ) : null}
                 </div>
               </div>
             </li>

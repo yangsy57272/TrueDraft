@@ -215,6 +215,17 @@ function sortEntries(list: SchoolEntry[], sort: SortKey) {
   });
 }
 
+/** Every published school with its latest published CDS, federal profile, and merged facts. */
+export async function allSchoolEntries(): Promise<SchoolEntry[]> {
+  const schools = await db.select().from(school).where(eq(school.published, true)).orderBy(asc(school.name));
+  const [datasets, federal] = await Promise.all([publishedDatasetsFor(schools.map((s) => s.id)), federalProfilesFor()]);
+  return schools.map((s) => {
+    const latest = datasets.get(s.id)?.[0] ?? null;
+    const fed = federal.get(s.id) ?? null;
+    return { school: s, latest, federal: fed, facts: schoolFacts(latest, fed?.data ?? null) };
+  });
+}
+
 export async function getSchoolBySlug(slug: string) {
   const [row] = await db.select().from(school).where(and(eq(school.slug, slug), eq(school.published, true))).limit(1);
   if (!row) return null;

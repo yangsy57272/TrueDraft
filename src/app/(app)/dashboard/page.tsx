@@ -25,9 +25,10 @@ export default async function DashboardPage() {
           <p className="text-sm text-ink-soft">{t("dashboard.greeting")}{user.displayName ? `, ${user.displayName}` : ""}</p>
           <h1 className="text-3xl font-semibold">{t("dashboard.title")}</h1>
         </div>
-        {essays.length ? (
-          <Link href="/essays/new" className="btn btn-accent">+ {t("dashboard.newEssay")}</Link>
-        ) : null}
+        <div className="flex flex-wrap gap-2">
+          <Link href="/guides/personal-statement" className="btn btn-secondary">{t("guide.navLink")}</Link>
+          {essays.length ? <Link href="/essays/new" className="btn btn-accent">+ {t("dashboard.newEssay")}</Link> : null}
+        </div>
       </div>
 
       {essays.length === 0 ? (

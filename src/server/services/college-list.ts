@@ -2,7 +2,8 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { and, asc, eq, inArray } from "drizzle-orm";
 import { db, isUniqueViolation } from "@/db";
-import { collegeListEntry, essay, school } from "@/db/schema";
+import { collegeListEntry, essay, school, schoolSupplements } from "@/db/schema";
+import { SUPPLEMENT_CYCLE } from "@/lib/supplements";
 import { DEFAULT_CHECKLIST, MAX_CHECKLIST_ITEMS, listEntryInputSchema, listEntryPatchSchema, type ListEntryInput } from "@/lib/planning";
 import { decryptText, encryptText } from "../crypto";
 import { deadlineInputSchema, deadlinePatchSchema, MAX_DEADLINES, type Deadline } from "@/lib/deadlines";
@@ -37,6 +38,14 @@ export async function listEntries(userId: string, onlyId?: string) {
         .from(essay)
         .where(and(eq(essay.userId, userId), inArray(essay.listEntryId, ids)))
     : [];
+  const schoolIds = rows.map((r) => r.entry.schoolId).filter((x): x is string => Boolean(x));
+  const supps = schoolIds.length
+    ? await db
+        .select({ schoolId: schoolSupplements.schoolId, status: schoolSupplements.status, prompts: schoolSupplements.prompts })
+        .from(schoolSupplements)
+        .where(and(inArray(schoolSupplements.schoolId, schoolIds), eq(schoolSupplements.cycle, SUPPLEMENT_CYCLE)))
+    : [];
+  const suppBySchool = new Map(supps.map((x) => [x.schoolId, { status: x.status, count: x.prompts.length }]));
   return rows.map(({ entry, school: s }) => ({
     id: entry.id,
     schoolId: entry.schoolId,
@@ -52,6 +61,8 @@ export async function listEntries(userId: string, onlyId?: string) {
     notes: entry.encryptedNotes ? decryptText(entry.encryptedNotes, "list_notes") : "",
     checklist: entry.checklist,
     essays: essays.filter((e) => e.listEntryId === entry.id),
+    /** This cycle's supplemental prompts for the school, if imported. */
+    supplements: (entry.schoolId && suppBySchool.get(entry.schoolId)) || null,
     createdAt: entry.createdAt,
     updatedAt: entry.updatedAt,
   }));

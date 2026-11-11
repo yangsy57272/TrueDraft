@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SchoolRankings } from "@/components/schools/SchoolRankings";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getT } from "@/i18n/server";
@@ -62,7 +63,10 @@ export default async function SchoolPage({ params, searchParams }: { params: Pro
           label={fit ? t("recommend.addAs", { category: t(`recommend.buckets.${fit.category}.title`) }) : undefined}
         />
       </div>
+      <SchoolRankings unitid={s.unitid} zh={zh} />
+      {user ? <p className="mt-3 text-sm"><Link href="/schools/recommended">{zh ? "按我的专业推荐学校 →" : "Recommend schools for my majors →"}</Link></p> : null}
       {fit ? <FitPanel fit={fit} t={t} /> : null}
+      {fit ? <p className="mt-2 text-xs text-ink-soft">{zh ? "分组依据全校数据；专业及国际生录取率尚未核实。Safety 不保证录取或可负担。" : "Grouping uses university-wide data; major-specific and international admission rates are not verified. Safety is not an admission or affordability guarantee."}</p> : null}
       <SupplementsSection supplements={supplements} slug={s.slug} signedIn={Boolean(user)} t={t} locale={locale} />
 
       <div className="mt-4 flex flex-wrap gap-3 text-sm">

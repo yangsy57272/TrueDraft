@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CIP_CODES } from "@/lib/planning";
 import { FEEDBACK_LANGUAGES } from "@/i18n/config";
 import { ApiError, apiRoute, ndjsonStream, parseJson, requireApiUser } from "@/server/http";
 import { executePlanningRun, MAX_CV_CHARS, preparePlanningRun } from "@/server/ai/planning";
@@ -9,6 +10,9 @@ type Ctx = { params: Promise<{ kind: string }> };
 export const maxDuration = 600;
 
 const bodySchema = z.object({
+  field: z.string().refine(c => CIP_CODES.includes(c)).optional(),
+  tuition: z.string().max(30).optional(),
+  priority: z.enum(["balanced", "overall", "program"]).optional(),
   cvText: z.string().max(MAX_CV_CHARS + 1000).optional(),
   feedbackLanguage: z.enum(FEEDBACK_LANGUAGES).optional(),
 });

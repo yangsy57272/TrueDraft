@@ -12,6 +12,7 @@ export function AddToListButton({
   onList,
   signedIn,
   category,
+  intendedMajor,
   label,
 }: {
   schoolId: string;
@@ -19,6 +20,7 @@ export function AddToListButton({
   signedIn: boolean;
   /** Pre-filled list category (e.g. a suggested Reach / Target / Safety); the student can change it later. */
   category?: "reach" | "target" | "likely";
+  intendedMajor?: string;
   label?: string;
 }) {
   const { t } = useI18n();
@@ -41,7 +43,7 @@ export function AddToListButton({
       disabled={busy}
       onClick={async () => {
         setBusy(true);
-        const res = await apiFetch("/api/list", { method: "POST", body: category ? { schoolId, category } : { schoolId } });
+        const res = await apiFetch("/api/list", { method: "POST", body: { schoolId, ...(category ? { category } : {}), ...(intendedMajor ? { intendedMajor } : {}) } });
         setBusy(false);
         if (res.ok || res.code === "already_on_list") {
           setAdded(true);

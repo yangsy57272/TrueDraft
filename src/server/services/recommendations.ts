@@ -1,4 +1,5 @@
 import "server-only";
+import { rankingBonus } from "@/lib/school-rankings";
 import { scoreRanges, studentScores, suggestFit, type Fit, type FitCategory } from "@/lib/fit";
 import { TUITION_BANDS } from "@/lib/federal";
 import { CIP_CODES, sizeBand, STATE_REGIONS, type StudentProfile } from "@/lib/planning";
@@ -9,7 +10,7 @@ import { allSchoolEntries, type SchoolEntry } from "./schools";
  *
  * Transparent and rule-based: a school is a candidate when at least MIN_FIELD_SHARE % of its
  * bachelor's degrees are in one of the student's fields (from its CDS, otherwise federal data).
- * Candidates are ranked by rankScore(): field strength (capped, so a one-subject institute doesn't
+ * Candidates are ranked by rankScore(): field prevalence (capped, so a one-subject institute doesn't
  * automatically win) plus the six-year graduation rate, with a small bonus when a test-score range
  * is published (so the suggestion can use the student's scores). The bucket comes from src/lib/fit.ts. The student's size and
  * region preferences are applied first and only relaxed (and labelled as such) if a bucket would
@@ -27,7 +28,7 @@ export type Recommendation = SchoolEntry & {
   outsidePreferences: boolean;
 };
 
-/** Field share counts fully up to this percent of degrees; beyond it, every school is "strong". */
+/** Field share counts fully up to this percent of degrees; larger shares receive no extra credit. */
 export const FIELD_SHARE_CAP = 15;
 
 export function rankScore(r: { field: { share: number }; facts: { gradRate: { value: number } | null }; fit: { usedScores: boolean } }) {
@@ -36,7 +37,7 @@ export function rankScore(r: { field: { share: number }; facts: { gradRate: { va
   return 0.45 * field + 0.45 * grad + (r.fit.usedScores ? 0.1 : 0);
 }
 
-export type RecommendationOptions = { field?: string; tuition?: string };
+export type RecommendationOptions = { field?: string; tuition?: string; priority?: "balanced" | "overall" | "program" };
 
 export function chosenFields(profile: StudentProfile, override?: string) {
   if (override && CIP_CODES.includes(override)) return [override];
@@ -90,7 +91,7 @@ export async function recommendSchools(profile: StudentProfile, options: Recomme
 
   // Highest rank score first; schools whose own CDS is imported, then name, break ties.
   const rank = (a: Recommendation, b: Recommendation) =>
-    rankScore(b) - rankScore(a) || Number(Boolean(b.latest)) - Number(Boolean(a.latest)) || a.school.name.localeCompare(b.school.name);
+    (rankScore(b) + rankingBonus(b.school.unitid, b.field.code, options.priority)) - (rankScore(a) + rankingBonus(a.school.unitid, a.field.code, options.priority)) || Number(Boolean(b.latest)) - Number(Boolean(a.latest)) || a.school.name.localeCompare(b.school.name);
   strict.sort(rank);
   relaxed.sort(rank);
 

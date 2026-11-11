@@ -25,6 +25,7 @@ export async function SiteHeader() {
         { href: "/journey", label: t("nav.journey") },
         { href: "/profile", label: t("nav.profile") },
         { href: "/majors", label: t("nav.majors") },
+        { href: "/schools/recommended", label: t("recommend.title") },
         { href: "/schools", label: t("nav.schools") },
         { href: "/my-list", label: t("nav.myList") },
         { href: "/dashboard", label: t("nav.essays") },
@@ -39,7 +40,7 @@ export async function SiteHeader() {
     ? [
         { href: "/journey", label: t("nav.journey") },
         { href: "/dashboard", label: t("nav.essays") },
-        { href: "/schools", label: t("nav.schools") },
+        { href: "/schools/recommended", label: t("recommend.title") },
         { href: "/my-list", label: t("nav.myList") },
       ]
     : publicLinks.slice(0, 5);

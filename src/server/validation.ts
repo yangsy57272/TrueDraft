@@ -59,7 +59,7 @@ export const brainstormSaveSchema = z.object({
     .max(40),
 });
 
-export const consentSchema = z.object({ consentType: z.literal("ai_processing"), action: z.enum(["grant", "withdraw"]) });
+export const consentSchema = z.object({ consentType: z.literal("ai_processing"), action: z.enum(["grant", "withdraw"]), policyVersion: z.string().max(200).optional() });
 
 export const preferencesSchema = z.object({
   preferredLanguage: z.enum(LOCALES).optional(),

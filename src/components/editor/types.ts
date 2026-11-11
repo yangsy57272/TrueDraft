@@ -34,6 +34,7 @@ export type WorkspaceRun = {
 };
 
 export type WorkspaceAi = {
+  policyVersion?: string;
   configured: boolean;
   isMock: boolean;
   providerName: string | null;

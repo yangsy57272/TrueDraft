@@ -1,3 +1,5 @@
+import { AiConnectionSettings } from "@/components/settings/AiConnectionSettings";
+import { connectionSummary, aiSettingsEditable } from "@/server/ai/connection-settings";
 import type { Metadata } from "next";
 import { getPolicyVersion } from "@/config/deployment";
 import { getT } from "@/i18n/server";
@@ -19,6 +21,7 @@ export default async function SettingsPage() {
   return (
     <div className="container-prose py-10">
       <h1 className="text-3xl font-semibold">{t("settings.title")}</h1>
+      <AiConnectionSettings initial={aiSettingsEditable() && user.email.toLowerCase() === process.env.TRUEDRAFT_DESKTOP_EMAIL?.toLowerCase() ? connectionSummary() : undefined} />
       <SettingsClient
         email={user.email}
         displayName={user.displayName}

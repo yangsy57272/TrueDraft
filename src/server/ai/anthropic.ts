@@ -1,4 +1,5 @@
 import "server-only";
+import { getAiConnection, type AiConnection } from "./connection-settings";
 import Anthropic from "@anthropic-ai/sdk";
 import { AiProviderError, parseJsonText, type AiProvider, type StructuredRequest, type StructuredResponse } from "./provider";
 
@@ -10,16 +11,17 @@ type Effort = "low" | "medium" | "high" | "xhigh" | "max";
  */
 export class AnthropicProvider implements AiProvider {
   kind = "anthropic";
-  model = process.env.AI_MODEL || "claude-opus-5-5";
+  model: string;
   private client: Anthropic;
 
   /** `fetchImpl` is only for tests; production uses the SDK's default HTTP client. */
-  constructor(fetchImpl?: typeof fetch) {
+  constructor(fetchImpl?: typeof fetch, connection: AiConnection = getAiConnection()) {
+    this.model = connection.model || "claude-opus-5-5";
     this.client = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY,
-      baseURL: process.env.ANTHROPIC_BASE_URL || undefined,
+      apiKey: connection.apiKey,
+      baseURL: connection.baseUrl || undefined,
       maxRetries: 0,
-      ...(fetchImpl ? { fetch: fetchImpl } : {}),
+      fetch: fetchImpl ?? ((input, init) => fetch(input, { ...init, redirect: "error" })),
     });
   }
 

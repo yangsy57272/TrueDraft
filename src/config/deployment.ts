@@ -1,4 +1,5 @@
 import "server-only";
+import { getAiConnection, connectionOrigin } from "@/server/ai/connection-settings";
 
 /**
  * Deployment-specific facts shown in the Privacy Center and before AI processing.
@@ -13,32 +14,31 @@ function bool(value: string | undefined) {
 }
 
 export function getAiProviderKind(): AiProviderKind {
-  const raw = (process.env.AI_PROVIDER ?? "").trim().toLowerCase();
-  if (raw === "anthropic" || raw === "openai-compatible" || raw === "mock") return raw;
-  return "none";
+  return getAiConnection().provider;
 }
 
 export function isAiConfigured(): boolean {
-  const kind = getAiProviderKind();
-  if (kind === "anthropic") return Boolean(process.env.ANTHROPIC_API_KEY);
-  if (kind === "openai-compatible") return Boolean(process.env.AI_API_KEY && process.env.AI_BASE_URL);
-  return kind === "mock";
+  const c = getAiConnection();
+  if (c.provider === "anthropic") return Boolean(c.apiKey && c.model);
+  if (c.provider === "openai-compatible") return Boolean(c.baseUrl && c.model && (c.apiKey || c.noKey));
+  return c.provider === "mock";
 }
 
 export function getPrivacyFacts() {
-  const kind = getAiProviderKind();
+  const connection = getAiConnection();
+  const kind = connection.provider;
   const providerDisplayName =
-    process.env.AI_PROVIDER_DISPLAY_NAME ||
-    (kind === "anthropic" ? "Anthropic (Claude API)" : kind === "mock" ? "Development mock (no AI)" : kind === "none" ? null : "Configured AI provider");
+    (!connection.revision && process.env.AI_PROVIDER_DISPLAY_NAME) ||
+    (kind === "anthropic" ? `Anthropic (Claude API)${connection.revision ? ` · ${connectionOrigin()}` : ""}` : kind === "mock" ? "Development mock (no AI)" : kind === "none" ? null : `AI service (${connectionOrigin()})`);
   return {
     aiProviderKind: kind,
     aiConfigured: isAiConfigured(),
     aiIsMock: kind === "mock",
     providerDisplayName,
     /** Only true when the operator has confirmed provider-side no-training terms for this account. */
-    providerNoTrainingConfirmed: bool(process.env.AI_PROVIDER_NO_TRAINING_CONFIRMED),
+    providerNoTrainingConfirmed: !connection.revision && bool(process.env.AI_PROVIDER_NO_TRAINING_CONFIRMED),
     /** Free-text, operator-supplied description of provider-side retention, e.g. "up to 30 days for abuse monitoring". */
-    providerRetentionNote: process.env.AI_PROVIDER_RETENTION_NOTE || null,
+    providerRetentionNote: !connection.revision ? process.env.AI_PROVIDER_RETENTION_NOTE || null : null,
     storageRegion: process.env.STORAGE_REGION || null,
     privacyLastUpdated: process.env.PRIVACY_LAST_UPDATED || "2026-10-27",
     policyVersion: getPolicyVersion(),
@@ -48,7 +48,9 @@ export function getPrivacyFacts() {
 }
 
 export function getPolicyVersion(): string {
-  return process.env.PRIVACY_POLICY_VERSION || "2026-10-27";
+  const version = process.env.PRIVACY_POLICY_VERSION || "2026-10-27";
+  const revision = getAiConnection().revision;
+  return revision ? `${version}:ai:${revision}` : version;
 }
 
 export function getAppUrl(): string {

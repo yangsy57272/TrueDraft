@@ -3,6 +3,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { createHash, randomBytes } from 'node:crypto';
 import fs from 'node:fs';
 import net from 'node:net';
+import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
@@ -88,6 +89,7 @@ async function startWebApp(settings) {
   Object.assign(process.env, {
     PORT: String(port), HOSTNAME: localHost, APP_URL: origin, BETTER_AUTH_URL: origin,
     DATABASE_PATH: database, BETTER_AUTH_SECRET: settings.authSecret, ENCRYPTION_KEYS: settings.encryptionKeys,
+    TRUEDRAFT_AI_SETTINGS_PATH: path.join(dataDir, 'ai-connection.enc'), TRUEDRAFT_DESKTOP_EMAIL: settings.email,
     TRUEDRAFT_DESKTOP: '1', TRUEDRAFT_DESKTOP_TOKEN: randomBytes(32).toString('hex'), TRUEDRAFT_MAILBOX_DIR: mailbox,
     EMAIL_TRANSPORT: 'file', AUTH_RATE_LIMIT: 'on', TRUEDRAFT_DEMO_MODE: '', NEXT_TELEMETRY_DISABLED: '1',
   });
@@ -147,6 +149,44 @@ async function verifyApp(app, url) {
   assert.match(cookie, /td\.session_token=/);
   const journey = await fetch(`${origin}/journey`, { headers: { cookie }, redirect: 'manual' });
   assert.equal(journey.status, 200);
+  // Exercise the actual settings API against a loopback-only synthetic provider.
+  // No essays/profile are sent; the saved encrypted connection must survive a restart.
+  const settingsPage = await fetch(`${origin}/settings`, { headers: { cookie } });
+  assert.match(await settingsPage.text(), /AI connection settings/);
+  const savedBefore = await (await fetch(`${origin}/api/settings/ai`, { headers: { cookie } })).json();
+  if (process.argv.includes('--expect-existing')) {
+    assert.equal(savedBefore.connection.model, 'desktop-smoke-model');
+    assert.equal(savedBefore.connection.hasKey, true);
+  }
+  const syntheticKey = 'desktop-smoke-secret';
+  const synthetic = http.createServer((request, response) => {
+    if (request.headers.authorization !== `Bearer ${syntheticKey}`) { response.writeHead(401).end(); return; }
+    if (request.url === '/v1/models') {
+      response.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify({ data: [{ id: 'desktop-smoke-model' }] }));
+    } else if (request.url === '/v1/chat/completions') {
+      response.writeHead(200, { 'content-type': 'text/event-stream' });
+      response.end(`data: ${JSON.stringify({ model: 'desktop-smoke-model', choices: [{ delta: { content: '{"ok":true}' }, finish_reason: 'stop' }] })}\n\n`);
+    } else response.writeHead(404).end();
+  });
+  await listen(synthetic, 0, localHost);
+  try {
+    const connection = { provider: 'openai-compatible', baseUrl: `http://${localHost}:${synthetic.address().port}`, apiKey: syntheticKey, model: 'desktop-smoke-model', noKey: false };
+    const send = async (path, method, body) => {
+      const response = await fetch(`${origin}${path}`, { method, headers: { cookie, origin, 'content-type': 'application/json' }, body: JSON.stringify(body) });
+      assert.equal(response.status, 200);
+      const text = await response.text();
+      assert.ok(!text.includes(syntheticKey));
+      return JSON.parse(text);
+    };
+    const models = await send('/api/settings/ai/test', 'POST', { ...connection, action: 'models' });
+    assert.deepEqual(models.models, ['desktop-smoke-model']);
+    assert.equal((await send('/api/settings/ai/test', 'POST', { ...connection, action: 'test' })).connected, true);
+    await send('/api/settings/ai', 'PUT', connection);
+    assert.ok(!fs.readFileSync(path.join(dataDir, 'ai-connection.enc'), 'utf8').includes(syntheticKey));
+  } finally {
+    synthetic.closeAllConnections();
+    await new Promise(resolve => synthetic.close(resolve));
+  }
   const schools = await fetch(`${origin}/schools?q=Harvard`);
   assert.match(await schools.text(), /Harvard University/);
   const recommendations = await fetch(`${origin}/schools/recommended?field=11`, { headers: { cookie } });

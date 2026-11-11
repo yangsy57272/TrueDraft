@@ -82,7 +82,7 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
     return (
       <li key={s.id} className="card flex flex-col p-4" style={{ borderTop: `4px solid ${style.color}` }}>
         <h3 className="font-semibold">
-          <Link href={`/schools/${s.slug}`} className="text-ink">{zh && s.nameZh ? s.nameZh : s.name}</Link>
+          <Link href={`/schools/${s.slug}?field=${r.field.code}`} className="text-ink">{zh && s.nameZh ? s.nameZh : s.name}</Link>
         </h3>
         <p className="text-xs text-ink-soft">
           {[s.city, s.state].filter(Boolean).join(", ")}
@@ -105,7 +105,7 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
         {r.outsidePreferences ? <p className="mt-2"><span className="badge badge-neutral">{t("recommend.outside")}</span></p> : null}
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <AddToListButton schoolId={s.id} onList={listed.has(s.id)} signedIn intendedMajor={profile.intendedMajors.find(m => m.cipFamily === r.field.code)?.name ?? fieldName(r.field.code)} category={r.fit.category} label={t("recommend.addAs", { category: catName(r.fit.category) })} />
-          <Link href={`/schools/${s.slug}`} className="btn btn-ghost btn-sm">{t("schools.view")}</Link>
+          <Link href={`/schools/${s.slug}?field=${r.field.code}`} className="btn btn-ghost btn-sm">{t("schools.view")}</Link>
         </div>
       </li>
     );

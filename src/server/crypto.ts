@@ -43,6 +43,7 @@ export function resetKeyringCache() {
 }
 
 export type EncryptionPurpose =
+  | "ai_configuration"
   | "essay_draft"
   | "essay_context"
   | "essay_version"

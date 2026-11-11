@@ -1,4 +1,5 @@
 import "server-only";
+import { getAiConnection, type AiConnection } from "./connection-settings";
 import { AiProviderError, parseJsonText, type AiProvider, type StructuredRequest, type StructuredResponse, type TokenUsage } from "./provider";
 
 /**
@@ -8,17 +9,18 @@ import { AiProviderError, parseJsonText, type AiProvider, type StructuredRequest
  */
 export class OpenAiCompatibleProvider implements AiProvider {
   kind = "openai-compatible";
-  model = process.env.AI_MODEL || "";
-  private baseUrl = (process.env.AI_BASE_URL || "").replace(/\/$/, "");
+  model: string;
+  constructor(private connection: AiConnection = getAiConnection()) { this.model = connection.model; }
 
   async generate(request: StructuredRequest): Promise<StructuredResponse> {
     const temperature = process.env.AI_TEMPERATURE ? Number(process.env.AI_TEMPERATURE) : 0.3;
     let response: Response;
     try {
-      response = await fetch(`${this.baseUrl}/chat/completions`, {
+      response = await fetch(`${this.connection.baseUrl}/chat/completions`, {
         method: "POST",
+        redirect: "error",
         signal: request.signal,
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${process.env.AI_API_KEY}` },
+        headers: { "Content-Type": "application/json", ...(this.connection.apiKey ? { Authorization: `Bearer ${this.connection.apiKey}` } : {}) },
         body: JSON.stringify({
           model: this.model,
           stream: true,

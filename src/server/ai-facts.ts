@@ -6,6 +6,7 @@ import { hasCurrentConsent } from "./services/consent";
 export async function aiFactsFor(userId: string) {
   const facts = getPrivacyFacts();
   return {
+    policyVersion: facts.policyVersion,
     configured: facts.aiConfigured,
     isMock: facts.aiIsMock,
     providerName: facts.providerDisplayName,

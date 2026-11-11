@@ -1,4 +1,4 @@
-import { apiRoute, jsonResponse, parseJson, requireApiUser } from "@/server/http";
+import { ApiError, apiRoute, jsonResponse, parseJson, requireApiUser } from "@/server/http";
 import { getActiveConsent, grantConsent, withdrawConsent } from "@/server/services/consent";
 import { getPolicyVersion } from "@/config/deployment";
 import { consentSchema } from "@/server/validation";
@@ -13,8 +13,9 @@ export const GET = apiRoute("consent.get", async (request) => {
 
 export const POST = apiRoute("consent.update", async (request) => {
   const user = await requireApiUser(request);
-  const { consentType, action } = await parseJson(request, consentSchema);
+  const { consentType, action, policyVersion } = await parseJson(request, consentSchema);
   if (action === "grant") {
+    if (policyVersion && policyVersion !== getPolicyVersion()) throw new ApiError(409, "consent_required");
     const record = await grantConsent(user.id, consentType);
     return jsonResponse({ ok: true, grantedAt: record.timestamp, policyVersion: record.policyVersion });
   }

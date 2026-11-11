@@ -1,3 +1,4 @@
+import { aiSettingsEditable, connectionInput, saveConnection } from "@/server/ai/connection-settings";
 import { cookies } from "next/headers";
 import { apiRoute, jsonResponse, parseJson, requireApiUser } from "@/server/http";
 import { deleteAccount } from "@/server/services/account";
@@ -7,6 +8,9 @@ import { track } from "@/server/analytics";
 export const DELETE = apiRoute("account.delete", async (request) => {
   const user = await requireApiUser(request);
   await parseJson(request, deleteAccountSchema);
+  if (aiSettingsEditable() && user.email.toLowerCase() === process.env.TRUEDRAFT_DESKTOP_EMAIL?.toLowerCase()) {
+    saveConnection(connectionInput.parse({ provider: "none" }));
+  }
   await deleteAccount(user.id);
   track("account_deleted");
   // Sessions were removed by cascade; also clear the browser cookies.

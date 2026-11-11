@@ -266,9 +266,10 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
   }
 
   async function agreeToConsent() {
-    const res = await apiFetch("/api/consent", { method: "POST", body: { consentType: "ai_processing", action: "grant" } });
+    const res = await apiFetch("/api/consent", { method: "POST", body: { consentType: "ai_processing", action: "grant", policyVersion: ai.policyVersion } });
     if (!res.ok) {
       notify(t(`errors.${res.code}` as never), "error");
+      router.refresh();
       return;
     }
     setConsentCurrent(true);

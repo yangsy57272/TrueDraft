@@ -14,7 +14,19 @@ TrueDraft opens in your default browser and signs you into a profile on this dev
 
 To back up a profile, stop TrueDraft and copy the data directory. Keep `truedraft.sqlite` and `settings.json` together. The latter contains the key needed to decrypt stored drafts. Stop from the Windows Start menu using **Stop TrueDraft**. On macOS, run `"/path/to/TrueDraft.app/Contents/MacOS/TrueDraft" --stop` in Terminal. Reinstalling uses the same data directory.
 
-To enable AI feedback, stop the app and create `.env` in its data directory. Set `AI_PROVIDER` and the provider settings from `.env.example`, then reopen the app. Keep the provider key in that local file.
+## Set up AI without editing files
+
+1. Open **Settings → AI connection settings** (设置 → AI 连接设置).
+2. Choose **OpenAI API**, **Claude API**, **Local or LAN AI**, or **Other compatible service**. The first three prefill a typical address; replace it with the address your service provides when needed.
+3. Paste your **API key**. For a local service that needs no key, check **This service needs no key**. A previously saved key is never shown; leave the field blank to keep it for the same provider/address. Enter the key again after changing providers or addresses.
+4. Select **Load available models**, then pick a model from the Model field, or enter its exact name manually.
+5. Select **Test connection**, then **Save AI settings**. The test sends only a short synthetic message, not your profile or essays. A cloud provider may charge for this small request. A successful test verifies the structured response format used by TrueDraft, not just that the address responds.
+
+Saved settings take effect immediately and survive restarting. AI keys are encrypted in `ai-connection.enc` in the data directory, using the device encryption key in `settings.json`. Do not share either file. Choosing **AI off** clears the saved key and disables AI without deleting writing. Deleting the local account also clears the saved device key. Changing the connection asks for AI-processing consent again on the next analysis.
+
+Existing `.env` settings still work until you save a connection in the UI. Saved UI settings take precedence, including AI off; no file editing or restart is needed. Hosted web deployments retain operator-managed AI settings; ordinary web users cannot replace the server’s provider or read its key.
+
+For local AI, keep its service running and use a reachable address. OpenAI-compatible services must support Chat Completions with JSON-schema structured output; a model appearing in a model list alone does not establish compatibility.
 
 ## Build a package
 

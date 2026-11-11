@@ -1,5 +1,5 @@
 import "server-only";
-import { getPrivacyFacts, limits } from "@/config/deployment";
+import { getPrivacyFacts, getPolicyVersion, limits } from "@/config/deployment";
 import type { FeedbackLanguage } from "@/i18n/config";
 import { countWords } from "@/lib/wordcount";
 import { INITIAL_AI_PROGRESS, type AiProgress } from "@/lib/ai-progress";
@@ -14,7 +14,7 @@ import { assertOwnedEssay, getEssay, latestVersionMatching, saveVersion } from "
 import { completeRun, createPendingRun, failRun } from "../services/feedback";
 import { getRetrievalGuidance } from "../services/resources";
 import { buildSystemPrompt, buildUserMessage, PROMPT_VERSION, type PromptInput } from "./prompts";
-import { AiProviderError, aiSettings, getProvider, type TokenUsage } from "./provider";
+import { AiProviderError, aiSettings, getProvider, type AiProvider, type TokenUsage } from "./provider";
 import { isSubstanceFailure, jsonSchemaFor, SCHEMA_VERSION, SCHEMAS, type EssayToolKind, type SentenceMode, type ToolKind } from "./schemas";
 import { applyGuards, quoteAppearsIn } from "./guard";
 import { aiLimitSettings, assertWithinBudget, costMicroUsd, inputHash, withRunSlot } from "./limits";
@@ -34,6 +34,7 @@ export type AiRequestOptions = {
 
 type Prepared = {
   user: AppUser;
+  policyVersion: string;
   essayId: string;
   kind: EssayToolKind;
   versionId: string | null;
@@ -147,6 +148,7 @@ export async function prepareAiRun(user: AppUser, essayId: string, kind: EssayTo
 
   return {
     user,
+    policyVersion: facts.policyVersion,
     essayId,
     kind,
     versionId,
@@ -225,8 +227,9 @@ export async function callModel(opts: {
   onProgress: (progress: AiProgress) => void;
   logFields: Record<string, string | number>;
   firstStage?: AiStage;
+  provider?: AiProvider;
 }) {
-  const provider = await getProvider();
+  const provider = opts.provider ?? await getProvider();
   const settings = aiSettings();
   const markers = STAGE_MARKERS[opts.kind];
   let lastError: unknown = null;
@@ -309,13 +312,14 @@ export const EPHEMERAL_KINDS: ReadonlySet<ToolKind> = new Set<ToolKind>(["brains
  */
 export async function executeAiRun(prepared: Prepared, onProgress: (progress: AiProgress) => void) {
   const provider = await getProvider();
+  if (prepared.policyVersion !== getPolicyVersion()) throw new ApiError(403, "consent_required");
   const limitSettings = aiLimitSettings();
   const system = buildSystemPrompt(prepared.kind, prepared.language);
   const userMessage = buildUserMessage(prepared.promptInput);
 
   // Identical input (same text, settings, prompt and model) within the window: reuse the stored
   // result instead of paying for the same answer twice. Ephemeral tools are never reused.
-  const hash = EPHEMERAL_KINDS.has(prepared.kind) ? null : inputHash({ system, userMessage, provider: provider.kind, model: provider.model, schema: SCHEMA_VERSION });
+  const hash = EPHEMERAL_KINDS.has(prepared.kind) ? null : inputHash({ system, userMessage, provider: provider.kind, model: provider.model, policyVersion: prepared.policyVersion, schema: SCHEMA_VERSION });
   if (hash && limitSettings.dedupWindowHours > 0) {
     const reusable = await getReusableRun(prepared.essayId, hash, new Date(Date.now() - limitSettings.dedupWindowHours * 3_600_000));
     if (reusable) {
@@ -353,6 +357,7 @@ export async function executeAiRun(prepared: Prepared, onProgress: (progress: Ai
   const started = Date.now();
   try {
     const response = await callModel({
+      provider,
       kind: prepared.kind,
       system,
       userMessage,

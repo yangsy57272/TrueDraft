@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { AnthropicProvider } from "@/server/ai/anthropic";
 import { OpenAiCompatibleProvider } from "@/server/ai/openai-compatible";
 import { AiProviderError } from "@/server/ai/provider";
@@ -33,6 +33,7 @@ const request = (signal = new AbortController().signal) => ({
 afterEach(() => vi.unstubAllGlobals());
 
 describe("Anthropic adapter", () => {
+  beforeEach(() => vi.stubEnv("AI_PROVIDER", "anthropic"));
   it("sends a structured-output streaming request and parses the result", async () => {
     process.env.ANTHROPIC_API_KEY = "test-key";
     let body: Record<string, unknown> = {};
@@ -71,6 +72,7 @@ describe("Anthropic adapter", () => {
 });
 
 describe("OpenAI-compatible adapter", () => {
+  beforeEach(() => vi.stubEnv("AI_PROVIDER", "openai-compatible"));
   it("requests strict JSON-schema output and assembles streamed content", async () => {
     process.env.AI_BASE_URL = "https://llm.example/v1";
     process.env.AI_API_KEY = "k";

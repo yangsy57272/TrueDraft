@@ -98,6 +98,7 @@ export default async function EssayPage({ params }: { params: Promise<{ id: stri
       }))}
       latestFeedback={latestFeedback}
       ai={{
+        policyVersion: facts.policyVersion,
         configured: facts.aiConfigured,
         isMock: facts.aiIsMock,
         providerName: facts.providerDisplayName,

@@ -1,6 +1,7 @@
 import "server-only";
 import { isDemoMode } from "@/config/production-guard";
-import { getAiProviderKind, isAiConfigured } from "@/config/deployment";
+import { getAiConnection } from "./connection-settings";
+import { isAiConfigured } from "@/config/deployment";
 
 export type StructuredRequest = {
   system: string;
@@ -64,14 +65,15 @@ export function parseJsonText(text: string): unknown {
 
 export async function getProvider(): Promise<AiProvider> {
   if (!isAiConfigured()) throw new AiProviderError("not_configured");
-  const kind = getAiProviderKind();
+  const connection = getAiConnection();
+  const kind = connection.provider;
   if (kind === "anthropic") {
     const { AnthropicProvider } = await import("./anthropic");
-    return new AnthropicProvider();
+    return new AnthropicProvider(undefined, connection);
   }
   if (kind === "openai-compatible") {
     const { OpenAiCompatibleProvider } = await import("./openai-compatible");
-    return new OpenAiCompatibleProvider();
+    return new OpenAiCompatibleProvider(connection);
   }
   if (kind === "mock" && process.env.NODE_ENV === "production" && !isDemoMode()) {
     throw new AiProviderError("not_configured");

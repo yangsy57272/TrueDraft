@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { useI18n } from "@/i18n/client";
 import { apiFetch } from "@/lib/api-client";
@@ -13,6 +14,7 @@ import type { WorkspaceAi } from "@/components/editor/types";
 export function useConsentGate(ai: WorkspaceAi) {
   const { t } = useI18n();
   const notify = useToast();
+  const router = useRouter();
   const [granted, setGranted] = useState(ai.consentCurrent);
   const [open, setOpen] = useState(false);
   const pending = useRef<((ok: boolean) => void) | null>(null);
@@ -40,9 +42,10 @@ export function useConsentGate(ai: WorkspaceAi) {
       ai={ai}
       saveOnlyLabel={t("common.cancel")}
       onAgree={async () => {
-        const res = await apiFetch("/api/consent", { method: "POST", body: { consentType: "ai_processing", action: "grant" } });
+        const res = await apiFetch("/api/consent", { method: "POST", body: { consentType: "ai_processing", action: "grant", policyVersion: ai.policyVersion } });
         if (!res.ok) {
           notify(t(`errors.${res.code}` as never), "error");
+          router.refresh();
           return;
         }
         setGranted(true);
@@ -56,5 +59,5 @@ export function useConsentGate(ai: WorkspaceAi) {
     />
   );
 
-  return { ensure, dialog, revoke: () => setGranted(false) };
+  return { ensure, dialog, revoke: () => { setGranted(false); router.refresh(); } };
 }

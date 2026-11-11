@@ -2,7 +2,7 @@ import "server-only";
 import { recommendSchools } from "../services/recommendations";
 import { schoolRanking, RANKING_EDITION } from "@/lib/school-rankings";
 import type { SchoolExplorer } from "./schemas";
-import { getPrivacyFacts, limits } from "@/config/deployment";
+import { getPrivacyFacts, getPolicyVersion, limits } from "@/config/deployment";
 import type { FeedbackLanguage } from "@/i18n/config";
 import { INITIAL_AI_PROGRESS, type AiProgress } from "@/lib/ai-progress";
 import { CDS_FIELDS, CIP_FAMILIES, type StudentProfile } from "@/lib/planning";
@@ -28,6 +28,7 @@ export const MAX_CDS_TEXT_CHARS = 60000;
 
 type PreparedPlanning = {
   user: AppUser;
+  policyVersion: string;
   kind: PlanningToolKind;
   language: FeedbackLanguage;
   profile: StudentProfile;
@@ -43,6 +44,7 @@ export async function preparePlanningRun(
   kind: PlanningToolKind,
   input: { cvText?: string; feedbackLanguage?: FeedbackLanguage; field?: string; tuition?: string; priority?: "balanced" | "overall" | "program" },
 ): Promise<PreparedPlanning> {
+  const policyVersion = getPolicyVersion();
   if (!getPrivacyFacts().aiConfigured) throw new ApiError(503, "ai_not_configured");
   if (!(await hasCurrentConsent(user.id, "ai_processing"))) throw new ApiError(403, "consent_required");
   const profile = await getProfile(user.id);
@@ -79,11 +81,12 @@ export async function preparePlanningRun(
     throw new ApiError(429, "rate_limited", { retryAfterSeconds: Math.ceil((resetAt.getTime() - Date.now()) / 1000) });
   }
   const redacted = redactIdentifiers(source);
-  return { user, kind, language: input.feedbackLanguage ?? user.feedbackLanguage, profile, text: redacted.text, redactionCount: redacted.count, schoolCandidates, schoolIds };
+  return { user, policyVersion, kind, language: input.feedbackLanguage ?? user.feedbackLanguage, profile, text: redacted.text, redactionCount: redacted.count, schoolCandidates, schoolIds };
 }
 
 export async function executePlanningRun(prepared: PreparedPlanning, onProgress: (progress: AiProgress) => void) {
   const provider = await getProvider();
+  if (prepared.policyVersion !== getPolicyVersion()) throw new ApiError(403, "consent_required");
   const limitSettings = aiLimitSettings();
   await assertWithinBudget(limitSettings);
   const run = await withRunSlot(
@@ -108,6 +111,7 @@ export async function executePlanningRun(prepared: PreparedPlanning, onProgress:
   onProgress(INITIAL_AI_PROGRESS);
   try {
     const response = await callModel({
+      provider,
       kind: prepared.kind,
       system: buildSystemPrompt(prepared.kind, prepared.language),
       userMessage: buildUserMessage(
@@ -171,6 +175,7 @@ export async function extractCdsDraft(adminId: string, cdsText: string, onProgre
   let response: Awaited<ReturnType<typeof callModel>>;
   try {
     response = await callModel({
+      provider,
       kind: "cds_extract",
       system: buildSystemPrompt("cds_extract", "en"),
       userMessage: buildUserMessage({ kind: "cds_extract", cdsText }),

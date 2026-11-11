@@ -42,3 +42,27 @@ test("the personal statement guide lists the Common App prompts and links to sta
   await expect(page.getByText(/Share an essay on any topic of your choice/)).toBeVisible();
   await expect(page.getByRole("heading", { name: "Step by step" })).toBeVisible();
 });
+
+
+test("direct field selection works without saved majors and AI matches stay on the shortlist", async ({ page }) => {
+  await signIn(page);
+  await page.goto("/majors");
+  await expect(page.getByRole("link", { name: /See colleges for these majors/ })).toBeVisible();
+  await page.goto("/profile");
+  await page.getByLabel("What subjects, ideas, or problems do you enjoy?").fill("Programming and building robots.");
+  await page.getByRole("button", { name: "Save profile" }).click();
+  await expect(page.getByText("Profile saved.")).toBeVisible();
+  await page.goto("/schools/recommended");
+  await page.getByLabel("Choose your academic field").selectOption("11");
+  await page.getByRole("button", { name: "Recommend colleges →" }).click();
+  await expect(page.getByRole("heading", { name: "AI school + major matching" })).toBeVisible();
+  await page.getByLabel("Recommendation priority").selectOption("program");
+  await page.getByRole("button", { name: "Update" }).click();
+  await page.getByRole("button", { name: "Find my school matches →" }).click();
+  await page.getByLabel(/I understand that AI processing/).check();
+  await page.getByRole("button", { name: "Agree and get feedback" }).click();
+  await expect(page.getByText("Development mock: no real AI analysis.")).toBeVisible({ timeout: 20_000 });
+  await expect(page.locator("#school-ai-title").locator("..").getByRole("article").first()).toBeVisible();
+  await page.goto("/schools/massachusetts-institute-of-technology");
+  await expect(page.getByRole("link", { name: /U.S. News 2027 · National Universities #1/ })).toHaveAttribute("href", /prnewswire/);
+});

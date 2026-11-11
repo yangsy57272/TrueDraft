@@ -1,0 +1,312 @@
+{
+  "edition": 2027,
+  "verifiedOn": "2026-11-11",
+  "schools": {
+    "166683": {
+      "overall": {
+        "rank": 1,
+        "category": "National Universities",
+        "source": "https://www.prnewswire.com/news-releases/mit-claims-no-1-spot-in-us-news-2027-best-colleges-rankings-302885278.html"
+      },
+      "programs": [
+        {
+          "field": "14",
+          "name": "Engineering (doctoral institutions)",
+          "rank": 1,
+          "source": "https://news.mit.edu/2026/mit-named-nations-top-university-us-news-0922",
+          "category": "Undergraduate \u00b7 all institutions"
+        },
+        {
+          "field": "11",
+          "name": "Computer science",
+          "rank": 1,
+          "source": "https://news.mit.edu/2026/mit-named-nations-top-university-us-news-0922",
+          "category": "Undergraduate \u00b7 all institutions"
+        },
+        {
+          "field": "45",
+          "name": "Economics",
+          "rank": 1,
+          "source": "https://news.mit.edu/2026/mit-named-nations-top-university-us-news-0922",
+          "category": "Undergraduate \u00b7 all institutions"
+        },
+        {
+          "field": "52",
+          "name": "Business",
+          "rank": 2,
+          "source": "https://news.mit.edu/2026/mit-named-nations-top-university-us-news-0922",
+          "category": "Undergraduate \u00b7 all institutions"
+        }
+      ]
+    },
+    "186131": {
+      "overall": {
+        "rank": 2,
+        "category": "National Universities",
+        "source": "https://www.prnewswire.com/news-releases/mit-claims-no-1-spot-in-us-news-2027-best-colleges-rankings-302885278.html"
+      },
+      "programs": []
+    },
+    "166027": {
+      "overall": {
+        "rank": 3,
+        "category": "National Universities",
+        "source": "https://www.prnewswire.com/news-releases/mit-claims-no-1-spot-in-us-news-2027-best-colleges-rankings-302885278.html"
+      },
+      "programs": []
+    },
+    "110635": {
+      "overall": {
+        "rank": 20,
+        "category": "National Universities",
+        "source": "https://www.universityofcalifornia.edu/news/university-of-california-best-public-university-2027-us-news-best-colleges-rankings"
+      },
+      "programs": []
+    },
+    "110662": {
+      "overall": {
+        "rank": 20,
+        "category": "National Universities",
+        "source": "https://www.universityofcalifornia.edu/news/university-of-california-best-public-university-2027-us-news-best-colleges-rankings"
+      },
+      "programs": []
+    },
+    "110680": {
+      "overall": {
+        "rank": 29,
+        "category": "National Universities",
+        "source": "https://www.universityofcalifornia.edu/news/university-of-california-best-public-university-2027-us-news-best-colleges-rankings"
+      },
+      "programs": []
+    },
+    "110644": {
+      "overall": {
+        "rank": 34,
+        "category": "National Universities",
+        "source": "https://www.universityofcalifornia.edu/news/university-of-california-best-public-university-2027-us-news-best-colleges-rankings"
+      },
+      "programs": []
+    },
+    "110653": {
+      "overall": {
+        "rank": 34,
+        "category": "National Universities",
+        "source": "https://www.universityofcalifornia.edu/news/university-of-california-best-public-university-2027-us-news-best-colleges-rankings"
+      },
+      "programs": []
+    },
+    "110705": {
+      "overall": {
+        "rank": 44,
+        "category": "National Universities",
+        "source": "https://www.universityofcalifornia.edu/news/university-of-california-best-public-university-2027-us-news-best-colleges-rankings"
+      },
+      "programs": []
+    },
+    "445188": {
+      "overall": {
+        "rank": 69,
+        "category": "National Universities",
+        "source": "https://www.universityofcalifornia.edu/news/university-of-california-best-public-university-2027-us-news-best-colleges-rankings"
+      },
+      "programs": []
+    },
+    "110671": {
+      "overall": {
+        "rank": 80,
+        "category": "National Universities",
+        "source": "https://www.universityofcalifornia.edu/news/university-of-california-best-public-university-2027-us-news-best-colleges-rankings"
+      },
+      "programs": []
+    },
+    "110714": {
+      "overall": {
+        "rank": 109,
+        "category": "National Universities",
+        "source": "https://www.universityofcalifornia.edu/news/university-of-california-best-public-university-2027-us-news-best-colleges-rankings"
+      },
+      "programs": []
+    },
+    "240444": {
+      "overall": {
+        "rank": 34,
+        "category": "National Universities",
+        "source": "https://news.wisc.edu/uw-rises-to-8th-among-publics-34th-overall-in-u-s-news-rankings/"
+      },
+      "programs": [
+        {
+          "field": "11",
+          "name": "Computer science",
+          "rank": 22,
+          "source": "https://news.wisc.edu/uw-rises-to-8th-among-publics-34th-overall-in-u-s-news-rankings/",
+          "category": "Undergraduate \u00b7 all institutions"
+        },
+        {
+          "field": "14",
+          "name": "Engineering (doctoral institutions)",
+          "rank": 15,
+          "source": "https://news.wisc.edu/uw-rises-to-8th-among-publics-34th-overall-in-u-s-news-rankings/",
+          "category": "Undergraduate \u00b7 all institutions"
+        },
+        {
+          "field": "42",
+          "name": "Psychology",
+          "rank": 8,
+          "source": "https://news.wisc.edu/uw-rises-to-8th-among-publics-34th-overall-in-u-s-news-rankings/",
+          "category": "Undergraduate \u00b7 all institutions"
+        },
+        {
+          "field": "45",
+          "name": "Economics",
+          "rank": 19,
+          "source": "https://news.wisc.edu/uw-rises-to-8th-among-publics-34th-overall-in-u-s-news-rankings/",
+          "category": "Undergraduate \u00b7 all institutions"
+        },
+        {
+          "field": "52",
+          "name": "Business",
+          "rank": 15,
+          "source": "https://news.wisc.edu/uw-rises-to-8th-among-publics-34th-overall-in-u-s-news-rankings/",
+          "category": "Undergraduate \u00b7 all institutions"
+        },
+        {
+          "field": "51",
+          "name": "Nursing",
+          "rank": 19,
+          "source": "https://news.wisc.edu/uw-rises-to-8th-among-publics-34th-overall-in-u-s-news-rankings/",
+          "category": "Undergraduate \u00b7 all institutions"
+        }
+      ]
+    },
+    "168342": {
+      "overall": {
+        "rank": 1,
+        "category": "National Liberal Arts Colleges",
+        "source": "https://www.prnewswire.com/news-releases/mit-claims-no-1-spot-in-us-news-2027-best-colleges-rankings-302885278.html"
+      },
+      "programs": []
+    },
+    "164465": {
+      "overall": {
+        "rank": 2,
+        "category": "National Liberal Arts Colleges",
+        "source": "https://www.prnewswire.com/news-releases/mit-claims-no-1-spot-in-us-news-2027-best-colleges-rankings-302885278.html"
+      },
+      "programs": []
+    },
+    "161004": {
+      "overall": {
+        "rank": 3,
+        "category": "National Liberal Arts Colleges",
+        "source": "https://www.prnewswire.com/news-releases/mit-claims-no-1-spot-in-us-news-2027-best-colleges-rankings-302885278.html"
+      },
+      "programs": []
+    },
+    "112260": {
+      "overall": {
+        "rank": 3,
+        "category": "National Liberal Arts Colleges",
+        "source": "https://www.prnewswire.com/news-releases/mit-claims-no-1-spot-in-us-news-2027-best-colleges-rankings-302885278.html"
+      },
+      "programs": []
+    },
+    "121345": {
+      "overall": {
+        "rank": 3,
+        "category": "National Liberal Arts Colleges",
+        "source": "https://www.prnewswire.com/news-releases/mit-claims-no-1-spot-in-us-news-2027-best-colleges-rankings-302885278.html"
+      },
+      "programs": []
+    },
+    "216287": {
+      "overall": {
+        "rank": 3,
+        "category": "National Liberal Arts Colleges",
+        "source": "https://www.prnewswire.com/news-releases/mit-claims-no-1-spot-in-us-news-2027-best-colleges-rankings-302885278.html"
+      },
+      "programs": []
+    },
+    "243744": {
+      "overall": null,
+      "programs": [
+        {
+          "field": "11",
+          "name": "Computer science",
+          "rank": 1,
+          "source": "https://news.mit.edu/2026/mit-named-nations-top-university-us-news-0922",
+          "category": "Undergraduate \u00b7 all institutions"
+        }
+      ]
+    },
+    "211440": {
+      "overall": null,
+      "programs": [
+        {
+          "field": "11",
+          "name": "Computer science",
+          "rank": 1,
+          "source": "https://news.mit.edu/2026/mit-named-nations-top-university-us-news-0922",
+          "category": "Undergraduate \u00b7 all institutions"
+        }
+      ]
+    },
+    "104179": {
+      "overall": {
+        "rank": 121,
+        "category": "National Universities",
+        "source": "https://news.arizona.edu/news/u-ranked-no-1-public-university-management-information-systems-latest-us-news-world-report"
+      },
+      "programs": [
+        {
+          "field": "52",
+          "name": "Business",
+          "rank": 33,
+          "category": "Undergraduate \u00b7 all institutions",
+          "source": "https://news.arizona.edu/news/u-ranked-no-1-public-university-management-information-systems-latest-us-news-world-report"
+        },
+        {
+          "field": "52",
+          "name": "Management information systems",
+          "rank": 2,
+          "category": "Undergraduate specialty \u00b7 all institutions",
+          "source": "https://news.arizona.edu/news/u-ranked-no-1-public-university-management-information-systems-latest-us-news-world-report"
+        }
+      ]
+    },
+    "171100": {
+      "overall": {
+        "rank": 69,
+        "category": "National Universities",
+        "source": "https://msutoday.msu.edu/news/2026/09/2027-usnwr-best-colleges"
+      },
+      "programs": [
+        {
+          "field": "52",
+          "name": "Supply chain / logistics",
+          "rank": 2,
+          "category": "Undergraduate specialty \u00b7 all institutions",
+          "source": "https://msutoday.msu.edu/news/2026/09/2027-usnwr-best-colleges"
+        },
+        {
+          "field": "52",
+          "name": "Production / operations management",
+          "rank": 7,
+          "category": "Undergraduate specialty \u00b7 all institutions",
+          "source": "https://msutoday.msu.edu/news/2026/09/2027-usnwr-best-colleges"
+        }
+      ]
+    },
+    "243780": {
+      "overall": null,
+      "programs": [
+        {
+          "field": "14",
+          "name": "Engineering (doctoral institutions)",
+          "rank": 8,
+          "category": "Undergraduate \u00b7 all institutions",
+          "source": "https://engineering.purdue.edu/Engr/AboutUs/FactsFigures/Rankings/undergraduate"
+        }
+      ]
+    }
+  }
+}

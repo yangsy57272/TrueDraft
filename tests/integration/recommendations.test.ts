@@ -55,6 +55,12 @@ describe("college recommendations", () => {
     expect(r.buckets.target[0].fit.reasons).toContainEqual({ code: "no_score" });
   });
 
+  it("lets applicants without saved majors choose a field directly", async () => {
+    const r = await recommendSchools(structuredClone(EMPTY_PROFILE), { field: "11", priority: "program" });
+    expect(r.fields).toEqual(["11"]);
+    expect(r.buckets.target.length).toBeGreaterThan(0);
+  });
+
   it("moves schools with the student's score, using approximate section-sum ranges", async () => {
     const strong = await recommendSchools(profile({ tests: { satTotal: 1500 } }));
     expect(strong.buckets.likely.map((x) => x.school.slug).sort()).toEqual(["mid-a", "mid-b", "open-a"]);

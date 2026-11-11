@@ -7,7 +7,7 @@ export const JOURNEY_STEPS = [
   { key: "profile", href: "/profile", paths: ["/profile"], color: "#4338ca", soft: "#e0e7ff" },
   { key: "majors", href: "/majors", paths: ["/majors"], color: "#6d28d9", soft: "#ede9fe" },
   { key: "cds", href: "/cds", paths: ["/cds"], color: "#0369a1", soft: "#e0f2fe" },
-  { key: "schools", href: "/schools", paths: ["/schools"], color: "#0f766e", soft: "#ccfbf1" },
+  { key: "schools", href: "/schools/recommended", paths: ["/schools"], color: "#0f766e", soft: "#ccfbf1" },
   { key: "list", href: "/my-list", paths: ["/my-list"], color: "#c2410c", soft: "#ffedd5" },
   { key: "essays", href: "/dashboard", paths: ["/dashboard", "/essays"], color: "#be185d", soft: "#fce7f3" },
   { key: "track", href: "/my-list/deadlines", paths: ["/my-list/deadlines"], color: "#15803d", soft: "#dcfce7" },

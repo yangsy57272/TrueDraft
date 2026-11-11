@@ -1,4 +1,7 @@
 import "server-only";
+import { recommendSchools } from "../services/recommendations";
+import { schoolRanking, RANKING_EDITION } from "@/lib/school-rankings";
+import type { SchoolExplorer } from "./schemas";
 import { getPrivacyFacts, limits } from "@/config/deployment";
 import type { FeedbackLanguage } from "@/i18n/config";
 import { INITIAL_AI_PROGRESS, type AiProgress } from "@/lib/ai-progress";
@@ -30,19 +33,21 @@ type PreparedPlanning = {
   profile: StudentProfile;
   text: string;
   redactionCount: number;
+  schoolCandidates?: string;
+  schoolIds?: string[];
 };
 
 /** Validation, consent, and rate limiting happen before any streaming starts. */
 export async function preparePlanningRun(
   user: AppUser,
   kind: PlanningToolKind,
-  input: { cvText?: string; feedbackLanguage?: FeedbackLanguage },
+  input: { cvText?: string; feedbackLanguage?: FeedbackLanguage; field?: string; tuition?: string; priority?: "balanced" | "overall" | "program" },
 ): Promise<PreparedPlanning> {
   if (!getPrivacyFacts().aiConfigured) throw new ApiError(503, "ai_not_configured");
   if (!(await hasCurrentConsent(user.id, "ai_processing"))) throw new ApiError(403, "consent_required");
   const profile = await getProfile(user.id);
   let source = "";
-  if (kind === "major_explorer") {
+  if (kind === "major_explorer" || kind === "school_explorer") {
     source = profileToText(profile);
     if (profile.courses.length + profile.activities.length + profile.honors.length === 0 && !profile.interests.trim()) {
       throw new ApiError(400, "profile_empty");
@@ -52,6 +57,21 @@ export async function preparePlanningRun(
     if (!source) throw new ApiError(400, "cv_required");
     if (source.length > MAX_CV_CHARS) throw new ApiError(413, "cv_too_long");
   }
+  let schoolCandidates: string | undefined;
+  let schoolIds: string[] | undefined;
+  if (kind === "school_explorer") {
+    const recommendations = await recommendSchools(profile, input);
+    const candidates = Object.values(recommendations.buckets).flat();
+    if (!candidates.length) throw new ApiError(400, "profile_empty");
+    schoolIds = candidates.map(r => r.school.id);
+    // Tests and GPA are used locally for fit, never sent to the provider.
+    schoolCandidates = JSON.stringify(candidates.map(r => ({ school_id: r.school.id, name: r.school.name,
+      field: CIP_FAMILIES[r.field.code]?.en, degree_share_percent: r.field.share,
+      group: r.fit.category === "likely" ? "Safety" : r.fit.category,
+      graduation_rate: r.facts.gradRate?.value ?? null,
+      ranking_edition: RANKING_EDITION, rankings: schoolRanking(r.school.unitid),
+      outside_preferences: r.outsidePreferences })));
+  }
   const hourly = await consumeRateLimit(`ai:h:${user.id}`, limits.aiRequestsPerHour, 3600);
   const daily = await consumeRateLimit(`ai:d:${user.id}`, limits.aiRequestsPerDay, 86400);
   if (!hourly.allowed || !daily.allowed) {
@@ -59,7 +79,7 @@ export async function preparePlanningRun(
     throw new ApiError(429, "rate_limited", { retryAfterSeconds: Math.ceil((resetAt.getTime() - Date.now()) / 1000) });
   }
   const redacted = redactIdentifiers(source);
-  return { user, kind, language: input.feedbackLanguage ?? user.feedbackLanguage, profile, text: redacted.text, redactionCount: redacted.count };
+  return { user, kind, language: input.feedbackLanguage ?? user.feedbackLanguage, profile, text: redacted.text, redactionCount: redacted.count, schoolCandidates, schoolIds };
 }
 
 export async function executePlanningRun(prepared: PreparedPlanning, onProgress: (progress: AiProgress) => void) {
@@ -91,13 +111,22 @@ export async function executePlanningRun(prepared: PreparedPlanning, onProgress:
       kind: prepared.kind,
       system: buildSystemPrompt(prepared.kind, prepared.language),
       userMessage: buildUserMessage(
-        prepared.kind === "major_explorer" ? { kind: prepared.kind, profileText: prepared.text } : { kind: prepared.kind, cvText: prepared.text },
+        prepared.kind === "school_explorer" ? { kind: prepared.kind, profileText: prepared.text, schoolCandidates: prepared.schoolCandidates } : prepared.kind === "major_explorer" ? { kind: prepared.kind, profileText: prepared.text } : { kind: prepared.kind, cvText: prepared.text },
       ),
       onProgress,
       logFields,
     });
     let result: unknown;
-    if (prepared.kind === "major_explorer") {
+    if (prepared.kind === "school_explorer") {
+      const raw = response.parsed as SchoolExplorer;
+      const seen = new Set<string>();
+      result = { ...raw, schools: raw.schools.filter(s => {
+        if (!prepared.schoolIds?.includes(s.school_id) || seen.has(s.school_id)) return false;
+        seen.add(s.school_id); return true;
+      }) };
+      if (!(result as SchoolExplorer).schools.length) throw new Error("No grounded school matches");
+      await completePlanningRun(run.id, result, response.model, response.usage, costMicroUsd(response.usage, limitSettings));
+    } else if (prepared.kind === "major_explorer") {
       result = guardMajorExplorer(response.parsed as MajorExplorer, prepared.profile);
       await completePlanningRun(run.id, result, response.model, response.usage, costMicroUsd(response.usage, limitSettings));
     } else {

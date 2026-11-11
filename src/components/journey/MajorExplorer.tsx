@@ -196,7 +196,7 @@ export function MajorExplorer({
                     </div>
                     {s.zh_note ? <p className="mt-3 rounded-md bg-sage-soft px-3 py-2 text-sm" lang="zh-Hans">{s.zh_note}</p> : null}
                     {s.cip_family ? (
-                      <Link href={`/schools?field=${s.cip_family}`} className="mt-3 inline-block text-sm">{t("majors.findSchools")} →</Link>
+                      <Link href={`/schools/recommended?field=${s.cip_family}`} className="mt-3 inline-block text-sm">{t("majors.findSchools")} →</Link>
                     ) : null}
                   </li>
                 ))}
@@ -244,19 +244,17 @@ export function MajorExplorer({
                 <span className="min-w-0">
                   {m.name}
                   {m.cipFamily ? (
-                    <Link href={`/schools?field=${m.cipFamily}`} className="ml-2 text-xs">{t("nav.schools")}</Link>
+                    <Link href={`/schools/recommended?field=${m.cipFamily}`} className="ml-2 text-xs">{t("nav.schools")}</Link>
                   ) : null}
                 </span>
                 <button type="button" className="btn btn-ghost btn-sm" onClick={() => removeMajor(m.id)} aria-label={`${t("profile.remove")}: ${m.name}`}>✕</button>
               </li>
             ))}
           </ul>
-          {majors.some((m) => m.cipFamily) ? (
-            <div className="mt-4 rounded-xl p-3" style={{ background: "#ede9fe" }}>
+          <div className="mt-4 rounded-xl p-3" style={{ background: "#ede9fe" }}>
               <p className="text-sm text-ink-soft">{t("recommend.ctaBody")}</p>
               <Link href="/schools/recommended" className="btn btn-primary btn-sm mt-2">{t("recommend.cta")} →</Link>
             </div>
-          ) : null}
           <form
             className="mt-3 flex flex-wrap gap-2"
             onSubmit={(e) => {

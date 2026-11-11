@@ -172,6 +172,7 @@ const STAGE_MARKERS: Record<ToolKind, [string, AiStage][]> = {
   word_count: [['"preserve"', "preparing"]],
   final_read: [['"grammar_issues"', "preparing"]],
   brainstorm: [['"questions"', "preparing"]],
+  school_explorer: [['"schools"', "preparing"]],
   major_explorer: [['"suggestions"', "preparing"]],
   cv_import: [['"honors"', "preparing"]],
   cds_extract: [['"c7"', "preparing"]],

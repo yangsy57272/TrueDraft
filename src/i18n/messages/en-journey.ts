@@ -633,10 +633,10 @@ const enJourney = {
     tuition: "Tuition",
     update: "Update",
     noMajorsTitle: "Choose a major first",
-    noMajorsBody: "Recommendations are based on your intended majors. Add one or more majors (each linked to a field of study) and come back.",
+    noMajorsBody: "Choose an academic field below, or save your intended majors for future visits.",
     goMajors: "Choose majors",
     disclaimerTitle: "How to read this",
-    disclaimer1: "These are suggestions, not predictions. They only compare published admit rates and test-score ranges — they cannot see your essays, activities, recommendations, or context.",
+    disclaimer1: "These are suggestions, not predictions. The admission groups compare published university-wide admit rates and test-score ranges. The separate AI analysis uses your profile interests and activities, but does not predict admission.",
     disclaimer2: "International applicants are often admitted at lower rates than the overall rate shown here. Treat every school under 15% as a reach for everyone.",
     disclaimer3: "A balanced list usually has a few of each. Make sure every Safety is a school you would genuinely be happy to attend and can afford.",
     buckets: {

@@ -10,7 +10,7 @@ import { ACTIVITY_TYPES, C7_FACTORS, C7_LEVELS, CDS_FIELDS, COURSE_LEVELS, HONOR
  * ghostwritten text; the prompts and guards are further layers, not guarantees.
  */
 
-export const SCHEMA_VERSION = "2026-11-05.2";
+export const SCHEMA_VERSION = "2026-11-11.1";
 
 const text = (max: number) => z.string().transform((s) => (s.length > max ? `${s.slice(0, max - 1)}…` : s));
 const nullableText = (max: number) => z.string().nullable().transform((s) => (s && s.length > max ? `${s.slice(0, max - 1)}…` : s));
@@ -248,7 +248,14 @@ export const cdsExtractSchema = z.object({
 
 /* ----------------------------------------------------------------- */
 
+export const schoolExplorerSchema = z.object({
+  schools: list(z.object({ school_id: text(100), why_fit: text(1000), tradeoff: text(700), next_step: text(500) }), 13),
+  limitations: text(1000),
+});
+export type SchoolExplorer = z.infer<typeof schoolExplorerSchema>;
+
 export const SCHEMAS = {
+  school_explorer: schoolExplorerSchema,
   full_feedback: fullFeedbackSchema,
   prompt_decoder: promptDecoderSchema,
   sentence: sentenceFeedbackSchema,
@@ -264,7 +271,7 @@ export type ToolKind = keyof typeof SCHEMAS;
 export const ESSAY_TOOL_KINDS = ["full_feedback", "prompt_decoder", "sentence", "word_count", "final_read", "brainstorm"] as const;
 export type EssayToolKind = (typeof ESSAY_TOOL_KINDS)[number];
 /** Tools that operate on the student's profile (served by /api/planning/[kind]). */
-export const PLANNING_TOOL_KINDS = ["major_explorer", "cv_import"] as const;
+export const PLANNING_TOOL_KINDS = ["major_explorer", "school_explorer", "cv_import"] as const;
 export type PlanningToolKind = (typeof PLANNING_TOOL_KINDS)[number];
 
 type JsonSchema = Record<string, unknown>;

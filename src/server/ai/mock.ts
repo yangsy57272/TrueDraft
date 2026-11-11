@@ -134,6 +134,10 @@ function payloadFor(schemaName: string, user: string): unknown {
         threads_noticed: [],
         boundary_note: null,
       };
+    case "school_explorer": {
+      const candidates = JSON.parse(user.match(/<school_candidates>\n([\s\S]*?)\n<\/school_candidates>/)?.[1] ?? "[]") as { school_id: string }[];
+      return { schools: candidates.map(s => ({ school_id: s.school_id, why_fit: M, tradeoff: M, next_step: M })), limitations: M };
+    }
     case "major_explorer":
       return {
         themes: [{ theme: `${M} A theme from your profile`, evidence: M }],

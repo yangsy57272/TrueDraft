@@ -22,7 +22,7 @@ import { DELETE as deleteAccount } from "@/app/api/account/route";
 import * as providerModule from "@/server/ai/provider";
 import type { StructuredRequest } from "@/server/ai/provider";
 import { SEED_SCHOOLS } from "@/content/schools";
-import { school } from "@/db/schema";
+import { school, federalProfile } from "@/db/schema";
 import { ctx, json, readStream, req, sampleEssay, signIn } from "../helpers/http";
 
 let me: { cookie: string; userId: string };
@@ -94,6 +94,28 @@ describe("student profile", () => {
     expect(again.majors).toHaveLength(1);
     const removed = await json(await removeMajor(req("DELETE", "/x", { cookie: me.cookie, body: { id: added.majors[0].id } }), undefined as never));
     expect(removed.majors).toHaveLength(0);
+  });
+});
+
+describe("AI school matching", () => {
+  it("requires consent, grounds IDs and retains server classifications without sharing tests", async () => {
+    expect((await planning("school_explorer", { field: "14" })).status).toBe(403);
+    await save(PROFILE); await grant();
+    const [college] = await db.insert(school).values({ slug: "engineering-match", name: "Engineering Match", unitid: "999001" }).returning();
+    await db.insert(federalProfile).values({ schoolId: college.id, unitid: "999001", fileDate: "2026-11-02", data: { admissionRate: 45, degreesByField: { "14": 30 } } });
+    const calls: StructuredRequest[] = [];
+    const match = { school_id: college.id, why_fit: "Physics HL relates to engineering.", tradeoff: "Investigate cost.", next_step: "Check the official program curriculum." };
+    vi.spyOn(providerModule, "getProvider").mockResolvedValue(fakeProvider(() => ({ schools: [match, match, { ...match, school_id: "invented" }], limitations: "Not an admission prediction." }), calls));
+    const events = await readStream(await planning("school_explorer", { field: "14", priority: "program" }));
+    const done = events.find(e => e.type === "done");
+    expect(done.result.schools).toEqual([match]);
+    expect(calls[0].user).toContain("Physics HL");
+    expect(calls[0].user).toContain(college.id);
+    expect(calls[0].user).not.toMatch(/1530|toefl|journey@example/);
+    expect(done.result.schools[0]).not.toHaveProperty("category");
+    const [stored] = await db.select().from(planningRun).where(eq(planningRun.id, done.runId));
+    expect(stored.encryptedStructuredResult).not.toContain("Physics");
+    expect((await planning("school_explorer", { field: "99" })).status).toBe(400);
   });
 });
 

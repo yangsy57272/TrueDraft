@@ -191,6 +191,8 @@ async function verifyApp(app, url) {
   assert.match(await schools.text(), /Harvard University/);
   const recommendations = await fetch(`${origin}/schools/recommended?field=11`, { headers: { cookie } });
   assert.equal(recommendations.status, 200);
+  const expandedCds = await fetch(`${origin}/schools/bowdoin-college`);
+  assert.match(await expandedCds.text(), /bowdoin-cds_2025-2026\.pdf/);
   const guide = await fetch(`${origin}/guides/personal-statement`);
   assert.equal(guide.status, 200);
   const stAndrews = await fetch(`${origin}/schools/university-of-st-andrews`);

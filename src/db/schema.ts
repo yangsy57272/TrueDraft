@@ -397,7 +397,7 @@ export const schoolSupplements = sqliteTable(
   (t) => [primaryKey({ columns: [t.schoolId, t.cycle] })],
 );
 
-/** One CDS edition for one school. Values come only from the official document and are verified by an admin. */
+/** One CDS edition for one school. Values come from official documents; verification provenance distinguishes automated imports from admin review. */
 export const cdsDataset = sqliteTable(
   "cds_dataset",
   {

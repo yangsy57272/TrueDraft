@@ -1,6 +1,7 @@
 import "dotenv/config";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
+import { importCds, type CdsFile, type CdsCatalogEntry } from "../src/server/services/import-cds";
 import { supplementFileSchema } from "../src/lib/supplements";
 import { importSupplements } from "../src/server/services/import-supplements";
 import { migrate } from "drizzle-orm/better-sqlite3/migrator";
@@ -19,6 +20,12 @@ async function main() {
     const { imported, missing } = importSupplements(supplementFileSchema.parse(JSON.parse(readFileSync(file, "utf8"))));
     if (missing.length) throw new Error("The school catalog must be updated before importing supplements.");
     console.log(`Updated supplements for ${imported} schools.`);
+    const cdsDir = path.resolve("data/cds");
+    const documents = readdirSync(cdsDir).filter(f => /^20\d{2}-20\d{2}.*\.json$/.test(f)).sort().map(filename => ({ filename, doc: JSON.parse(readFileSync(path.join(cdsDir, filename), "utf8")) as CdsFile }));
+    const catalog = existsSync(path.join(cdsDir, "catalog.json")) ? JSON.parse(readFileSync(path.join(cdsDir, "catalog.json"), "utf8")).schools as CdsCatalogEntry[] : [];
+    const cds = importCds(documents, catalog);
+    if (cds.skipped.length) throw new Error("Bundled CDS reference data failed validation.");
+    console.log(`Updated ${cds.imported} CDS datasets and ${cds.linksUpdated} official source links.`);
   }
   await closeDb();
 }

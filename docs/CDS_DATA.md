@@ -6,7 +6,7 @@ TrueDraft shows students figures from each college's own **Common Data Set**: th
 
 1. **Official source only.** Every dataset stores the `https` URL of the college's own CDS document. The URL must be on the college's own domain (compared with the school's website and CDS page). A file hosted elsewhere, such as a Google Drive link from the college's official CDS page, needs a recorded, reviewed exception and a written reason. Students see that reason. A dataset can also record where in the document the values came from (`sourcePageRef`) and how it was verified (`verificationMethod`).
 2. **Drafts by default.** CSV imports and AI pre-fills create unpublished drafts.
-3. **Verify before publish.** A dataset can be published only after an admin marks it *verified against the official document*. The verifying admin and the date are recorded.
+3. **Verify before publish.** Admin-entered datasets can be published only after an admin marks them *verified against the official document*. Bundled automated reference imports have a separate method and no verifying administrator; the UI labels these “Automated check” and states that a person has not reviewed them.
 4. **Nothing estimated.** Missing values are shown as "Not available". The college may not have reported a value, or we may not have captured it. Admission rate, yield, and ED admission rate are computed from the reported counts at display time, never stored or guessed.
 5. **Validation.** Every field has its own allowed range: SAT composite 400–1600, SAT sections 200–800, ACT 1–36, real calendar dates (February 29 is allowed), and so on. Cross-field rules are checked too:
    - admitted ≤ applicants, and enrolled ≤ admitted
@@ -23,9 +23,9 @@ TrueDraft shows students figures from each college's own **Common Data Set**: th
 
 ## What ships in this repository
 
-`src/content/schools.ts` seeds **24 schools**: name, Chinese name, city, state, public or private, website, and a link to each school's **own CDS page**. Those links were found by web search on 2026-11-05, with each search restricted to the university's own domain. The build environment couldn't fetch the pages directly, so the links haven't been opened and checked yet (`linkCheckedAt` is empty).
+`src/content/schools.ts` seeds **24 schools**: name, Chinese name, city, state, public or private, website, and a link to each school's **own CDS page**. Those initial links were found by institutional-domain search on 2026-11-05. The 2026-11-12 audit now refreshes checked official source links from `data/cds/catalog.json` across the broader directory.
 
-**No admissions numbers are seeded.** Until a dataset is imported, the school page says "No CDS data imported yet" and links to the official document.
+**Public CDS figures are bundled separately from the initial directory.** Run `npm run cds:import` after the directory import, or use the desktop download. Uncaptured fields remain unavailable; missing imports are never replaced by fabricated numbers. The audit currently supplies 245 school-years for 234 institutions. See [CDS_COVERAGE.md](CDS_COVERAGE.md) for counts, provenance, limitations and reproduction instructions.
 
 ### Imported 2025-2026 data (`data/cds/2025-2026.json`)
 
@@ -35,7 +35,7 @@ TrueDraft shows students figures from each college's own **Common Data Set**: th
 - the source line each value was read from (`sourceLines`), so any value can be checked against the document;
 - the method used (`method`).
 
-The importer validates every record with the same rules as the admin form. Re-running it updates the datasets in place.
+The importer validates every record with the same rules as the admin form. Re-running it updates automatically imported datasets in place and preserves operator-maintained, personally reviewed, draft and unpublished datasets.
 
 How the values were produced: most official PDFs were converted with `pdftotext -layout` and read by a field parser. MIT's CDS is a web page, which was converted to one line per table row. Berkeley's and Vanderbilt's are spreadsheets, which were read by cell; for Vanderbilt that's the file's Answer Sheet tab. A record-level `method` says which applies. Each value was then checked against its source line. Fields that couldn't be read unambiguously were left out rather than guessed. C7 (admission factors) is included only when at least 17 factors were read, and the school page shows only the factors that were captured. J1 (degrees by field) isn't included in this import. Caltech's PDF uses a font that garbles extraction, so its dataset is partial (no C1 or C7).
 
@@ -92,6 +92,12 @@ npm run scorecard:import
 ```
 
 The import matches existing schools by IPEDS UNITID, adds new ones, and refreshes everyone's federal figures. It never touches CDS datasets.
+
+## Additional 2026-11-12 research
+
+`data/cds/*-researched.json` adds independently fetched, recent institutional reports. The public files retain the original URL, SHA-256, field identifiers or source lines, PDF pages, reporting-year evidence and extraction method. Raw documents are kept outside Git. The 1,574-entry `catalog.json` includes the 1,573 U.S. institutions plus the separately added St Andrews entry; all U.S. entries were attempted. A source can be confirmed without enough reliable numeric fields to import it. Historical sources do not imply that a newer report is unavailable. Section G costs may refer to the following academic year; reporting edition is not a guarantee that every section describes the same cohort or cost year.
+
+The desktop launcher refreshes bundled CDS reference data during upgrades while preserving operator-managed datasets and applicant work. No network fetch or Python installation occurs during app startup.
 
 ## How to add data
 

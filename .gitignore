@@ -13,3 +13,7 @@ playwright-report
 eval-results
 .truedraft/
 dist/
+
+tmp/
+
+__pycache__/

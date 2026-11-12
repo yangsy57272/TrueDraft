@@ -1,0 +1,103 @@
+{
+  "description": "Conservative field-level extraction from fetched institutional Common Data Set reports. Missing/ambiguous values omitted. Original imported records are preserved; this adds independently sourced school-years.",
+  "extractedOn": "2026-11-12",
+  "method": "Automated primary-PDF AcroForm/labeled-row extraction with institution identity, reporting-year, field-range and cross-field checks. Not personally reviewed.",
+  "records": [
+    {
+      "slug": "carnegie-mellon-university",
+      "academicYear": "2026-2027",
+      "sourceUrl": "https://www.cmu.edu/ira/CDS/pdf/cds_2026-27/cds_2026_c-first-year-first-time-admission.pdf",
+      "sourcePageRef": "PDF pages 1, 5; field-level identifiers/lines and pages retained in the data file.",
+      "data": {
+        "applicants": 33083,
+        "admitted": 4071,
+        "waitlistOffered": 8681,
+        "waitlistAdmitted": 73,
+        "satComposite25": 1500,
+        "satComposite50": 1540,
+        "satComposite75": 1560,
+        "satEbrw25": 730,
+        "satEbrw75": 770,
+        "satMath25": 770,
+        "satMath75": 800,
+        "actComposite25": 34,
+        "actComposite50": 35,
+        "actComposite75": 36
+      },
+      "sourceLines": {
+        "applicants": "Total first-time, first-year (freshman) who applied:                                 20,615        12,445          23                  33,083",
+        "admitted": "Total first-time, first-year (freshman) who were admitted:                    2,249          1,745            77                  4,071",
+        "waitlistOffered": "Number of qualified applicants offered a place on waiting list:                                                                                       8,681",
+        "waitlistAdmitted": "Number of wait-listed students admitted:                                                                                                                           73",
+        "satComposite25": "SAT Composite                                 1500                                                   1540                                                   1560",
+        "satComposite50": "SAT Composite                                 1500                                                   1540                                                   1560",
+        "satComposite75": "SAT Composite                                 1500                                                   1540                                                   1560",
+        "satEbrw25": "SAT Evidence-based Reading                               730                                                     750                                                     770",
+        "satEbrw75": "SAT Evidence-based Reading                               730                                                     750                                                     770",
+        "satMath25": "SAT Math                                          770                                                     790                                                     800",
+        "satMath75": "SAT Math                                          770                                                     790                                                     800",
+        "actComposite25": "ACT Composite                                34                                                        35                                                        36",
+        "actComposite50": "ACT Composite                                34                                                        35                                                        36",
+        "actComposite75": "ACT Composite                                34                                                        35                                                        36"
+      },
+      "sourcePages": {
+        "applicants": 1,
+        "admitted": 1,
+        "waitlistOffered": 1,
+        "waitlistAdmitted": 1,
+        "satComposite25": 5,
+        "satComposite50": 5,
+        "satComposite75": 5,
+        "satEbrw25": 5,
+        "satEbrw75": 5,
+        "satMath25": 5,
+        "satMath75": 5,
+        "actComposite25": 5,
+        "actComposite50": 5,
+        "actComposite75": 5
+      },
+      "sourceSha256": "13086c738ea5673a23672270611fc88b0e0213418303215de96301e4d7b9317a",
+      "yearEvidence": "C1 explicitly states Fall 2026",
+      "method": "Automated conservative extraction from the fetched institutional PDF; exact CDS AcroForm field identifiers or unambiguous labeled rows; bounded and cross-field validated. Not personally reviewed. C1 uses only complete primary sex categories or unambiguous primary totals; residency-subtable totals are excluded."
+    },
+    {
+      "slug": "lawrence-technological-university",
+      "academicYear": "2026-2027",
+      "sourceUrl": "https://ltu.edu/wp-content/uploads/2026/11/CDS_2026-2027-EXTERNAL.pdf",
+      "sourcePageRef": "PDF pages 15; field-level identifiers/lines and pages retained in the data file.",
+      "data": {
+        "satComposite25": 1100,
+        "satComposite50": 1180,
+        "satComposite75": 1260,
+        "satMath25": 550,
+        "satMath75": 650,
+        "actComposite25": 24,
+        "actComposite50": 30,
+        "actComposite75": 31
+      },
+      "sourceLines": {
+        "satComposite25": "SAT Composite                         1100                         1180                        1260",
+        "satComposite50": "SAT Composite                         1100                         1180                        1260",
+        "satComposite75": "SAT Composite                         1100                         1180                        1260",
+        "satMath25": "SAT Math                               550                          590                         650",
+        "satMath75": "SAT Math                               550                          590                         650",
+        "actComposite25": "ACT Composite                           24                          30                           31",
+        "actComposite50": "ACT Composite                           24                          30                           31",
+        "actComposite75": "ACT Composite                           24                          30                           31"
+      },
+      "sourcePages": {
+        "satComposite25": 15,
+        "satComposite50": 15,
+        "satComposite75": 15,
+        "satMath25": 15,
+        "satMath75": 15,
+        "actComposite25": 15,
+        "actComposite50": 15,
+        "actComposite75": 15
+      },
+      "sourceSha256": "449d190a435c6728352377da23c1b8f1c490c668ec127c9dbdb2a5a27a51272b",
+      "yearEvidence": "C1 explicitly states Fall 2026",
+      "method": "Automated conservative extraction from the fetched institutional PDF; exact CDS AcroForm field identifiers or unambiguous labeled rows; bounded and cross-field validated. Not personally reviewed. C1 uses only complete primary sex categories or unambiguous primary totals; residency-subtable totals are excluded."
+    }
+  ]
+}

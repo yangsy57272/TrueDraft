@@ -28,6 +28,7 @@ describe("personalized schedule",()=>{
   const tasks=p.tasks.filter(t=>t.title.includes("Supplement #1"));expect(tasks.filter(t=>t.done)).toHaveLength(3);expect(tasks.find(t=>t.kind==="review")?.done).toBe(false);
   e.status="drafting";expect(buildApplicationSchedule([s],[e],defaultScheduleState(),now).tasks.find(t=>t.title.includes("Supplement #1")&&t.kind==="draft")?.done).toBe(false);
   s.status="submitted";expect(buildApplicationSchedule([s],[],defaultScheduleState(),now).tasks).toHaveLength(0);
+  s.deadlines.push({...s.deadlines[0],id:"aid",type:"financial_aid"});const after=buildApplicationSchedule([s],[],defaultScheduleState(),now);expect(after.tasks).toHaveLength(1);expect(after.tasks[0].deadline?.type).toBe("financial_aid");
  });
  it("distinguishes missing dates, wrong-round dates and genuine past deadlines",()=>{
   const s=school();s.deadlines[0].type="early_action";

@@ -91,6 +91,13 @@ export function buildApplicationSchedule(schools:ScheduleSchool[],essays:Schedul
   writing(context.s,`global:${platform}`,title,e?.promptText??(platform==="ucas"?"Plan subject motivation, academic preparation and relevant preparation beyond formal study. Confirm the current three-question character limits in UCAS; avoid naming one university.":"Confirm your chosen Common App prompt and whether each college requires the shared personal statement. Use your own experiences and reflection."),platform==="common_app"?650:null,context.d,`/essays/new?type=${platform==="ucas"?"ucas":"personal_statement"}`,e);
   if(matches.length>1)warnings.push({entryId:context.s.id,kind:"statement_selection",detail:`${title}: multiple unlinked statement drafts exist. This estimate uses the first matching draft; confirm the intended version.`});
  }
+ // Submission finishes the initial application, not later aid, interview or portfolio obligations.
+ for(const s of schools.filter(s=>["submitted","admitted","waitlisted","deferred"].includes(s.status))) {
+  for(const extra of s.deadlines.filter(d=>!d.done&&!applicationTypes.has(d.type))) {
+   add(s,`${s.id}:deadline:${extra.id}`,"deadline",extra.label??extra.type.replaceAll("_"," "),`Confirm and prepare this outstanding post-submission requirement. Source: ${extra.source??"not supplied; verify the official portal"}.`,60,extra,`/my-list#${s.id}`);
+   if(deadlineInstant(extra,prefs.timeZone).getTime()<now.getTime())warnings.push({entryId:s.id,kind:"past_deadline",detail:`${s.name}: an outstanding post-submission deadline has passed; confirm the portal status.`});
+  }
+ }
  const rank:Record<string,number>={verify:0,research:1,brainstorm:2,draft:3,revise:4,review:5,materials:0,deadline:0,submit:6};
  const ordered=tasks.map((t,i)=>({t,i,due:t.deadline?deadlineInstant(t.deadline,prefs.timeZone).getTime():Infinity})).sort((a,b)=>a.t.targetDate.localeCompare(b.t.targetDate)||(a.due-b.due)||(a.t.kind==="submit"?1:0)-(b.t.kind==="submit"?1:0)||(rank[a.t.kind]??0)-(rank[b.t.kind]??0)||a.i-b.i).map(x=>x.t);
  const startMinute=Number(prefs.startTime.slice(0,2))*60+Number(prefs.startTime.slice(3));

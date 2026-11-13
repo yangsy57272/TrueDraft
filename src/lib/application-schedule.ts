@@ -25,6 +25,7 @@ export function dayInZone(now:Date,zone:string) {const p=new Intl.DateTimeFormat
 export const shiftDay=(date:string,n:number)=>new Date(Date.parse(date+"T12:00:00Z")+n*DAY).toISOString().slice(0,10);
 const normal=(s:string)=>s.replace(/\s+/g," ").trim().toLowerCase();
 export function promptKey(entryId:string,p:Pick<SchedulePrompt,"order"|"prompt">) {let h=2166136261;for(const c of p.prompt)h=Math.imul(h^c.charCodeAt(0),16777619);return `${entryId}:prompt:${p.order}:${(h>>>0).toString(36)}`;}
+export function materialPrompt(p:SchedulePrompt) {return p.unit===null&&/\b(submit|upload|provide|record)\b.{0,90}\b(graded.{0,15}paper|portfolio|video|résumé|resume|transcript)\b/i.test(p.prompt);}
 export function requiredPrompt(p:SchedulePrompt) {return /^required[.!]?$/i.test(p.requirement?.trim()??"");}
 const applicationTypes=new Set(["application","early_decision","early_decision_2","early_action","restrictive_early_action"]);
 const roundTypes:Record<string,string>={ed:"early_decision",ed2:"early_decision_2",ea:"early_action",rea:"restrictive_early_action",rd:"application",rolling:"application"};
@@ -71,6 +72,10 @@ export function buildApplicationSchedule(schools:ScheduleSchool[],essays:Schedul
   if(!s.supplementStatus||["portal","coming_soon"].includes(s.supplementStatus))warnings.push({entryId:s.id,kind:"unknown_prompts",detail:`${s.name}: the full current supplement requirements are not confirmed. Verify the portal before relying on workload estimates.`});
   const essaysDone=s.checklist.some(c=>c.key==="essays"&&c.done);
   for(const p of prompts) {
+   if(materialPrompt(p)) {
+    add(s,`${promptKey(s.id,p)}:material`,"materials",`Prepare · Supplement #${p.order}`,p.prompt,60,d,s.slug?`/schools/${s.slug}#supplements`:`/my-list#${s.id}`,essaysDone);
+    continue;
+   }
    const match=essays.find(e=>e.listEntryId===s.id&&(normal(e.promptText)===normal(p.prompt)||normal(e.promptText).startsWith(normal(p.prompt)+" (")));
    if(match)handledEssays.add(match.id);
    const start=s.slug?`/essays/new?supp=${encodeURIComponent(s.slug)}&n=${p.order}`:`/essays/new?listEntry=${s.id}`;

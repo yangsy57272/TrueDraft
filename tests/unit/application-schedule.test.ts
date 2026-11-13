@@ -6,7 +6,8 @@ const school=(id="a"):ScheduleSchool=>({id,name:`School ${id}`,slug:id,major:"Ps
 const essay=(s:ScheduleSchool):ScheduleEssay=>({id:"essay1",title:"Supplement",promptText:s.prompts[0].prompt,status:"final_review",draftWordCount:200,applicationType:"supplemental",listEntryId:s.id});
 describe("personalized schedule",()=>{
  it("plans required prompts and one shared statement, leaving options for explicit selection",()=>{
-  const s=school();const plan=buildApplicationSchedule([s,school("b")],[],defaultScheduleState(),now);
+  const s=school();s.prompts.push({order:3,prompt:"Submit a graded paper from your junior or senior year.",requirement:"Required",limit:null,unit:null,limitText:null});const plan=buildApplicationSchedule([s,school("b")],[],defaultScheduleState(),now);
+  expect(plan.tasks.find(t=>t.title.includes("Supplement #3"))?.kind).toBe("materials");
   expect(plan.tasks.filter(t=>t.id.startsWith("global:")&&t.kind==="draft")).toHaveLength(1);
   expect(plan.tasks.some(t=>t.title.includes("Supplement #2"))).toBe(false);expect(plan.tasks.filter(t=>t.kind==="draft")).toHaveLength(3);
   expect(plan.tasks.find(t=>t.kind==="research")?.detail).toContain("Psychology");

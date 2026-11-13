@@ -97,3 +97,26 @@ describe("college recommendations", () => {
     expect(await getSupplementPrompt(s.slug, 2)).toBeNull();
   });
 });
+
+// The international directory must participate even without U.S. CDS/federal statistics.
+describe("recommendations across application systems",()=>{
+  async function international(){const {importGlobalSchools}=await import("@/server/services/import-global-schools");importGlobalSchools();}
+  it("covers all six systems, matching official subject listings and accounting for every directory school",async()=>{
+    await international();const r=await recommendSchools(profile());
+    expect(r.coverage.map(c=>c.system)).toEqual(["US","UK","HK","CA","AU","SG"]);
+    expect(r.systems.map(s=>s.system)).toEqual(["UK","HK","CA","AU","SG"]);
+    for(const s of r.systems){expect(s.matches.length).toBeGreaterThan(0);expect(s.matches.length+s.explore.length).toBe(s.total);expect(s.unverified).toBe(s.explore.length);for(const m of s.matches){expect(m.subjects.every(x=>x.code==="11")).toBe(true);expect(m.sourceUrl).toMatch(/^https:/);}}
+    expect(r.systems.reduce((n,s)=>n+s.total,0)).toBe(39);
+  });
+  it("respects a selected system and keeps U.S. tuition/region/size rules out of other systems",async()=>{
+    await international();const r=await recommendSchools(profile({preferences:{sizes:["small"],regions:["northeast"],testPlan:"submit",needAid:"yes"}}),{system:"UK",tuition:"under20k",priority:"overall"});
+    expect(r.systems.map(s=>s.system)).toEqual(["UK"]);expect(r.systems[0].matches.length).toBeGreaterThan(0);expect(Object.values(r.buckets).flat()).toHaveLength(0);
+    expect(r.systems[0].explore.some(s=>s.school.slug==="lse")).toBe(true);
+    expect((await recommendSchools(profile(),{system:"US"})).systems).toEqual([]);
+  });
+  it("balances the bounded AI shortlist across systems without inventing international fit categories",async()=>{
+    await international();const {schoolAnalysisCandidates}=await import("@/server/services/recommendations");const result=schoolAnalysisCandidates(await recommendSchools(profile()));
+    expect(result.length).toBeLessThanOrEqual(13);expect(new Set(result.map(r=>r.system)).size).toBe(6);expect(new Set(result.map(r=>r.school_id)).size).toBe(result.length);
+    expect(result.filter(r=>r.system!=="US").every(r=>r.group.startsWith("Unassessed")&&r.degree_share_percent===null&&r.rankings===null)).toBe(true);
+  });
+});

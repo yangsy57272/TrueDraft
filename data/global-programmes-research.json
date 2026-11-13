@@ -1,0 +1,290 @@
+{
+  "scope": "Programme-directory discovery; not eligibility/current-intake certification. Selected subject assertions are in global-programmes.json.",
+  "attempts": [
+    {
+      "slug": "oxford",
+      "url": "https://www.ox.ac.uk/admissions/undergraduate/courses/course-listing",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "slug": "cambridge",
+      "url": "https://www.undergraduate.study.cam.ac.uk/courses",
+      "checkedAt": "2026-11-13T14:48:24.070627+00:00",
+      "sha256": "8dbf5a3f535bd2d5df74ae4f7f89dc07f03f220fe2f884f56cfc743220fd27f7"
+    },
+    {
+      "slug": "imperial-college-london",
+      "url": "https://www.imperial.ac.uk/study/courses/",
+      "checkedAt": "2026-11-13T14:48:59.407054+00:00",
+      "sha256": "725f0ef1a70c3d0946eaab95170066c4562a8aafbb645ab83ff3e62c6016fcb4"
+    },
+    {
+      "slug": "ucl",
+      "url": "https://www.ucl.ac.uk/prospective-students/undergraduate/degrees",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "slug": "lse",
+      "url": "https://www.lse.ac.uk/study-at-lse/undergraduate",
+      "checkedAt": "2026-11-13T14:52:21.379355+00:00",
+      "sha256": "d5f4d242bc186d1eaf219f49a06a2f021bb10c4bc443256db71beb5a072ede2e"
+    },
+    {
+      "slug": "edinburgh",
+      "url": "https://study.ed.ac.uk/programmes/undergraduate-a-z",
+      "checkedAt": "2026-11-13T14:52:50.977599+00:00",
+      "sha256": "e24e7b345cc263b68806854d444cb2dc42235ab91f664559c5bd4e3059d4457c"
+    },
+    {
+      "slug": "kings-college-london",
+      "url": "https://www.kcl.ac.uk/study/undergraduate/courses",
+      "checkedAt": "2026-11-13T14:49:50.044973+00:00",
+      "sha256": "a8b0ccf93bf9da2f149f74e3524f1b7887bdbc437a2b86e0a0aab3d30451296f"
+    },
+    {
+      "slug": "manchester",
+      "url": "https://www.manchester.ac.uk/study/undergraduate/courses/2027/",
+      "checkedAt": "2026-11-13T14:48:21.444143+00:00",
+      "sha256": "5963dc39f1fae7de02a34f2151511e86b0416c6568de91d8ae224f992f52ba30"
+    },
+    {
+      "slug": "warwick",
+      "url": "https://warwick.ac.uk/study/undergraduate/courses/",
+      "checkedAt": "2026-11-13T14:48:25.634787+00:00",
+      "sha256": "3c3510bfaf2b2f62299ad562d29655c405452dd20b8d9c20da19e91323580e7e"
+    },
+    {
+      "slug": "bristol",
+      "url": "https://www.bristol.ac.uk/study/undergraduate/search/",
+      "checkedAt": "2026-11-13T14:48:31.281837+00:00",
+      "sha256": "5c8a6bbc171a9e210b3df649b5a3409fa1a5bea0488b34caa621ab9f7cb41721"
+    },
+    {
+      "slug": "durham",
+      "url": "https://www.durham.ac.uk/study/courses/undergraduate/",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "slug": "bath",
+      "url": "https://www.bath.ac.uk/courses/undergraduate-2027/",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "slug": "glasgow",
+      "url": "https://www.gla.ac.uk/undergraduate/degrees/",
+      "checkedAt": "2026-11-13T14:48:39.510378+00:00",
+      "sha256": "bab9eccb15e1906779f9037df3a000b51da8bdf21d1437c352f3097889f97ad0"
+    },
+    {
+      "slug": "leeds",
+      "url": "https://courses.leeds.ac.uk/",
+      "checkedAt": "2026-11-13T14:48:27.470641+00:00",
+      "sha256": "70b3b626a3ee2625f1250a5e1c3d7bf36a5f0819ba881c28c9c651b274325012"
+    },
+    {
+      "slug": "sheffield",
+      "url": "https://sheffield.ac.uk/undergraduate/courses",
+      "checkedAt": "2026-11-13T14:48:25.634859+00:00",
+      "sha256": "d09bf5f3b8c5f2d18fe9afdb54524b47d9cea849dc3b3831795d9bdc58f6395e"
+    },
+    {
+      "slug": "university-of-st-andrews",
+      "url": "https://www.st-andrews.ac.uk/subjects/",
+      "checkedAt": "2026-11-13T14:48:34.776257+00:00",
+      "sha256": "3f828e52b359675d0a9091bd4911ef38da48ed69f77bcee8338d5175358d1e3c"
+    },
+    {
+      "slug": "hku",
+      "url": "https://admissions.hku.hk/programmes",
+      "checkedAt": "2026-11-13T14:48:38.250655+00:00",
+      "sha256": "2e5cd1e87bbcdf10e25b664cdea7b8a9092eced04525e78d5a11537faa6e8cee"
+    },
+    {
+      "slug": "cuhk",
+      "url": "https://admission.cuhk.edu.hk/programmes/list/",
+      "checkedAt": "2026-11-13T14:50:07.035355+00:00",
+      "sha256": "0df873b08350bc4a51f006b55fa3cca8754386c9c5c27e13d75cf5a53f59dec3"
+    },
+    {
+      "slug": "hkust",
+      "url": "https://join.hkust.edu.hk/our-programs",
+      "checkedAt": "2026-11-13T14:48:38.301415+00:00",
+      "sha256": "ee6cc639e78e68765496753b7967d11f4a6ed81a00921273e0b4ff379e395e18"
+    },
+    {
+      "slug": "cityu-hk",
+      "url": "https://www.cityu.edu.hk/admo/programmes",
+      "checkedAt": "2026-11-13T14:48:32.343082+00:00",
+      "sha256": "d02032286070b4dd9d8fbd985a7bdca8af8edf52b89ff177db3bfcb2c8a9c43d"
+    },
+    {
+      "slug": "polyu",
+      "url": "https://www.polyu.edu.hk/study/ug",
+      "checkedAt": "2026-11-13T14:48:45.077433+00:00",
+      "sha256": "b2f2a8bea034857f06dc88e0461a769e3e52241d34bbbffee66df009aa2f3a0a"
+    },
+    {
+      "slug": "hkbu",
+      "url": "https://admissions.hkbu.edu.hk/programmes.html",
+      "checkedAt": "2026-11-13T14:48:37.337220+00:00",
+      "sha256": "d490f73d60810e229a1d8cebdb22028e40fae157e17e3014b69163f1a4bb1c9e"
+    },
+    {
+      "slug": "lingnan",
+      "url": "https://www.ln.edu.hk/admissions/ug/programme",
+      "checkedAt": "2026-11-13T14:48:53.584070+00:00",
+      "sha256": "b17c8d65c667e6782921532fb365743a48905ecdefc69c7fb3c551145dc1248e"
+    },
+    {
+      "slug": "eduhk",
+      "url": "https://www.apply.eduhk.hk/ug/programmes",
+      "checkedAt": "2026-11-13T14:49:12.842590+00:00",
+      "sha256": "8f799a70573367400d95034f9a7c1fa6e63c0dd823857cd4ff12b3e146bdd8d0"
+    },
+    {
+      "slug": "toronto",
+      "url": "https://future.utoronto.ca/undergraduate-programs",
+      "checkedAt": "2026-11-13T14:48:42.905440+00:00",
+      "sha256": "c78cc94557e8070abe8f18914b39e2dd22e14de8d9f241f6c473a452d09c5f0a"
+    },
+    {
+      "slug": "ubc",
+      "url": "https://you.ubc.ca/programs/",
+      "checkedAt": "2026-11-13T14:49:33.178189+00:00",
+      "sha256": "0c63c7e43263378560242547c31585438d236cb1a450cea3f7a01cbce9ebfa35"
+    },
+    {
+      "slug": "mcgill",
+      "url": "https://www.mcgill.ca/undergraduate-admissions/programs",
+      "checkedAt": "2026-11-13T14:48:45.445638+00:00",
+      "sha256": "3fbb4c51b883b25384256e07d34809a158ee80c992847c410671d334745d47dd"
+    },
+    {
+      "slug": "waterloo",
+      "url": "https://uwaterloo.ca/future-students/programs",
+      "checkedAt": "2026-11-13T14:48:49.113400+00:00",
+      "sha256": "c06afc2e5e5d3797698df10693a79f01f723cd65d6efbfa5d11df0e14311ecc8"
+    },
+    {
+      "slug": "mcmaster",
+      "url": "https://future.mcmaster.ca/programs/",
+      "checkedAt": "2026-11-13T14:48:57.500981+00:00",
+      "sha256": "a834119ac3d3336cbc906506606c0443abc9417e59d2fa8009632ac6da16b8b0"
+    },
+    {
+      "slug": "alberta",
+      "url": "https://www.ualberta.ca/en/undergraduate-programs/index.html",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "slug": "melbourne",
+      "url": "https://study.unimelb.edu.au/find/courses/undergraduate/",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "slug": "sydney",
+      "url": "https://www.sydney.edu.au/courses/search.html?search-type=course&course-level=undergraduate",
+      "checkedAt": "2026-11-13T14:48:54.937831+00:00",
+      "sha256": "f214b51cb6cb6c45c8106c7494e7534470dde37143994313876f6acf10d49110"
+    },
+    {
+      "slug": "unsw",
+      "url": "https://www.unsw.edu.au/study/undergraduate",
+      "checkedAt": "2026-11-13T14:48:55.604825+00:00",
+      "sha256": "d91c8cb9eb579df3b7219b45355a6a807ca225429a53a9268bada8326ffdb308"
+    },
+    {
+      "slug": "anu",
+      "url": "https://programsandcourses.anu.edu.au/program/BCOMP",
+      "checkedAt": "2026-11-13T14:52:15.100387+00:00",
+      "sha256": "c05c61d682532ee7a898e2f1ca05734506a55baf49c038fe35ab763157180717"
+    },
+    {
+      "slug": "monash",
+      "url": "https://www.monash.edu/study/courses",
+      "error": "HTTP Error 403: Forbidden"
+    },
+    {
+      "slug": "queensland",
+      "url": "https://study.uq.edu.au/study-options/programs",
+      "checkedAt": "2026-11-13T14:49:01.041871+00:00",
+      "sha256": "a7b5b7db7fdd366a0ec0f10c074680fc577178b9666506d4bdb95211be85e603"
+    },
+    {
+      "slug": "nus",
+      "url": "https://www.nus.edu.sg/oam/undergraduate-programmes",
+      "checkedAt": "2026-11-13T14:52:11.316132+00:00",
+      "sha256": "ef95815cba8a365a73ad6e36339dab120559f368e95612edca2f264a7d6a1a8a"
+    },
+    {
+      "slug": "ntu",
+      "url": "https://www.ntu.edu.sg/education/degree-programmes",
+      "checkedAt": "2026-11-13T14:52:11.986360+00:00",
+      "sha256": "e0d8ad766e8bf3d26acd3797c5d794e16b3ba96096513b2b50eda7bfb700a23f"
+    },
+    {
+      "slug": "smu",
+      "url": "https://admissions.smu.edu.sg/programmes",
+      "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010)>"
+    }
+  ],
+  "fallbackAttempts": [
+    {
+      "slug": "edinburgh",
+      "url": "https://study.ed.ac.uk/programmes/undergraduate-a-z",
+      "checkedAt": "2026-11-13T14:52:50.977599+00:00",
+      "sha256": "e24e7b345cc263b68806854d444cb2dc42235ab91f664559c5bd4e3059d4457c"
+    },
+    {
+      "slug": "imperial-college-london",
+      "url": "https://www.imperial.ac.uk/study/courses/undergraduate/computing/",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "slug": "lse",
+      "url": "https://www.lse.ac.uk/study-at-lse/undergraduate",
+      "checkedAt": "2026-11-13T14:52:21.379355+00:00",
+      "sha256": "d5f4d242bc186d1eaf219f49a06a2f021bb10c4bc443256db71beb5a072ede2e"
+    },
+    {
+      "slug": "hku",
+      "url": "https://admissions.hku.hk/explore/programmes",
+      "error": "HTTP Error 404: Not Found"
+    },
+    {
+      "slug": "nus",
+      "url": "https://www.nus.edu.sg/oam/undergraduate-programmes",
+      "checkedAt": "2026-11-13T14:52:11.316132+00:00",
+      "sha256": "ef95815cba8a365a73ad6e36339dab120559f368e95612edca2f264a7d6a1a8a"
+    },
+    {
+      "slug": "ntu",
+      "url": "https://www.ntu.edu.sg/education/degree-programmes",
+      "checkedAt": "2026-11-13T14:52:11.986360+00:00",
+      "sha256": "e0d8ad766e8bf3d26acd3797c5d794e16b3ba96096513b2b50eda7bfb700a23f"
+    },
+    {
+      "slug": "smu",
+      "url": "https://computing.smu.edu.sg/bsc-computer-science",
+      "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010)>"
+    },
+    {
+      "slug": "ubc",
+      "url": "https://you.ubc.ca/ubc_programs/computer-science-vancouver-bsc/",
+      "error": "<urlopen error [Errno 54] Connection reset by peer>"
+    },
+    {
+      "slug": "anu",
+      "url": "https://programsandcourses.anu.edu.au/program/BCOMP",
+      "checkedAt": "2026-11-13T14:52:15.100387+00:00",
+      "sha256": "c05c61d682532ee7a898e2f1ca05734506a55baf49c038fe35ab763157180717"
+    },
+    {
+      "slug": "queensland",
+      "url": "https://study.uq.edu.au/study-options/programs/bachelor-computer-science-2451",
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "reviewedSchools": 21,
+  "reviewedSubjectLinks": 206
+}

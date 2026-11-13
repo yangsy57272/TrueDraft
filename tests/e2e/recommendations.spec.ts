@@ -66,3 +66,19 @@ test("direct field selection works without saved majors and AI matches stay on t
   await page.goto("/schools/massachusetts-institute-of-technology");
   await expect(page.getByRole("link", { name: /U.S. News 2027 · National Universities #1/ })).toHaveAttribute("href", /prnewswire/);
 });
+
+test("all six systems participate; applicants can filter and save a non-U.S. subject match",async({page})=>{
+  await signIn(page);await page.goto('/schools/recommended?field=11');
+  await expect(page.getByLabel('Application system')).toHaveValue('');
+  for(const country of ['United Kingdom','Hong Kong','Canada','Australia','Singapore'])await expect(page.getByRole('heading',{name:new RegExp(country+' · Subject matches')})).toBeVisible();
+  await expect(page.getByRole('heading',{name:'United States · Reach / Target / Safety suggestions'})).toBeVisible();
+  await page.getByLabel('Application system').selectOption('UK');await page.getByRole('button',{name:'Update',exact:true}).click();
+  await expect(page.getByRole('heading',{name:/United Kingdom · Subject matches/})).toBeVisible();await expect(page.locator('#system-HK')).toHaveCount(0);await expect(page.locator('#bucket-reach')).toHaveCount(0);
+  const card=page.getByRole('listitem').filter({has:page.getByRole('heading',{name:'University of Cambridge',exact:true})});await expect(card.getByRole('link',{name:/Computer Science/})).toHaveAttribute('href',/cam.ac.uk/);
+  await card.getByRole('button',{name:'+ Add to list (group undecided)',exact:true}).click();await expect(card.getByText('On my list')).toBeVisible();
+  await page.goto('/my-list');await expect(page.getByText('University of Cambridge',{exact:true}).first()).toBeVisible();
+});
+
+test("cross-system recommendations remain usable on mobile @mobile",async({page})=>{
+ await signIn(page);await page.goto('/schools/recommended?field=11&system=SG');await expect(page.getByRole('heading',{name:/Singapore · Subject matches/})).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1)).toBe(true);
+});

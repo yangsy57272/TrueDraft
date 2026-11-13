@@ -1,0 +1,1216 @@
+[
+  {
+    "slug": "cambridge",
+    "url": "https://www.undergraduate.study.cam.ac.uk/courses",
+    "checkedAt": "2026-11-13T14:48:24.070627+00:00",
+    "sha256": "8dbf5a3f535bd2d5df74ae4f7f89dc07f03f220fe2f884f56cfc743220fd27f7",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "04",
+        "label": "Architecture, BA (Hons) and MArch",
+        "url": "https://www.undergraduate.study.cam.ac.uk/courses/architecture-ba-hons-march"
+      },
+      {
+        "code": "11",
+        "label": "Computer Science, BA (Hons) and MEng",
+        "url": "https://www.undergraduate.study.cam.ac.uk/courses/computer-science-ba-hons-meng"
+      },
+      {
+        "code": "14",
+        "label": "Engineering, BA (Hons) and MEng",
+        "url": "https://www.undergraduate.study.cam.ac.uk/courses/engineering-ba-hons-meng"
+      },
+      {
+        "code": "26",
+        "label": "Chemical Engineering and Biotechnology, BA (Hons) and MEng",
+        "url": "https://www.undergraduate.study.cam.ac.uk/courses/chemical-engineering-biotechnology-ba-hons-meng"
+      },
+      {
+        "code": "45",
+        "label": "Economics, BA (Hons)",
+        "url": "https://www.undergraduate.study.cam.ac.uk/courses/economics-ba-hons"
+      },
+      {
+        "code": "38",
+        "label": "Philosophy, BA (Hons)",
+        "url": "https://www.undergraduate.study.cam.ac.uk/courses/philosophy-ba-hons"
+      },
+      {
+        "code": "16",
+        "label": "History and Modern Languages, BA (Hons)",
+        "url": "https://www.undergraduate.study.cam.ac.uk/courses/history-modern-languages-ba-hons"
+      },
+      {
+        "code": "54",
+        "label": "History, BA (Hons)",
+        "url": "https://www.undergraduate.study.cam.ac.uk/courses/history-ba-hons"
+      },
+      {
+        "code": "51",
+        "label": "Medicine, MB and BChir",
+        "url": "https://www.undergraduate.study.cam.ac.uk/courses/medicine-mb-bchir"
+      }
+    ]
+  },
+  {
+    "slug": "edinburgh",
+    "url": "https://study.ed.ac.uk/programmes/undergraduate-a-z",
+    "checkedAt": "2026-11-13T14:52:50.977599+00:00",
+    "sha256": "e24e7b345cc263b68806854d444cb2dc42235ab91f664559c5bd4e3059d4457c",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "52",
+        "label": "Accounting and Business MA (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/189-accounting-and-business"
+      },
+      {
+        "code": "50",
+        "label": "Acoustics and Music Technology BSc (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/655-acoustics-and-music-technology"
+      },
+      {
+        "code": "54",
+        "label": "Ancient and Medieval History MA (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/373-ancient-and-medieval-history"
+      },
+      {
+        "code": "27",
+        "label": "Applied Mathematics BSc (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/429-applied-mathematics"
+      },
+      {
+        "code": "31",
+        "label": "Applied Sport Science BSc (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/114-applied-sport-science"
+      },
+      {
+        "code": "11",
+        "label": "Artificial Intelligence and Computer Science BSc (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/66-artificial-intelligence-and-computer-science"
+      },
+      {
+        "code": "14",
+        "label": "Chemical Engineering BEng (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/99-chemical-engineering"
+      },
+      {
+        "code": "26",
+        "label": "Biological Sciences (Biochemistry) BSc (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/13-biological-sciences-biochemistry"
+      },
+      {
+        "code": "42",
+        "label": "Philosophy and Psychology MA (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/319-philosophy-and-psychology"
+      },
+      {
+        "code": "45",
+        "label": "Arabic and Politics MA (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/291-arabic-and-politics"
+      },
+      {
+        "code": "23",
+        "label": "Celtic and English Language MA (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/371-celtic-and-english-language"
+      },
+      {
+        "code": "38",
+        "label": "French and Philosophy MA (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/268-french-and-philosophy"
+      },
+      {
+        "code": "22",
+        "label": "Business and Law MA (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/188-business-and-law"
+      },
+      {
+        "code": "40",
+        "label": "Astrophysics BSc (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/46-astrophysics"
+      },
+      {
+        "code": "16",
+        "label": "Arabic and French MA (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/297-arabic-and-french"
+      },
+      {
+        "code": "03",
+        "label": "Ecological and Environmental Sciences BSc (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/16-ecological-and-environmental-sciences"
+      },
+      {
+        "code": "13",
+        "label": "Physical Education MA (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/352-physical-education"
+      },
+      {
+        "code": "04",
+        "label": "Architectural History and Archaeology MA (Hons)",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/344-architectural-history-and-archaeology"
+      },
+      {
+        "code": "51",
+        "label": "MBChB Medicine (6-year programme) MBChB",
+        "url": "https://study.ed.ac.uk/programmes/undergraduate/354-mbchb-medicine-6-year-programme"
+      }
+    ]
+  },
+  {
+    "slug": "kings-college-london",
+    "url": "https://www.kcl.ac.uk/study/undergraduate/courses",
+    "checkedAt": "2026-11-13T14:49:50.044973+00:00",
+    "sha256": "a8b0ccf93bf9da2f149f74e3524f1b7887bdbc437a2b86e0a0aab3d30451296f",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "52",
+        "label": "Accounting & Finance BSc",
+        "url": "https://www.kcl.ac.uk/study/undergraduate/courses/accounting-finance-bsc"
+      },
+      {
+        "code": "26",
+        "label": "Anatomy, Developmental & Human Biology BSc",
+        "url": "https://www.kcl.ac.uk/study/undergraduate/courses/anatomy-developmental-and-human-biology-bsc"
+      },
+      {
+        "code": "54",
+        "label": "Ancient History BA",
+        "url": "https://www.kcl.ac.uk/study/undergraduate/courses/ancient-history-ba"
+      },
+      {
+        "code": "11",
+        "label": "Artificial Intelligence MSci",
+        "url": "https://www.kcl.ac.uk/study/undergraduate/courses/artificial-intelligence-msci"
+      },
+      {
+        "code": "38",
+        "label": "Artificial Intelligence & Philosophy BSc",
+        "url": "https://www.kcl.ac.uk/study/undergraduate/courses/artificial-intelligence-and-philosophy"
+      },
+      {
+        "code": "14",
+        "label": "Biomedical Engineering BEng",
+        "url": "https://www.kcl.ac.uk/study/undergraduate/courses/biomedical-engineering-beng"
+      }
+    ]
+  },
+  {
+    "slug": "glasgow",
+    "url": "https://www.gla.ac.uk/undergraduate/degrees/",
+    "checkedAt": "2026-11-13T14:48:39.510378+00:00",
+    "sha256": "bab9eccb15e1906779f9037df3a000b51da8bdf21d1437c352f3097889f97ad0",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "52",
+        "label": "Accountancy & Finance [BAcc]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/accountancy/"
+      },
+      {
+        "code": "27",
+        "label": "Accounting & Mathematics [BSc]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/accountingmathematics/"
+      },
+      {
+        "code": "14",
+        "label": "Aeronautical Engineering [BEng/MEng]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/aeronauticalengineering/"
+      },
+      {
+        "code": "54",
+        "label": "Ancient History [MA]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/ancienthistory/"
+      },
+      {
+        "code": "11",
+        "label": "Artificial Intelligence [BSc/MSci]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/artificial-intelligence/"
+      },
+      {
+        "code": "40",
+        "label": "Astronomy [BSc/MSci]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/astronomy/"
+      },
+      {
+        "code": "26",
+        "label": "Biochemistry [BSc/MSci]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/biochemistry/"
+      },
+      {
+        "code": "45",
+        "label": "Business Economics [MA(SocSci)]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/businesseconomics/"
+      },
+      {
+        "code": "16",
+        "label": "Chinese [MA]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/chinese/"
+      },
+      {
+        "code": "04",
+        "label": "Civil Engineering with Architecture [BEng/MEng]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/civilengineeringwitharchitecture/"
+      },
+      {
+        "code": "22",
+        "label": "Common Law [LLB]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/commonlaw/"
+      },
+      {
+        "code": "09",
+        "label": "Communication, Culture & Technology [MA]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/communication-culture-technology/"
+      },
+      {
+        "code": "50",
+        "label": "Creative Arts & Industries [MA]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/creativeartsindustries/"
+      },
+      {
+        "code": "51",
+        "label": "Dentistry [BDS]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/dentistry/"
+      },
+      {
+        "code": "03",
+        "label": "Environmental Geoscience [BSc]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/environmentalgeoscience/"
+      },
+      {
+        "code": "13",
+        "label": "Education with Teaching Qualification (Primary) [MEduc]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/education/"
+      },
+      {
+        "code": "23",
+        "label": "English Language & Linguistics [MA]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/englishlanguage/"
+      },
+      {
+        "code": "24",
+        "label": "Liberal Arts [MA]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/liberal-arts/"
+      },
+      {
+        "code": "38",
+        "label": "Philosophy [BSc/MA/MA(SocSci)]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/philosophy/"
+      },
+      {
+        "code": "42",
+        "label": "Psychology [BSc/MA/MA(SocSci)]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/psychology/"
+      },
+      {
+        "code": "31",
+        "label": "Sport & Exercise Science [BSc/MSci]",
+        "url": "https://www.gla.ac.uk/undergraduate/degrees/sport-exercise-science/"
+      }
+    ]
+  },
+  {
+    "slug": "university-of-st-andrews",
+    "url": "https://www.st-andrews.ac.uk/subjects/",
+    "checkedAt": "2026-11-13T14:48:34.776257+00:00",
+    "sha256": "3f828e52b359675d0a9091bd4911ef38da48ed69f77bcee8338d5175358d1e3c",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "54",
+        "label": "Ancient history",
+        "url": "https://www.st-andrews.ac.uk/subjects/ancient-history/"
+      },
+      {
+        "code": "26",
+        "label": "Biology",
+        "url": "https://www.st-andrews.ac.uk/subjects/biology/"
+      },
+      {
+        "code": "40",
+        "label": "Chemistry",
+        "url": "https://www.st-andrews.ac.uk/subjects/chemistry/"
+      },
+      {
+        "code": "16",
+        "label": "Chinese studies",
+        "url": "https://www.st-andrews.ac.uk/subjects/chinese-studies/"
+      },
+      {
+        "code": "11",
+        "label": "Computer science",
+        "url": "https://www.st-andrews.ac.uk/subjects/computer-science/"
+      },
+      {
+        "code": "03",
+        "label": "Earth and environmental sciences",
+        "url": "https://www.st-andrews.ac.uk/subjects/earth-environmental-sciences/"
+      },
+      {
+        "code": "45",
+        "label": "Economics",
+        "url": "https://www.st-andrews.ac.uk/subjects/economics/"
+      },
+      {
+        "code": "23",
+        "label": "English",
+        "url": "https://www.st-andrews.ac.uk/subjects/english/"
+      },
+      {
+        "code": "50",
+        "label": "Film studies",
+        "url": "https://www.st-andrews.ac.uk/subjects/film-studies/"
+      },
+      {
+        "code": "27",
+        "label": "Mathematics",
+        "url": "https://www.st-andrews.ac.uk/subjects/mathematics/"
+      },
+      {
+        "code": "51",
+        "label": "Medicine",
+        "url": "https://www.st-andrews.ac.uk/subjects/medicine/"
+      },
+      {
+        "code": "38",
+        "label": "Philosophy",
+        "url": "https://www.st-andrews.ac.uk/subjects/philosophy/"
+      },
+      {
+        "code": "42",
+        "label": "Psychology",
+        "url": "https://www.st-andrews.ac.uk/subjects/psychology/"
+      }
+    ]
+  },
+  {
+    "slug": "cuhk",
+    "url": "https://admission.cuhk.edu.hk/programmes/list/",
+    "checkedAt": "2026-11-13T14:50:07.035355+00:00",
+    "sha256": "0df873b08350bc4a51f006b55fa3cca8754386c9c5c27e13d75cf5a53f59dec3",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "30",
+        "label": "Interdisciplinary Programmes",
+        "url": "https://admission.cuhk.edu.hk/programmes/interdisciplinary-programmes/"
+      },
+      {
+        "code": "45",
+        "label": "Anthropology",
+        "url": "https://admission.cuhk.edu.hk/programme/anthn/"
+      },
+      {
+        "code": "16",
+        "label": "Chinese Language and Literature",
+        "url": "https://admission.cuhk.edu.hk/programme/chlln/"
+      },
+      {
+        "code": "23",
+        "label": "English",
+        "url": "https://admission.cuhk.edu.hk/programme/engen/"
+      },
+      {
+        "code": "50",
+        "label": "Fine Arts",
+        "url": "https://admission.cuhk.edu.hk/programme/faasn/"
+      },
+      {
+        "code": "54",
+        "label": "History",
+        "url": "https://admission.cuhk.edu.hk/programme/histn/"
+      },
+      {
+        "code": "38",
+        "label": "Philosophy",
+        "url": "https://admission.cuhk.edu.hk/programme/philn/"
+      },
+      {
+        "code": "26",
+        "label": "Biotechnology, Entrepreneurship and Healthcare Management",
+        "url": "https://admission.cuhk.edu.hk/programme/behmn/"
+      },
+      {
+        "code": "52",
+        "label": "Biotechnology, Entrepreneurship and Healthcare Management",
+        "url": "https://admission.cuhk.edu.hk/programme/behmn/"
+      },
+      {
+        "code": "27",
+        "label": "Mathematics and Mathematics Education",
+        "url": "https://admission.cuhk.edu.hk/programme/bmedn/"
+      },
+      {
+        "code": "11",
+        "label": "Computer Science",
+        "url": "https://admission.cuhk.edu.hk/programme/cscin/"
+      },
+      {
+        "code": "14",
+        "label": "Biomedical Engineering",
+        "url": "https://admission.cuhk.edu.hk/programme/bmegn/"
+      },
+      {
+        "code": "22",
+        "label": "Bachelor of Laws",
+        "url": "https://admission.cuhk.edu.hk/programme/lawsn/"
+      },
+      {
+        "code": "51",
+        "label": "Bachelor of Medicine and Bachelor of Surgery – Global Physician-Leadership Stream (MBChB-GPS)",
+        "url": "https://admission.cuhk.edu.hk/programme/medun-gps/"
+      },
+      {
+        "code": "40",
+        "label": "Enrichment Stream in Theoretical Physics",
+        "url": "https://admission.cuhk.edu.hk/programme/physn%e2%80%90erp/"
+      },
+      {
+        "code": "04",
+        "label": "Architectural Studies",
+        "url": "https://admission.cuhk.edu.hk/programme/archn/"
+      },
+      {
+        "code": "05",
+        "label": "Gender Studies",
+        "url": "https://admission.cuhk.edu.hk/programme/gdrsn/"
+      },
+      {
+        "code": "09",
+        "label": "Global Communication",
+        "url": "https://admission.cuhk.edu.hk/programme/gcomn/"
+      },
+      {
+        "code": "44",
+        "label": "Government and Public Administration",
+        "url": "https://admission.cuhk.edu.hk/programme/gpadn/"
+      },
+      {
+        "code": "42",
+        "label": "Psychology",
+        "url": "https://admission.cuhk.edu.hk/programme/psycn/"
+      }
+    ]
+  },
+  {
+    "slug": "hkust",
+    "url": "https://join.hkust.edu.hk/our-programs",
+    "checkedAt": "2026-11-13T14:48:38.301415+00:00",
+    "sha256": "ee6cc639e78e68765496753b7967d11f4a6ed81a00921273e0b4ff379e395e18",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "11",
+        "label": "Artificial Intelligence",
+        "url": "https://join.hkust.edu.hk/our-programs/school-of-engineering/artificial-intelligence"
+      },
+      {
+        "code": "26",
+        "label": "Biochemistry and Cell Biology",
+        "url": "https://join.hkust.edu.hk/our-programs/school-of-science/biochemistry-and-cell-biology"
+      },
+      {
+        "code": "51",
+        "label": "Biomedical and Health Sciences",
+        "url": "https://join.hkust.edu.hk/our-programs/school-of-science/biomedical-and-health-sciences"
+      },
+      {
+        "code": "03",
+        "label": "Civil and Environmental Engineering",
+        "url": "https://join.hkust.edu.hk/our-programs/school-of-engineering/civil-and-environmental-engineering"
+      },
+      {
+        "code": "45",
+        "label": "Economics",
+        "url": "https://join.hkust.edu.hk/our-programs/school-of-business-and-management/economics"
+      },
+      {
+        "code": "27",
+        "label": "Mathematics",
+        "url": "https://join.hkust.edu.hk/our-programs/school-of-science/mathematics"
+      },
+      {
+        "code": "14",
+        "label": "Chemical Engineering",
+        "url": "https://join.hkust.edu.hk/our-programs/school-of-engineering/chemical-engineering"
+      },
+      {
+        "code": "52",
+        "label": "Global Business",
+        "url": "https://join.hkust.edu.hk/our-programs/school-of-business-and-management/global-business"
+      }
+    ]
+  },
+  {
+    "slug": "lingnan",
+    "url": "https://www.ln.edu.hk/admissions/ug/programme",
+    "checkedAt": "2026-11-13T14:48:53.584070+00:00",
+    "sha256": "b17c8d65c667e6782921532fb365743a48905ecdefc69c7fb3c551145dc1248e",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "23",
+        "label": "English Studies",
+        "url": "https://www.ln.edu.hk/admissions/ug/programme/jupas-applicants/english-studies"
+      },
+      {
+        "code": "50",
+        "label": "Film and Visual Arts",
+        "url": "https://www.ln.edu.hk/admissions/ug/programme/jupas-applicants/film-and-visual-arts"
+      },
+      {
+        "code": "54",
+        "label": "History",
+        "url": "https://www.ln.edu.hk/admissions/ug/programme/jupas-applicants/history"
+      },
+      {
+        "code": "09",
+        "label": "Interlingual Communication and Language Technology",
+        "url": "https://www.ln.edu.hk/admissions/ug/programme/jupas-applicants/interlingual-communication-and-language-technology"
+      },
+      {
+        "code": "38",
+        "label": "Philosophy",
+        "url": "https://www.ln.edu.hk/admissions/ug/programme/jupas-applicants/philosophy"
+      },
+      {
+        "code": "11",
+        "label": "Philosophy and Artificial Intelligence",
+        "url": "https://www.ln.edu.hk/admissions/ug/programme/applicants-holding-hong-kong-sub-degree-qualifications/philosophy-and-artificial-intelligence"
+      },
+      {
+        "code": "52",
+        "label": "Accounting and Corporate Governance",
+        "url": "https://www.ln.edu.hk/admissions/ug/programme/jupas-applicants/accounting-and-corporate-governance"
+      },
+      {
+        "code": "42",
+        "label": "Business Psychology",
+        "url": "https://www.ln.edu.hk/admissions/ug/programme/applicants-holding-hong-kong-sub-degree-qualifications/business-psychology"
+      },
+      {
+        "code": "45",
+        "label": "Economics",
+        "url": "https://www.ln.edu.hk/admissions/ug/programme/jupas-applicants/economics"
+      },
+      {
+        "code": "31",
+        "label": "Sports Coaching and Event Management",
+        "url": "https://www.ln.edu.hk/admissions/ug/programme/applicants-holding-hong-kong-sub-degree-qualifications/sports-coaching-and-event-management"
+      }
+    ]
+  },
+  {
+    "slug": "eduhk",
+    "url": "https://www.apply.eduhk.hk/ug/programmes",
+    "checkedAt": "2026-11-13T14:49:12.842590+00:00",
+    "sha256": "8f799a70573367400d95034f9a7c1fa6e63c0dd823857cd4ff12b3e146bdd8d0",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "09",
+        "label": "Bachelor of Arts (Honours) in Digital Chinese Culture and Communication",
+        "url": "https://www.apply.eduhk.hk/ug/programmes/dccc"
+      },
+      {
+        "code": "16",
+        "label": "Bachelor of Arts (Honours) in Digital Chinese Culture and Communication",
+        "url": "https://www.apply.eduhk.hk/ug/programmes/dccc"
+      },
+      {
+        "code": "52",
+        "label": "Bachelor of Arts (Honours) in Personal Finance",
+        "url": "https://www.apply.eduhk.hk/ug/programmes/bapf"
+      },
+      {
+        "code": "13",
+        "label": "Bachelor of Arts (Honours) in Creative and Digital Arts and Bachelor of Education (Honours) (Music)",
+        "url": "https://www.apply.eduhk.hk/ug/programmes/ba_bed_mu"
+      },
+      {
+        "code": "50",
+        "label": "Bachelor of Arts (Honours) in Creative and Digital Arts and Bachelor of Education (Honours) (Music)",
+        "url": "https://www.apply.eduhk.hk/ug/programmes/ba_bed_mu"
+      },
+      {
+        "code": "23",
+        "label": "Bachelor of Arts (Honours) in English Studies and Digital Communication",
+        "url": "https://www.apply.eduhk.hk/ug/programmes/esdc"
+      },
+      {
+        "code": "54",
+        "label": "Bachelor of Arts (Honours) in Heritage Education and Arts Management and Bachelor of Education (Honours) (Chinese History)",
+        "url": "https://www.apply.eduhk.hk/ug/programmes/heam_cht"
+      },
+      {
+        "code": "11",
+        "label": "Bachelor of Science (Honours) in Artificial Intelligence and Educational Technology",
+        "url": "https://www.apply.eduhk.hk/ug/programmes/aiet"
+      },
+      {
+        "code": "03",
+        "label": "Bachelor of Science (Honours) in Integrated Environmental Management",
+        "url": "https://www.apply.eduhk.hk/ug/programmes/iem"
+      },
+      {
+        "code": "31",
+        "label": "Bachelor of Science (Honours) in Sports Science and Coaching",
+        "url": "https://www.apply.eduhk.hk/ug/programmes/spsc"
+      },
+      {
+        "code": "42",
+        "label": "Bachelor of Social Sciences (Honours) in Psychology",
+        "url": "https://www.apply.eduhk.hk/ug/programmes/psy"
+      }
+    ]
+  },
+  {
+    "slug": "toronto",
+    "url": "https://future.utoronto.ca/undergraduate-programs",
+    "checkedAt": "2026-11-13T14:48:42.905440+00:00",
+    "sha256": "c78cc94557e8070abe8f18914b39e2dd22e14de8d9f241f6c473a452d09c5f0a",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "52",
+        "label": "Business, Commerce & Management",
+        "url": "https://future.utoronto.ca/business-commerce-management"
+      },
+      {
+        "code": "11",
+        "label": "Data, Information & Computer Science",
+        "url": "https://future.utoronto.ca/data-computer-science"
+      },
+      {
+        "code": "50",
+        "label": "Design & Visual Studies",
+        "url": "https://future.utoronto.ca/design-visual-studies"
+      },
+      {
+        "code": "14",
+        "label": "Engineering",
+        "url": "https://future.utoronto.ca/engineering"
+      },
+      {
+        "code": "16",
+        "label": "Literature, Language & Culture",
+        "url": "https://future.utoronto.ca/literature-language-culture"
+      },
+      {
+        "code": "27",
+        "label": "Mathematics & Physical Sciences",
+        "url": "https://future.utoronto.ca/mathematics-physical-sciences"
+      },
+      {
+        "code": "45",
+        "label": "Social Sciences",
+        "url": "https://future.utoronto.ca/social-sciences"
+      },
+      {
+        "code": "03",
+        "label": "Sustainability & the Environment",
+        "url": "https://future.utoronto.ca/sustainability-environment"
+      }
+    ]
+  },
+  {
+    "slug": "mcgill",
+    "url": "https://www.mcgill.ca/undergraduate-admissions/programs",
+    "checkedAt": "2026-11-13T14:48:45.445638+00:00",
+    "sha256": "3fbb4c51b883b25384256e07d34809a158ee80c992847c410671d334745d47dd",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "45",
+        "label": "Business and economics",
+        "url": "https://www.mcgill.ca/undergraduate-admissions/programs?f%5B0%5D=field_areas_interest%3A18"
+      },
+      {
+        "code": "13",
+        "label": "Education",
+        "url": "https://www.mcgill.ca/undergraduate-admissions/programs?f%5B0%5D=field_areas_interest%3A19"
+      },
+      {
+        "code": "14",
+        "label": "Engineering",
+        "url": "https://www.mcgill.ca/undergraduate-admissions/programs?f%5B0%5D=field_areas_interest%3A20"
+      },
+      {
+        "code": "03",
+        "label": "Environment",
+        "url": "https://www.mcgill.ca/undergraduate-admissions/programs?f%5B0%5D=field_areas_interest%3A21"
+      },
+      {
+        "code": "51",
+        "label": "Health sciences",
+        "url": "https://www.mcgill.ca/undergraduate-admissions/programs?f%5B0%5D=field_areas_interest%3A22"
+      },
+      {
+        "code": "16",
+        "label": "Languages",
+        "url": "https://www.mcgill.ca/undergraduate-admissions/programs?f%5B0%5D=field_areas_interest%3A24"
+      },
+      {
+        "code": "11",
+        "label": "Math, computing and technology",
+        "url": "https://www.mcgill.ca/undergraduate-admissions/programs?f%5B0%5D=field_areas_interest%3A25"
+      },
+      {
+        "code": "50",
+        "label": "Music",
+        "url": "https://www.mcgill.ca/undergraduate-admissions/programs?f%5B0%5D=field_areas_interest%3A28"
+      },
+      {
+        "code": "22",
+        "label": "Politics and law",
+        "url": "https://www.mcgill.ca/undergraduate-admissions/programs?f%5B0%5D=field_areas_interest%3A27"
+      }
+    ]
+  },
+  {
+    "slug": "waterloo",
+    "url": "https://uwaterloo.ca/future-students/programs",
+    "checkedAt": "2026-11-13T14:48:49.113400+00:00",
+    "sha256": "c06afc2e5e5d3797698df10693a79f01f723cd65d6efbfa5d11df0e14311ecc8",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "52",
+        "label": "Business programs",
+        "url": "https://uwaterloo.ca/future-students/programs/business"
+      },
+      {
+        "code": "03",
+        "label": "Environmental programs",
+        "url": "https://uwaterloo.ca/future-students/programs/environmental-degrees"
+      },
+      {
+        "code": "45",
+        "label": "Anthropology",
+        "url": "https://uwaterloo.ca/future-students/programs/anthropology"
+      },
+      {
+        "code": "27",
+        "label": "Applied Mathematics",
+        "url": "https://uwaterloo.ca/future-students/programs/applied-mathematics"
+      },
+      {
+        "code": "04",
+        "label": "Architectural Engineering",
+        "url": "https://uwaterloo.ca/future-students/programs/architectural-engineering"
+      },
+      {
+        "code": "14",
+        "label": "Architectural Engineering",
+        "url": "https://uwaterloo.ca/future-students/programs/architectural-engineering"
+      },
+      {
+        "code": "26",
+        "label": "Biochemistry",
+        "url": "https://uwaterloo.ca/future-students/programs/biochemistry"
+      },
+      {
+        "code": "09",
+        "label": "Communication Studies",
+        "url": "https://uwaterloo.ca/future-students/programs/communication-studies"
+      },
+      {
+        "code": "13",
+        "label": "Education (teaching)",
+        "url": "https://uwaterloo.ca/future-students/programs/education-teaching"
+      },
+      {
+        "code": "23",
+        "label": "English",
+        "url": "https://uwaterloo.ca/future-students/programs/english"
+      },
+      {
+        "code": "50",
+        "label": "Fine Arts",
+        "url": "https://uwaterloo.ca/future-students/programs/fine-arts"
+      },
+      {
+        "code": "16",
+        "label": "French",
+        "url": "https://uwaterloo.ca/future-students/programs/french"
+      },
+      {
+        "code": "05",
+        "label": "Gender and Social Justice",
+        "url": "https://uwaterloo.ca/future-students/programs/gender-and-social-justice"
+      },
+      {
+        "code": "54",
+        "label": "History",
+        "url": "https://uwaterloo.ca/future-students/programs/history"
+      },
+      {
+        "code": "22",
+        "label": "Human Rights and Law (LLB)",
+        "url": "https://uwaterloo.ca/future-students/programs/human-rights-law"
+      },
+      {
+        "code": "38",
+        "label": "Philosophy",
+        "url": "https://uwaterloo.ca/future-students/programs/philosophy"
+      },
+      {
+        "code": "42",
+        "label": "Psychology – Bachelor of Arts",
+        "url": "https://uwaterloo.ca/future-students/programs/psychology-arts"
+      },
+      {
+        "code": "44",
+        "label": "Social Development Studies and Bachelor of Social Work (BSW) Double Degree",
+        "url": "https://uwaterloo.ca/future-students/programs/sds-social-work-double-degree"
+      },
+      {
+        "code": "11",
+        "label": "Computer Science",
+        "url": "https://uwaterloo.ca/future-students/programs/computer-science"
+      }
+    ]
+  },
+  {
+    "slug": "mcmaster",
+    "url": "https://future.mcmaster.ca/programs/",
+    "checkedAt": "2026-11-13T14:48:57.500981+00:00",
+    "sha256": "a834119ac3d3336cbc906506606c0443abc9417e59d2fa8009632ac6da16b8b0",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "14",
+        "label": "Engineering",
+        "url": "https://eng.mcmaster.ca/"
+      },
+      {
+        "code": "51",
+        "label": "Health Sciences",
+        "url": "https://healthsci.mcmaster.ca/"
+      },
+      {
+        "code": "45",
+        "label": "Social Sciences",
+        "url": "https://socialsciences.mcmaster.ca/"
+      },
+      {
+        "code": "11",
+        "label": "Computer Science Computer Science",
+        "url": "https://future.mcmaster.ca/programs/computer-science/"
+      },
+      {
+        "code": "03",
+        "label": "Environmental & Earth Sciences Gateway Environmental & Earth Sciences Gateway",
+        "url": "https://future.mcmaster.ca/programs/environmental-earth-sciences-gateway/"
+      },
+      {
+        "code": "26",
+        "label": "Integrated Biomedical Engineering & Health Sciences Integrated Biomedical Engineering & Health Sciences",
+        "url": "https://future.mcmaster.ca/programs/ibiomed/"
+      },
+      {
+        "code": "27",
+        "label": "Mathematics & Statistics Gateway Mathematics & Statistics Gateway",
+        "url": "https://future.mcmaster.ca/programs/math-stats/"
+      }
+    ]
+  },
+  {
+    "slug": "sydney",
+    "url": "https://www.sydney.edu.au/courses/search.html?search-type=course&course-level=undergraduate",
+    "checkedAt": "2026-11-13T14:48:54.937831+00:00",
+    "sha256": "f214b51cb6cb6c45c8106c7494e7534470dde37143994313876f6acf10d49110",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "04",
+        "label": "Architecture, design and planning",
+        "url": "https://www.sydney.edu.au/study/areas/architecture.html"
+      },
+      {
+        "code": "50",
+        "label": "Architecture, design and planning",
+        "url": "https://www.sydney.edu.au/study/areas/architecture.html"
+      },
+      {
+        "code": "45",
+        "label": "Arts and social sciences",
+        "url": "https://www.sydney.edu.au/study/areas/arts.html"
+      },
+      {
+        "code": "13",
+        "label": "Education and social work",
+        "url": "https://www.sydney.edu.au/study/areas/education-and-social-work.html"
+      },
+      {
+        "code": "44",
+        "label": "Education and social work",
+        "url": "https://www.sydney.edu.au/study/areas/education-and-social-work.html"
+      },
+      {
+        "code": "11",
+        "label": "Engineering, computer science and project management",
+        "url": "https://www.sydney.edu.au/study/areas/engineering-and-computer-science.html"
+      },
+      {
+        "code": "14",
+        "label": "Engineering, computer science and project management",
+        "url": "https://www.sydney.edu.au/study/areas/engineering-and-computer-science.html"
+      },
+      {
+        "code": "22",
+        "label": "Law",
+        "url": "https://www.sydney.edu.au/study/areas/law.html"
+      },
+      {
+        "code": "51",
+        "label": "Medicine and health",
+        "url": "https://www.sydney.edu.au/study/areas/medicine-and-health.html"
+      }
+    ]
+  },
+  {
+    "slug": "unsw",
+    "url": "https://www.unsw.edu.au/study/undergraduate",
+    "checkedAt": "2026-11-13T14:48:55.604825+00:00",
+    "sha256": "d91c8cb9eb579df3b7219b45355a6a807ca225429a53a9268bada8326ffdb308",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "04",
+        "label": "Arts, Design & Architecture",
+        "url": "https://www.unsw.edu.au/arts-design-architecture"
+      },
+      {
+        "code": "50",
+        "label": "Arts, Design & Architecture",
+        "url": "https://www.unsw.edu.au/arts-design-architecture"
+      },
+      {
+        "code": "52",
+        "label": "Business School",
+        "url": "https://www.unsw.edu.au/business"
+      },
+      {
+        "code": "14",
+        "label": "Engineering",
+        "url": "https://www.unsw.edu.au/engineering"
+      },
+      {
+        "code": "22",
+        "label": "Law & Justice",
+        "url": "https://www.unsw.edu.au/law-justice"
+      },
+      {
+        "code": "51",
+        "label": "Medicine & Health",
+        "url": "https://www.unsw.edu.au/medicine-health"
+      },
+      {
+        "code": "13",
+        "label": "Education",
+        "url": "https://www.unsw.edu.au/about-us/excellence/education"
+      },
+      {
+        "code": "44",
+        "label": "Education, Teaching & Social Work",
+        "url": "https://www.unsw.edu.au/study/find-a-degree-or-course/degree-search-results?undergraduate=true&study-area=Education%2C+Teaching+%26+Social+Work"
+      },
+      {
+        "code": "45",
+        "label": "Humanities & Social Sciences",
+        "url": "https://www.unsw.edu.au/study/find-a-degree-or-course/degree-search-results?undergraduate=true&study-area=Humanities+%26+Social+Sciences"
+      },
+      {
+        "code": "03",
+        "label": "Science & Environment",
+        "url": "https://www.unsw.edu.au/study/find-a-degree-or-course/degree-search-results?undergraduate=true&study-area=Environmental+Management+%26+Sciences"
+      }
+    ]
+  },
+  {
+    "slug": "ntu",
+    "url": "https://www.ntu.edu.sg/education/degree-programmes",
+    "checkedAt": "2026-11-13T14:52:11.986360+00:00",
+    "sha256": "e0d8ad766e8bf3d26acd3797c5d794e16b3ba96096513b2b50eda7bfb700a23f",
+    "method": "Official undergraduate directory retrieved; selected subject listings reviewed by research agent. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "52",
+        "label": "Accountancy",
+        "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-accountancy"
+      },
+      {
+        "code": "11",
+        "label": "Computer Science",
+        "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-computing-in-computer-science"
+      },
+      {
+        "code": "14",
+        "label": "Aerospace Engineering",
+        "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-engineering-in-aerospace-engineering"
+      },
+      {
+        "code": "26",
+        "label": "Biological Sciences",
+        "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-science-in-biological-sciences"
+      },
+      {
+        "code": "09",
+        "label": "Communication Studies",
+        "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-communication-studies"
+      },
+      {
+        "code": "45",
+        "label": "College of Humanities, Arts and Social Sciences",
+        "url": "https://www.ntu.edu.sg/education/colleges-schools/college-of-humanities--arts-and-social-sciences"
+      },
+      {
+        "code": "23",
+        "label": "English",
+        "url": "https://wcms-prod-admin.ntu.edu.sg/education/undergraduate-programme/bachelor-of-arts-in-english"
+      },
+      {
+        "code": "03",
+        "label": "Environmental Earth Systems Science",
+        "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-science-(bsc)-in-environmental-earth-systems-science"
+      },
+      {
+        "code": "54",
+        "label": "History",
+        "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-arts-in-history"
+      },
+      {
+        "code": "27",
+        "label": "Mathematical Sciences",
+        "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-science-in-mathematical-sciences"
+      },
+      {
+        "code": "42",
+        "label": "Psychology",
+        "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-social-sciences-in-psychology-(honours)"
+      },
+      {
+        "code": "38",
+        "label": "​Philosophy",
+        "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-arts-(hons)-in-philosophy"
+      },
+      {
+        "code": "50",
+        "label": "Art, Design and Media",
+        "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-art-design-media"
+      },
+      {
+        "code": "51",
+        "label": "Chinese Medicine",
+        "url": "https://www.ntu.edu.sg/education/undergraduate-programme/bachelor-of-chinese-medicine"
+      }
+    ]
+  },
+  {
+    "slug": "imperial-college-london",
+    "url": "https://www.imperial.ac.uk/study/courses/undergraduate/computing-beng/",
+    "checkedAt": "2026-11-13T14:54:34.672980+00:00",
+    "method": "Official programme publication verified through web search retrieval; direct fetch may be blocked. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "11",
+        "label": "Computing BEng",
+        "url": "https://www.imperial.ac.uk/study/courses/undergraduate/computing-beng/"
+      }
+    ]
+  },
+  {
+    "slug": "ubc",
+    "url": "https://you.ubc.ca/programs/computer-science-vancouver-bsc/",
+    "checkedAt": "2026-11-13T14:54:34.672980+00:00",
+    "method": "Official programme publication verified through web search retrieval; direct fetch may be blocked. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "11",
+        "label": "Computer Science — Vancouver BSc",
+        "url": "https://you.ubc.ca/programs/computer-science-vancouver-bsc/"
+      }
+    ]
+  },
+  {
+    "slug": "queensland",
+    "url": "https://study.uq.edu.au/study-options/programs/bachelor-computer-science-2559",
+    "checkedAt": "2026-11-13T14:54:34.672980+00:00",
+    "method": "Official programme publication verified through web search retrieval; direct fetch may be blocked. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "11",
+        "label": "Bachelor of Computer Science",
+        "url": "https://study.uq.edu.au/study-options/programs/bachelor-computer-science-2559"
+      }
+    ]
+  },
+  {
+    "slug": "smu",
+    "url": "https://computing.smu.edu.sg/bsc-computer-science",
+    "checkedAt": "2026-11-13T14:54:34.672980+00:00",
+    "method": "Official programme publication verified through web search retrieval; direct fetch may be blocked. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "11",
+        "label": "Bachelor of Science (Computer Science)",
+        "url": "https://computing.smu.edu.sg/bsc-computer-science"
+      }
+    ]
+  },
+  {
+    "slug": "nus",
+    "url": "https://www.nus.edu.sg/oam/undergraduate-programmes",
+    "checkedAt": "2026-11-13T14:54:34.738165+00:00",
+    "method": "Official undergraduate programme publication verified through web retrieval. Not an intake or eligibility certification.",
+    "subjects": [
+      {
+        "code": "11",
+        "label": "Common Computer Science Programmes",
+        "url": "https://www.nus.edu.sg/oam/undergraduate-programmes"
+      },
+      {
+        "code": "52",
+        "label": "Business Administration",
+        "url": "https://www.nus.edu.sg/oam/undergraduate-programmes"
+      },
+      {
+        "code": "14",
+        "label": "Computer Engineering",
+        "url": "https://www.nus.edu.sg/oam/undergraduate-programmes"
+      },
+      {
+        "code": "04",
+        "label": "Architecture",
+        "url": "https://www.nus.edu.sg/oam/undergraduate-programmes"
+      },
+      {
+        "code": "51",
+        "label": "Dentistry",
+        "url": "https://www.nus.edu.sg/oam/undergraduate-programmes"
+      },
+      {
+        "code": "03",
+        "label": "Environmental Studies",
+        "url": "https://www.nus.edu.sg/oam/undergraduate-programmes"
+      },
+      {
+        "code": "45",
+        "label": "Philosophy, Politics and Economics (PPE)",
+        "url": "https://www.nus.edu.sg/oam/undergraduate-programmes"
+      },
+      {
+        "code": "38",
+        "label": "Philosophy, Politics and Economics (PPE)",
+        "url": "https://www.nus.edu.sg/oam/undergraduate-programmes"
+      },
+      {
+        "code": "50",
+        "label": "Industrial Design",
+        "url": "https://www.nus.edu.sg/oam/undergraduate-programmes"
+      }
+    ]
+  }
+]

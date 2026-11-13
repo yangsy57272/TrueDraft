@@ -1,8 +1,11 @@
 import "server-only";
-import { rankingBonus } from "@/lib/school-rankings";
+import programmeDirectory from "../../../data/global-programmes.json";
+import { RECOMMENDATION_SYSTEMS } from "@/lib/recommendation-systems";
+import type { ApplicationSystem } from "@/lib/application-systems";
+import { schoolRanking, rankingBonus } from "@/lib/school-rankings";
 import { scoreRanges, studentScores, suggestFit, type Fit, type FitCategory } from "@/lib/fit";
 import { TUITION_BANDS } from "@/lib/federal";
-import { CIP_CODES, sizeBand, STATE_REGIONS, type StudentProfile } from "@/lib/planning";
+import { CIP_FAMILIES, CIP_CODES, sizeBand, STATE_REGIONS, type StudentProfile } from "@/lib/planning";
 import { allSchoolEntries, type SchoolEntry } from "./schools";
 
 /*
@@ -37,7 +40,26 @@ export function rankScore(r: { field: { share: number }; facts: { gradRate: { va
   return 0.45 * field + 0.45 * grad + (r.fit.usedScores ? 0.1 : 0);
 }
 
-export type RecommendationOptions = { field?: string; tuition?: string; priority?: "balanced" | "overall" | "program" };
+export type ProgrammeSubject = {code:string; label:string; url:string};
+export type ProgrammeRecommendation = SchoolEntry & { subjects: ProgrammeSubject[]; sourceUrl:string; checkedAt:string };
+export type SystemRecommendations = { system:ApplicationSystem; total:number; matches:ProgrammeRecommendation[]; unverified:number; explore:SchoolEntry[] };
+
+/** Every published school is counted. Missing U.S. statistics never suppress another system. */
+export function programmeRecommendations(all:SchoolEntry[],fields:string[],system?:ApplicationSystem):SystemRecommendations[] {
+  return RECOMMENDATION_SYSTEMS.filter(c=>c!=="US"&&(!system||c===system)).map(country=>{
+    const entries=all.filter(e=>e.school.country===country);
+    const matches:ProgrammeRecommendation[]=[];
+    for(const entry of entries){
+      const evidence=programmeDirectory.find(d=>d.slug===entry.school.slug);
+      const subjects=evidence?.subjects.filter(s=>fields.includes(s.code))??[];
+      if(subjects.length&&evidence)matches.push({...entry,subjects,sourceUrl:evidence.url,checkedAt:evidence.checkedAt});
+    }
+    matches.sort((a,b)=>new Set(b.subjects.map(s=>s.code)).size-new Set(a.subjects.map(s=>s.code)).size||a.school.name.localeCompare(b.school.name));
+    return {system:country,total:entries.length,matches,unverified:entries.length-matches.length,explore:entries.filter(e=>!matches.some(m=>m.school.id===e.school.id))};
+  });
+}
+
+export type RecommendationOptions = { system?:ApplicationSystem; field?: string; tuition?: string; priority?: "balanced" | "overall" | "program" };
 
 export function chosenFields(profile: StudentProfile, override?: string) {
   if (override && CIP_CODES.includes(override)) return [override];
@@ -47,20 +69,21 @@ export function chosenFields(profile: StudentProfile, override?: string) {
 export async function recommendSchools(profile: StudentProfile, options: RecommendationOptions = {}) {
   const fields = chosenFields(profile, options.field);
   const empty = { reach: [], target: [], likely: [] } as Record<FitCategory, Recommendation[]>;
-  if (!fields.length) return { fields, buckets: empty, candidates: 0, noAdmitRate: 0 };
+  const all = await allSchoolEntries();
+  const systems=programmeRecommendations(all,fields,options.system);
+  const coverage=RECOMMENDATION_SYSTEMS.map(system=>({system,total:all.filter(e=>e.school.country===system).length}));
+  if (!fields.length) return { fields, buckets: empty, candidates: 0, noAdmitRate: 0, systems, coverage };
 
   const prefs = profile.preferences;
   const scores = studentScores(profile.tests);
   const tuitionBand = options.tuition ? TUITION_BANDS[options.tuition] : undefined;
-  const all = await allSchoolEntries();
-
   const strict: Recommendation[] = [];
   const relaxed: Recommendation[] = [];
   let candidates = 0;
   let noAdmitRate = 0;
 
   for (const entry of all) {
-    if (entry.school.country !== "US") continue;
+    if (entry.school.country !== "US" || (options.system && options.system !== "US")) continue;
     const degrees = entry.facts.degreesByField?.value;
     if (!degrees) continue;
     let best: { code: string; share: number } | null = null;
@@ -102,5 +125,14 @@ export async function recommendSchools(profile: StudentProfile, options: Recomme
     buckets[cat] = strict.filter((r) => r.fit.category === cat).slice(0, want);
     if (buckets[cat].length < want) buckets[cat].push(...relaxed.filter((r) => r.fit.category === cat).slice(0, want - buckets[cat].length));
   }
-  return { fields, buckets, candidates, noAdmitRate };
+  return { fields, buckets, candidates, noAdmitRate, systems, coverage };
+}
+
+/** Round-robin selection prevents a single system filling the bounded AI explanation request. */
+export function schoolAnalysisCandidates(result:Awaited<ReturnType<typeof recommendSchools>>) {
+  const us=Object.values(result.buckets).flat().map(r=>({school_id:r.school.id,name:r.school.name,slug:r.school.slug,system:"US",field:CIP_FAMILIES[r.field.code]?.en,degree_share_percent:r.field.share as number|null,group:r.fit.category==="likely"?"Safety":r.fit.category,graduation_rate:r.facts.gradRate?.value??null,rankings:schoolRanking(r.school.unitid),outside_preferences:r.outsidePreferences,programme_listings:[] as ProgrammeSubject[],source_url:null as string|null}));
+  const groups=[us,...result.systems.map(s=>s.matches.map(r=>({school_id:r.school.id,name:r.school.name,slug:r.school.slug,system:s.system,field:[...new Set(r.subjects.map(x=>CIP_FAMILIES[x.code]?.en))].join(", "),degree_share_percent:null,group:"Unassessed — verify course and qualification",graduation_rate:null,rankings:null,outside_preferences:false,programme_listings:r.subjects,source_url:r.sourceUrl})))];
+  const selected:(typeof groups)[number][number][]=[];
+  for(let i=0;selected.length<13&&groups.some(g=>g.length>i);i++)for(const group of groups)if(group[i]&&selected.length<13)selected.push(group[i]);
+  return selected;
 }

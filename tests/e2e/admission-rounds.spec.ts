@@ -4,7 +4,7 @@ async function addCmu(page:import("@playwright/test").Page){await signIn(page);a
 test("choosing a verified school round sets its exact date and replans; calendar links are available",async({page})=>{
  const form=await addCmu(page);await form.getByLabel("Programme route").selectOption("general");await form.getByLabel("Application round").selectOption("rd");await expect(form.getByText("2027-01-04",{exact:true})).toBeVisible();await form.getByRole("button",{name:"Use this round & replan"}).click();
  await expect.poll(async()=>{const r=await page.request.get("/api/schedule");return (await r.json()).plan.tasks.find((t:{kind:string})=>t.kind==="submit")?.deadline?.date;}).toBe("2027-01-04");
- await expect(form.getByLabel("Application round").locator('option[value="ea"]')).toBeDisabled();
+ await expect(form.getByLabel("Application round").locator('option[value="ea"]')).toHaveJSProperty('disabled',true);
  await expect(page.getByRole("link",{name:"Import to Apple Calendar (.ics)",exact:true})).toHaveAttribute("href","/api/schedule/calendar");
  await expect(page.getByRole("link",{name:/Preview this session in Google Calendar/}).first()).toHaveAttribute("href",/^https:\/\/calendar\.google\.com\/calendar\/render\?/);
  await form.getByLabel("Application round").selectOption("ed");await form.getByRole("button",{name:"Use this round & replan"}).click();

@@ -36,7 +36,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   // Local build outputs, research caches and user/development files are never runtime assets.
   outputFileTracingExcludes: {
-    "/*": ["./dist/**/*", "./tmp/**/*", "./.dev-mailbox/**/*", "./.truedraft/**/*", "./.codex/**/*", "./.env*", "./test-results/**/*", "./playwright-report/**/*", "./data/cds/research/**/*"],
+    "/*": ["./tmp/**/*", "./.dev-mailbox/**/*", "./.truedraft/**/*", "./.codex/**/*", "./.env*", "./test-results/**/*", "./playwright-report/**/*", "./data/cds/research/**/*"],
   },
   serverExternalPackages: ["better-sqlite3"],
   ...(process.env.TRUEDRAFT_DESKTOP_BUILD === "1" ? { output: "standalone", outputFileTracingRoot: process.cwd() } : {}),

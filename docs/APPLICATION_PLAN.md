@@ -19,3 +19,5 @@ Open **My application plan** from the dashboard, My list or deadline tracker. A 
 - Completed task IDs are stable; changed prompt wording creates new IDs rather than reusing old completion. Completion state and availability are encrypted with a separate application-schedule purpose and stored per account. They are included in data export and removed by account-deletion cascade. API mutations only accept tasks in the signed-in owner's current plan.
 
 This update generates the plan automatically when viewed; it does not independently crawl and certify school deadlines, enforce programme eligibility, submit forms, schedule recurring app automations or send notifications.
+
+Desktop builds exclude prior bundles, research caches, development mail, local profiles and environment files; a second packaging filter and payload check reject accidental local data. The package includes only the generated starter reference database.

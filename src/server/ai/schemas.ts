@@ -1,3 +1,4 @@
+import { RESEARCH_CRITERIA, RESEARCH_KINDS } from "@/lib/school-research";
 import { z } from "zod";
 import { ACTIVITY_TYPES, C7_FACTORS, C7_LEVELS, CDS_FIELDS, COURSE_LEVELS, HONOR_LEVELS } from "@/lib/planning";
 
@@ -254,7 +255,18 @@ export const schoolExplorerSchema = z.object({
 });
 export type SchoolExplorer = z.infer<typeof schoolExplorerSchema>;
 
+export const schoolResearchSchema = z.object({
+  items: list(z.object({ kind: z.enum(RESEARCH_KINDS), title: text(180), source_id: text(20), quote: text(300), what_you_would_learn: text(500), eligibility: text(450), personal_connection: text(500), next_step: text(400) }), 10),
+  logic_chain: list(z.object({ paragraph_purpose: text(180), connection: text(500) }), 5),
+  audit: list(z.object({ criterion: z.enum(RESEARCH_CRITERIA), score: z.number().int().min(0).max(2), reason: text(500) }), 6),
+  revision_actions: list(text(500), 6),
+  open_questions: list(text(400), 8),
+  limitations: text(1000),
+});
+export type SchoolResearch = z.infer<typeof schoolResearchSchema>;
+
 export const SCHEMAS = {
+  school_research: schoolResearchSchema,
   school_explorer: schoolExplorerSchema,
   full_feedback: fullFeedbackSchema,
   prompt_decoder: promptDecoderSchema,
@@ -271,7 +283,7 @@ export type ToolKind = keyof typeof SCHEMAS;
 export const ESSAY_TOOL_KINDS = ["full_feedback", "prompt_decoder", "sentence", "word_count", "final_read", "brainstorm"] as const;
 export type EssayToolKind = (typeof ESSAY_TOOL_KINDS)[number];
 /** Tools that operate on the student's profile (served by /api/planning/[kind]). */
-export const PLANNING_TOOL_KINDS = ["major_explorer", "school_explorer", "cv_import"] as const;
+export const PLANNING_TOOL_KINDS = ["major_explorer", "school_explorer", "school_research", "cv_import"] as const;
 export type PlanningToolKind = (typeof PLANNING_TOOL_KINDS)[number];
 
 type JsonSchema = Record<string, unknown>;

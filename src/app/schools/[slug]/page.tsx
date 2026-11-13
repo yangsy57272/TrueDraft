@@ -1,3 +1,4 @@
+import { applicationSystem } from "@/lib/application-systems";
 import Link from "next/link";
 import { CIP_CODES, CIP_FAMILIES } from "@/lib/planning";
 import { SchoolRankings } from "@/components/schools/SchoolRankings";
@@ -37,13 +38,14 @@ export default async function SchoolPage({ params, searchParams }: { params: Pro
   const onList = user ? (await listedSchoolIds(user.id)).has(s.id) : false;
   const profile = user ? await getProfile(user.id) : null;
   const tests = profile?.tests ?? null;
-  const fit = profile
+  const fit = profile && s.country === "US"
     ? suggestFit(schoolFacts(dataset, federal?.data ?? null).admitRate?.value ?? null, scoreRanges(dataset?.data ?? null, federal?.data ?? null), {
         ...studentScores(profile.tests),
         testPlan: profile.preferences.testPlan,
       })
     : null;
   const zh = locale === "zh-CN";
+  const system = applicationSystem(s.country);
   const selectedField = field ?? profile?.intendedMajors.find(m => m.cipFamily)?.cipFamily ?? undefined;
   const fieldName = selectedField ? CIP_FAMILIES[selectedField]?.[zh ? "zh" : "en"] : undefined;
   const intendedMajor = selectedField ? profile?.intendedMajors.find(m => m.cipFamily === selectedField)?.name ?? fieldName : undefined;
@@ -87,6 +89,11 @@ export default async function SchoolPage({ params, searchParams }: { params: Pro
       {user ? <p className="mt-3 text-sm"><Link href="/schools/recommended">{zh ? "按我的专业推荐学校 →" : "Recommend schools for my majors →"}</Link></p> : null}
       {fit ? <FitPanel fit={fit} t={t} /> : null}
       {fit ? <p className="mt-2 text-xs text-ink-soft">{zh ? "分组依据全校数据；专业及国际生录取率尚未核实。Safety 不保证录取或可负担。" : "Grouping uses university-wide data; major-specific and international admission rates are not verified. Safety is not an admission or affordability guarantee."}</p> : null}
+      <section className="card mt-6 p-5"><h2 className="text-xl font-semibold">{zh ? "学校研究与申请体系" : "School research & application system"}</h2>
+        {system ? <><p className="mt-2 font-semibold">{zh ? system.zh : system.en} · {system.route}</p><p className="mt-2 text-sm">{zh ? system.noteZh : system.noteEn}</p><a href={system.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-sm">{zh ? "官方申请说明" : "Official application guidance"} ↗</a></> : null}
+        <Link href={`/schools/${s.slug}/research`} className="btn btn-primary mt-4">{zh ? "研究课程、教授、社团并规划 Why School →" : "Research courses, faculty, communities & Why School →"}</Link>
+        {s.country !== "US" ? <p className="mt-3 text-xs text-ink-soft">{zh ? "不套用美国录取率分组或美元费用；请按具体项目和学历核对资格。" : "U.S. admission-rate groups and dollar fees are not applied here; check eligibility for your programme and qualification."}</p> : null}
+      </section>
       <SupplementsSection supplements={supplements} slug={s.slug} signedIn={Boolean(user)} t={t} locale={locale} />
 
       <div className="mt-4 flex flex-wrap gap-3 text-sm">
@@ -105,7 +112,7 @@ export default async function SchoolPage({ params, searchParams }: { params: Pro
         {s.latestCdsYearListed ? <span className="badge badge-neutral">{t("schools.latestListed", { year: s.latestCdsYearListed })}</span> : null}
       </div>
 
-      {dataset ? (
+      {s.country !== "US" ? null : dataset ? (
         <>
           <section className="notice notice-info mt-6 text-sm" aria-labelledby="src">
             <h2 id="src" className="font-sans font-semibold">{t("schools.school.sourceTitle")}</h2>

@@ -60,6 +60,7 @@ export async function recommendSchools(profile: StudentProfile, options: Recomme
   let noAdmitRate = 0;
 
   for (const entry of all) {
+    if (entry.school.country !== "US") continue;
     const degrees = entry.facts.degreesByField?.value;
     if (!degrees) continue;
     let best: { code: string; share: number } | null = null;

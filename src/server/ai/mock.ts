@@ -134,6 +134,8 @@ function payloadFor(schemaName: string, user: string): unknown {
         threads_noticed: [],
         boundary_note: null,
       };
+    case "school_research":
+      return { items: [], logic_chain: [{paragraph_purpose: M, connection: M}], audit: ["factual_support", "specificity", "personal_fit", "access", "logic", "voice"].map(criterion => ({criterion,score:0,reason:M})), revision_actions: [M], open_questions: [M], limitations: `${M} No real school analysis was performed.` };
     case "school_explorer": {
       const candidates = JSON.parse(user.match(/<school_candidates>\n([\s\S]*?)\n<\/school_candidates>/)?.[1] ?? "[]") as { school_id: string }[];
       return { schools: candidates.map(s => ({ school_id: s.school_id, why_fit: M, tradeoff: M, next_step: M })), limitations: M };

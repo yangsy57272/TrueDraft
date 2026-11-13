@@ -1,3 +1,4 @@
+import { importGlobalSchools } from "../src/server/services/import-global-schools";
 import "dotenv/config";
 import { closeDb, getDb } from "../src/db";
 import { resource, school } from "../src/db/schema";
@@ -353,6 +354,7 @@ Colleges and application platforms have their own policies on AI and outside hel
 ];
 
 async function main() {
+  importGlobalSchools();
   const db = getDb();
   for (const r of resources) {
     await db

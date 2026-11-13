@@ -1,0 +1,275 @@
+[
+  {
+    "slug": "oxford",
+    "name": "University of Oxford",
+    "nameZh": "牛津大学",
+    "country": "UK",
+    "website": "https://www.ox.ac.uk/"
+  },
+  {
+    "slug": "cambridge",
+    "name": "University of Cambridge",
+    "nameZh": "剑桥大学",
+    "country": "UK",
+    "website": "https://www.cam.ac.uk/"
+  },
+  {
+    "slug": "imperial-college-london",
+    "name": "Imperial College London",
+    "nameZh": "帝国理工学院",
+    "country": "UK",
+    "website": "https://www.imperial.ac.uk/"
+  },
+  {
+    "slug": "ucl",
+    "name": "University College London",
+    "nameZh": "伦敦大学学院",
+    "country": "UK",
+    "website": "https://www.ucl.ac.uk/"
+  },
+  {
+    "slug": "lse",
+    "name": "London School of Economics and Political Science",
+    "nameZh": "伦敦政治经济学院",
+    "country": "UK",
+    "website": "https://www.lse.ac.uk/"
+  },
+  {
+    "slug": "edinburgh",
+    "name": "University of Edinburgh",
+    "nameZh": "爱丁堡大学",
+    "country": "UK",
+    "website": "https://www.ed.ac.uk/"
+  },
+  {
+    "slug": "kings-college-london",
+    "name": "King’s College London",
+    "nameZh": "伦敦国王学院",
+    "country": "UK",
+    "website": "https://www.kcl.ac.uk/"
+  },
+  {
+    "slug": "manchester",
+    "name": "University of Manchester",
+    "nameZh": "曼彻斯特大学",
+    "country": "UK",
+    "website": "https://www.manchester.ac.uk/"
+  },
+  {
+    "slug": "warwick",
+    "name": "University of Warwick",
+    "nameZh": "华威大学",
+    "country": "UK",
+    "website": "https://warwick.ac.uk/"
+  },
+  {
+    "slug": "bristol",
+    "name": "University of Bristol",
+    "nameZh": "布里斯托大学",
+    "country": "UK",
+    "website": "https://www.bristol.ac.uk/"
+  },
+  {
+    "slug": "durham",
+    "name": "Durham University",
+    "nameZh": "杜伦大学",
+    "country": "UK",
+    "website": "https://www.durham.ac.uk/"
+  },
+  {
+    "slug": "bath",
+    "name": "University of Bath",
+    "nameZh": "巴斯大学",
+    "country": "UK",
+    "website": "https://www.bath.ac.uk/"
+  },
+  {
+    "slug": "glasgow",
+    "name": "University of Glasgow",
+    "nameZh": "格拉斯哥大学",
+    "country": "UK",
+    "website": "https://www.gla.ac.uk/"
+  },
+  {
+    "slug": "leeds",
+    "name": "University of Leeds",
+    "nameZh": "利兹大学",
+    "country": "UK",
+    "website": "https://www.leeds.ac.uk/"
+  },
+  {
+    "slug": "sheffield",
+    "name": "University of Sheffield",
+    "nameZh": "谢菲尔德大学",
+    "country": "UK",
+    "website": "https://www.sheffield.ac.uk/"
+  },
+  {
+    "slug": "hku",
+    "name": "University of Hong Kong",
+    "nameZh": "香港大学",
+    "country": "HK",
+    "website": "https://www.hku.hk/"
+  },
+  {
+    "slug": "cuhk",
+    "name": "Chinese University of Hong Kong",
+    "nameZh": "香港中文大学",
+    "country": "HK",
+    "website": "https://www.cuhk.edu.hk/"
+  },
+  {
+    "slug": "hkust",
+    "name": "Hong Kong University of Science and Technology",
+    "nameZh": "香港科技大学",
+    "country": "HK",
+    "website": "https://hkust.edu.hk/"
+  },
+  {
+    "slug": "cityu-hk",
+    "name": "City University of Hong Kong",
+    "nameZh": "香港城市大学",
+    "country": "HK",
+    "website": "https://www.cityu.edu.hk/"
+  },
+  {
+    "slug": "polyu",
+    "name": "Hong Kong Polytechnic University",
+    "nameZh": "香港理工大学",
+    "country": "HK",
+    "website": "https://www.polyu.edu.hk/"
+  },
+  {
+    "slug": "hkbu",
+    "name": "Hong Kong Baptist University",
+    "nameZh": "香港浸会大学",
+    "country": "HK",
+    "website": "https://www.hkbu.edu.hk/"
+  },
+  {
+    "slug": "lingnan",
+    "name": "Lingnan University",
+    "nameZh": "岭南大学",
+    "country": "HK",
+    "website": "https://www.ln.edu.hk/"
+  },
+  {
+    "slug": "eduhk",
+    "name": "Education University of Hong Kong",
+    "nameZh": "香港教育大学",
+    "country": "HK",
+    "website": "https://www.eduhk.hk/"
+  },
+  {
+    "slug": "toronto",
+    "name": "University of Toronto",
+    "nameZh": "多伦多大学",
+    "country": "CA",
+    "website": "https://www.utoronto.ca/"
+  },
+  {
+    "slug": "ubc",
+    "name": "University of British Columbia",
+    "nameZh": "英属哥伦比亚大学",
+    "country": "CA",
+    "website": "https://www.ubc.ca/"
+  },
+  {
+    "slug": "mcgill",
+    "name": "McGill University",
+    "nameZh": "麦吉尔大学",
+    "country": "CA",
+    "website": "https://www.mcgill.ca/"
+  },
+  {
+    "slug": "waterloo",
+    "name": "University of Waterloo",
+    "nameZh": "滑铁卢大学",
+    "country": "CA",
+    "website": "https://uwaterloo.ca/"
+  },
+  {
+    "slug": "mcmaster",
+    "name": "McMaster University",
+    "nameZh": "麦克马斯特大学",
+    "country": "CA",
+    "website": "https://www.mcmaster.ca/"
+  },
+  {
+    "slug": "alberta",
+    "name": "University of Alberta",
+    "nameZh": "阿尔伯塔大学",
+    "country": "CA",
+    "website": "https://www.ualberta.ca/"
+  },
+  {
+    "slug": "melbourne",
+    "name": "University of Melbourne",
+    "nameZh": "墨尔本大学",
+    "country": "AU",
+    "website": "https://www.unimelb.edu.au/"
+  },
+  {
+    "slug": "sydney",
+    "name": "University of Sydney",
+    "nameZh": "悉尼大学",
+    "country": "AU",
+    "website": "https://www.sydney.edu.au/"
+  },
+  {
+    "slug": "unsw",
+    "name": "UNSW Sydney",
+    "nameZh": "新南威尔士大学",
+    "country": "AU",
+    "website": "https://www.unsw.edu.au/"
+  },
+  {
+    "slug": "anu",
+    "name": "Australian National University",
+    "nameZh": "澳大利亚国立大学",
+    "country": "AU",
+    "website": "https://www.anu.edu.au/"
+  },
+  {
+    "slug": "monash",
+    "name": "Monash University",
+    "nameZh": "蒙纳士大学",
+    "country": "AU",
+    "website": "https://www.monash.edu/"
+  },
+  {
+    "slug": "queensland",
+    "name": "University of Queensland",
+    "nameZh": "昆士兰大学",
+    "country": "AU",
+    "website": "https://www.uq.edu.au/"
+  },
+  {
+    "slug": "nus",
+    "name": "National University of Singapore",
+    "nameZh": "新加坡国立大学",
+    "country": "SG",
+    "website": "https://nus.edu.sg/"
+  },
+  {
+    "slug": "ntu",
+    "name": "Nanyang Technological University",
+    "nameZh": "南洋理工大学",
+    "country": "SG",
+    "website": "https://www.ntu.edu.sg/"
+  },
+  {
+    "slug": "smu",
+    "name": "Singapore Management University",
+    "nameZh": "新加坡管理大学",
+    "country": "SG",
+    "website": "https://www.smu.edu.sg/"
+  },
+  {
+    "slug": "university-of-st-andrews",
+    "name": "University of St Andrews",
+    "nameZh": "圣安德鲁斯大学",
+    "country": "UK",
+    "website": "https://www.st-andrews.ac.uk/"
+  }
+]

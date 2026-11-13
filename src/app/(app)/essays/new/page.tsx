@@ -1,3 +1,5 @@
+import { getResearchRun } from "@/server/services/profile";
+import type { ResearchResult } from "@/components/schools/SchoolResearchWorkspace";
 import type { Metadata } from "next";
 import { getT } from "@/i18n/server";
 import { requirePageUser } from "@/server/session";
@@ -11,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: t("essayForm.newTitle") };
 }
 
-export default async function NewEssayPage({ searchParams }: { searchParams: Promise<{ listEntry?: string; school?: string; supp?: string; n?: string; type?: string }> }) {
+export default async function NewEssayPage({ searchParams }: { searchParams: Promise<{ research?: string; listEntry?: string; school?: string; supp?: string; n?: string; type?: string }> }) {
   const user = await requirePageUser();
   const { t, locale } = await getT();
   const sp = await searchParams;
@@ -37,6 +39,15 @@ export default async function NewEssayPage({ searchParams }: { searchParams: Pro
     };
   } else if (sp.type === "personal_statement") {
     initial = { ...initial, applicationType: "personal_statement", title: t("guide.essayTitle"), wordLimit: "650" };
+  }
+  if (sp.research) {
+    const run = await getResearchRun(user.id, sp.research);
+    const research = run?.result as ResearchResult | null;
+    if (run && research?.evidence) {
+      const r = research.evidence; const linkedResearch = entries.find(e => e.schoolName === r.schoolName);
+      const sharedUcas = r.country === "UK";
+      initial = { applicationType: sharedUcas ? "personal_statement" : "why_school", targetSchool: sharedUcas ? "" : r.schoolName.slice(0,160), title: `${sharedUcas ? "UCAS subject preparation" : r.schoolName + " Why School"} — ${r.program}`.slice(0,160), listEntryId: sharedUcas ? "" : linkedResearch?.id ?? "", context: `[TrueDraft research:${run.id}]\nProgramme: ${r.program}\n${sharedUcas ? "Shared UCAS statement: focus on subject motivation and preparation; use school research to understand the subject, without naming one university. Confirm the three-question character limits in the current UCAS form." : "Check the actual school prompt and limit before drafting. Use the saved research for factual references; confirm current course and access information."}` };
+    }
   }
   return (
     <div className="container-prose py-10">

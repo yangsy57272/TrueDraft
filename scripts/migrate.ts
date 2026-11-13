@@ -1,3 +1,4 @@
+import { importGlobalSchools } from "../src/server/services/import-global-schools";
 import "dotenv/config";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
@@ -11,6 +12,7 @@ import { encryptLegacyVersionNotes } from "../src/server/services/essays";
 async function main() {
   migrate(getDb(), { migrationsFolder: "./drizzle-sqlite" });
   console.log("Migrations applied.");
+  console.log(`Global directory: ${importGlobalSchools()} reference institutions available.`);
   // Data step that SQL can't do: encrypt version notes stored before notes were encrypted.
   const notes = await encryptLegacyVersionNotes();
   if (notes) console.log(`Encrypted ${notes} legacy version notes.`);

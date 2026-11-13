@@ -58,6 +58,7 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
   if (!myFields.length && !field) {
     return (
       <div className="container-page py-10">
+      <p className="mb-4 text-sm"><Link href="/schools?country=UK">UK</Link> · <Link href="/schools?country=HK">香港 / Hong Kong</Link> · <Link href="/schools?country=CA">Canada</Link> · <Link href="/schools?country=AU">Australia</Link> · <Link href="/schools?country=SG">Singapore</Link> — {locale === "zh-CN" ? "其他体系按课程与资格研究，不套用美国分组" : "Explore other systems by programme and qualification; U.S. groups do not apply"}</p>
         <h1 className="text-3xl font-semibold">{t("recommend.title")}</h1>
         <div className="card mt-6 max-w-2xl p-6">
           <h2 className="text-xl font-semibold">{t("recommend.noMajorsTitle")}</h2>
@@ -113,6 +114,7 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
 
   return (
     <div className="container-page py-10">
+      <p className="mb-4 text-sm"><Link href="/schools?country=UK">UK</Link> · <Link href="/schools?country=HK">香港 / Hong Kong</Link> · <Link href="/schools?country=CA">Canada</Link> · <Link href="/schools?country=AU">Australia</Link> · <Link href="/schools?country=SG">Singapore</Link> — {locale === "zh-CN" ? "其他体系按课程与资格研究，不套用美国分组" : "Explore other systems by programme and qualification; U.S. groups do not apply"}</p>
       <h1 className="text-3xl font-semibold">{t("recommend.title")}</h1>
       <p className="mt-2 max-w-3xl text-ink-soft">{t("recommend.intro")}</p>
 

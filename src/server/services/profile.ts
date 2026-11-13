@@ -125,3 +125,9 @@ export async function deletePlanningRun(userId: string, runId: string) {
     .returning({ id: planningRun.id });
   if (!removed.length) throw new ApiError(404, "not_found");
 }
+
+/** Owned, completed research only; results contain applicant-specific connections. */
+export async function getResearchRun(userId: string, runId: string) {
+  const [row] = await db.select().from(planningRun).where(and(eq(planningRun.id, runId), eq(planningRun.userId, userId), eq(planningRun.kind, "school_research"), eq(planningRun.status, "completed"))).limit(1);
+  return row ? planningRunView(row) : null;
+}

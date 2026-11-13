@@ -78,6 +78,7 @@ async function publishedDatasetsFor(schoolIds: string[]) {
 
 export type SchoolFilters = {
   q?: string;
+  country?: string;
   regions?: string[];
   control?: string;
   sizes?: string[];
@@ -131,6 +132,7 @@ export async function searchSchools(filters: SchoolFilters) {
   for (const s of schools) {
     const latest = datasets.get(s.id)?.[0] ?? null;
     const fed = federal.get(s.id) ?? null;
+    if (filters.country && s.country !== filters.country) continue;
     if (q && !`${s.name} ${s.nameZh ?? ""} ${s.city ?? ""}`.toLowerCase().includes(q)) continue;
     if (regions.length && !regions.includes(STATE_REGIONS[s.state ?? ""] ?? "")) continue;
     if (filters.control && s.control !== filters.control) continue;

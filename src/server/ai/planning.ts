@@ -1,3 +1,7 @@
+import { collectResearch } from "@/server/research/collect";
+import { guardSchoolResearch } from "./research-guard";
+import type { ResearchEvidence } from "@/lib/school-research";
+import type { SchoolResearch } from "./schemas";
 import "server-only";
 import { recommendSchools } from "../services/recommendations";
 import { schoolRanking, RANKING_EDITION } from "@/lib/school-rankings";
@@ -34,6 +38,8 @@ type PreparedPlanning = {
   profile: StudentProfile;
   text: string;
   redactionCount: number;
+  researchInput?: { schoolSlug: string; program: string; officialUrls: string[] };
+  research?: ResearchEvidence;
   schoolCandidates?: string;
   schoolIds?: string[];
 };
@@ -42,7 +48,7 @@ type PreparedPlanning = {
 export async function preparePlanningRun(
   user: AppUser,
   kind: PlanningToolKind,
-  input: { cvText?: string; feedbackLanguage?: FeedbackLanguage; field?: string; tuition?: string; priority?: "balanced" | "overall" | "program" },
+  input: { schoolSlug?: string; program?: string; officialUrls?: string[]; cvText?: string; feedbackLanguage?: FeedbackLanguage; field?: string; tuition?: string; priority?: "balanced" | "overall" | "program" },
 ): Promise<PreparedPlanning> {
   const policyVersion = getPolicyVersion();
   if (!getPrivacyFacts().aiConfigured) throw new ApiError(503, "ai_not_configured");
@@ -54,6 +60,9 @@ export async function preparePlanningRun(
     if (profile.courses.length + profile.activities.length + profile.honors.length === 0 && !profile.interests.trim()) {
       throw new ApiError(400, "profile_empty");
     }
+  } else if (kind === "school_research") {
+    if (!input.schoolSlug || !input.program) throw new ApiError(400, "validation_failed");
+    source = profileToText(profile);
   } else {
     source = (input.cvText ?? "").trim();
     if (!source) throw new ApiError(400, "cv_required");
@@ -81,7 +90,7 @@ export async function preparePlanningRun(
     throw new ApiError(429, "rate_limited", { retryAfterSeconds: Math.ceil((resetAt.getTime() - Date.now()) / 1000) });
   }
   const redacted = redactIdentifiers(source);
-  return { user, policyVersion, kind, language: input.feedbackLanguage ?? user.feedbackLanguage, profile, text: redacted.text, redactionCount: redacted.count, schoolCandidates, schoolIds };
+  return { user, policyVersion, kind, language: input.feedbackLanguage ?? user.feedbackLanguage, profile, text: redacted.text, redactionCount: redacted.count, schoolCandidates, schoolIds, researchInput: kind === "school_research" ? { schoolSlug: input.schoolSlug!, program: input.program!, officialUrls: input.officialUrls ?? [] } : undefined };
 }
 
 export async function executePlanningRun(prepared: PreparedPlanning, onProgress: (progress: AiProgress) => void) {
@@ -110,18 +119,22 @@ export async function executePlanningRun(prepared: PreparedPlanning, onProgress:
   const logFields = { userId: prepared.user.id, runId: run.id, kind: prepared.kind, provider: provider.kind };
   onProgress(INITIAL_AI_PROGRESS);
   try {
+    if (prepared.researchInput) prepared.research = await collectResearch(prepared.researchInput.schoolSlug, prepared.researchInput.program, prepared.researchInput.officialUrls);
     const response = await callModel({
       provider,
       kind: prepared.kind,
       system: buildSystemPrompt(prepared.kind, prepared.language),
       userMessage: buildUserMessage(
-        prepared.kind === "school_explorer" ? { kind: prepared.kind, profileText: prepared.text, schoolCandidates: prepared.schoolCandidates } : prepared.kind === "major_explorer" ? { kind: prepared.kind, profileText: prepared.text } : { kind: prepared.kind, cvText: prepared.text },
+        prepared.kind === "school_research" ? { kind: prepared.kind, profileText: prepared.text, officialResearch: JSON.stringify(prepared.research) } : prepared.kind === "school_explorer" ? { kind: prepared.kind, profileText: prepared.text, schoolCandidates: prepared.schoolCandidates } : prepared.kind === "major_explorer" ? { kind: prepared.kind, profileText: prepared.text } : { kind: prepared.kind, cvText: prepared.text },
       ),
       onProgress,
       logFields,
     });
     let result: unknown;
-    if (prepared.kind === "school_explorer") {
+    if (prepared.kind === "school_research") {
+      result = { ...guardSchoolResearch(response.parsed as SchoolResearch, prepared.research!), evidence: prepared.research };
+      await completePlanningRun(run.id, result, response.model, response.usage, costMicroUsd(response.usage, limitSettings));
+    } else if (prepared.kind === "school_explorer") {
       const raw = response.parsed as SchoolExplorer;
       const seen = new Set<string>();
       result = { ...raw, schools: raw.schools.filter(s => {

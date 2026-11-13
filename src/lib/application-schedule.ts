@@ -19,7 +19,7 @@ export type ScheduleEssay={id:string;title:string;promptText:string;status:strin
 export type ScheduleSchool={id:string;name:string;slug:string|null;major:string|null;country:string;platform:string;round:string;status:string;deadlines:Deadline[];checklist:{id:string;key?:string|null;label?:string;done:boolean}[];supplementStatus:string|null;prompts:SchedulePrompt[]};
 export type PlanTask={id:string;entryId:string;school:string;major:string|null;kind:string;title:string;detail:string;minutes:number;targetDate:string;deadline:Deadline|null;href:string;done:boolean;automaticDone:boolean;source:"entered_deadline"|"planning_horizon"};
 export type PlanSession={taskId:string;date:string;start:string;end:string;minutes:number;part:number;late:boolean};
-export type PlanWarning={entryId:string;kind:"missing_deadline"|"past_deadline"|"prompt_selection"|"unknown_prompts"|"capacity"|"horizon"|"clock_change";detail:string};
+export type PlanWarning={entryId:string;kind:"missing_deadline"|"past_deadline"|"prompt_selection"|"unknown_prompts"|"capacity"|"horizon"|"clock_change"|"deadline_details"|"statement_selection";detail:string};
 const DAY=86400000;
 export function dayInZone(now:Date,zone:string) {const p=new Intl.DateTimeFormat("en-CA",{timeZone:zone,year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(now);const v=(t:string)=>p.find(x=>x.type===t)!.value;return `${v("year")}-${v("month")}-${v("day")}`;}
 export const shiftDay=(date:string,n:number)=>new Date(Date.parse(date+"T12:00:00Z")+n*DAY).toISOString().slice(0,10);
@@ -62,6 +62,7 @@ export function buildApplicationSchedule(schools:ScheduleSchool[],essays:Schedul
  for(const {s,d} of contexts) {
   if(!d)warnings.push({entryId:s.id,kind:"missing_deadline",detail:`${s.name}: no application deadline entered. Work uses the planning horizon, not an official due date.`});
   else if(deadlineInstant(d,prefs.timeZone).getTime()<now.getTime())warnings.push({entryId:s.id,kind:"past_deadline",detail:`${s.name}: the entered deadline has passed. Confirm the round/year and whether submission is still possible.`});
+  if(s.deadlines.some(x=>!x.done&&(!x.time||!x.source||x.timeZone==="local")))warnings.push({entryId:s.id,kind:"deadline_details",detail:`${s.name}: at least one entered deadline lacks an exact time/source or uses an unresolved local zone. Confirm the official closing time and source; date calculations use the existing end-of-day fallback when time is absent.`});
   const href=s.slug?`/schools/${s.slug}/research`:`/my-list#${s.id}`;
   add(s,`${s.id}:verify:${d?.id??"undated"}`,"verify","Verify application requirements",`${s.name}${s.major?` · ${s.major}`:""}: confirm route, programme, campus, entry year, time zone and every required response in the official portal. Entered deadlines are not independently verified.`,30,d,`/my-list#${s.id}`);
   if(s.slug)add(s,`${s.id}:research:${s.major??"general"}`,"research","Research the school and programme",`Investigate ${s.major??"your intended field"}: course content, faculty, undergraduate access and communities. Save specific official evidence for Why School.`,60,d,href);
@@ -88,7 +89,7 @@ export function buildApplicationSchedule(schools:ScheduleSchool[],essays:Schedul
   const e=matches[0];
   const title=platform==="ucas"?"Shared UCAS subject answers":"Shared Common App personal statement";
   writing(context.s,`global:${platform}`,title,e?.promptText??(platform==="ucas"?"Plan subject motivation, academic preparation and relevant preparation beyond formal study. Confirm the current three-question character limits in UCAS; avoid naming one university.":"Confirm your chosen Common App prompt and whether each college requires the shared personal statement. Use your own experiences and reflection."),platform==="common_app"?650:null,context.d,`/essays/new?type=${platform==="ucas"?"ucas":"personal_statement"}`,e);
-  if(matches.length>1)warnings.push({entryId:context.s.id,kind:"prompt_selection",detail:`${title}: multiple unlinked statement drafts exist. This estimate uses the first matching draft; confirm the intended version.`});
+  if(matches.length>1)warnings.push({entryId:context.s.id,kind:"statement_selection",detail:`${title}: multiple unlinked statement drafts exist. This estimate uses the first matching draft; confirm the intended version.`});
  }
  const rank:Record<string,number>={verify:0,research:1,brainstorm:2,draft:3,revise:4,review:5,materials:0,deadline:0,submit:6};
  const ordered=tasks.map((t,i)=>({t,i})).sort((a,b)=>a.t.targetDate.localeCompare(b.t.targetDate)||(a.t.kind==="submit"?1:0)-(b.t.kind==="submit"?1:0)||(rank[a.t.kind]??0)-(rank[b.t.kind]??0)||a.i-b.i).map(x=>x.t);

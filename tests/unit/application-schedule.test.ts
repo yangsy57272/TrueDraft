@@ -29,6 +29,7 @@ describe("personalized schedule",()=>{
   const s=school();s.deadlines[0].type="early_action";
   expect(buildApplicationSchedule([s],[],defaultScheduleState(),now).warnings.some(w=>w.kind==="missing_deadline")).toBe(true);
   s.deadlines[0].type="application";s.deadlines[0].date="2026-10-15";expect(buildApplicationSchedule([s],[],defaultScheduleState(),now).warnings.some(w=>w.kind==="past_deadline")).toBe(true);
+  s.deadlines[0].time=null;expect(buildApplicationSchedule([s],[],defaultScheduleState(),now).warnings.some(w=>w.kind==="deadline_details")).toBe(true);
   s.deadlines=[];const p=buildApplicationSchedule([s],[],defaultScheduleState(),now);expect(p.tasks.every(t=>t.source==="planning_horizon"&&t.deadline===null)).toBe(true);
  });
  it("reports work that cannot fit instead of silently dropping it",()=>{

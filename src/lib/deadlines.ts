@@ -1,3 +1,4 @@
+import type { OfficialDeadlineProvenance } from "./admission-deadlines";
 import { z } from "zod";
 
 /*
@@ -83,6 +84,7 @@ export type Deadline = {
   source: string | null;
   label?: string | null;
   done: boolean;
+  provenance?: OfficialDeadlineProvenance;
 };
 
 /** Offset (ms) between UTC and the wall clock in `timeZone` at the given instant. */

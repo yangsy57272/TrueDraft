@@ -1,4 +1,5 @@
 "use client";
+import { VERIFIED_ENTRY_YEAR, type AdmissionSchool } from "@/lib/admission-deadlines";
 import Link from "next/link";
 import { useId, useRef, useState } from "react";
 import { useI18n } from "@/i18n/client";
@@ -17,6 +18,9 @@ export type ListEntry = {
   schoolNameZh: string | null;
   category: string;
   round: string;
+  entryYear?: number|null;
+  deadlineTrack?: string|null;
+  admissionDeadlines?: AdmissionSchool|null;
   platform: string | null;
   deadlines: Deadline[];
   intendedMajor: string | null;
@@ -29,17 +33,19 @@ export type ListEntry = {
 
 const CATEGORY_ICON: Record<string, string> = { reach: "▲", target: "●", likely: "▼", unsure: "?" };
 
-type FormFields = Pick<ListEntry, "category" | "round" | "platform" | "intendedMajor" | "status" | "notes">;
-const FORM_KEYS = ["category", "round", "platform", "intendedMajor", "status", "notes"] as const;
+type FormFields = Pick<ListEntry, "category" | "entryYear" | "deadlineTrack" | "round" | "platform" | "intendedMajor" | "status" | "notes">;
+const FORM_KEYS = ["category", "entryYear", "deadlineTrack", "round", "platform", "intendedMajor", "status", "notes"] as const;
 const formOf = (e: ListEntry): FormFields => ({
   category: e.category,
   round: e.round,
+  entryYear: e.entryYear??VERIFIED_ENTRY_YEAR,
+  deadlineTrack: e.deadlineTrack??(e.admissionDeadlines?.tracks.length===1?e.admissionDeadlines.tracks[0].id:null),
   platform: e.platform,
   intendedMajor: e.intendedMajor,
   status: e.status,
   notes: e.notes,
 });
-const norm = (v: string | null | undefined) => (v == null ? "" : v);
+const norm = (v: string | number | null | undefined) => (v == null ? "" : v);
 
 type ListOps = {
   saveFields: (entryId: string, patch: Partial<FormFields>) => Promise<boolean>;
@@ -59,8 +65,12 @@ function EntryCard({ entry, ops }: { entry: ListEntry; ops: ListOps }) {
   const [newItem, setNewItem] = useState("");
   const v = entry; // what the server has confirmed; the header always shows this
   const name = locale === "zh-CN" && v.schoolNameZh ? v.schoolNameZh : v.schoolName;
-  const changed = FORM_KEYS.filter((k) => norm(form[k]) !== norm(entry[k]));
+  const changed = FORM_KEYS.filter((k) => norm(form[k]) !== norm(formOf(entry)[k]));
   const dirty = changed.length > 0;
+  const catalog=v.admissionDeadlines?.entryYear===form.entryYear?v.admissionDeadlines:null;
+  const track=catalog?.tracks.find(x=>x.id===form.deadlineTrack)??(catalog?.tracks.length===1?catalog.tracks[0]:null);
+  const chosenOfficial=track?.options.find(x=>x.round===form.round);
+  const savedOfficial=v.deadlines.find(d=>d.provenance?.kind==="official_catalog");
   const set = (patch: Partial<FormFields>) => setForm((cur) => ({ ...cur, ...patch }));
 
   async function save() {
@@ -107,10 +117,16 @@ function EntryCard({ entry, ops }: { entry: ListEntry; ops: ListOps }) {
             </select>
             <p id={id("cath")} className="field-help">{t("list.categoryHelp")}</p>
           </div>
+          <div><label htmlFor={id("entry-year")} className="field-label text-sm">{locale==="zh-CN"?"入学年份":"Entry year"}</label><input id={id("entry-year")} type="number" min="2025" max="2040" className="input" value={form.entryYear??VERIFIED_ENTRY_YEAR} onChange={e=>set({entryYear:Number(e.target.value)})}/></div>
+          {catalog&&catalog.tracks.length>1?<div><label htmlFor={id("deadline-track")} className="field-label text-sm">{locale==="zh-CN"?"截止日期适用项目":"Deadline programme route"}</label><select id={id("deadline-track")} className="input w-full min-w-0 max-w-full" value={form.deadlineTrack??""} onChange={e=>set({deadlineTrack:e.target.value||null})}><option value="">{locale==="zh-CN"?"请选择实际申请项目":"Choose your actual programme"}</option>{catalog.tracks.map(track=><option key={track.id} value={track.id}>{track.label}</option>)}</select></div>:null}
           <div>
             <label htmlFor={id("round")} className="field-label text-sm">{t("list.round")}</label>
-            <select id={id("round")} className="input" value={form.round} onChange={(e) => set({ round: e.target.value })}>
-              {APPLICATION_ROUNDS.map((r) => <option key={r} value={r}>{t(`list.rounds.${r}` as never)}</option>)}
+            <select id={id("round")} disabled={Boolean(catalog&&catalog.tracks.length>1&&!track)} className="input w-full min-w-0 max-w-full" value={form.round} onChange={(e) => set({ round: e.target.value })}>
+              {APPLICATION_ROUNDS.map((r) => {
+                const verified=track?.options.find(o=>o.round===r);
+                const unavailable=Boolean(catalog?.completeRoundList&&track&&r!=="undecided"&&!verified);
+                return <option key={r} value={r} disabled={unavailable}>{verified?.label??t(`list.rounds.${r}` as never)}{verified?` · ${verified.date}`:unavailable?(locale==="zh-CN"?" · 该项目不提供":" · not offered for this programme"):r!=="undecided"?(locale==="zh-CN"?" · 日期待核实":" · date unverified"):""}</option>;
+              })}
             </select>
           </div>
           <div>
@@ -182,6 +198,13 @@ function EntryCard({ entry, ops }: { entry: ListEntry; ops: ListOps }) {
             <button type="submit" className="btn btn-secondary btn-sm">{t("list.addItem")}</button>
           </form>
         </fieldset>
+        <div className="notice text-sm md:col-span-2">
+          <strong>{locale==="zh-CN"?"学校官方轮次与截止日期":"Official school rounds & deadlines"}</strong>
+          {chosenOfficial?<p className="mt-2">{t(`list.rounds.${form.round}` as never)} · {chosenOfficial.date} · {locale==="zh-CN"?"保存后自动设置截止日期，并用于重新安排时间表。":"Save to set this deadline automatically and recalculate your plan."} {chosenOfficial.note}</p>:<p className="mt-2">{catalog&&catalog.tracks.length>1&&!track?(locale==="zh-CN"?"先选择实际申请项目，再选择该项目提供的轮次。":"Choose your programme route first, then an offered application round."):(locale==="zh-CN"?"该学校、入学年份或轮次尚无已核实的自动日期；不会套用统一的 11/1 或 11/15。请核对官网并手动填写。":"No verified automatic date for this school/year/round yet. A generic November 1 or 15 will not be applied. Check the official site and enter the date manually.")}</p>}
+          {catalog?<><p className="mt-2">{catalog.notes}</p><p className="mt-1 text-xs">{catalog.cycleEvidence}</p><ul className="mt-2 space-y-1">{catalog.sources.map(source=><li key={source.id}><a href={source.url} target="_blank" rel="noopener noreferrer">{locale==="zh-CN"?"官方核查来源":"Official verification source"} ↗</a> · {source.checkedAt.slice(0,10)}</li>)}</ul>{catalog.conflicts.length?<p className="mt-2 text-xs">{locale==="zh-CN"?"发现部分官方页面有旧日期，已记录冲突并采用相互印证的当前招生资料。":"Some official publications contain conflicting dates. The catalog records conflicts and uses corroborating current admissions publications."}</p>:null}</>:null}
+          {savedOfficial?<p className="mt-2 text-xs">{locale==="zh-CN"?"当前自动日期":"Saved automatic date"}: {savedOfficial.date} · {savedOfficial.provenance!.entryYear} · {savedOfficial.provenance!.track}. {locale==="zh-CN"?"更改轮次后只替换自动日期，手动记录会保留。":"Changing the round replaces only managed dates; manual records remain."}</p>:null}
+          <Link href="/my-list/plan" className="mt-3 inline-block">{locale==="zh-CN"?"查看按所选轮次安排的时间表 →":"See the timetable for my selected rounds →"}</Link>
+        </div>
         <div id={schoolDeadlinesId(entry.id)} tabIndex={-1} className="scroll-mt-6 rounded-lg target:ring-2 target:ring-focus target:ring-offset-4 md:col-span-2">
           <DeadlineList deadlines={v.deadlines} ops={ops.deadlines(entry.id)} />
         </div>

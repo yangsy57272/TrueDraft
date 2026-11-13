@@ -1,0 +1,1272 @@
+{
+  "attemptedPublications": 70,
+  "publishedSchools": 21,
+  "publishedChoices": 42,
+  "rejected": [],
+  "sourceAudit": [
+    {
+      "id": "cmu-plans",
+      "url": "https://www.cmu.edu/admission/admission/application-plans-deadlines",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:03.512712Z",
+          "sha256": "f85f08bf751b9756b62dfe747ee0aeb680a726cae4ef1b7c22edf54965c59a36",
+          "finalUrl": "https://www.cmu.edu/admission/admission/application-plans-deadlines",
+          "length": 85993,
+          "textFile": "cmu-plans-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:06.517983Z",
+          "sha256": "f85f08bf751b9756b62dfe747ee0aeb680a726cae4ef1b7c22edf54965c59a36",
+          "finalUrl": "https://www.cmu.edu/admission/admission/application-plans-deadlines",
+          "length": 85993,
+          "textFile": "cmu-plans-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "cmu-admission",
+      "url": "https://www.cmu.edu/admission/admission",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:02.530125Z",
+          "sha256": "2b702797becbf6a76ab62178cdee3b0a3d883d3aff559e54e59336f51d7d1075",
+          "finalUrl": "https://www.cmu.edu/admission/admission",
+          "length": 113848,
+          "textFile": "cmu-admission-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:07.062808Z",
+          "sha256": "2b702797becbf6a76ab62178cdee3b0a3d883d3aff559e54e59336f51d7d1075",
+          "finalUrl": "https://www.cmu.edu/admission/admission",
+          "length": 113848,
+          "textFile": "cmu-admission-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "cmu-catalog",
+      "url": "https://coursecatalog.web.cmu.edu/aboutcmu/undergraduateadmission/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:00.410523Z",
+          "sha256": "f4bf149abdf81a79a01f895db8100438486965a8f827946c79a0499f967bfd39",
+          "finalUrl": "https://coursecatalog.web.cmu.edu/aboutcmu/undergraduateadmission/",
+          "length": 130203,
+          "textFile": "cmu-catalog-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:01.844962Z",
+          "sha256": "f4bf149abdf81a79a01f895db8100438486965a8f827946c79a0499f967bfd39",
+          "finalUrl": "https://coursecatalog.web.cmu.edu/aboutcmu/undergraduateadmission/",
+          "length": 130203,
+          "textFile": "cmu-catalog-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "scu-dates",
+      "url": "https://www.scu.edu/admission/undergraduate/first-year-students/fy-key-deadlines/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:37:59.744997Z",
+          "sha256": "cdc12c237250a55ab349580b11a5689b6c5c56863e0587664aa101e777b10680",
+          "finalUrl": "https://www.scu.edu/admission/undergraduate/first-year-students/fy-key-deadlines/",
+          "length": 36413,
+          "textFile": "scu-dates-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:00.837179Z",
+          "sha256": "cdc12c237250a55ab349580b11a5689b6c5c56863e0587664aa101e777b10680",
+          "finalUrl": "https://www.scu.edu/admission/undergraduate/first-year-students/fy-key-deadlines/",
+          "length": 36413,
+          "textFile": "scu-dates-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "scu-toolkit",
+      "url": "https://www.scu.edu/admission/undergraduate/counseling-toolkit/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:00.142196Z",
+          "sha256": "9b83c31df95aac3cd022eac379edd200e905cc17b02f68e81d1a7c389bcec775",
+          "finalUrl": "https://www.scu.edu/admission/undergraduate/counseling-toolkit/",
+          "length": 121768,
+          "textFile": "scu-toolkit-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:01.675547Z",
+          "sha256": "9b83c31df95aac3cd022eac379edd200e905cc17b02f68e81d1a7c389bcec775",
+          "finalUrl": "https://www.scu.edu/admission/undergraduate/counseling-toolkit/",
+          "length": 121768,
+          "textFile": "scu-toolkit-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "scu-options",
+      "url": "https://www.scu.edu/admission/undergraduate/first-year-students/early-or-regular-decision/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:37:59.774514Z",
+          "sha256": "a635d5a9087ad1dfda65c46c03afabbc7447d20cbfc117f3980703f8769a303f",
+          "finalUrl": "https://www.scu.edu/admission/undergraduate/first-year-students/early-or-regular-decision/",
+          "length": 40845,
+          "textFile": "scu-options-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:00.897104Z",
+          "sha256": "a635d5a9087ad1dfda65c46c03afabbc7447d20cbfc117f3980703f8769a303f",
+          "finalUrl": "https://www.scu.edu/admission/undergraduate/first-year-students/early-or-regular-decision/",
+          "length": 40845,
+          "textFile": "scu-options-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "scu-bulletin",
+      "url": "https://www.scu.edu/bulletin/undergraduate/chapter-7-admission-of-undergraduate-students/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:37:59.984611Z",
+          "sha256": "7cf01e96be4b2fc31998fbb1232f63204806233c2c7173ca3939ea90cba9cab1",
+          "finalUrl": "https://www.scu.edu/bulletin/undergraduate/chapter-7-admission-of-undergraduate-students/",
+          "length": 49449,
+          "textFile": "scu-bulletin-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:01.115801Z",
+          "sha256": "7cf01e96be4b2fc31998fbb1232f63204806233c2c7173ca3939ea90cba9cab1",
+          "finalUrl": "https://www.scu.edu/bulletin/undergraduate/chapter-7-admission-of-undergraduate-students/",
+          "length": 49449,
+          "textFile": "scu-bulletin-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "harvard-firstyear",
+      "url": "https://college.harvard.edu/admissions/apply/first-year-applicants",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:00.214751Z",
+          "sha256": "540dc37ea8dbf29657ffe4418f56aee02d3998613627cf59eeffd0936399b8c5",
+          "finalUrl": "https://college.harvard.edu/admissions/apply/first-year-applicants",
+          "length": 399109,
+          "textFile": "harvard-firstyear-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:01.728322Z",
+          "sha256": "540dc37ea8dbf29657ffe4418f56aee02d3998613627cf59eeffd0936399b8c5",
+          "finalUrl": "https://college.harvard.edu/admissions/apply/first-year-applicants",
+          "length": 399109,
+          "textFile": "harvard-firstyear-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "harvard-requirements",
+      "url": "https://college.harvard.edu/admissions/apply/application-requirements",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:01.629662Z",
+          "sha256": "84518fee6f712b6032544452df8872aa56a4d942ab07c90e81317f058831e11f",
+          "finalUrl": "https://college.harvard.edu/admissions/apply/application-requirements",
+          "length": 418657,
+          "textFile": "harvard-requirements-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:03.116579Z",
+          "sha256": "84518fee6f712b6032544452df8872aa56a4d942ab07c90e81317f058831e11f",
+          "finalUrl": "https://college.harvard.edu/admissions/apply/application-requirements",
+          "length": 418657,
+          "textFile": "harvard-requirements-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "stanford-firstyear",
+      "url": "https://admission.stanford.edu/apply/first-year/index.html",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:37:59.735404Z",
+          "sha256": "f69115449560bc5cefe3b4186f99e3b6786b81c694882909903dc444dd0157c0",
+          "finalUrl": "https://admission.stanford.edu/apply/first-year/index.html",
+          "length": 36703,
+          "textFile": "stanford-firstyear-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:00.738349Z",
+          "sha256": "f69115449560bc5cefe3b4186f99e3b6786b81c694882909903dc444dd0157c0",
+          "finalUrl": "https://admission.stanford.edu/apply/first-year/index.html",
+          "length": 36703,
+          "textFile": "stanford-firstyear-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "stanford-home",
+      "url": "https://admission.stanford.edu/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:02.009429Z",
+          "sha256": "a405b230158e264bcafc22ee742652e09fc41939c56810ad8e1136e4eb0d6a99",
+          "finalUrl": "https://admission.stanford.edu/",
+          "length": 40124,
+          "textFile": "stanford-home-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:03.008694Z",
+          "sha256": "a405b230158e264bcafc22ee742652e09fc41939c56810ad8e1136e4eb0d6a99",
+          "finalUrl": "https://admission.stanford.edu/",
+          "length": 40124,
+          "textFile": "stanford-home-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "mit-dates",
+      "url": "https://mitadmissions.org/apply/firstyear/deadlines-requirements/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:02.208896Z",
+          "sha256": "3ff98d04cbffd46a8db0d380fc694db618c9c728944e0f45102ece21037f27a2",
+          "finalUrl": "https://mitadmissions.org/apply/firstyear/deadlines-requirements/",
+          "length": 120482,
+          "textFile": "mit-dates-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:03.219535Z",
+          "sha256": "3ff98d04cbffd46a8db0d380fc694db618c9c728944e0f45102ece21037f27a2",
+          "finalUrl": "https://mitadmissions.org/apply/firstyear/deadlines-requirements/",
+          "length": 120482,
+          "textFile": "mit-dates-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "mit-faq",
+      "url": "https://mitadmissions.org/help/faq/first-year-application-deadlines/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:02.251818Z",
+          "sha256": "d889f72f5b8e42c1b680926b029eb62fe588d76f25d05552ca4cd9064cb167a7",
+          "finalUrl": "https://mitadmissions.org/help/faq/first-year-application-deadlines/",
+          "length": 117616,
+          "textFile": "mit-faq-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:03.272637Z",
+          "sha256": "d889f72f5b8e42c1b680926b029eb62fe588d76f25d05552ca4cd9064cb167a7",
+          "finalUrl": "https://mitadmissions.org/help/faq/first-year-application-deadlines/",
+          "length": 117616,
+          "textFile": "mit-faq-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "princeton-dates",
+      "url": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:03.142262Z",
+          "sha256": "d6885a3355e96751d5e1496f8a21e41f90f0dae35d430e0f85f2c1b695b4c612",
+          "finalUrl": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
+          "length": 111250,
+          "textFile": "princeton-dates-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:04.834046Z",
+          "sha256": "d6885a3355e96751d5e1496f8a21e41f90f0dae35d430e0f85f2c1b695b4c612",
+          "finalUrl": "https://admission.princeton.edu/apply/first-year-application-dates-deadlines",
+          "length": 111250,
+          "textFile": "princeton-dates-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "princeton-profile",
+      "url": "https://profile.princeton.edu/admission-and-costs",
+      "passes": [
+        {
+          "error": "HTTP Error 403: Forbidden"
+        },
+        {
+          "error": "HTTP Error 403: Forbidden"
+        }
+      ]
+    },
+    {
+      "id": "yale-timelines",
+      "url": "https://admissions.yale.edu/timelines",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:03.222569Z",
+          "sha256": "19cbb3e5702761443d6133e426d45a4320f7806a77e9579f5b919a451c8a0dbf",
+          "finalUrl": "https://admissions.yale.edu/timelines",
+          "length": 77663,
+          "textFile": "yale-timelines-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:04.460781Z",
+          "sha256": "19cbb3e5702761443d6133e426d45a4320f7806a77e9579f5b919a451c8a0dbf",
+          "finalUrl": "https://admissions.yale.edu/timelines",
+          "length": 77663,
+          "textFile": "yale-timelines-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "yale-veterans",
+      "url": "https://admissions.yale.edu/veterans",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:03.222806Z",
+          "sha256": "887cd724e718c5f85bcce1f1f9ab2d91491798b705a437b9e96111df169b4092",
+          "finalUrl": "https://admissions.yale.edu/veterans",
+          "length": 74965,
+          "textFile": "yale-veterans-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:04.461397Z",
+          "sha256": "887cd724e718c5f85bcce1f1f9ab2d91491798b705a437b9e96111df169b4092",
+          "finalUrl": "https://admissions.yale.edu/veterans",
+          "length": 74965,
+          "textFile": "yale-veterans-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "penn-firstyear",
+      "url": "https://admissions.upenn.edu/how-to-apply/first-year-applicants",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:04.152506Z",
+          "sha256": "3c2f0d7648fa546d0af0f251a336848dccc78d813cc34611189a495b7a4e370c",
+          "finalUrl": "https://admissions.upenn.edu/how-to-apply/first-year-applicants",
+          "length": 36541,
+          "textFile": "penn-firstyear-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:05.089804Z",
+          "sha256": "3c2f0d7648fa546d0af0f251a336848dccc78d813cc34611189a495b7a4e370c",
+          "finalUrl": "https://admissions.upenn.edu/how-to-apply/first-year-applicants",
+          "length": 36541,
+          "textFile": "penn-firstyear-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "penn-checklist",
+      "url": "https://admissions.upenn.edu/how-to-apply/first-year-applicants/what-penn-looks-for",
+      "passes": [
+        {
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "error": "HTTP Error 404: Not Found"
+        }
+      ]
+    },
+    {
+      "id": "cornell-firstyear",
+      "url": "https://admissions.cornell.edu/how-to-apply/first-year-applicants",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:04.710280Z",
+          "sha256": "e7e869ee5c0603dcb24e4e96f39fdb0a2445354018ae2b0d5e40e9a9436d2cf0",
+          "finalUrl": "https://admissions.cornell.edu/how-to-apply/first-year-applicants",
+          "length": 126241,
+          "textFile": "cornell-firstyear-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:05.877836Z",
+          "sha256": "e7e869ee5c0603dcb24e4e96f39fdb0a2445354018ae2b0d5e40e9a9436d2cf0",
+          "finalUrl": "https://admissions.cornell.edu/how-to-apply/first-year-applicants",
+          "length": 126241,
+          "textFile": "cornell-firstyear-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "cornell-business",
+      "url": "https://business.cornell.edu/admissions/undergraduate/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:04.814684Z",
+          "sha256": "e773c5afde1150a8cca0309d4dab4f7a0e55d991976ce37f1cb3c108e932d866",
+          "finalUrl": "https://business.cornell.edu/admissions/undergraduate/",
+          "length": 169166,
+          "textFile": "cornell-business-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:06.036932Z",
+          "sha256": "e773c5afde1150a8cca0309d4dab4f7a0e55d991976ce37f1cb3c108e932d866",
+          "finalUrl": "https://business.cornell.edu/admissions/undergraduate/",
+          "length": 169166,
+          "textFile": "cornell-business-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "dartmouth-faq",
+      "url": "https://admissions.dartmouth.edu/glossary-question/what-application-deadline",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:06.626666Z",
+          "sha256": "d902ba7a637a976d5f7be1232aa2b2bddabf7b067a720b1a10a70122f77ae3e5",
+          "finalUrl": "https://admissions.dartmouth.edu/glossary-question/what-application-deadline",
+          "length": 112310,
+          "textFile": "dartmouth-faq-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:08.013994Z",
+          "sha256": "d902ba7a637a976d5f7be1232aa2b2bddabf7b067a720b1a10a70122f77ae3e5",
+          "finalUrl": "https://admissions.dartmouth.edu/glossary-question/what-application-deadline",
+          "length": 112310,
+          "textFile": "dartmouth-faq-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "dartmouth-tests",
+      "url": "https://admissions.dartmouth.edu/glossary-question/when-latest-i-can-take-sat-or-act",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:08.082701Z",
+          "sha256": "b3ab468527b972c073d73707cbaed60fc9ac9e99b3bdd7ca7d30e77770e2decd",
+          "finalUrl": "https://admissions.dartmouth.edu/glossary-question/when-latest-i-can-take-sat-or-act",
+          "length": 113659,
+          "textFile": "dartmouth-tests-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:09.494265Z",
+          "sha256": "b3ab468527b972c073d73707cbaed60fc9ac9e99b3bdd7ca7d30e77770e2decd",
+          "finalUrl": "https://admissions.dartmouth.edu/glossary-question/when-latest-i-can-take-sat-or-act",
+          "length": 113659,
+          "textFile": "dartmouth-tests-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "brown-ed",
+      "url": "https://admission.brown.edu/first-year/early-decision",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:05.728051Z",
+          "sha256": "2d82e9b3307c05b9cb2c69e3b80137c1209061bc9f7c78cccbae2ca3e7784605",
+          "finalUrl": "https://admission.brown.edu/first-year/early-decision",
+          "length": 52745,
+          "textFile": "brown-ed-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:06.743016Z",
+          "sha256": "2d82e9b3307c05b9cb2c69e3b80137c1209061bc9f7c78cccbae2ca3e7784605",
+          "finalUrl": "https://admission.brown.edu/first-year/early-decision",
+          "length": 52745,
+          "textFile": "brown-ed-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "brown-rd",
+      "url": "https://admission.brown.edu/first-year/regular-decision",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:05.858501Z",
+          "sha256": "4221d96db20f9260e06a085918eaaa828766b6406791ecdd1f927c8aa552c99e",
+          "finalUrl": "https://admission.brown.edu/first-year/regular-decision",
+          "length": 51289,
+          "textFile": "brown-rd-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:06.832335Z",
+          "sha256": "4221d96db20f9260e06a085918eaaa828766b6406791ecdd1f927c8aa552c99e",
+          "finalUrl": "https://admission.brown.edu/first-year/regular-decision",
+          "length": 51289,
+          "textFile": "brown-rd-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "brown-checklist",
+      "url": "https://admission.brown.edu/first-year/application-checklist",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:06.008071Z",
+          "sha256": "9f8b1af7f51ea2f523eef399b10ae776fc7db0010f6629bbef991738111fd06c",
+          "finalUrl": "https://admission.brown.edu/first-year/application-checklist",
+          "length": 58372,
+          "textFile": "brown-checklist-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:06.995478Z",
+          "sha256": "9f8b1af7f51ea2f523eef399b10ae776fc7db0010f6629bbef991738111fd06c",
+          "finalUrl": "https://admission.brown.edu/first-year/application-checklist",
+          "length": 58372,
+          "textFile": "brown-checklist-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "williams-firstyear",
+      "url": "https://www.williams.edu/admission-aid/how-to-apply/first-year/",
+      "passes": [
+        {
+          "error": "HTTP Error 403: Forbidden"
+        },
+        {
+          "error": "HTTP Error 403: Forbidden"
+        }
+      ]
+    },
+    {
+      "id": "williams-catalog",
+      "url": "https://catalog.williams.edu/admission/",
+      "passes": [
+        {
+          "error": "HTTP Error 403: Forbidden"
+        },
+        {
+          "error": "HTTP Error 403: Forbidden"
+        }
+      ]
+    },
+    {
+      "id": "pomona-firstyear",
+      "url": "https://www.pomona.edu/admissions/apply/first-year-applicants",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:08.302949Z",
+          "sha256": "4567c896adcfed34ad4d8aa269f0fbfe13a849d4c6c6b101d9e82cd2ec5262c2",
+          "finalUrl": "https://www.pomona.edu/admissions/paths-apply",
+          "length": 105523,
+          "textFile": "pomona-firstyear-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:10.227793Z",
+          "sha256": "4567c896adcfed34ad4d8aa269f0fbfe13a849d4c6c6b101d9e82cd2ec5262c2",
+          "finalUrl": "https://www.pomona.edu/admissions/paths-apply",
+          "length": 105523,
+          "textFile": "pomona-firstyear-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "pomona-catalog",
+      "url": "https://catalog.pomona.edu/information/admissionsandfinancialaid/admissions",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:09.196707Z",
+          "sha256": "5ac58f9a6919f8b1e6f87672f3541776c06e628d4711aabacec386a1debd0b2b",
+          "finalUrl": "https://catalog.pomona.edu/information/admissionsandfinancialaid/admissions",
+          "length": 381172,
+          "textFile": "pomona-catalog-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:11.673955Z",
+          "sha256": "5ac58f9a6919f8b1e6f87672f3541776c06e628d4711aabacec386a1debd0b2b",
+          "finalUrl": "https://catalog.pomona.edu/information/admissionsandfinancialaid/admissions",
+          "length": 381172,
+          "textFile": "pomona-catalog-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "swarthmore-firstyear",
+      "url": "https://www.swarthmore.edu/admissions-aid/apply-to-swarthmore",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:38:08.302301Z",
+          "sha256": "8b229c2641b7a35c0c7b45480287b791084827fdfc8b0f499ad4c7c3eb155390",
+          "finalUrl": "https://www.swarthmore.edu/admissions-aid/apply-to-swarthmore",
+          "length": 208438,
+          "textFile": "swarthmore-firstyear-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:38:09.630514Z",
+          "sha256": "8b229c2641b7a35c0c7b45480287b791084827fdfc8b0f499ad4c7c3eb155390",
+          "finalUrl": "https://www.swarthmore.edu/admissions-aid/apply-to-swarthmore",
+          "length": 208438,
+          "textFile": "swarthmore-firstyear-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "swarthmore-dates",
+      "url": "https://www.swarthmore.edu/admissions-aid/first-year-applicants",
+      "passes": [
+        {
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "error": "HTTP Error 404: Not Found"
+        }
+      ]
+    },
+    {
+      "id": "stanford-process",
+      "url": "https://admission.stanford.edu/apply/first-year/decision_process.html",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:48.318595Z",
+          "sha256": "bce1c30e4d3121b709c90645e711b0899c61ca28f5dfadc13883d0a5c1a01e8d",
+          "finalUrl": "https://admission.stanford.edu/apply/first-year/decision_process.html",
+          "length": 36909,
+          "textFile": "stanford-process-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:49.397485Z",
+          "sha256": "bce1c30e4d3121b709c90645e711b0899c61ca28f5dfadc13883d0a5c1a01e8d",
+          "finalUrl": "https://admission.stanford.edu/apply/first-year/decision_process.html",
+          "length": 36909,
+          "textFile": "stanford-process-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "stanford-arts",
+      "url": "https://admission.stanford.edu/apply/first-year/arts.html",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:48.558552Z",
+          "sha256": "9639b084c0306d1013b6eeba0f1287e9fa1552e5bd1731d7862d3ed6fca48362",
+          "finalUrl": "https://admission.stanford.edu/apply/first-year/arts.html",
+          "length": 46769,
+          "textFile": "stanford-arts-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:49.902399Z",
+          "sha256": "9639b084c0306d1013b6eeba0f1287e9fa1552e5bd1731d7862d3ed6fca48362",
+          "finalUrl": "https://admission.stanford.edu/apply/first-year/arts.html",
+          "length": 46769,
+          "textFile": "stanford-arts-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "mit-home",
+      "url": "https://www.mit.edu/admissions/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:49.035733Z",
+          "sha256": "e987714507b22e2218b0ec7ee3d3d26a6f9fdba534204eb81f49fea0cd1572c8",
+          "finalUrl": "https://www.mit.edu/admissions/",
+          "length": 115,
+          "textFile": "mit-home-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:50.129597Z",
+          "sha256": "e987714507b22e2218b0ec7ee3d3d26a6f9fdba534204eb81f49fea0cd1572c8",
+          "finalUrl": "https://www.mit.edu/admissions/",
+          "length": 115,
+          "textFile": "mit-home-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "bowdoin-dates",
+      "url": "https://www.bowdoin.edu/admissions/apply/dates-deadlines/index.html",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:48.565974Z",
+          "sha256": "39fb46d0e2a6243ddd9d3fa48a569251942440087d1bc636fa4fb281ee219d2b",
+          "finalUrl": "https://www.bowdoin.edu/admissions/apply/dates-deadlines/index.html",
+          "length": 44158,
+          "textFile": "bowdoin-dates-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:49.656773Z",
+          "sha256": "39fb46d0e2a6243ddd9d3fa48a569251942440087d1bc636fa4fb281ee219d2b",
+          "finalUrl": "https://www.bowdoin.edu/admissions/apply/dates-deadlines/index.html",
+          "length": 44158,
+          "textFile": "bowdoin-dates-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "bowdoin-arts",
+      "url": "https://www.bowdoin.edu/admissions/apply/arts-supplement/index.html",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:48.554015Z",
+          "sha256": "78c4985fb1bbc87e2e2eb3b27392d0ada3fba81cd373da7a3f21a6c3c386788f",
+          "finalUrl": "https://www.bowdoin.edu/admissions/apply/arts-supplement/index.html",
+          "length": 41096,
+          "textFile": "bowdoin-arts-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:49.657123Z",
+          "sha256": "78c4985fb1bbc87e2e2eb3b27392d0ada3fba81cd373da7a3f21a6c3c386788f",
+          "finalUrl": "https://www.bowdoin.edu/admissions/apply/arts-supplement/index.html",
+          "length": 41096,
+          "textFile": "bowdoin-arts-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "pomona-questbridge",
+      "url": "https://www.pomona.edu/admissions/apply/questbridge-applicants",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:48.449861Z",
+          "sha256": "4f96f20e2ac47192406a1f3f1b7a702dba79d1de5dfe455a68800e5295aaf140",
+          "finalUrl": "https://www.pomona.edu/admissions/apply/questbridge-applicants",
+          "length": 90821,
+          "textFile": "pomona-questbridge-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:49.495282Z",
+          "sha256": "4f96f20e2ac47192406a1f3f1b7a702dba79d1de5dfe455a68800e5295aaf140",
+          "finalUrl": "https://www.pomona.edu/admissions/apply/questbridge-applicants",
+          "length": 90821,
+          "textFile": "pomona-questbridge-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "swarthmore-checklist",
+      "url": "https://www.swarthmore.edu/admissions-aid/application-requirements",
+      "passes": [
+        {
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "error": "HTTP Error 404: Not Found"
+        }
+      ]
+    },
+    {
+      "id": "swarthmore-options",
+      "url": "https://www.swarthmore.edu/admissions-aid/first-year-applicants",
+      "passes": [
+        {
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "error": "HTTP Error 404: Not Found"
+        }
+      ]
+    },
+    {
+      "id": "carleton-dates",
+      "url": "https://www.carleton.edu/admissions/apply/steps/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:49.950115Z",
+          "sha256": "71bb56243dd95758681f70dd64fd44031266ad081edc5e96976341ac63817b2c",
+          "finalUrl": "https://www.carleton.edu/admissions/apply/steps/",
+          "length": 133348,
+          "textFile": "carleton-dates-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:51.212062Z",
+          "sha256": "2c91e1d07163889d59c2e05ad00acc7abf90b83bf2969ea0947e2d9e51db9e6c",
+          "finalUrl": "https://www.carleton.edu/admissions/apply/steps/",
+          "length": 54405,
+          "textFile": "carleton-dates-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "carleton-ed",
+      "url": "https://www.carleton.edu/admissions/apply/early-decision/",
+      "passes": [
+        {
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "error": "HTTP Error 404: Not Found"
+        }
+      ]
+    },
+    {
+      "id": "caltech-dates",
+      "url": "https://www.admissions.caltech.edu/apply/first-year-applicants/deadlines",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:50.764471Z",
+          "sha256": "3993902af16608f1f209889135105131f064933a6aea2a530c0c5369c7daea30",
+          "finalUrl": "https://www.admissions.caltech.edu/apply/first-year-applicants/deadlines",
+          "length": 260204,
+          "textFile": "caltech-dates-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:52.041284Z",
+          "sha256": "12779b9d4afae964e7bb591f573930f213a110387dc09c979da0718f29576311",
+          "finalUrl": "https://www.admissions.caltech.edu/apply/first-year-applicants/deadlines",
+          "length": 260204,
+          "textFile": "caltech-dates-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "caltech-counselors",
+      "url": "https://www.admissions.caltech.edu/apply/for-counselors",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:51.499070Z",
+          "sha256": "b5ae3d62b71064feeac2fb17b05b6c733568f9112ef11232c5ab7458d789f85a",
+          "finalUrl": "https://www.admissions.caltech.edu/apply/for-counselors",
+          "length": 275000,
+          "textFile": "caltech-counselors-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:52.825749Z",
+          "sha256": "ca52d69e8b024c77b3004075284f54f1ed57e9bef5345c7cd535e8c7ff4cacb9",
+          "finalUrl": "https://www.admissions.caltech.edu/apply/for-counselors",
+          "length": 275000,
+          "textFile": "caltech-counselors-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "duke-firstyear",
+      "url": "https://admissions.duke.edu/first-year-applicants/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:51.860664Z",
+          "sha256": "ec84fb1c64c84b2bc9cf522a212b224e337972a117f789e09060e0cff4c5e0de",
+          "finalUrl": "https://admissions.duke.edu/first-year-applicants/",
+          "length": 109675,
+          "textFile": "duke-firstyear-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:53.866995Z",
+          "sha256": "e056b98945c5cd5244907579cf40a2463cc51bde582e03202c50dde72ba7cd8b",
+          "finalUrl": "https://admissions.duke.edu/first-year-applicants/",
+          "length": 109675,
+          "textFile": "duke-firstyear-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "duke-home",
+      "url": "https://admissions.duke.edu/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:51.551221Z",
+          "sha256": "d381bf4ffa7f82a31ad62b76ec4e5e4f93e7093b062ffaaff21634479c726dc1",
+          "finalUrl": "https://admissions.duke.edu/",
+          "length": 64050,
+          "textFile": "duke-home-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:53.208202Z",
+          "sha256": "d381bf4ffa7f82a31ad62b76ec4e5e4f93e7093b062ffaaff21634479c726dc1",
+          "finalUrl": "https://admissions.duke.edu/",
+          "length": 64050,
+          "textFile": "duke-home-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "northwestern-dates",
+      "url": "https://admissions.northwestern.edu/apply/application-deadlines.html",
+      "passes": [
+        {
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010)>"
+        },
+        {
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010)>"
+        }
+      ]
+    },
+    {
+      "id": "northwestern-options",
+      "url": "https://admissions.northwestern.edu/apply/application-options.html",
+      "passes": [
+        {
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010)>"
+        },
+        {
+          "error": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1010)>"
+        }
+      ]
+    },
+    {
+      "id": "uchicago-plans",
+      "url": "https://collegeadmissions.uchicago.edu/apply/application-plans",
+      "passes": [
+        {
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "error": "HTTP Error 404: Not Found"
+        }
+      ]
+    },
+    {
+      "id": "uchicago-firstyear",
+      "url": "https://collegeadmissions.uchicago.edu/apply/first-year-applicants",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:53.044230Z",
+          "sha256": "f2871c4014d60ecdcc559019a24d03691461e95b07f0dfc836bc06074f172614",
+          "finalUrl": "https://collegeadmissions.uchicago.edu/apply/application/",
+          "length": 548506,
+          "textFile": "uchicago-firstyear-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:56.181906Z",
+          "sha256": "f2871c4014d60ecdcc559019a24d03691461e95b07f0dfc836bc06074f172614",
+          "finalUrl": "https://collegeadmissions.uchicago.edu/apply/application/",
+          "length": 548506,
+          "textFile": "uchicago-firstyear-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "penn-wharton",
+      "url": "https://undergrad.wharton.upenn.edu/apply/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:41:54.452352Z",
+          "sha256": "844f52ec5737c0ff000f2559f58739e5fe7bcc677783464f82674220fb5c5577",
+          "finalUrl": "https://undergrad.wharton.upenn.edu/admissions/",
+          "length": 88760,
+          "textFile": "penn-wharton-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:41:57.014010Z",
+          "sha256": "844f52ec5737c0ff000f2559f58739e5fe7bcc677783464f82674220fb5c5577",
+          "finalUrl": "https://undergrad.wharton.upenn.edu/admissions/",
+          "length": 88760,
+          "textFile": "penn-wharton-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "bowdoin-international",
+      "url": "https://www.bowdoin.edu/admissions/apply/international-students/index.html",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:44:46.353808Z",
+          "sha256": "5d7cea9ebe03ac8ad230f3c1afa6d7fe2995009e72ea0203392449545924e887",
+          "finalUrl": "https://www.bowdoin.edu/admissions/apply/international-students/index.html",
+          "length": 62192,
+          "textFile": "bowdoin-international-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:44:47.390948Z",
+          "sha256": "5d7cea9ebe03ac8ad230f3c1afa6d7fe2995009e72ea0203392449545924e887",
+          "finalUrl": "https://www.bowdoin.edu/admissions/apply/international-students/index.html",
+          "length": 62192,
+          "textFile": "bowdoin-international-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "bowdoin-questbridge",
+      "url": "https://www.bowdoin.edu/admissions/apply/questbridge/index.html",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:44:46.571836Z",
+          "sha256": "23a6446870268c97d47608ea0b0b212ed4c221c3681e4c204404c739880a775c",
+          "finalUrl": "https://www.bowdoin.edu/admissions/apply/questbridge/index.html",
+          "length": 43107,
+          "textFile": "bowdoin-questbridge-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:44:47.623858Z",
+          "sha256": "23a6446870268c97d47608ea0b0b212ed4c221c3681e4c204404c739880a775c",
+          "finalUrl": "https://www.bowdoin.edu/admissions/apply/questbridge/index.html",
+          "length": 43107,
+          "textFile": "bowdoin-questbridge-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "carleton-finaidchange",
+      "url": "https://www.admissions.carleton.edu/register/finaidchange",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:44:46.855571Z",
+          "sha256": "abbfd3ed58e67269f2f521e7a93125919d93c1a4e0a1168c5c88b260d269b9d5",
+          "finalUrl": "https://www.admissions.carleton.edu/register/finaidchange",
+          "length": 30700,
+          "textFile": "carleton-finaidchange-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:44:48.028527Z",
+          "sha256": "7cb4b5c343228eb3c7f610e42d3e41df0578515bb7635e4ee8a8c11dc3217895",
+          "finalUrl": "https://www.admissions.carleton.edu/register/finaidchange",
+          "length": 30700,
+          "textFile": "carleton-finaidchange-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "carleton-apply",
+      "url": "https://www.carleton.edu/admissions/apply/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:44:47.656963Z",
+          "sha256": "faf7dd06d77c271e8b076da87ae2b1069a464f81fe6086248727a5e050b7f9dd",
+          "finalUrl": "https://www.carleton.edu/admissions/apply/",
+          "length": 142484,
+          "textFile": "carleton-apply-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:44:49.208085Z",
+          "sha256": "3bd6d731d2a6ecc3ddef1b1b2982532a899cf20d1a62fcc45bfb7b9240214fc6",
+          "finalUrl": "https://www.carleton.edu/admissions/apply/",
+          "length": 142523,
+          "textFile": "carleton-apply-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "penn-nursing",
+      "url": "https://www.nursing.upenn.edu/admissions/undergraduate/",
+      "passes": [
+        {
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "error": "HTTP Error 404: Not Found"
+        }
+      ]
+    },
+    {
+      "id": "princeton-checklist",
+      "url": "https://admission.princeton.edu/apply/first-year-application-checklist",
+      "passes": [
+        {
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "error": "HTTP Error 404: Not Found"
+        }
+      ]
+    },
+    {
+      "id": "princeton-faq",
+      "url": "https://admission.princeton.edu/faqs",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:44:46.725563Z",
+          "sha256": "3663849b0f5a3d032990d7be42efea5210550b56c6170115b68d84fb1f472b76",
+          "finalUrl": "https://admission.princeton.edu/faqs",
+          "length": 95771,
+          "textFile": "princeton-faq-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:44:48.531507Z",
+          "sha256": "3663849b0f5a3d032990d7be42efea5210550b56c6170115b68d84fb1f472b76",
+          "finalUrl": "https://admission.princeton.edu/faqs",
+          "length": 95771,
+          "textFile": "princeton-faq-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "uc-dates",
+      "url": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/dates-and-deadlines.html",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:46:00.326835Z",
+          "sha256": "63de43c41118b0edf74e2f45dd8abaf5339cf249c60d6a20457226d308174dd9",
+          "finalUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/dates-and-deadlines.html",
+          "length": 52098,
+          "textFile": "uc-dates-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:46:01.403459Z",
+          "sha256": "63de43c41118b0edf74e2f45dd8abaf5339cf249c60d6a20457226d308174dd9",
+          "finalUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/dates-and-deadlines.html",
+          "length": 52098,
+          "textFile": "uc-dates-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "uc-application",
+      "url": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/filling-out-the-application.html",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:46:00.356507Z",
+          "sha256": "7c2445423240a07f95a18288dbfd7f711675d4f5de084bf3eb0a7cc89c381865",
+          "finalUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/filling-out-the-application.html",
+          "length": 57740,
+          "textFile": "uc-application-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:46:01.434410Z",
+          "sha256": "7c2445423240a07f95a18288dbfd7f711675d4f5de084bf3eb0a7cc89c381865",
+          "finalUrl": "https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-first-year/filling-out-the-application.html",
+          "length": 57740,
+          "textFile": "uc-application-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "ucla-firstyear",
+      "url": "https://admission.ucla.edu/apply/first-year",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:46:00.527862Z",
+          "sha256": "376157bc396e106fb55d4af1842ac79de0efec08729a270b54abd324e794a272",
+          "finalUrl": "https://admission.ucla.edu/apply/first-year",
+          "length": 55393,
+          "textFile": "ucla-firstyear-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:46:01.832655Z",
+          "sha256": "376157bc396e106fb55d4af1842ac79de0efec08729a270b54abd324e794a272",
+          "finalUrl": "https://admission.ucla.edu/apply/first-year",
+          "length": 55393,
+          "textFile": "ucla-firstyear-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "vanderbilt-apply",
+      "url": "https://admissions.vanderbilt.edu/apply/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:46:00.800830Z",
+          "sha256": "672931ab76e27fc2b8b3ede0f9344c5360e48d358e18e435fec9e40cdc78f727",
+          "finalUrl": "https://admissions.vanderbilt.edu/apply/",
+          "length": 153211,
+          "textFile": "vanderbilt-apply-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:46:02.131483Z",
+          "sha256": "672931ab76e27fc2b8b3ede0f9344c5360e48d358e18e435fec9e40cdc78f727",
+          "finalUrl": "https://admissions.vanderbilt.edu/apply/",
+          "length": 153211,
+          "textFile": "vanderbilt-apply-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "vanderbilt-dates",
+      "url": "https://admissions.vanderbilt.edu/apply/dates-and-deadlines/",
+      "passes": [
+        {
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "error": "HTTP Error 404: Not Found"
+        }
+      ]
+    },
+    {
+      "id": "nyu-firstyear",
+      "url": "https://www.nyu.edu/admissions/undergraduate-admissions/how-to-apply/all-freshmen-applicants.html",
+      "passes": [
+        {
+          "error": "HTTP Error 405: Not Allowed"
+        },
+        {
+          "error": "HTTP Error 405: Not Allowed"
+        }
+      ]
+    },
+    {
+      "id": "nyu-ed",
+      "url": "https://www.nyu.edu/admissions/undergraduate-admissions/how-to-apply/early-decision.html",
+      "passes": [
+        {
+          "error": "HTTP Error 405: Not Allowed"
+        },
+        {
+          "error": "HTTP Error 405: Not Allowed"
+        }
+      ]
+    },
+    {
+      "id": "rpi-firstyear",
+      "url": "https://undergrad.admissions.rpi.edu/apply/first-year-applicants",
+      "passes": [
+        {
+          "error": "HTTP Error 404: Not Found"
+        },
+        {
+          "error": "HTTP Error 404: Not Found"
+        }
+      ]
+    },
+    {
+      "id": "rpi-faq",
+      "url": "https://undergrad.admissions.rpi.edu/apply/first-year-applicants/application-frequently-asked-questions",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:46:00.607267Z",
+          "sha256": "49fb05e44fa84f14931a391788711302bb73b88559d603b9bf28bcac76945b4a",
+          "finalUrl": "https://undergrad.admissions.rpi.edu/apply/first-year-applicants/application-frequently-asked-questions",
+          "length": 58412,
+          "textFile": "rpi-faq-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:46:01.602772Z",
+          "sha256": "49fb05e44fa84f14931a391788711302bb73b88559d603b9bf28bcac76945b4a",
+          "finalUrl": "https://undergrad.admissions.rpi.edu/apply/first-year-applicants/application-frequently-asked-questions",
+          "length": 58412,
+          "textFile": "rpi-faq-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "usc-firstyear",
+      "url": "https://admission.usc.edu/prospective-students/how-to-apply/first-year-students/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:46:00.594239Z",
+          "sha256": "5a524bff9b6449b5201a8d0a607459cc2d68687c5cf816eba371f375e56547b8",
+          "finalUrl": "https://admission.usc.edu/prospective-students/how-to-apply/first-year-students/",
+          "length": 261143,
+          "textFile": "usc-firstyear-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:46:01.930649Z",
+          "sha256": "5a524bff9b6449b5201a8d0a607459cc2d68687c5cf816eba371f375e56547b8",
+          "finalUrl": "https://admission.usc.edu/prospective-students/how-to-apply/first-year-students/",
+          "length": 261143,
+          "textFile": "usc-firstyear-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "usc-dornsife",
+      "url": "https://dornsife.usc.edu/admission/apply/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:46:04.470756Z",
+          "sha256": "9849f6dac47adb6783261656006cfa0758120ebe85dc368cc3c0c45a9bc1bc89",
+          "finalUrl": "https://dornsife.usc.edu/admission/apply/",
+          "length": 333019,
+          "textFile": "usc-dornsife-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:46:06.031569Z",
+          "sha256": "9849f6dac47adb6783261656006cfa0758120ebe85dc368cc3c0c45a9bc1bc89",
+          "finalUrl": "https://dornsife.usc.edu/admission/apply/",
+          "length": 333019,
+          "textFile": "usc-dornsife-2.txt"
+        }
+      ]
+    },
+    {
+      "id": "usc-viterbi",
+      "url": "https://viterbiadmission.usc.edu/2026/early-decision-early-action-or-regular-decision-which-application-plan-is-right-for-you/",
+      "passes": [
+        {
+          "checkedAt": "2026-11-13T05:46:02.674432Z",
+          "sha256": "46054daa6b0f3ef6ccc2ad271fe2fd2c05fffda00916bb2f88d25a1cb3a2b236",
+          "finalUrl": "https://viterbiadmission.usc.edu/2026/early-decision-early-action-or-regular-decision-which-application-plan-is-right-for-you/",
+          "length": 155478,
+          "textFile": "usc-viterbi-1.txt"
+        },
+        {
+          "checkedAt": "2026-11-13T05:46:03.766603Z",
+          "sha256": "c449d3a5a71b86a0ae9b897191dd7ce02d5422392980cc6a2b46c7b71281a331",
+          "finalUrl": "https://viterbiadmission.usc.edu/2026/early-decision-early-action-or-regular-decision-which-application-plan-is-right-for-you/",
+          "length": 155478,
+          "textFile": "usc-viterbi-2.txt"
+        }
+      ]
+    }
+  ]
+}

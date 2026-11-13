@@ -1,0 +1,925 @@
+{
+  "entryYear": 2027,
+  "schools": [
+    {
+      "slug": "carnegie-mellon-university",
+      "name": "Carnegie Mellon University",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "CMU undergraduate catalog explicitly identifies first-year applicants entering fall 2027 and states Nov 2 / Jan 4, with Dec 1 for Drama and Music.",
+      "notes": "CMU does not offer Early Action. Two current official publications agree; a conflicting FAQ is not used to set dates.",
+      "conflicts": [
+        {
+          "url": "https://www.cmu.edu/admission/admission/admission-faq",
+          "note": "FAQ lists Nov 3 / Jan 5 and also references Nov 1. Current plans page and explicit fall-2027 catalog agree on Nov 2 / Jan 4; these corroborated current publications take precedence."
+        }
+      ],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Most programmes (excluding Drama, Music and BXA Design ED)",
+          "note": "ED is unavailable for Drama, Music and BXA Design. Separate portfolio and supporting-material dates may apply.",
+          "options": [
+            {
+              "round": "ed",
+              "date": "2026-11-02",
+              "sourceIds": [
+                "cmu-plans",
+                "cmu-catalog"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility."
+            },
+            {
+              "round": "rd",
+              "date": "2027-01-04",
+              "sourceIds": [
+                "cmu-plans",
+                "cmu-catalog"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        },
+        {
+          "id": "drama-music",
+          "label": "School of Drama or School of Music",
+          "note": "Earlier Regular Decision deadline; check auditions and prescreening separately.",
+          "options": [
+            {
+              "round": "rd",
+              "date": "2026-12-01",
+              "sourceIds": [
+                "cmu-plans",
+                "cmu-catalog"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        },
+        {
+          "id": "bxa-design",
+          "label": "BXA Design",
+          "note": "Early Decision is not available. Verify portfolio instructions separately.",
+          "options": [
+            {
+              "round": "rd",
+              "date": "2027-01-04",
+              "sourceIds": [
+                "cmu-plans",
+                "cmu-catalog"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "santa-clara-university",
+      "name": "Santa Clara University",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "Current first-year admissions publications retrieved and reviewed on 2026-11-13; mapped only to fall 2027 entry in this catalog. Some publications print month/day without a year. Do not reuse these dates for another entry year.",
+      "notes": "Fall first-year admission only, not the separate winter-entry route. Optional supplemental-essay and aid dates on the official calendar differ from the application deadline and need separate checking.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "ed",
+              "date": "2026-11-01",
+              "sourceIds": [
+                "scu-dates",
+                "scu-toolkit"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility."
+            },
+            {
+              "round": "ea",
+              "date": "2026-11-01",
+              "sourceIds": [
+                "scu-dates",
+                "scu-toolkit"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            },
+            {
+              "round": "ed2",
+              "date": "2027-01-07",
+              "sourceIds": [
+                "scu-dates",
+                "scu-toolkit"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility."
+            },
+            {
+              "round": "rd",
+              "date": "2027-01-07",
+              "sourceIds": [
+                "scu-dates",
+                "scu-toolkit"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "harvard-university",
+      "name": "Harvard University",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "Current first-year admissions publications retrieved and reviewed on 2026-11-13; mapped only to fall 2027 entry in this catalog. Some publications print month/day without a year. Do not reuse these dates for another entry year.",
+      "notes": "Standard first-year application dates only. QuestBridge, transfer, special programmes, portfolios and individual extensions may differ.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "rea",
+              "date": "2026-11-01",
+              "sourceIds": [
+                "harvard-firstyear",
+                "harvard-requirements"
+              ],
+              "time": "23:59",
+              "timeZone": "local",
+              "timeBasis": "applicant_local",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            },
+            {
+              "round": "rd",
+              "date": "2027-01-01",
+              "sourceIds": [
+                "harvard-firstyear",
+                "harvard-requirements"
+              ],
+              "time": "23:59",
+              "timeZone": "local",
+              "timeBasis": "applicant_local",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "stanford-university",
+      "name": "Stanford University",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "Current first-year admissions publications retrieved and reviewed on 2026-11-13; mapped only to fall 2027 entry in this catalog. Some publications print month/day without a year. Do not reuse these dates for another entry year.",
+      "notes": "Standard first-year application dates only. QuestBridge, transfer, special programmes, portfolios and individual extensions may differ.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard application (no optional arts portfolio)",
+          "note": "The optional arts-portfolio route requires earlier application submission.",
+          "options": [
+            {
+              "round": "rea",
+              "date": "2026-11-01",
+              "sourceIds": [
+                "stanford-firstyear",
+                "stanford-arts"
+              ],
+              "time": "23:59",
+              "timeZone": "local",
+              "timeBasis": "applicant_local",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            },
+            {
+              "round": "rd",
+              "date": "2027-01-05",
+              "sourceIds": [
+                "stanford-firstyear",
+                "stanford-arts"
+              ],
+              "time": "23:59",
+              "timeZone": "local",
+              "timeBasis": "applicant_local",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        },
+        {
+          "id": "arts-portfolio",
+          "label": "Application with optional arts portfolio",
+          "note": "These are earlier Common Application deadlines. Portfolio materials are due Oct 20 / Dec 10 respectively; verify those separately.",
+          "options": [
+            {
+              "round": "rea",
+              "date": "2026-10-15",
+              "sourceIds": [
+                "stanford-firstyear",
+                "stanford-arts"
+              ],
+              "time": "23:59",
+              "timeZone": "local",
+              "timeBasis": "applicant_local",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            },
+            {
+              "round": "rd",
+              "date": "2026-12-05",
+              "sourceIds": [
+                "stanford-firstyear",
+                "stanford-arts"
+              ],
+              "time": "23:59",
+              "timeZone": "local",
+              "timeBasis": "applicant_local",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "brown-university",
+      "name": "Brown University",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "Current first-year admissions publications retrieved and reviewed on 2026-11-13; mapped only to fall 2027 entry in this catalog. Some publications print month/day without a year. Do not reuse these dates for another entry year.",
+      "notes": "Standard first-year application dates only. QuestBridge, transfer, special programmes, portfolios and individual extensions may differ.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "ed",
+              "date": "2026-11-01",
+              "sourceIds": [
+                "brown-ed",
+                "brown-checklist"
+              ],
+              "time": "23:59",
+              "timeZone": "local",
+              "timeBasis": "applicant_local",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility."
+            },
+            {
+              "round": "rd",
+              "date": "2027-01-05",
+              "sourceIds": [
+                "brown-rd",
+                "brown-checklist"
+              ],
+              "time": "23:59",
+              "timeZone": "local",
+              "timeBasis": "applicant_local",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "cornell-university",
+      "name": "Cornell University",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "Current first-year admissions publications retrieved and reviewed on 2026-11-13; mapped only to fall 2027 entry in this catalog. Some publications print month/day without a year. Do not reuse these dates for another entry year.",
+      "notes": "Standard first-year application dates only. QuestBridge, transfer, special programmes, portfolios and individual extensions may differ.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "ed",
+              "date": "2026-11-01",
+              "sourceIds": [
+                "cornell-firstyear",
+                "cornell-business"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility."
+            },
+            {
+              "round": "rd",
+              "date": "2027-01-02",
+              "sourceIds": [
+                "cornell-firstyear",
+                "cornell-business"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "dartmouth-college",
+      "name": "Dartmouth College",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "Current first-year admissions publications retrieved and reviewed on 2026-11-13; mapped only to fall 2027 entry in this catalog. Some publications print month/day without a year. Do not reuse these dates for another entry year.",
+      "notes": "Standard first-year application dates only. QuestBridge, transfer, special programmes, portfolios and individual extensions may differ.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "ed",
+              "date": "2026-11-01",
+              "sourceIds": [
+                "dartmouth-faq",
+                "dartmouth-tests"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility."
+            },
+            {
+              "round": "rd",
+              "date": "2027-01-01",
+              "sourceIds": [
+                "dartmouth-faq",
+                "dartmouth-tests"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "yale-university",
+      "name": "Yale University",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "Current first-year admissions publications retrieved and reviewed on 2026-11-13; mapped only to fall 2027 entry in this catalog. Some publications print month/day without a year. Do not reuse these dates for another entry year.",
+      "notes": "Standard first-year application dates only. QuestBridge, transfer, special programmes, portfolios and individual extensions may differ.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "rea",
+              "date": "2026-11-01",
+              "sourceIds": [
+                "yale-timelines",
+                "yale-veterans"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline.",
+              "label": "Single-Choice Early Action (SCEA)"
+            },
+            {
+              "round": "rd",
+              "date": "2027-01-02",
+              "sourceIds": [
+                "yale-timelines",
+                "yale-veterans"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "pomona-college",
+      "name": "Pomona College",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "Current first-year admissions publications retrieved and reviewed on 2026-11-13; mapped only to fall 2027 entry in this catalog. Some publications print month/day without a year. Do not reuse these dates for another entry year.",
+      "notes": "Standard first-year application dates only. QuestBridge, transfer, special programmes, portfolios and individual extensions may differ.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "ed",
+              "date": "2026-11-08",
+              "sourceIds": [
+                "pomona-firstyear",
+                "pomona-catalog"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility."
+            },
+            {
+              "round": "ed2",
+              "date": "2027-01-08",
+              "sourceIds": [
+                "pomona-firstyear",
+                "pomona-catalog"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility."
+            },
+            {
+              "round": "rd",
+              "date": "2027-01-08",
+              "sourceIds": [
+                "pomona-firstyear",
+                "pomona-catalog"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "duke-university",
+      "name": "Duke University",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "Current first-year page explicitly references the 2026–2027 admissions cycle; Nov 2 / Jan 4 are also listed on the admissions homepage.",
+      "notes": "Standard first-year application dates only. QuestBridge, transfer, special programmes, portfolios and individual extensions may differ.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "ed",
+              "date": "2026-11-02",
+              "sourceIds": [
+                "duke-firstyear",
+                "duke-home"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility."
+            },
+            {
+              "round": "rd",
+              "date": "2027-01-04",
+              "sourceIds": [
+                "duke-firstyear",
+                "duke-home"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "bowdoin-college",
+      "name": "Bowdoin College",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "Current first-year admissions publications retrieved and reviewed on 2026-11-13; mapped only to fall 2027 entry in this catalog. Some publications print month/day without a year. Do not reuse these dates for another entry year.",
+      "notes": "Standard first-year application dates only. QuestBridge, transfer, special programmes, portfolios and individual extensions may differ.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "ed",
+              "date": "2026-11-15",
+              "sourceIds": [
+                "bowdoin-dates",
+                "bowdoin-international"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility."
+            },
+            {
+              "round": "ed2",
+              "date": "2027-01-05",
+              "sourceIds": [
+                "bowdoin-dates",
+                "bowdoin-international"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility."
+            },
+            {
+              "round": "rd",
+              "date": "2027-01-05",
+              "sourceIds": [
+                "bowdoin-dates",
+                "bowdoin-international"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "carleton-college",
+      "name": "Carleton College",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "Current first-year admissions publications retrieved and reviewed on 2026-11-13; mapped only to fall 2027 entry in this catalog. Some publications print month/day without a year. Do not reuse these dates for another entry year.",
+      "notes": "Standard first-year application dates only. QuestBridge, transfer, special programmes, portfolios and individual extensions may differ.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "ed",
+              "date": "2026-11-15",
+              "sourceIds": [
+                "carleton-dates",
+                "carleton-finaidchange"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility.",
+              "label": "Fall Early Decision (ED I)"
+            },
+            {
+              "round": "ed2",
+              "date": "2027-01-15",
+              "sourceIds": [
+                "carleton-dates",
+                "carleton-finaidchange"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Binding Early Decision; verify the commitment and programme eligibility.",
+              "label": "Winter Early Decision (ED II)"
+            },
+            {
+              "round": "rd",
+              "date": "2027-01-15",
+              "sourceIds": [
+                "carleton-dates",
+                "carleton-finaidchange"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "university-of-california-berkeley",
+      "name": "University of California, Berkeley",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "UC dates-and-deadlines publication explicitly states 2026–27 and fall 2027 admission filing period, ending Nov 30; the first-year application guide independently states Nov 30.",
+      "notes": "UC system first-year application filing deadline only. No EA/ED is offered in this standard route; campus/programme supplements, auditions and supporting documents may have other dates.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "rd",
+              "date": "2026-11-30",
+              "sourceIds": [
+                "uc-dates",
+                "uc-application"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline.",
+              "label": "UC fall first-year application filing deadline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "university-of-california-davis",
+      "name": "University of California, Davis",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "UC dates-and-deadlines publication explicitly states 2026–27 and fall 2027 admission filing period, ending Nov 30; the first-year application guide independently states Nov 30.",
+      "notes": "UC system first-year application filing deadline only. No EA/ED is offered in this standard route; campus/programme supplements, auditions and supporting documents may have other dates.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "rd",
+              "date": "2026-11-30",
+              "sourceIds": [
+                "uc-dates",
+                "uc-application"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline.",
+              "label": "UC fall first-year application filing deadline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "university-of-california-irvine",
+      "name": "University of California, Irvine",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "UC dates-and-deadlines publication explicitly states 2026–27 and fall 2027 admission filing period, ending Nov 30; the first-year application guide independently states Nov 30.",
+      "notes": "UC system first-year application filing deadline only. No EA/ED is offered in this standard route; campus/programme supplements, auditions and supporting documents may have other dates.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "rd",
+              "date": "2026-11-30",
+              "sourceIds": [
+                "uc-dates",
+                "uc-application"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline.",
+              "label": "UC fall first-year application filing deadline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "university-of-california-los-angeles",
+      "name": "University of California, Los Angeles",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "UC dates-and-deadlines publication explicitly states 2026–27 and fall 2027 admission filing period, ending Nov 30; the first-year application guide independently states Nov 30.",
+      "notes": "UC system first-year application filing deadline only. No EA/ED is offered in this standard route; campus/programme supplements, auditions and supporting documents may have other dates.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "rd",
+              "date": "2026-11-30",
+              "sourceIds": [
+                "uc-dates",
+                "uc-application"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline.",
+              "label": "UC fall first-year application filing deadline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "university-of-california-merced",
+      "name": "University of California, Merced",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "UC dates-and-deadlines publication explicitly states 2026–27 and fall 2027 admission filing period, ending Nov 30; the first-year application guide independently states Nov 30.",
+      "notes": "UC system first-year application filing deadline only. No EA/ED is offered in this standard route; campus/programme supplements, auditions and supporting documents may have other dates.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "rd",
+              "date": "2026-11-30",
+              "sourceIds": [
+                "uc-dates",
+                "uc-application"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline.",
+              "label": "UC fall first-year application filing deadline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "university-of-california-riverside",
+      "name": "University of California, Riverside",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "UC dates-and-deadlines publication explicitly states 2026–27 and fall 2027 admission filing period, ending Nov 30; the first-year application guide independently states Nov 30.",
+      "notes": "UC system first-year application filing deadline only. No EA/ED is offered in this standard route; campus/programme supplements, auditions and supporting documents may have other dates.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "rd",
+              "date": "2026-11-30",
+              "sourceIds": [
+                "uc-dates",
+                "uc-application"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline.",
+              "label": "UC fall first-year application filing deadline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "university-of-california-san-diego",
+      "name": "University of California, San Diego",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "UC dates-and-deadlines publication explicitly states 2026–27 and fall 2027 admission filing period, ending Nov 30; the first-year application guide independently states Nov 30.",
+      "notes": "UC system first-year application filing deadline only. No EA/ED is offered in this standard route; campus/programme supplements, auditions and supporting documents may have other dates.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "rd",
+              "date": "2026-11-30",
+              "sourceIds": [
+                "uc-dates",
+                "uc-application"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline.",
+              "label": "UC fall first-year application filing deadline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "university-of-california-santa-barbara",
+      "name": "University of California, Santa Barbara",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "UC dates-and-deadlines publication explicitly states 2026–27 and fall 2027 admission filing period, ending Nov 30; the first-year application guide independently states Nov 30.",
+      "notes": "UC system first-year application filing deadline only. No EA/ED is offered in this standard route; campus/programme supplements, auditions and supporting documents may have other dates.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "rd",
+              "date": "2026-11-30",
+              "sourceIds": [
+                "uc-dates",
+                "uc-application"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline.",
+              "label": "UC fall first-year application filing deadline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "university-of-california-santa-cruz",
+      "name": "University of California, Santa Cruz",
+      "entryYear": 2027,
+      "completeRoundList": true,
+      "cycleEvidence": "UC dates-and-deadlines publication explicitly states 2026–27 and fall 2027 admission filing period, ending Nov 30; the first-year application guide independently states Nov 30.",
+      "notes": "UC system first-year application filing deadline only. No EA/ED is offered in this standard route; campus/programme supplements, auditions and supporting documents may have other dates.",
+      "conflicts": [],
+      "tracks": [
+        {
+          "id": "general",
+          "label": "Standard fall first-year application",
+          "note": "Verify any programme-specific exception before selecting this route.",
+          "options": [
+            {
+              "round": "rd",
+              "date": "2026-11-30",
+              "sourceIds": [
+                "uc-dates",
+                "uc-application"
+              ],
+              "time": null,
+              "timeZone": "local",
+              "timeBasis": "unknown",
+              "note": "Confirm programme-specific requirements and any separate supporting-material deadline.",
+              "label": "UC fall first-year application filing deadline"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

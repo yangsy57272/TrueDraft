@@ -6,7 +6,7 @@ export function allowedPackageFile(file, sourceRoot) {
   if (!rel) return true;
   const parts = rel.split(path.sep);
   return !blocked.has(parts[0]) && !parts.some(part => /^\.env(?:\.|$)/.test(part))
-    && !(parts[0] === 'data' && parts[1] === 'cds' && parts[2] === 'research');
+    && !(parts[0] === 'data' && ['cds', 'admission-deadlines'].includes(parts[1]) && parts[2] === 'research');
 }
 export function assertPackageContents(directory) {
   for (const name of blocked) if (fs.existsSync(path.join(directory, name))) throw new Error(`Unexpected development directory in desktop payload: ${name}`);

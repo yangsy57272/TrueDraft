@@ -254,20 +254,20 @@ describe("college list", () => {
     const { id } = await json(await addToList(req("POST", "/api/list", { cookie: me.cookie, body: { schoolId } }), undefined as never));
     expect((await patchList(req("PATCH", "/x", { cookie: other.cookie, body: { status: "submitted" } }), ctx({ id }))).status).toBe(404);
     expect((await removeFromList(req("DELETE", "/x", { cookie: other.cookie }), ctx({ id }))).status).toBe(404);
-    const ok = await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { category: "reach", round: "ea", intendedMajor: "Physics", notes: "Visit in spring" } }), ctx({ id }));
+    const ok = await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { category: "reach", round: "rea", intendedMajor: "Physics", notes: "Visit in spring" } }), ctx({ id }));
     expect(ok.status).toBe(200);
     const bad = await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { category: "guaranteed" } }), ctx({ id }));
     expect(bad.status).toBe(400);
     const list = await json(await getList(req("GET", "/api/list", { cookie: me.cookie }), undefined as never));
-    expect(list.entries[0]).toMatchObject({ category: "reach", round: "ea", intendedMajor: "Physics", notes: "Visit in spring" });
+    expect(list.entries[0]).toMatchObject({ category: "reach", round: "rea", intendedMajor: "Physics", notes: "Visit in spring" });
   });
 
   it("updates only the fields sent and never resets the others to defaults", async () => {
     const { id } = await json(await addToList(req("POST", "/api/list", { cookie: me.cookie, body: { schoolId, category: "reach", status: "in_progress" } }), undefined as never));
-    const res = await json(await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { round: "ed" } }), ctx({ id })));
-    expect(res.entry).toMatchObject({ category: "reach", status: "in_progress", round: "ed" });
+    const res = await json(await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { round: "rea" } }), ctx({ id })));
+    expect(res.entry).toMatchObject({ category: "reach", status: "in_progress", round: "rea" });
     const major = await json(await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { intendedMajor: "History" } }), ctx({ id })));
-    expect(major.entry).toMatchObject({ category: "reach", round: "ed", intendedMajor: "History" });
+    expect(major.entry).toMatchObject({ category: "reach", round: "rea", intendedMajor: "History" });
     // The whole checklist can no longer be replaced through a field update.
     expect((await patchList(req("PATCH", "/x", { cookie: me.cookie, body: { checklist: [] } }), ctx({ id }))).status).toBe(400);
   });

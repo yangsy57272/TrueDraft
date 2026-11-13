@@ -138,6 +138,8 @@ export async function exportUserData(userId: string) {
       school: e.schoolName,
       category: e.category,
       round: e.round,
+      entryYear: e.entryYear,
+      deadlineTrack: e.deadlineTrack,
       platform: e.platform,
       deadlines: e.deadlines,
       intendedMajor: e.intendedMajor,

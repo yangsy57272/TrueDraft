@@ -164,3 +164,7 @@ Every school page links to programme-focused official-source research, a Why Sch
 ### Personalized application plan
 
 `/my-list/plan` automatically creates a student timetable from chosen schools, programmes, supplements, entered deadlines and linked essay progress. Save available days/hours, select applicable optional prompts, track tasks and download a calendar snapshot. Missing dates, unresolved requirements and workload that does not fit stay visible. No AI key is needed. See [Application plan guide](docs/APPLICATION_PLAN.md).
+
+### Verified rounds and calendar entry points
+
+For the initial fall-2027 catalog, choosing a supported school/programme/round sets its corroborated application deadline and recalculates the plan. Coverage is 21 institutions/campuses and 42 choices; unsupported schools/years remain explicitly unverified. Each published date is supported by two institutional publications, each fetched twice. Apple/Google .ics import and per-session Google Calendar previews are available. See [Verified deadlines](docs/VERIFIED_DEADLINES.md).

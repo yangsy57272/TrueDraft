@@ -1,3 +1,4 @@
+import type { AdmissionSchool } from "./admission-deadlines";
 import { z } from "zod";
 import { deadlineInstant, isValidTimeZone, type Deadline } from "./deadlines";
 
@@ -16,10 +17,10 @@ export type ScheduleState=z.infer<typeof scheduleStateSchema>;
 export const defaultScheduleState=():ScheduleState=>({preferences:schedulePreferencesSchema.parse({}),completed:[]});
 export type SchedulePrompt={order:number;prompt:string;requirement:string|null;limit:number|null;unit:"words"|"characters"|null;limitText:string|null};
 export type ScheduleEssay={id:string;title:string;promptText:string;status:string;draftWordCount:number;applicationType:string;listEntryId:string|null};
-export type ScheduleSchool={id:string;name:string;slug:string|null;major:string|null;country:string;platform:string;round:string;status:string;deadlines:Deadline[];checklist:{id:string;key?:string|null;label?:string;done:boolean}[];supplementStatus:string|null;prompts:SchedulePrompt[]};
-export type PlanTask={id:string;entryId:string;school:string;major:string|null;kind:string;title:string;detail:string;minutes:number;targetDate:string;deadline:Deadline|null;href:string;done:boolean;automaticDone:boolean;source:"entered_deadline"|"planning_horizon"};
+export type ScheduleSchool={id:string;name:string;slug:string|null;major:string|null;country:string;platform:string;round:string;entryYear?:number|null;deadlineTrack?:string|null;admissionDeadlines?:AdmissionSchool|null;status:string;deadlines:Deadline[];checklist:{id:string;key?:string|null;label?:string;done:boolean}[];supplementStatus:string|null;prompts:SchedulePrompt[]};
+export type PlanTask={id:string;entryId:string;school:string;major:string|null;kind:string;title:string;detail:string;minutes:number;targetDate:string;deadline:Deadline|null;href:string;done:boolean;automaticDone:boolean;source:"entered_deadline"|"official_catalog"|"planning_horizon"};
 export type PlanSession={taskId:string;date:string;start:string;end:string;minutes:number;part:number;late:boolean};
-export type PlanWarning={entryId:string;kind:"missing_deadline"|"past_deadline"|"prompt_selection"|"unknown_prompts"|"capacity"|"horizon"|"clock_change"|"deadline_details"|"statement_selection";detail:string};
+export type PlanWarning={entryId:string;kind:"missing_deadline"|"past_deadline"|"prompt_selection"|"unknown_prompts"|"capacity"|"horizon"|"clock_change"|"deadline_details"|"statement_selection"|"official_conflict";detail:string};
 const DAY=86400000;
 export function dayInZone(now:Date,zone:string) {const p=new Intl.DateTimeFormat("en-CA",{timeZone:zone,year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(now);const v=(t:string)=>p.find(x=>x.type===t)!.value;return `${v("year")}-${v("month")}-${v("day")}`;}
 export const shiftDay=(date:string,n:number)=>new Date(Date.parse(date+"T12:00:00Z")+n*DAY).toISOString().slice(0,10);
@@ -31,7 +32,7 @@ const applicationTypes=new Set(["application","early_decision","early_decision_2
 const roundTypes:Record<string,string>={ed:"early_decision",ed2:"early_decision_2",ea:"early_action",rea:"restrictive_early_action",rd:"application",rolling:"application"};
 function chosenDeadline(s:ScheduleSchool,zone:string) {
  const all=s.deadlines.filter(d=>!d.done&&applicationTypes.has(d.type));const matching=all.filter(d=>d.type===roundTypes[s.round]);
- return (roundTypes[s.round]?(matching.length?matching:all.filter(d=>d.type==="application")):all).sort((a,b)=>deadlineInstant(a,zone).getTime()-deadlineInstant(b,zone).getTime())[0]??null;
+ return (roundTypes[s.round]?(matching.length?matching:all.filter(d=>d.type==="application")):all).sort((a,b)=>Number(b.provenance?.kind==="official_catalog")-Number(a.provenance?.kind==="official_catalog")||deadlineInstant(a,zone).getTime()-deadlineInstant(b,zone).getTime())[0]??null;
 }
 export function clockChangeDay(date:string,zone:string) {
  const offset=(time:string)=>new Intl.DateTimeFormat("en",{timeZone:zone,timeZoneName:"shortOffset"}).formatToParts(deadlineInstant({date,time,timeZone:zone})).find(p=>p.type==="timeZoneName")?.value;
@@ -47,7 +48,7 @@ export function buildApplicationSchedule(schools:ScheduleSchool[],essays:Schedul
   const lead:Record<string,number>={verify:28,research:24,brainstorm:18,draft:12,revise:7,review:2,materials:21,deadline:14,submit:0};
   const suggested=shiftDay(due,-(deadline?prefs.bufferDays:0)-(lead[kind]??0));
   const targetDate=due>=today&&suggested<today?today:suggested;
-  tasks.push({id,entryId:s.id,school:s.name,major:s.major,kind,title,detail,minutes,targetDate,deadline,href,done:done.has(id)||autoDone,automaticDone:autoDone,source:deadline?"entered_deadline":"planning_horizon"});
+  tasks.push({id,entryId:s.id,school:s.name,major:s.major,kind,title,detail,minutes,targetDate,deadline,href,done:done.has(id)||autoDone,automaticDone:autoDone,source:deadline?.provenance?.kind==="official_catalog"?"official_catalog":deadline?"entered_deadline":"planning_horizon"});
  }
  function writing(s:ScheduleSchool,key:string,title:string,prompt:string,limit:number|null,deadline:Deadline|null,href:string,existing:ScheduleEssay|undefined) {
   const base=key.startsWith("global:")?key:`${s.id}:${key}`;const submitted=existing?.status==="submitted";
@@ -63,7 +64,8 @@ export function buildApplicationSchedule(schools:ScheduleSchool[],essays:Schedul
  for(const {s,d} of contexts) {
   if(!d)warnings.push({entryId:s.id,kind:"missing_deadline",detail:`${s.name}: no application deadline entered. Work uses the planning horizon, not an official due date.`});
   else if(deadlineInstant(d,prefs.timeZone).getTime()<now.getTime())warnings.push({entryId:s.id,kind:"past_deadline",detail:`${s.name}: the entered deadline has passed. Confirm the round/year and whether submission is still possible.`});
-  if(s.deadlines.some(x=>!x.done&&(!x.time||!x.source||x.timeZone==="local")))warnings.push({entryId:s.id,kind:"deadline_details",detail:`${s.name}: at least one entered deadline lacks an exact time/source or uses an unresolved local zone. Confirm the official closing time and source; date calculations use the existing end-of-day fallback when time is absent.`});
+  if(s.deadlines.some(x=>!x.done&&(!x.time||!x.source||(x.timeZone==="local"&&x.provenance?.timeBasis!=="applicant_local"))))warnings.push({entryId:s.id,kind:"deadline_details",detail:`${s.name}: at least one entered deadline lacks an exact time/source or uses an unresolved local zone. Confirm the official closing time and source; date calculations use the existing end-of-day fallback when time is absent.`});
+  if(d?.provenance&&s.deadlines.some(other=>!other.provenance&&!other.done&&other.type===d.type&&(other.date!==d.date||other.time!==d.time||other.timeZone!==d.timeZone)))warnings.push({entryId:s.id,kind:"official_conflict",detail:`${s.name}: a manual record differs from the verified catalog date for your selected round. The official catalog date is used; manual records are preserved for review, including any personal extension.`});
   const href=s.slug?`/schools/${s.slug}/research`:`/my-list#${s.id}`;
   add(s,`${s.id}:verify:${d?.id??"undated"}`,"verify","Verify application requirements",`${s.name}${s.major?` · ${s.major}`:""}: confirm route, programme, campus, entry year, time zone and every required response in the official portal. Entered deadlines are not independently verified.`,30,d,`/my-list#${s.id}`);
   if(s.slug)add(s,`${s.id}:research:${s.major??"general"}`,"research","Research the school and programme",`Investigate ${s.major??"your intended field"}: course content, faculty, undergraduate access and communities. Save specific official evidence for Why School.`,60,d,href);

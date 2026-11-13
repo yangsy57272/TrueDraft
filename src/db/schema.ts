@@ -1,3 +1,4 @@
+import type { Deadline } from "@/lib/deadlines";
 import { randomUUID } from "node:crypto";
 import { sql } from "drizzle-orm";
 import {
@@ -437,11 +438,13 @@ export const collegeListEntry = sqliteTable(
     schoolId: text("school_id").references(() => school.id, { onDelete: "set null" }),
     customSchoolName: text("custom_school_name"),
     category: text("category").notNull().default("unsure"),
+    entryYear: integer("entry_year"),
+    deadlineTrack: text("deadline_track"),
     round: text("round").notNull().default("undecided"),
     platform: text("platform"),
     /** Application, aid, interview… deadlines, each with its own time zone and source. */
     deadlines: json("deadlines")
-      .$type<{ id: string; type: string; date: string; time: string | null; timeZone: string; source: string | null; label?: string | null; done: boolean }[]>()
+      .$type<Deadline[]>()
       .notNull()
       .default([]),
     intendedMajor: text("intended_major"),

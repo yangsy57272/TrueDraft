@@ -6,7 +6,7 @@ import path from 'node:path';
 import { allowedPackageFile, assertPackageContents } from './package-files.mjs';
 test('excludes old bundles, research caches, development mail and environment files while keeping runtime package dist folders', () => {
   const root = path.resolve('synthetic-source');
-  for (const rel of ['dist/TrueDraft/payload/server.js', 'tmp/research.pdf', '.dev-mailbox/link.json', '.env.local', 'nested/.env', '.truedraft/user.sqlite', 'data/cds/research/index.json']) assert.equal(allowedPackageFile(path.join(root, rel), root), false);
+  for (const rel of ['dist/TrueDraft/payload/server.js', 'tmp/research.pdf', '.dev-mailbox/link.json', '.env.local', 'nested/.env', '.truedraft/user.sqlite', 'data/cds/research/index.json', 'data/admission-deadlines/research/audit.json']) assert.equal(allowedPackageFile(path.join(root, rel), root), false);
   for (const rel of ['server.js', 'node_modules/example/dist/index.js', '.next/server/app/page.js', 'data/cds/2025-2026.json']) assert.equal(allowedPackageFile(path.join(root, rel), root), true);
 });
 test('payload verification rejects sensitive local files and permits only the starter reference database', () => {

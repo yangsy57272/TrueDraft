@@ -1,3 +1,5 @@
+import { AdmissionRoundDates } from "@/components/schools/AdmissionRoundDates";
+import { admissionDeadlinesFor } from "@/server/services/admission-deadlines";
 import { applicationSystem } from "@/lib/application-systems";
 import Link from "next/link";
 import { CIP_CODES, CIP_FAMILIES } from "@/lib/planning";
@@ -94,6 +96,7 @@ export default async function SchoolPage({ params, searchParams }: { params: Pro
         <Link href={`/schools/${s.slug}/research`} className="btn btn-primary mt-4">{zh ? "研究课程、教授、社团并规划 Why School →" : "Research courses, faculty, communities & Why School →"}</Link>
         {s.country !== "US" ? <p className="mt-3 text-xs text-ink-soft">{zh ? "不套用美国录取率分组或美元费用；请按具体项目和学历核对资格。" : "U.S. admission-rate groups and dollar fees are not applied here; check eligibility for your programme and qualification."}</p> : null}
       </section>
+      <AdmissionRoundDates catalog={admissionDeadlinesFor(s.slug)} zh={zh} />
       <SupplementsSection supplements={supplements} slug={s.slug} signedIn={Boolean(user)} t={t} locale={locale} />
 
       <div className="mt-4 flex flex-wrap gap-3 text-sm">

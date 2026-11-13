@@ -1,3 +1,4 @@
+import { admissionDeadlinesFor, syncOfficialDeadline } from "./admission-deadlines";
 import "server-only";
 import { randomUUID } from "node:crypto";
 import { and, asc, eq, inArray } from "drizzle-orm";
@@ -54,6 +55,9 @@ export async function listEntries(userId: string, onlyId?: string) {
     schoolNameZh: s?.nameZh ?? null,
     category: entry.category,
     round: entry.round,
+    entryYear: entry.entryYear,
+    deadlineTrack: entry.deadlineTrack,
+    admissionDeadlines: admissionDeadlinesFor(s?.slug),
     platform: entry.platform,
     deadlines: entry.deadlines as Deadline[],
     intendedMajor: entry.intendedMajor,
@@ -85,6 +89,8 @@ export async function addEntry(userId: string, input: unknown) {
     const [s] = await db.select({ id: school.id }).from(school).where(and(eq(school.id, data.schoolId), eq(school.published, true))).limit(1);
     if (!s) throw new ApiError(404, "not_found");
   }
+  const institution=data.schoolId?await db.select({slug:school.slug}).from(school).where(eq(school.id,data.schoolId)).limit(1):[];
+  const initial=syncOfficialDeadline({slug:institution[0]?.slug??null,round:data.round,entryYear:data.entryYear??null,track:data.deadlineTrack??null,deadlines:[]});
   try {
     const [row] = await db
       .insert(collegeListEntry)
@@ -94,6 +100,7 @@ export async function addEntry(userId: string, input: unknown) {
         customSchoolName: data.schoolId ? null : data.customSchoolName!.trim(),
         category: data.category,
         round: data.round,
+        ...initial,
         platform: data.platform ?? null,
         intendedMajor: data.intendedMajor ?? null,
         status: data.status,
@@ -118,13 +125,18 @@ export async function updateEntry(userId: string, entryId: string, input: unknow
   if (data.status !== undefined) values.status = data.status;
   if (data.customSchoolName !== undefined && data.customSchoolName) values.customSchoolName = data.customSchoolName.trim();
   if (data.notes !== undefined) values.encryptedNotes = data.notes ? encryptText(data.notes, "list_notes") : null;
+  if (data.entryYear !== undefined) values.entryYear=data.entryYear;
+  if (data.deadlineTrack !== undefined) values.deadlineTrack=data.deadlineTrack;
   if (Object.keys(values).length > 0) {
-    const updated = await db
-      .update(collegeListEntry)
-      .set(values)
-      .where(and(eq(collegeListEntry.id, entryId), eq(collegeListEntry.userId, userId)))
-      .returning({ id: collegeListEntry.id });
-    if (!updated.length) throw new ApiError(404, "not_found");
+    db.transaction(tx=>{
+      const row=tx.select().from(collegeListEntry).where(and(eq(collegeListEntry.id,entryId),eq(collegeListEntry.userId,userId))).get();
+      if(!row)throw new ApiError(404,"not_found");
+      if(data.round!==undefined||data.entryYear!==undefined||data.deadlineTrack!==undefined){
+        const institution=row.schoolId?tx.select({slug:school.slug}).from(school).where(eq(school.id,row.schoolId)).get():null;
+        Object.assign(values,syncOfficialDeadline({slug:institution?.slug??null,round:data.round??row.round,entryYear:data.entryYear===undefined?row.entryYear:data.entryYear,track:data.deadlineTrack===undefined?row.deadlineTrack:data.deadlineTrack,deadlines:row.deadlines as Deadline[]}));
+      }
+      tx.update(collegeListEntry).set(values).where(eq(collegeListEntry.id,entryId)).run();
+    });
   }
   return getEntryView(userId, entryId);
 }
@@ -194,6 +206,7 @@ export function updateDeadline(userId: string, entryId: string, deadlineId: stri
       d.id === deadlineId
         ? {
             ...d,
+            ...(["type","date","time","timeZone","source"].some(k=>k in patch)?{provenance:undefined}:{}),
             ...(patch.type !== undefined && { type: patch.type }),
             ...(patch.date !== undefined && { date: patch.date }),
             ...(patch.time !== undefined && { time: patch.time ?? null }),

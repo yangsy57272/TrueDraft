@@ -1,7 +1,7 @@
 import {expect,test} from "@playwright/test";
 import {signIn,noHorizontalOverflow} from "./helpers";
 test("chosen school produces a saved personalized timetable and a private calendar",async({page})=>{
- await signIn(page);await page.goto("/schools/stanford-university");await page.getByRole("button",{name:/Add to my list/}).click();
+ await signIn(page);await page.goto("/schools/stanford-university");await page.getByRole("button",{name:/Add (to my list|as Reach)/}).click();
  await page.goto("/my-list/plan");await expect(page.getByRole("heading",{name:"My application plan",exact:true})).toBeVisible();
  await expect(page.getByText(/no application deadline entered|No entered application deadline/).first()).toBeVisible();
  await page.getByLabel("Application hours per week").fill("8");await page.getByLabel("My time zone (IANA)").fill("Asia/Shanghai");await page.getByRole("button",{name:"Save & rebuild my plan"}).click();

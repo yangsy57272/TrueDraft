@@ -37,6 +37,8 @@ export default async function NewEssayPage({ searchParams }: { searchParams: Pro
       wordLimit: limit ? String(limit) : "",
       context: [supp.prompt.requirement, supp.prompt.limitText, supp.prompt.notes].filter(Boolean).join(" · "),
     };
+  } else if (sp.type === "ucas") {
+    initial = { applicationType: "personal_statement", title: "UCAS subject preparation", wordLimit: "", context: "Shared UCAS statement: focus on your subject across choices. Confirm the current three-question format, at least 350 characters per answer and 4,000 characters overall including spaces. Use the official form to check character limits; the workspace word count is not a character-limit check." };
   } else if (sp.type === "personal_statement") {
     initial = { ...initial, applicationType: "personal_statement", title: t("guide.essayTitle"), wordLimit: "650" };
   }

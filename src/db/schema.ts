@@ -464,3 +464,10 @@ export type CdsDataset = typeof cdsDataset.$inferSelect;
 export type FederalProfile = typeof federalProfile.$inferSelect;
 export type CollegeListEntry = typeof collegeListEntry.$inferSelect;
 export type SchoolSupplements = typeof schoolSupplements.$inferSelect;
+
+/** Private scheduling preferences, prompt selections and completion state. */
+export const applicationSchedule = sqliteTable("application_schedule", {
+  userId: text("user_id").primaryKey().references(() => user.id, { onDelete: "cascade" }),
+  encryptedData: text("encrypted_data").notNull(),
+  updatedAt: updatedAt(),
+});

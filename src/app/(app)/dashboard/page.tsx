@@ -26,6 +26,7 @@ export default async function DashboardPage() {
           <h1 className="text-3xl font-semibold">{t("dashboard.title")}</h1>
         </div>
         <div className="flex flex-wrap gap-2">
+          <Link href="/my-list/plan" className="btn btn-primary">{locale === "zh-CN" ? "我的申请时间表" : "My application plan"}</Link>
           <Link href="/guides/personal-statement" className="btn btn-secondary">{t("guide.navLink")}</Link>
           {essays.length ? <Link href="/essays/new" className="btn btn-accent">+ {t("dashboard.newEssay")}</Link> : null}
         </div>

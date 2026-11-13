@@ -1,3 +1,4 @@
+import { SYSTEMS } from "@/lib/application-systems";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getT } from "@/i18n/server";
@@ -36,6 +37,7 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
   const user = await getCurrentUser();
   const filters: SchoolFilters = {
     q: one(sp.q),
+    country: one(sp.country),
     regions: arr(sp.region),
     sizes: arr(sp.size),
     control: one(sp.control),
@@ -106,7 +108,7 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
       </h2>
       <p className="text-sm text-ink-soft">
         {zh && s.nameZh ? `${s.name} · ` : ""}
-        {[s.city, s.state].filter(Boolean).join(", ")}
+        {[s.city, s.state, s.country !== "US" ? SYSTEMS[s.country as keyof typeof SYSTEMS]?.[zh ? "zh" : "en"] : null].filter(Boolean).join(", ")}
         {s.control ? ` · ${t(`schools.controls.${s.control}` as never)}` : ""}
       </p>
       <div className="mt-3 flex-1 text-sm">
@@ -125,7 +127,7 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
             </dt>
           </dl>
         ) : (
-          <p><span className="badge badge-neutral">{t("schools.noData")}</span></p>
+          <p><span className="badge badge-neutral">{s.country === "US" ? t("schools.noData") : (zh ? "按专业与申请渠道核实要求" : "Check programme / qualification requirements")}</span></p>
         )}
       </div>
       {missing?.length ? (
@@ -163,6 +165,7 @@ export default async function SchoolsPage({ searchParams }: { searchParams: Prom
             <label htmlFor="f-q" className="field-label text-sm">{t("schools.search")}</label>
             <input id="f-q" name="q" defaultValue={filters.q ?? ""} className="input" />
           </div>
+          {sel("country", zh ? "国家／地区" : "Country / region", filters.country, Object.entries(SYSTEMS).map(([k,v]) => [k, zh ? v.zh : v.en]))}
           {sel("control", t("schools.control"), filters.control, [["public", t("schools.controls.public")], ["private", t("schools.controls.private")]])}
           {sel("sort", t("schools.sortLabel"), filters.sort ?? "name", SORTS.map((k) => [k, t(`schools.sorts.${k}` as never)]), "")}
         </div>

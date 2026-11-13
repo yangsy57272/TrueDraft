@@ -39,6 +39,8 @@ function buildPayload() {
     }
   }
   fs.copyFileSync(path.join(import.meta.dirname, 'launch.mjs'), path.join(payload, 'launch.mjs'));
+  fs.mkdirSync(path.join(payload, 'data'), { recursive: true });
+  fs.copyFileSync(path.join(root, 'data', 'global-schools.json'), path.join(payload, 'data', 'global-schools.json'));
   fs.cpSync(path.join(root, 'data', 'cds'), path.join(payload, 'data', 'cds'), { recursive: true, filter: file => !file.includes(`${path.sep}research`) });
   fs.cpSync(path.join(root, 'data', 'supplements'), path.join(payload, 'data', 'supplements'), { recursive: true });
   fs.cpSync(path.join(root, 'drizzle-sqlite'), path.join(payload, 'drizzle-sqlite'), { recursive: true });

@@ -156,3 +156,7 @@ All guides in this repository are original. TrueDraft does not include, scrape, 
 **Supplemental prompts.** `data/supplements/2026-2027.json` was converted from a spreadsheet the operator supplied: a public quick-reference list compiled by College Essay Guy (last updated 2026-08-21). Only the colleges' own prompt text and factual fields (word limit, required/optional, section labels, the college's page) are imported, and only for rows marked "Confirmed for 2026–27". The compiler's guides and commentary are **not** imported; where the list linked to a free College Essay Guy guide, TrueDraft shows an attributed external link. Students are told to confirm every prompt in the Common App or on the college's site.
 
 TrueDraft is not affiliated with the Common App, any university, or any essay-coaching company.
+
+### School research across application systems
+
+Every school page links to programme-focused official-source research, a Why School logic map, a source-anchored resource workbook and a six-part audit. Browse UK, Hong Kong, Canada, Australia and Singapore using the country/region filter. Research can be looked up without AI; connected AI can relate the evidence to the applicant’s own profile. UK research hands off to a subject-focused personal-statement setup. See [School research guide](docs/SCHOOL_RESEARCH.md) for steps, official-source boundaries and coverage limitations.

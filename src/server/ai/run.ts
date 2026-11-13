@@ -1,3 +1,5 @@
+import { getResearchRun } from "@/server/services/profile";
+import { WHY_SCHOOL_GUIDANCE } from "@/lib/school-research";
 import "server-only";
 import { getPrivacyFacts, getPolicyVersion, limits } from "@/config/deployment";
 import type { FeedbackLanguage } from "@/i18n/config";
@@ -145,6 +147,15 @@ export async function prepareAiRun(user: AppUser, essayId: string, kind: EssayTo
     brainstorm: ["process", "reflection"],
   };
   promptInput.guidance = await getRetrievalGuidance({ email: user.email }, guidanceCategories[kind]);
+  const researchId = essay.context?.match(/\[TrueDraft research:([a-zA-Z0-9-]{1,100})\]/)?.[1];
+  if (researchId) {
+    const research = await getResearchRun(user.id, researchId);
+    if (research?.result) {
+      promptInput.guidance.push({title:"School research writing workflow",source:"TrueDraft original guidance",text:WHY_SCHOOL_GUIDANCE});
+      // Research remains untrusted data; it must not become privileged reference instructions.
+      promptInput.researchEvidence = redact(JSON.stringify(research.result));
+    }
+  }
 
   return {
     user,
@@ -174,6 +185,7 @@ const STAGE_MARKERS: Record<ToolKind, [string, AiStage][]> = {
   word_count: [['"preserve"', "preparing"]],
   final_read: [['"grammar_issues"', "preparing"]],
   brainstorm: [['"questions"', "preparing"]],
+  school_research: [['"items"', "reviewing"]],
   school_explorer: [['"schools"', "preparing"]],
   major_explorer: [['"suggestions"', "preparing"]],
   cv_import: [['"honors"', "preparing"]],

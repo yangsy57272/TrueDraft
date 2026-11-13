@@ -3,8 +3,9 @@ import { guardSchoolResearch } from "./research-guard";
 import type { ResearchEvidence } from "@/lib/school-research";
 import type { SchoolResearch } from "./schemas";
 import "server-only";
-import { recommendSchools } from "../services/recommendations";
-import { schoolRanking, RANKING_EDITION } from "@/lib/school-rankings";
+import { recommendSchools, schoolAnalysisCandidates } from "../services/recommendations";
+import { RANKING_EDITION } from "@/lib/school-rankings";
+import type { ApplicationSystem } from "@/lib/application-systems";
 import type { SchoolExplorer } from "./schemas";
 import { getPrivacyFacts, getPolicyVersion, limits } from "@/config/deployment";
 import type { FeedbackLanguage } from "@/i18n/config";
@@ -48,7 +49,7 @@ type PreparedPlanning = {
 export async function preparePlanningRun(
   user: AppUser,
   kind: PlanningToolKind,
-  input: { schoolSlug?: string; program?: string; officialUrls?: string[]; cvText?: string; feedbackLanguage?: FeedbackLanguage; field?: string; tuition?: string; priority?: "balanced" | "overall" | "program" },
+  input: { schoolSlug?: string; program?: string; officialUrls?: string[]; cvText?: string; feedbackLanguage?: FeedbackLanguage; field?: string; tuition?: string; priority?: "balanced" | "overall" | "program"; system?:ApplicationSystem },
 ): Promise<PreparedPlanning> {
   const policyVersion = getPolicyVersion();
   if (!getPrivacyFacts().aiConfigured) throw new ApiError(503, "ai_not_configured");
@@ -72,16 +73,12 @@ export async function preparePlanningRun(
   let schoolIds: string[] | undefined;
   if (kind === "school_explorer") {
     const recommendations = await recommendSchools(profile, input);
-    const candidates = Object.values(recommendations.buckets).flat();
+    const candidates = schoolAnalysisCandidates(recommendations);
     if (!candidates.length) throw new ApiError(400, "profile_empty");
-    schoolIds = candidates.map(r => r.school.id);
+    schoolIds = candidates.map(r => r.school_id);
     // Tests and GPA are used locally for fit, never sent to the provider.
-    schoolCandidates = JSON.stringify(candidates.map(r => ({ school_id: r.school.id, name: r.school.name,
-      field: CIP_FAMILIES[r.field.code]?.en, degree_share_percent: r.field.share,
-      group: r.fit.category === "likely" ? "Safety" : r.fit.category,
-      graduation_rate: r.facts.gradRate?.value ?? null,
-      ranking_edition: RANKING_EDITION, rankings: schoolRanking(r.school.unitid),
-      outside_preferences: r.outsidePreferences })));
+    schoolCandidates = JSON.stringify(candidates.map(r=>({...r,ranking_edition:r.system==="US"?RANKING_EDITION:null})));
+
   }
   const hourly = await consumeRateLimit(`ai:h:${user.id}`, limits.aiRequestsPerHour, 3600);
   const daily = await consumeRateLimit(`ai:d:${user.id}`, limits.aiRequestsPerDay, 86400);

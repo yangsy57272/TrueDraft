@@ -14,9 +14,9 @@ const labels = {
  course:["课程与所学内容","Course content"], faculty:["教授与任课证据","Faculty / teaching evidence"], research:["研究及参与方式","Research / participation"], community:["社团与社区","Clubs / communities"], requirements:["入学及参与要求","Entry / access requirements"],
  factual_support:["事实依据","Evidence"],specificity:["具体程度","Specificity"],personal_fit:["与你的联系","Personal connection"],access:["参与资格","Access"],logic:["段落逻辑","Logic"],voice:["自然语气","Voice"],
 } as const;
-export function SchoolResearchWorkspace({school,ai,initialProgram,initial}: {school:{slug:string;name:string;country:string;website:string|null};ai:WorkspaceAi;initialProgram:string;initial:{id:string;result:ResearchResult;isMock:boolean}|null}) {
+export function SchoolResearchWorkspace({school,ai,initialProgram,initialUrls=[],initial}: {school:{slug:string;name:string;country:string;website:string|null};ai:WorkspaceAi;initialProgram:string;initialUrls?:string[];initial:{id:string;result:ResearchResult;isMock:boolean}|null}) {
   const {locale,t} = useI18n(); const zh=locale==="zh-CN"; const gate=useConsentGate(ai);
-  const [program,setProgram]=useState(initial?.result.evidence.program ?? initialProgram); const [urls,setUrls]=useState((initial?.result.evidence.requestedUrls ?? []).join("\n"));
+  const [program,setProgram]=useState(initial?.result.evidence.program ?? initialProgram); const [urls,setUrls]=useState((initial?.result.evidence.requestedUrls ?? initialUrls).join("\n"));
   const [sources,setSources]=useState<ResearchEvidence|null>(initial?.result.evidence ?? null);
   const [current,setCurrent]=useState(initial); const [busy,setBusy]=useState(false); const [progress,setProgress]=useState<AiProgress|null>(null); const [error,setError]=useState("");
   const [copyState,setCopyState]=useState("");

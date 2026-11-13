@@ -8,8 +8,8 @@ import { ProgressStages } from "@/components/editor/ProgressStages";
 import type { WorkspaceAi } from "@/components/editor/types";
 import type { SchoolExplorer } from "@/server/ai/schemas";
 
-export function SchoolAnalysis({ ai, field, tuition, priority, schools }: {
-  ai: WorkspaceAi; field?: string; tuition?: string; priority: string;
+export function SchoolAnalysis({ ai, field, tuition, priority, system, schools }: {
+  ai: WorkspaceAi; field?: string; tuition?: string; priority: string; system?:string;
   schools: { id: string; name: string; slug: string; group: string }[];
 }) {
   const { t, locale } = useI18n();
@@ -22,7 +22,7 @@ export function SchoolAnalysis({ ai, field, tuition, priority, schools }: {
   async function run() {
     if (!(await gate.ensure())) return;
     setError(null); setResult(null); setProgress(INITIAL_AI_PROGRESS);
-    const res = await runStreamingTool<SchoolExplorer>("/api/planning/school_explorer", { field, tuition, priority }, setProgress);
+    const res = await runStreamingTool<SchoolExplorer>("/api/planning/school_explorer", { field, tuition, priority, system }, setProgress);
     setProgress(null);
     if (!res.ok) {
       if (res.code === "consent_required") gate.revoke();
@@ -51,6 +51,7 @@ export function SchoolAnalysis({ ai, field, tuition, priority, schools }: {
       })}
       <p className="text-sm text-ink-soft">{result.limitations}</p>
     </div> : null}
+    <p className="mt-3 text-xs text-ink-soft">{zh?"AI 每次解释最多 13 所，按所选体系统筹抽取；完整的学科匹配清单见本页各体系。它不会为待评估学校编造录取分组。":"AI explains up to 13 schools per run, balanced across the selected systems. Full subject matches remain in each system section. Unassessed admission groups must stay unassessed."}</p>
     {gate.dialog}
   </section>;
 }

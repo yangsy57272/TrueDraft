@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { SystemRecommendations } from "@/components/schools/SystemRecommendations";
+import { SYSTEMS } from "@/lib/application-systems";
+import { recommendationSystem, RECOMMENDATION_SYSTEMS } from "@/lib/recommendation-systems";
 import { SchoolRankings } from "@/components/schools/SchoolRankings";
 import { SchoolAnalysis } from "@/components/schools/SchoolAnalysis";
 import { aiFactsFor } from "@/server/ai-facts";
@@ -10,7 +13,7 @@ import { CIP_CODES, CIP_FAMILIES } from "@/lib/planning";
 import { requirePageUser } from "@/server/session";
 import { getProfile } from "@/server/services/profile";
 import { listedSchoolIds } from "@/server/services/college-list";
-import { chosenFields, recommendSchools, type Recommendation } from "@/server/services/recommendations";
+import { chosenFields, recommendSchools, schoolAnalysisCandidates, type Recommendation } from "@/server/services/recommendations";
 import { AddToListButton } from "@/components/cds/SchoolClientBits";
 import { BUCKET_STYLE, fitReasonText } from "@/components/schools/FitBadge";
 
@@ -33,13 +36,16 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
   const fieldParam = one(sp.field);
   const field = fieldParam && CIP_CODES.includes(fieldParam) ? fieldParam : undefined;
   const priority = one(sp.priority) === "overall" ? "overall" : one(sp.priority) === "program" ? "program" : "balanced";
+  const system = recommendationSystem(one(sp.system));
   const ai = await aiFactsFor(user.id);
   const tuition = one(sp.tuition);
   const tuitionKey = tuition && TUITION_BANDS[tuition] ? tuition : undefined;
-  const [{ fields, buckets, candidates, noAdmitRate }, listed] = await Promise.all([
-    recommendSchools(profile, { field, tuition: tuitionKey, priority }),
+  const [recommendations, listed] = await Promise.all([
+    recommendSchools(profile, { field, tuition: tuitionKey, priority, system }),
     listedSchoolIds(user.id),
   ]);
+  const {fields,buckets,candidates,noAdmitRate,systems,coverage}=recommendations;
+  const analysisSchools=schoolAnalysisCandidates(recommendations);
   const fieldName = (code: string) => CIP_FAMILIES[code]?.[zh ? "zh" : "en"] ?? code;
   const catName = (c: FitCategory) => t(`recommend.buckets.${c}.title`);
 
@@ -58,14 +64,14 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
   if (!myFields.length && !field) {
     return (
       <div className="container-page py-10">
-      <p className="mb-4 text-sm"><Link href="/schools?country=UK">UK</Link> · <Link href="/schools?country=HK">香港 / Hong Kong</Link> · <Link href="/schools?country=CA">Canada</Link> · <Link href="/schools?country=AU">Australia</Link> · <Link href="/schools?country=SG">Singapore</Link> — {locale === "zh-CN" ? "其他体系按课程与资格研究，不套用美国分组" : "Explore other systems by programme and qualification; U.S. groups do not apply"}</p>
         <h1 className="text-3xl font-semibold">{t("recommend.title")}</h1>
+      <p className="mt-3 text-sm">{zh?"参与推荐的学校目录（非全球全部大学）：":"Directory available for matching (not every university worldwide): "}{coverage.map(c=>`${SYSTEMS[c.system][zh?"zh":"en"]} ${c.total}`).join(" · ")}</p>
         <div className="card mt-6 max-w-2xl p-6">
           <h2 className="text-xl font-semibold">{t("recommend.noMajorsTitle")}</h2>
           <p className="mt-2 text-ink-soft">{t("recommend.noMajorsBody")}</p>
           <form method="get" className="mt-4 flex flex-wrap gap-3">
             <label htmlFor="choose-field">{zh ? "选择想申请的学科" : "Choose your academic field"}</label>
-            <select id="choose-field" name="field" className="input" required defaultValue="">
+            <input type="hidden" name="system" value={system??""}/><select id="choose-field" name="field" className="input" required defaultValue="">
               <option value="" disabled>{zh ? "请选择" : "Select a field"}</option>
               {CIP_CODES.map(c => <option key={c} value={c}>{fieldName(c)}</option>)}
             </select>
@@ -114,9 +120,9 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
 
   return (
     <div className="container-page py-10">
-      <p className="mb-4 text-sm"><Link href="/schools?country=UK">UK</Link> · <Link href="/schools?country=HK">香港 / Hong Kong</Link> · <Link href="/schools?country=CA">Canada</Link> · <Link href="/schools?country=AU">Australia</Link> · <Link href="/schools?country=SG">Singapore</Link> — {locale === "zh-CN" ? "其他体系按课程与资格研究，不套用美国分组" : "Explore other systems by programme and qualification; U.S. groups do not apply"}</p>
       <h1 className="text-3xl font-semibold">{t("recommend.title")}</h1>
-      <p className="mt-2 max-w-3xl text-ink-soft">{t("recommend.intro")}</p>
+      <p className="mt-3 text-sm">{zh?"参与推荐的学校目录（非全球全部大学）：":"Directory available for matching (not every university worldwide): "}{coverage.map(c=>`${SYSTEMS[c.system][zh?"zh":"en"]} ${c.total}`).join(" · ")}</p>
+      <p className="mt-2 max-w-3xl text-ink-soft">{zh?"从你选择的学科出发，同时查看不同申请体系中的学校，比较课程关联、申请要求与下一步研究方向。":"Start with your chosen fields and explore schools across application systems, with subject connections, admission checks and concrete research steps."}</p>
 
       <section className="card mt-6 p-4" aria-label={t("recommend.basedOn")}>
         <dl className="grid gap-3 text-sm sm:grid-cols-3">
@@ -135,6 +141,10 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
         </dl>
         <form method="get" className="mt-4 flex flex-wrap items-end gap-3 border-t border-line pt-4">
           <div>
+            <label htmlFor="r-system" className="field-label text-sm">{zh?"申请体系":"Application system"}</label>
+            <select id="r-system" name="system" className="input" defaultValue={system??""}><option value="">{zh?"全部六个体系":"All six systems"}</option>{RECOMMENDATION_SYSTEMS.map(c=><option key={c} value={c}>{SYSTEMS[c][zh?"zh":"en"]}</option>)}</select>
+          </div>
+          <div>
             <label htmlFor="r-field" className="field-label text-sm">{t("recommend.field")}</label>
             <select id="r-field" name="field" defaultValue={field ?? ""} className="input">
               <option value="">{t("recommend.allMyFields")}</option>
@@ -142,7 +152,7 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
             </select>
           </div>
           <div>
-            <label htmlFor="r-tuition" className="field-label text-sm">{t("recommend.tuition")}</label>
+            <label htmlFor="r-tuition" className="field-label text-sm">{t("recommend.tuition")} · {zh?"仅限美国 USD":"U.S. USD only"}</label>
             <select id="r-tuition" name="tuition" defaultValue={tuitionKey ?? ""} className="input">
               <option value="">{t("schools.any")}</option>
               {Object.keys(TUITION_BANDS).map((b) => <option key={b} value={b}>{t(`schools.tuitionBands.${b}` as never)}</option>)}
@@ -160,6 +170,10 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
         </form>
       </section>
 
+      <p className="mt-4 text-sm">{zh?"默认同时匹配六个体系；美国学费、地区、规模与 U.S. News 排名选项只用于美国推荐，不会筛掉其他体系。其他体系先展示官方本科目录与学科的关联，再核实你的学历与课程资格。":"All six systems participate by default. U.S. tuition, region, size and U.S. News options apply only to U.S. recommendations; they do not exclude other systems. Elsewhere, official undergraduate listings establish subject relevance before qualification checks."}</p>
+      <SystemRecommendations results={systems} listed={listed} zh={zh}/>
+      {(!system||system==="US")?<>
+      <h2 className="mt-8 text-2xl font-semibold">{zh?"美国 · Reach / Target / Safety 推荐":"United States · Reach / Target / Safety suggestions"}</h2>
       <aside className="notice mt-4 text-sm" aria-labelledby="rec-how">
         <p id="rec-how" className="font-semibold">{t("recommend.disclaimerTitle")}</p>
         <ul className="mt-1 list-disc space-y-1 pl-5">
@@ -174,7 +188,7 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
       </p>
 
       <p className="mt-3 text-sm text-ink-soft">{zh ? "分组基于全校历史录取率，而非特定专业录取率。热门专业、国际生、奖助学金需求可能使申请更难。Safety 不是保证录取或可负担。请核实专业是否直录及转专业限制。" : "Groups use university-wide historical admission data, not major-specific rates. Competitive majors, international status and financial aid needs can make admission harder. Safety guarantees neither admission nor affordability. Check direct admission and major transfer restrictions."}</p>
-      <SchoolAnalysis key={`${field}:${tuitionKey}:${priority}`} ai={ai} field={field} tuition={tuitionKey} priority={priority} schools={Object.values(buckets).flat().map(r => ({ id: r.school.id, name: zh && r.school.nameZh ? r.school.nameZh : r.school.name, slug: r.school.slug, group: catName(r.fit.category) }))} />
+
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         {FIT_CATEGORIES.map((cat) => {
           const style = BUCKET_STYLE[cat];
@@ -196,8 +210,10 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
         })}
       </div>
 
+      </>:null}
+      <SchoolAnalysis key={`${field}:${tuitionKey}:${priority}:${system}`} ai={ai} field={field} tuition={tuitionKey} priority={priority} system={system} schools={analysisSchools.map(r=>({id:r.school_id,name:r.name,slug:r.slug,group:r.group}))}/>
       <p className="mt-6">
-        <Link href={`/schools?field=${field ?? fields[0]}`}>{t("recommend.seeAll")} →</Link>
+        <Link href={`/schools?${system?`country=${system}`:`field=${field ?? fields[0]}`}`}>{t("recommend.seeAll")} →</Link>
       </p>
     </div>
   );

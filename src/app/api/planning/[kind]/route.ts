@@ -15,6 +15,7 @@ const bodySchema = z.object({
   officialUrls: z.array(z.string().url().max(1800)).max(6).optional(),
   field: z.string().refine(c => CIP_CODES.includes(c)).optional(),
   tuition: z.string().max(30).optional(),
+  system: z.enum(["US","UK","HK","CA","AU","SG"]).optional(),
   priority: z.enum(["balanced", "overall", "program"]).optional(),
   cvText: z.string().max(MAX_CV_CHARS + 1000).optional(),
   feedbackLanguage: z.enum(FEEDBACK_LANGUAGES).optional(),

@@ -92,7 +92,7 @@ export function buildApplicationSchedule(schools:ScheduleSchool[],essays:Schedul
   if(matches.length>1)warnings.push({entryId:context.s.id,kind:"statement_selection",detail:`${title}: multiple unlinked statement drafts exist. This estimate uses the first matching draft; confirm the intended version.`});
  }
  const rank:Record<string,number>={verify:0,research:1,brainstorm:2,draft:3,revise:4,review:5,materials:0,deadline:0,submit:6};
- const ordered=tasks.map((t,i)=>({t,i})).sort((a,b)=>a.t.targetDate.localeCompare(b.t.targetDate)||(a.t.kind==="submit"?1:0)-(b.t.kind==="submit"?1:0)||(rank[a.t.kind]??0)-(rank[b.t.kind]??0)||a.i-b.i).map(x=>x.t);
+ const ordered=tasks.map((t,i)=>({t,i,due:t.deadline?deadlineInstant(t.deadline,prefs.timeZone).getTime():Infinity})).sort((a,b)=>a.t.targetDate.localeCompare(b.t.targetDate)||(a.due-b.due)||(a.t.kind==="submit"?1:0)-(b.t.kind==="submit"?1:0)||(rank[a.t.kind]??0)-(rank[b.t.kind]??0)||a.i-b.i).map(x=>x.t);
  const startMinute=Number(prefs.startTime.slice(0,2))*60+Number(prefs.startTime.slice(3));
  const dailyBudget=Math.floor(prefs.weeklyHours*60/prefs.days.length);const slots:{date:string;minute:number;remaining:number}[]=[];
  for(let date=today;date<=end;date=shiftDay(date,1)) {

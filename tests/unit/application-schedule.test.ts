@@ -19,6 +19,8 @@ describe("personalized schedule",()=>{
   expect([...dateMinutes.values()].every(x=>x<=60)).toBe(true);
   for(const date of dateMinutes.keys()){const sessions=p.sessions.filter(s=>s.date===date);expect(sessions.every(s=>s.start>="18:00"&&s.end<="19:00")).toBe(true);}
 
+  const urgent=school("urgent"),later=school("later");urgent.deadlines[0].date="2026-11-14";later.deadlines[0].date="2026-11-15";
+  const tied=buildApplicationSchedule([later,urgent],[],state,now).tasks.filter(t=>t.targetDate==="2026-11-13");expect(tied.findIndex(t=>t.entryId==="urgent"&&t.kind==="draft")).toBeLessThan(tied.findIndex(t=>t.entryId==="later"&&t.kind==="research"));
   const tasks=p.tasks.filter(t=>t.title.includes("Supplement #1"));const starts=tasks.map(t=>p.sessions.find(s=>s.taskId===t.id)).filter(x=>!!x).map(s=>s!.date+s!.start);expect(starts).toEqual([...starts].sort());
  });
  it("uses linked essay status without treating a nonempty draft as finished, and removes submitted schools",()=>{

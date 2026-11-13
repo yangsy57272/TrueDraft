@@ -98,9 +98,10 @@ export function buildApplicationSchedule(schools:ScheduleSchool[],essays:Schedul
  for(let date=today;date<=end;date=shiftDay(date,1)) {
   if(!prefs.days.includes(new Date(date+"T12:00:00Z").getUTCDay()))continue;
   if(clockChangeDay(date,prefs.timeZone)){warnings.push({entryId:"",kind:"clock_change",detail:`${date}: local clocks change; this day is excluded from automatic work sessions. Arrange any time-critical work manually.`});continue;}
+  const windowEnd=Math.min(1439,startMinute+dailyBudget);
   let minute=startMinute;
   if(date===today) {const p=new Intl.DateTimeFormat("en-GB",{timeZone:prefs.timeZone,hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(now);minute=Math.max(minute,Number(p.slice(0,2))*60+Number(p.slice(3))+15);}
-  if(minute<1439)slots.push({date,minute,remaining:Math.min(dailyBudget,1439-minute)});
+  if(minute<windowEnd)slots.push({date,minute,remaining:windowEnd-minute});
  }
  const sessions:PlanSession[]=[];const remaining:{taskId:string;minutes:number}[]=[];
  for(const task of ordered.filter(t=>!t.done)) {
@@ -110,7 +111,7 @@ export function buildApplicationSchedule(schools:ScheduleSchool[],essays:Schedul
    const count=Math.min(45,left,slot.remaining,1439-slot.minute);
    if(count<1)continue;
    sessions.push({taskId:task.id,date:slot.date,start:clock(slot.minute),end:clock(slot.minute+count),minutes:count,part:part++,late:slot.date>task.targetDate});
-   slot.minute+=count+10;slot.remaining=Math.min(slot.remaining-count,Math.max(0,1439-slot.minute));left-=count;
+   slot.minute+=count+10;slot.remaining=Math.max(0,Math.min(slot.remaining-count-10,1439-slot.minute));left-=count;
    }
   }
   if(left>0)remaining.push({taskId:task.id,minutes:left});

@@ -34,6 +34,10 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  // Local build outputs, research caches and user/development files are never runtime assets.
+  outputFileTracingExcludes: {
+    "/*": ["./tmp/**/*", "./.dev-mailbox/**/*", "./.truedraft/**/*", "./.codex/**/*", "./.env*", "./test-results/**/*", "./playwright-report/**/*", "./data/cds/research/**/*"],
+  },
   serverExternalPackages: ["better-sqlite3"],
   ...(process.env.TRUEDRAFT_DESKTOP_BUILD === "1" ? { output: "standalone", outputFileTracingRoot: process.cwd() } : {}),
   async headers() {

@@ -204,6 +204,26 @@ async function verifyApp(app, url) {
     assert.equal(response.status, 200);
     return (await response.json()).essays;
   };
+  const listResponse = await fetch(`${origin}/api/list`, { headers: { cookie } });
+  const entries = (await listResponse.json()).entries;
+  const scheduleSchool = 'Fictional schedule school';
+  if (!entries.some(e => e.schoolName === scheduleSchool)) {
+    assert.equal(process.argv.includes('--expect-existing'), false);
+    const added = await fetch(`${origin}/api/list`, { method: 'POST', headers: { cookie, origin, 'content-type': 'application/json' }, body: JSON.stringify({ customSchoolName: scheduleSchool }) });
+    assert.equal(added.status, 201);
+  }
+  const planPage = await fetch(`${origin}/my-list/plan`, { headers: { cookie } });
+  assert.match(await planPage.text(), /My application plan/);
+  const planResponse = await fetch(`${origin}/api/schedule`, { headers: { cookie } });
+  assert.equal(planResponse.status, 200);
+  const plan = await planResponse.json();
+  assert.ok(plan.plan.tasks.some(t => t.school === scheduleSchool));
+  if (process.argv.includes('--expect-existing')) assert.equal(plan.state.preferences.weeklyHours, 4);
+  const savedPlan = await fetch(`${origin}/api/schedule`, { method: 'PUT', headers: { cookie, origin, 'content-type': 'application/json' }, body: JSON.stringify({ ...plan.state.preferences, weeklyHours: 4, timeZone: 'UTC' }) });
+  assert.equal(savedPlan.status, 200);
+  const calendar = await fetch(`${origin}/api/schedule/calendar`, { headers: { cookie } });
+  assert.equal(calendar.status, 200);
+  assert.match(await calendar.text(), /BEGIN:VCALENDAR/);
   const title = 'Desktop packaging smoke test';
   if (!process.argv.includes('--expect-existing')) {
     const response = await fetch(`${origin}/api/essays`, {

@@ -12,7 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function MyListPage() {
   const user = await requirePageUser();
-  const { t } = await getT();
+  const { t, locale } = await getT();
   const entries = await listEntries(user.id);
   return (
     <div className="container-page py-10">
@@ -21,6 +21,7 @@ export default async function MyListPage() {
           <h1 className="text-3xl font-semibold">{t("list.title")}</h1>
           <p className="mt-2 max-w-3xl text-ink-soft">{t("list.intro")}</p>
         </div>
+        <Link href="/my-list/plan" className="btn btn-primary">{locale === "zh-CN" ? "我的申请时间表" : "My application plan"}</Link>
         <Link href="/my-list/deadlines" className="btn btn-secondary">{t("journey.actions.track")}</Link>
       </div>
       <div className="mt-8">

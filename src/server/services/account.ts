@@ -1,3 +1,4 @@
+import { getScheduleState } from "./application-schedule";
 import "server-only";
 import { and, asc, eq, inArray, lt, sql } from "drizzle-orm";
 import { db } from "@/db";
@@ -112,6 +113,7 @@ export async function exportUserData(userId: string) {
   await recordAudit(userId, "data_exported");
 
   return {
+    applicationSchedule: getScheduleState(userId),
     exportedAt: new Date().toISOString(),
     format: "truedraft-export/v2",
     // Every record carries its id so items can be matched to each other and to the app.

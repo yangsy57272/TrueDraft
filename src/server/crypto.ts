@@ -51,7 +51,7 @@ export type EncryptionPurpose =
   | "feedback_request"
   | "brainstorm_note"
   | "student_profile"
-  | "planning_result"
+  | "planning_result" | "application_schedule"
   | "list_notes"
   | "version_note";
 

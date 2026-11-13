@@ -1,3 +1,4 @@
+import { allowedPackageFile, assertPackageContents } from './package-files.mjs';
 import { spawnSync } from 'node:child_process';
 import { randomBytes } from 'node:crypto';
 import fs from 'node:fs';
@@ -18,12 +19,19 @@ function run(command, args, env = process.env) {
 }
 
 function buildPayload() {
+  // Clear generated output before tracing; broad 'dist' globs also match required package runtime folders.
+  fs.rmSync(dist, { recursive: true, force: true });
+  run(process.execPath, ['--test', 'scripts/desktop/package-files.test.mjs']);
   run(process.execPath, [fileURLToPath(import.meta.resolve('next/dist/bin/next')), 'build'], {
     ...process.env, TRUEDRAFT_DESKTOP_BUILD: '1', NEXT_TELEMETRY_DISABLED: '1',
     BETTER_AUTH_SECRET: randomBytes(32).toString('hex'),
   });
   fs.rmSync(payload, { recursive: true, force: true });
-  fs.cpSync(path.join(root, '.next', 'standalone'), payload, { recursive: true, dereference: true });
+  const standalone = path.join(root, '.next', 'standalone');
+  fs.cpSync(standalone, payload, { recursive: true, dereference: true, filter: file => allowedPackageFile(file, standalone) });
+  for (const runtime of ['app-route-turbo.runtime.prod.js', 'app-page-turbo.runtime.prod.js']) {
+    if (!fs.existsSync(path.join(payload, 'node_modules', 'next', 'dist', 'compiled', 'next-server', runtime))) throw new Error(`Required Next.js runtime missing from payload: ${runtime}`);
+  }
   for (const file of fs.readdirSync(payload)) {
     if (/^\.env(?:\.|$)/.test(file)) fs.unlinkSync(path.join(payload, file));
   }
@@ -71,6 +79,7 @@ function buildPayload() {
     outExtension: { '.js': '.cjs' }, bundle: true, platform: 'node', target: 'node22',
     conditions: ['react-server'], external: ['better-sqlite3'],
   });
+  assertPackageContents(payload);
 }
 
 function packMac() {

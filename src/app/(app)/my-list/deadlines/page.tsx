@@ -19,6 +19,7 @@ export default async function ApplicationTrackerPage() {
 
   return (
     <div className="container-prose py-10">
+      <Link href="/my-list/plan" className="btn btn-primary mb-4">{locale === "zh-CN" ? "自动生成我的申请时间表 →" : "Build my application timetable →"}</Link>
       <h1 className="text-3xl font-semibold">{t("journey.steps.track.title")}</h1>
       <p className="mt-2 text-ink-soft">{t("list.trackerIntro")}</p>
       <section className="card mt-6 border-t-4 border-t-sage p-5 sm:p-6" aria-labelledby="tracker-deadlines">

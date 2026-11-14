@@ -42,6 +42,6 @@ describe("owned resource plans",()=>{
   db.update(collegeListEntry).set({entryYear:2027}).where(eq(collegeListEntry.id,a.entryId)).run();expect((await getApplicationSchedule(a.userId)).schools[0].prompts).toHaveLength(1);
  });
  it("parses complete ECB unit-per-EUR snapshots and rejects partial responses",()=>{
-  const xml=`<Cube time='2026-11-13'>${CURRENCIES.filter(c=>c!=="EUR").map(c=>`<Cube currency='${c}' rate='1.2'/>`).join("")}</Cube>`;expect(parseEcbRates(xml).rates.EUR).toBe(1);expect(parseEcbRates(xml).date).toBe("2026-11-13");expect(()=>parseEcbRates("<html>error</html>")).toThrow();expect(()=>parseEcbRates("<Cube time='2026-11-13'><Cube currency='USD' rate='1'/></Cube>")).toThrow();
+  const xml=`<Cube time='2026-11-13'>${CURRENCIES.filter(c=>c!=="EUR").map(c=>`<Cube currency='${c}' rate='1.2'/>`).join("")}</Cube>`;expect(parseEcbRates(xml).rates.EUR).toBe(1);expect(Object.keys(parseEcbRates(xml.replace("</Cube>","<Cube currency='JPY' rate='160'/></Cube>")).rates)).toHaveLength(CURRENCIES.length);expect(parseEcbRates(xml).date).toBe("2026-11-13");expect(()=>parseEcbRates("<html>error</html>")).toThrow();expect(()=>parseEcbRates("<Cube time='2026-11-13'><Cube currency='USD' rate='1'/></Cube>")).toThrow();
  });
 });

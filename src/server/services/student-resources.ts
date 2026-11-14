@@ -48,7 +48,7 @@ export const FX_SOURCE="https://www.ecb.europa.eu/stats/eurofxref/eurofxref-dail
 export function parseEcbRates(xml:string){
  const date=xml.match(/time=['"](\d{4}-\d{2}-\d{2})['"]/)?.[1];const rates:Record<string,number>={EUR:1};for(const m of xml.matchAll(/currency=['"]([A-Z]{3})['"]\s+rate=['"]([\d.]+)['"]/g))rates[m[1]]=Number(m[2]);
  if(!date||!validResourceDay(date)||CURRENCIES.some(c=>!Number.isFinite(rates[c])||rates[c]<=0))throw new Error("incomplete_fx");
- return {date,source:FX_SOURCE,rates} as NonNullable<StudentResources["fx"]>;
+ return {date,source:FX_SOURCE,rates:Object.fromEntries(CURRENCIES.map(c=>[c,rates[c]]))} as NonNullable<StudentResources["fx"]>;
 }
 export async function refreshResourceRates(userId:string){
  try{const res=await fetch(FX_SOURCE,{signal:AbortSignal.timeout(12000),cache:"no-store"});if(!res.ok)throw new Error("fx_http");const xml=await res.text();if(xml.length>120000)throw new Error("fx_size");const fx=parseEcbRates(xml);updateScheduleState(userId,state=>({...state,resources:{...state.resources,fx}}));return getStudentResources(userId);}catch{throw new ApiError(502,"exchange_unavailable");}

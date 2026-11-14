@@ -28,7 +28,7 @@ Students enter application-season budget, annual family contribution, available 
 
 Application fees across all choices are added. Shared fees are charged once per configured platform and cycle:
 
-- [UCAS2027](https://www.ucas.com/faqs/what-is-the-application-fee-for-the-2027-cycle):GBP34.50 for up to five standard undergraduate choices, with choice-limit and usual Oxford/Cambridge restriction warnings. Other cycles and university extras require separate evidence.
+- [UCAS2027](https://www.ucas.com/faqs/what-is-the-application-fee-for-the-2027-cycle):GBP34.50 for up to five standard undergraduate choices, with choice-limit and [usual Oxford/Cambridge restriction](https://www.ucas.com/applying/applying-to-university/filling-in-your-ucas-application) warnings. Other cycles and university extras require separate evidence.
 - [OUAC2027](https://www.ouac.on.ca/guide/undergrad-fees):CAD159 for three programme choices, CAD51 each thereafter. University-specific programme/document evaluation and any payment/service fees are separate. No obsolete international-service charge is copied into2027. One school can contain multiple programme choices; the usual three-per-university limit is flagged.
 - JUPAS,UAC,QTAC,VTAC and other shared routes can be configured with their actual cycle, currency, fee and choice limit. An unconfigured route remains incomplete. UCAS/OUAC prices are not applied to those routes.
 

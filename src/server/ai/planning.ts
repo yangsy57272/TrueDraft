@@ -3,7 +3,7 @@ import { guardSchoolResearch } from "./research-guard";
 import type { ResearchEvidence } from "@/lib/school-research";
 import type { SchoolResearch } from "./schemas";
 import "server-only";
-import { recommendSchools, schoolAnalysisCandidates } from "../services/recommendations";
+import { recommendForStudent, schoolAnalysisCandidates } from "../services/recommendations";
 import { RANKING_EDITION } from "@/lib/school-rankings";
 import type { ApplicationSystem } from "@/lib/application-systems";
 import type { SchoolExplorer } from "./schemas";
@@ -72,7 +72,7 @@ export async function preparePlanningRun(
   let schoolCandidates: string | undefined;
   let schoolIds: string[] | undefined;
   if (kind === "school_explorer") {
-    const recommendations = await recommendSchools(profile, input);
+    const recommendations = await recommendForStudent(user.id,profile, input);
     const candidates = schoolAnalysisCandidates(recommendations);
     if (!candidates.length) throw new ApiError(400, "profile_empty");
     schoolIds = candidates.map(r => r.school_id);

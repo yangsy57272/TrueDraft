@@ -13,7 +13,7 @@ import { CIP_CODES, CIP_FAMILIES } from "@/lib/planning";
 import { requirePageUser } from "@/server/session";
 import { getProfile } from "@/server/services/profile";
 import { listedSchoolIds } from "@/server/services/college-list";
-import { chosenFields, recommendSchools, schoolAnalysisCandidates, type Recommendation } from "@/server/services/recommendations";
+import { chosenFields, recommendForStudent, schoolAnalysisCandidates, type Recommendation } from "@/server/services/recommendations";
 import { AddToListButton } from "@/components/cds/SchoolClientBits";
 import { BUCKET_STYLE, fitReasonText } from "@/components/schools/FitBadge";
 
@@ -41,7 +41,7 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
   const tuition = one(sp.tuition);
   const tuitionKey = tuition && TUITION_BANDS[tuition] ? tuition : undefined;
   const [recommendations, listed] = await Promise.all([
-    recommendSchools(profile, { field, tuition: tuitionKey, priority, system }),
+    recommendForStudent(user.id,profile, { field, tuition: tuitionKey, priority, system }),
     listedSchoolIds(user.id),
   ]);
   const {fields,buckets,candidates,noAdmitRate,systems,coverage}=recommendations;
@@ -64,7 +64,7 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
   if (!myFields.length && !field) {
     return (
       <div className="container-page py-10">
-        <h1 className="text-3xl font-semibold">{t("recommend.title")}</h1>
+        <h1 className="text-3xl font-semibold">{t("recommend.title")}</h1><p className="mt-3"><Link href="/my-list/resources">{zh?"设置各体系 Reach / Target / Safety 与选校预算 →":"Set Reach / Target / Safety and your school budget →"}</Link></p>
       <p className="mt-3 text-sm">{zh?"参与推荐的学校目录（非全球全部大学）：":"Directory available for matching (not every university worldwide): "}{coverage.map(c=>`${SYSTEMS[c.system][zh?"zh":"en"]} ${c.total}`).join(" · ")}</p>
         <div className="card mt-6 max-w-2xl p-6">
           <h2 className="text-xl font-semibold">{t("recommend.noMajorsTitle")}</h2>
@@ -120,7 +120,7 @@ export default async function RecommendedPage({ searchParams }: { searchParams: 
 
   return (
     <div className="container-page py-10">
-      <h1 className="text-3xl font-semibold">{t("recommend.title")}</h1>
+      <h1 className="text-3xl font-semibold">{t("recommend.title")}</h1><p className="mt-3"><Link href="/my-list/resources">{zh?"设置各体系 Reach / Target / Safety 与选校预算 →":"Set Reach / Target / Safety and your school budget →"}</Link></p>
       <p className="mt-3 text-sm">{zh?"参与推荐的学校目录（非全球全部大学）：":"Directory available for matching (not every university worldwide): "}{coverage.map(c=>`${SYSTEMS[c.system][zh?"zh":"en"]} ${c.total}`).join(" · ")}</p>
       <p className="mt-2 max-w-3xl text-ink-soft">{zh?"从你选择的学科出发，同时查看不同申请体系中的学校，比较课程关联、申请要求与下一步研究方向。":"Start with your chosen fields and explore schools across application systems, with subject connections, admission checks and concrete research steps."}</p>
 

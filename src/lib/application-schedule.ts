@@ -1,3 +1,4 @@
+import {resourcesSchema,defaultResources} from "./student-resources";
 import type { AdmissionSchool } from "./admission-deadlines";
 import { z } from "zod";
 import { deadlineInstant, isValidTimeZone, type Deadline } from "./deadlines";
@@ -12,15 +13,15 @@ export const schedulePreferencesSchema = z.object({
   selectedPrompts: z.array(z.string().max(180)).max(2000).default([]),
 }).strict();
 export type SchedulePreferences=z.infer<typeof schedulePreferencesSchema>;
-export const scheduleStateSchema=z.object({ preferences:schedulePreferencesSchema, completed:z.array(z.string().max(220)).max(5000).default([]) });
+export const scheduleStateSchema=z.object({ resources:resourcesSchema.default(()=>defaultResources()),preferences:schedulePreferencesSchema, completed:z.array(z.string().max(220)).max(5000).default([]) });
 export type ScheduleState=z.infer<typeof scheduleStateSchema>;
-export const defaultScheduleState=():ScheduleState=>({preferences:schedulePreferencesSchema.parse({}),completed:[]});
+export const defaultScheduleState=():ScheduleState=>({resources:defaultResources(),preferences:schedulePreferencesSchema.parse({}),completed:[]});
 export type SchedulePrompt={order:number;prompt:string;requirement:string|null;limit:number|null;unit:"words"|"characters"|null;limitText:string|null};
 export type ScheduleEssay={id:string;title:string;promptText:string;status:string;draftWordCount:number;applicationType:string;listEntryId:string|null};
 export type ScheduleSchool={id:string;name:string;slug:string|null;major:string|null;country:string;platform:string;round:string;entryYear?:number|null;deadlineTrack?:string|null;admissionDeadlines?:AdmissionSchool|null;status:string;deadlines:Deadline[];checklist:{id:string;key?:string|null;label?:string;done:boolean}[];supplementStatus:string|null;prompts:SchedulePrompt[]};
 export type PlanTask={id:string;entryId:string;school:string;major:string|null;kind:string;title:string;detail:string;minutes:number;targetDate:string;deadline:Deadline|null;href:string;done:boolean;automaticDone:boolean;source:"entered_deadline"|"official_catalog"|"planning_horizon"};
 export type PlanSession={taskId:string;date:string;start:string;end:string;minutes:number;part:number;late:boolean};
-export type PlanWarning={entryId:string;kind:"missing_deadline"|"past_deadline"|"prompt_selection"|"unknown_prompts"|"capacity"|"horizon"|"clock_change"|"deadline_details"|"statement_selection"|"official_conflict";detail:string};
+export type PlanWarning={entryId:string;kind:"missing_deadline"|"past_deadline"|"prompt_selection"|"unknown_prompts"|"capacity"|"horizon"|"clock_change"|"deadline_details"|"statement_selection"|"official_conflict"|"time_lead";detail:string};
 const DAY=86400000;
 export function dayInZone(now:Date,zone:string) {const p=new Intl.DateTimeFormat("en-CA",{timeZone:zone,year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(now);const v=(t:string)=>p.find(x=>x.type===t)!.value;return `${v("year")}-${v("month")}-${v("day")}`;}
 export const shiftDay=(date:string,n:number)=>new Date(Date.parse(date+"T12:00:00Z")+n*DAY).toISOString().slice(0,10);
@@ -104,6 +105,15 @@ export function buildApplicationSchedule(schools:ScheduleSchool[],essays:Schedul
    add(s,`${s.id}:deadline:${extra.id}`,"deadline",extra.label??extra.type.replaceAll("_"," "),`Confirm and prepare this outstanding post-submission requirement. Source: ${extra.source??"not supplied; verify the official portal"}.`,60,extra,`/my-list#${s.id}`);
    if(deadlineInstant(extra,prefs.timeZone).getTime()<now.getTime())warnings.push({entryId:s.id,kind:"past_deadline",detail:`${s.name}: an outstanding post-submission deadline has passed; confirm the portal status.`});
   }
+ }
+ // Student-entered active-work estimates complement (rather than replace) essay tasks.
+ for(const extra of state.resources.timeExtras){
+  const eligible=schools.filter(s=>!["denied","withdrawn"].includes(s.status));
+  const s=extra.entryId?eligible.find(s=>s.id===extra.entryId):eligible[0];if(!s)continue;
+  if(extra.phase==="arrival"&&(!["admitted"].includes(s.status)||!extra.date))continue;
+  const due:Deadline|null=extra.date?{id:`resource:${extra.id}`,type:"other",date:extra.date,time:"23:59",timeZone:prefs.timeZone,source:"Student-entered work target",label:extra.label,done:extra.done}:chosenDeadline(s,prefs.timeZone);
+  add(s,`resource:${extra.id}`,"materials",extra.label,`Student-entered active work; external turnaround allowance: ${extra.leadDays} calendar days (not work hours).`,extra.minutes,due,"/my-list/resources",false);
+  if(due&&extra.leadDays){const target=shiftDay(dayInZone(deadlineInstant(due,prefs.timeZone),prefs.timeZone),-extra.leadDays-prefs.bufferDays);const t=tasks[tasks.length-1];t.targetDate=target<t.targetDate?target:t.targetDate;if(target<today&&!done.has(`resource:${extra.id}`))warnings.push({entryId:s.id,kind:"time_lead",detail:`${extra.label}: allow ${extra.leadDays} calendar days for external processing; the suggested request date has passed.`});}
  }
  const rank:Record<string,number>={verify:0,research:1,brainstorm:2,draft:3,revise:4,review:5,materials:0,deadline:0,submit:6};
  const ordered=tasks.map((t,i)=>({t,i,due:t.deadline?deadlineInstant(t.deadline,prefs.timeZone).getTime():Infinity})).sort((a,b)=>a.t.targetDate.localeCompare(b.t.targetDate)||(a.due-b.due)||(a.t.kind==="submit"?1:0)-(b.t.kind==="submit"?1:0)||(rank[a.t.kind]??0)-(rank[b.t.kind]??0)||a.i-b.i).map(x=>x.t);

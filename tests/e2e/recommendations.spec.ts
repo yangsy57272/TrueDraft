@@ -15,7 +15,7 @@ test("choosing a major leads to Reach / Target / Safety suggestions and a one-cl
   await expect(page.getByRole("heading", { name: "Colleges for your majors" })).toBeVisible();
   for (const bucket of ["Reach", "Target", "Safety"]) await expect(page.getByRole("heading", { name: new RegExp(bucket) }).first()).toBeVisible();
   await expect(page.getByText(/not predictions/)).toBeVisible();
-  const safety = page.locator("section", { has: page.getByRole("heading", { name: /Safety/ }) });
+  const safety = page.locator("#bucket-likely").locator("..");
   const firstCard = safety.getByRole("listitem").first();
   await expect(firstCard.getByText(/Admits \d/)).toBeVisible();
   await firstCard.getByRole("button", { name: "+ Add as Safety" }).click();

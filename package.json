@@ -1,6 +1,6 @@
 {
   "name": "truedraft",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Ethical, bilingual college-essay feedback for students.",
   "scripts": {
     "dev": "next dev",

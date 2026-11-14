@@ -37,3 +37,7 @@ describe("budget-review and currency integrity",()=>{
 describe("other shared application systems",()=>{
  it("counts one configured JUPAS/UAC-style platform fee per cycle, not per school",()=>{const p=preferences();p.currency="HKD";p.contingency=0;p.sharedPlatforms=[{id:"j",label:"Synthetic shared HK route",entryYear:2027,currency:"HKD",maxChoices:20,fee:cost(500)}];const a=record("a","HK"),b=record("b","HK");a.route=b.route="shared";a.sharedPlatformId=b.sharedPlatformId="j";const r=buildBudget([school("a","HK"),school("b","HK")],[a,b],p);expect(r.application.high).toBe(500);expect(r.platformCharges).toHaveLength(1);p.sharedPlatforms=[];expect(buildBudget([school("a","HK")],[a],p).application.complete).toBe(false);});
 });
+
+describe("simultaneous arrival liquidity",()=>{
+ it("does not spend the same cash on deposits and bank-balance evidence without verified overlap",()=>{const p=preferences();p.contingency=0;p.annualBudget=20000;p.arrivalCashBudget=10000;const a=record();a.lines.deposit=cost(1000);a.lines.proofFunds=cost(10000);let r=buildBudget([school()],[a],p);expect(r.scenarios[0].firstYear?.high).toBe(10000);expect(r.scenarios[0].cashNeed?.high).toBe(11000);expect(r.scenarios[0].cashGap).toBe(1000);expect(r.scenarios[0].financialSafety).toBe(false);a.cashOverlap=1000;r=buildBudget([school()],[a],p);expect(r.scenarios[0].cashNeed?.high).toBe(10000);expect(r.scenarios[0].financialSafety).toBe(true);});
+});

@@ -44,7 +44,7 @@ export function rankScore(r: { field: { share: number }; facts: { gradRate: { va
 }
 
 export type ProgrammeSubject = {code:string; label:string; url:string};
-export type ProgrammeRecommendation = SchoolEntry & { subjects: ProgrammeSubject[]; sourceUrl:string; checkedAt:string; planningFit:PlanningFit };
+export type ProgrammeRecommendation = SchoolEntry & { subjects: ProgrammeSubject[]; sourceUrl:string; checkedAt:string; planningFit:PlanningFit; evidenceOrigin:"catalogue"|"student_course" };
 export type SystemRecommendations = { system:ApplicationSystem; total:number; matches:ProgrammeRecommendation[]; unverified:number; explore:SchoolEntry[]; buckets:Record<FitCategory,ProgrammeRecommendation[]>; unassessed:ProgrammeRecommendation[] };
 
 /** Every published school is counted. Missing U.S. statistics never suppress another system. */
@@ -54,8 +54,10 @@ export function programmeRecommendations(all:SchoolEntry[],fields:string[],syste
     const matches:ProgrammeRecommendation[]=[];
     for(const entry of entries){
       const evidence=programmeDirectory.find(d=>d.slug===entry.school.slug);
-      const subjects=evidence?.subjects.filter(s=>fields.includes(s.code))??[];
-      if(subjects.length&&evidence)matches.push({...entry,subjects,sourceUrl:evidence.url,checkedAt:evidence.checkedAt,planningFit:programmeFit(resources,entry.school.slug,fields,choices[entry.school.slug],entry.school.country)});
+      const own=resources.assessments.filter(a=>a.slug===entry.school.slug&&a.entryYear===resources.entryYear&&fields.includes(a.field)&&a.source&&a.checkedAt);
+      const personal=own.map(a=>({code:a.field,label:a.program,url:a.source}));
+      const subjects=[...personal,...(evidence?.subjects.filter(s=>fields.includes(s.code)&&!personal.some(p=>p.code===s.code))??[])];
+      if(subjects.length)matches.push({...entry,subjects,sourceUrl:own[0]?.source??evidence!.url,checkedAt:own[0]?.checkedAt??evidence!.checkedAt,evidenceOrigin:own.length?"student_course":"catalogue",planningFit:programmeFit(resources,entry.school.slug,fields,choices[entry.school.slug],entry.school.country)});
     }
     matches.sort((a,b)=>new Set(b.subjects.map(s=>s.code)).size-new Set(a.subjects.map(s=>s.code)).size||a.school.name.localeCompare(b.school.name));
     const buckets=Object.fromEntries(["reach","target","likely"].map(cat=>[cat,matches.filter(r=>r.planningFit.category===cat)])) as Record<FitCategory,ProgrammeRecommendation[]>;

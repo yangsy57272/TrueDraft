@@ -1,6 +1,6 @@
 import {describe,it,expect} from "vitest";
 import {db} from "@/db";
-import {school,applicationSchedule} from "@/db/schema";
+import {school,applicationSchedule,collegeListEntry,schoolSupplements} from "@/db/schema";
 import {eq} from "drizzle-orm";
 import {PATCH as schedulePatch} from "@/app/api/schedule/route";
 import {GET,PUT} from "@/app/api/resources/route";
@@ -34,6 +34,12 @@ describe("owned resource plans",()=>{
   let saved=await json(await GET(req("GET","/api/resources",{cookie:a.cookie}),undefined as never));expect(saved.resources.timeExtras[0].done).toBe(true);
   expect((await schedulePatch(req("PATCH","/api/schedule",{cookie:a.cookie,body:{taskId:"resource:test-task",done:false}}),undefined as never)).status).toBe(200);
   saved=await json(await GET(req("GET","/api/resources",{cookie:a.cookie}),undefined as never));expect(saved.resources.timeExtras[0].done).toBe(false);
+ });
+ it("does not reuse another entry cycle's supplement prompts",async()=>{
+  const a=await setup("budget-cycle@example.test");const row=db.select().from(collegeListEntry).where(eq(collegeListEntry.id,a.entryId)).get()!;
+  db.insert(schoolSupplements).values({schoolId:row.schoolId!,cycle:"2026-2027",status:"confirmed",prompts:[{order:1,prompt:"Current-cycle question",requirement:"Required",limit:200,unit:"words",limitText:"200 words",notes:null}]}).run();
+  db.update(collegeListEntry).set({entryYear:2028}).where(eq(collegeListEntry.id,a.entryId)).run();const data=await getApplicationSchedule(a.userId);expect(data.schools[0].prompts).toHaveLength(0);expect(data.plan.warnings.some(w=>w.kind==="unknown_prompts")).toBe(true);
+  db.update(collegeListEntry).set({entryYear:2027}).where(eq(collegeListEntry.id,a.entryId)).run();expect((await getApplicationSchedule(a.userId)).schools[0].prompts).toHaveLength(1);
  });
  it("parses complete ECB unit-per-EUR snapshots and rejects partial responses",()=>{
   const xml=`<Cube time='2026-11-13'>${CURRENCIES.filter(c=>c!=="EUR").map(c=>`<Cube currency='${c}' rate='1.2'/>`).join("")}</Cube>`;expect(parseEcbRates(xml).rates.EUR).toBe(1);expect(parseEcbRates(xml).date).toBe("2026-11-13");expect(()=>parseEcbRates("<html>error</html>")).toThrow();expect(()=>parseEcbRates("<Cube time='2026-11-13'><Cube currency='USD' rate='1'/></Cube>")).toThrow();

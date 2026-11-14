@@ -3,6 +3,7 @@ import {institutionalRoot,officialUrl} from "@/server/research/official-fetch";
 import {getScheduleState,updateScheduleState,getApplicationSchedule} from "./application-schedule";
 import {allSchoolEntries} from "./schools";
 import {getProfile} from "./profile";
+import {CIP_CODES} from "@/lib/planning";
 import {buildBudget,type BudgetSchool} from "@/lib/application-budget";
 import {newCostRecord,emptyCost,resourcesSchema,CURRENCIES,validResourceDay,type CostLine,type StudentResources,type CostKey} from "@/lib/student-resources";
 import {ApiError} from "../errors";
@@ -31,7 +32,7 @@ export async function getStudentResources(userId:string){
   return record;
  });
  const institutions=schools.map(s=>{const found=all.find(a=>a.school.slug===s.slug);return {id:s.id,website:found?.school.website??null};});
- return {resources:prefs,schools,institutions,schoolOptions:all.filter(a=>a.school.country!=="US"||schools.some(s=>s.slug===a.school.slug)).map(a=>({slug:a.school.slug,name:a.school.name,nameZh:a.school.nameZh,country:a.school.country})),budget:buildBudget(schools,prefs.costs,prefs,schedule.plan),profileCurriculum:profile.curriculum};
+ return {resources:prefs,schools,institutions,schoolOptions:all.filter(a=>a.school.country!=="US"||schools.some(s=>s.slug===a.school.slug)).map(a=>({slug:a.school.slug,name:a.school.name,nameZh:a.school.nameZh,country:a.school.country})),budget:buildBudget(schools,prefs.costs,prefs,schedule.plan),profileFields:profile.intendedMajors.map(m=>m.cipFamily).filter((c):c is string=>Boolean(c&&CIP_CODES.includes(c))),profileCurriculum:profile.curriculum};
 }
 export async function saveStudentResources(userId:string,input:unknown){
  const parsed=resourcesSchema.safeParse(input);if(!parsed.success)throw new ApiError(400,"validation_failed",{field:parsed.error.issues[0]?.path.join("."),reason:parsed.error.issues[0]?.message});

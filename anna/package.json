@@ -1,0 +1,17 @@
+{
+  "name": "truedraft-anna-review",
+  "version": "0.1.0-beta.2",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate": "anna-app validate --manifest manifest.json --bundle bundle --strict",
+    "dev": "anna-app dev --manifest manifest.json --bundle bundle --no-llm",
+    "dev:real": "anna-app dev --manifest manifest.json --bundle bundle --storage aps --llm-app-slug truedraft-review"
+  },
+  "devDependencies": {
+    "@anna-ai/cli": "0.1.64"
+  },
+  "engines": {
+    "node": ">=22.12.0 <23"
+  }
+}

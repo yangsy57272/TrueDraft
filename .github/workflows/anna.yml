@@ -1,0 +1,38 @@
+name: Anna test candidate
+on:
+  pull_request:
+    paths: ['anna/**', 'src/server/ai/**', 'src/server/redact.ts', 'src/lib/**', 'package*.json', 'tests/unit/anna-adapter.test.ts', '.github/workflows/anna.yml']
+  push:
+    branches: [codex/anna-essay-review]
+permissions:
+  contents: read
+jobs:
+  candidate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm ci --prefix anna
+      - run: npm run anna:build
+      - run: git diff --exit-code -- anna/bundle
+      - run: npm --prefix anna run validate
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test:unit
+      - run: npx playwright install --with-deps chromium
+      - name: Fictional browser workflow (simulated host only)
+        run: |
+          export PW_CHROMIUM_PATH="$(node -e 'console.log(require("@playwright/test").chromium.executablePath())')"
+          npm run anna:test:ui
+      - run: npm run anna:package
+      - uses: actions/upload-artifact@v6
+        with:
+          name: truedraft-anna-test-candidate
+          path: |
+            dist/truedraft-anna-*-test.zip
+            dist/truedraft-anna-*-test.zip.sha256
+          retention-days: 14

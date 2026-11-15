@@ -1,0 +1,148 @@
+:root {
+  color-scheme: light dark;
+  font-family: system-ui, sans-serif;
+  color: #21352f;
+  background: #f5f5f0;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 24px;
+}
+header,
+nav,
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+header {
+  justify-content: space-between;
+}
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: #547366;
+}
+h1 {
+  font-family: Georgia, serif;
+  font-weight: 500;
+}
+h2 {
+  font-size: 20px;
+}
+section {
+  background: #fff;
+  border: 1px solid #d9e0d8;
+  border-radius: 14px;
+  padding: 20px;
+  margin: 16px 0;
+}
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+label {
+  display: block;
+  margin: 12px 0;
+}
+textarea,
+select,
+button {
+  font: inherit;
+  border: 1px solid #8c9e93;
+  border-radius: 7px;
+  padding: 10px;
+}
+textarea {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  resize: vertical;
+  line-height: 1.6;
+  background: transparent;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+  background: #264e40;
+  color: white;
+}
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+button:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 3px solid #d49d30;
+  outline-offset: 3px;
+}
+p {
+  line-height: 1.6;
+}
+#notice,
+#stale {
+  color: #92430e;
+}
+#feedback {
+  overflow-wrap: anywhere;
+}
+#feedback blockquote {
+  border-left: 3px solid #7e9e8a;
+  padding-left: 12px;
+  margin-left: 0;
+}
+summary {
+  cursor: pointer;
+  font-weight: 650;
+}
+[hidden] {
+  display: none !important;
+}
+@media (max-width: 720px) {
+  main {
+    padding: 12px;
+  }
+  .columns {
+    grid-template-columns: 1fr;
+  }
+  section {
+    padding: 14px;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #e6efe9;
+    background: #17221e;
+  }
+  section {
+    background: #1f2e27;
+    border-color: #526859;
+  }
+  #notice,
+  #stale {
+    color: #ffcd88;
+  }
+  select {
+    color: inherit;
+    background: #1f2e27;
+  }
+}
+section, .columns > *, header > *, nav > *, label { min-width: 0; }
+select { max-width: 100%; }
+#feedback summary, #stale, #notice { overflow-wrap: anywhere; }
+.feedback-group { margin: 12px 0; }
+.feedback-group p { margin-top: 5px; }
+#feedback h3 { padding-top: 12px; border-top: 1px solid #d9e0d8; }
+#feedback ol { padding-left: 24px; }

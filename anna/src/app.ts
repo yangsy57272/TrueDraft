@@ -103,12 +103,18 @@ function renderLocale() {
   feedback();
   update();
 }
+function currentReview() {
+  return (
+    data?.reviews.filter((r) => r.language === val("language")).at(-1) ??
+    data?.reviews.at(-1)
+  );
+}
 function update() {
   $("counter").textContent = t(
     `${val("draft").length}/${MAX_TEXT} characters`,
     `${val("draft").length}/${MAX_TEXT} 字符`,
   );
-  const last = data?.reviews.at(-1);
+  const last = currentReview();
   $("stale").textContent =
     last && (last.versionId !== data?.versions.at(-1)?.id || dirty)
       ? t(
@@ -118,7 +124,7 @@ function update() {
       : "";
 }
 function feedback() {
-  const latest = data?.reviews.at(-1);
+  const latest = currentReview();
   const node = $("feedback");
   node.replaceChildren();
   if (!latest) return;
@@ -129,7 +135,12 @@ function feedback() {
       (data?.versions.findIndex((v) => v.id === latest.versionId) ?? -1) + 1,
     ) +
     " · " +
-    new Date(latest.at).toLocaleString(zh ? "zh-CN" : "en");
+    new Date(latest.at).toLocaleString(zh ? "zh-CN" : "en") +
+    " · " +
+    { en: "English", "zh-CN": "中文", bilingual: "English + 中文" }[
+      latest.language
+    ] +
+    (latest.model ? " · " + latest.model : "");
   node.append(p);
   const labels: Record<string, [string, string]> = {
     summary: ["Overview", "概览"],
@@ -208,7 +219,42 @@ function feedback() {
         parent.append(box);
       }
     } else if (value && typeof value === "object") {
-      for (const [k, v] of Object.entries(value)) {
+      const order = [
+        "summary",
+        "primary_priority",
+        "revision_plan",
+        "strengths",
+        "prompt_alignment",
+        "categories",
+        "passage_comments",
+        "voice_check",
+        "questions_for_student",
+        "limitations",
+        "material",
+        "insufficient_reason",
+        "computed",
+        "title",
+        "key",
+        "label",
+        "point",
+        "task",
+        "why",
+        "explanation",
+        "next_step",
+        "quote",
+        "evidence_quote",
+        "observation",
+        "why_it_matters",
+        "revision_question",
+        "priority",
+        "zh_note",
+        "located",
+      ];
+      const rank = (key: string) =>
+        order.includes(key) ? order.indexOf(key) : order.length;
+      for (const [k, v] of Object.entries(value).sort(
+        (a, b) => rank(a[0]) - rank(b[0]),
+      )) {
         if (v === null || v === undefined || (Array.isArray(v) && !v.length))
           continue;
         const d = document.createElement("details");
@@ -251,8 +297,15 @@ function show() {
   input("draft").value = v?.draft ?? "";
   input("retention").value = String(data.retentionDays);
   $("history").replaceChildren(
-    ...data.versions.map((v, i) => new Option(`${i + 1} · ${v.at}`, v.id)),
+    ...data.versions.map(
+      (v, i) =>
+        new Option(
+          `${i + 1} · ${new Date(v.at).toLocaleString(zh ? "zh-CN" : "en")}`,
+          v.id,
+        ),
+    ),
   );
+  input("history").value = v?.id ?? "";
   dirty = false;
   input("consent").checked = false;
   feedback();
@@ -288,11 +341,19 @@ async function list() {
 }
 async function refresh() {
   const rows = await list();
-  $("saved").replaceChildren(
-    ...rows.map(
-      (r) => new Option(r.key.slice(PREFIX.length), r.key.slice(PREFIX.length)),
-    ),
-  );
+  const options = [];
+  for (const row of rows) {
+    const id = row.key.slice(PREFIX.length);
+    const essay = await read(host, id);
+    options.push(
+      new Option(
+        essay.data.versions.at(-1)?.prompt.slice(0, 65) ||
+          t("Untitled essay", "未命名文书"),
+        id,
+      ),
+    );
+  }
+  $("saved").replaceChildren(...options);
 }
 async function save() {
   validateInput(val("prompt"), val("draft"));
@@ -367,6 +428,10 @@ async function action(fn: () => Promise<void>) {
     controls(false);
   }
 }
+$("language").onchange = () => {
+  feedback();
+  update();
+};
 $("locale").onchange = () => {
   zh = val("locale") === "zh-CN";
   renderLocale();

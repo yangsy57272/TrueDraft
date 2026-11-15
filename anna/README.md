@@ -1,8 +1,8 @@
-# TrueDraft for Anna · 0.1.0-beta.2
+# TrueDraft for Anna · 0.1.0-beta.4
 
-**Adult-only, fictional-data test candidate. Not published, not submitted for review, and not yet verified on a real Anna installation.** This folder is a separate static Anna App; the standalone Next.js/SQLite app is unchanged.
+**Adult-only, fictional-data test candidate. The private beta.4 install/upgrade, real English/Chinese managed-AI reviews, save/reopen, export and single-essay soft deletion are verified. Not publicly released, not submitted for review, and not yet submission-ready.** This folder is a separate static Anna App; the standalone Next.js/SQLite app is unchanged.
 
-Start with [installation](INSTALL.md), [architecture and privacy](ARCHITECTURE.md), [implementation/validation report](VALIDATION.md), and [review runbook](review/REVIEW.md). The [forum draft](review/FORUM-DRAFT.md) has not been posted.
+Start with [installation](INSTALL.md), [architecture and privacy](ARCHITECTURE.md), [implementation/validation report](VALIDATION.md), and [review runbook](review/REVIEW.md), [real-host evidence](review/LIVE-EVIDENCE.md). The [forum draft](review/FORUM-DRAFT.md) has not been posted.
 
 ## Build and check
 

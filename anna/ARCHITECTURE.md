@@ -15,6 +15,14 @@ Consent for exact prompt/draft         └── llm.complete → Anna selected 
 
 The developer must confirm APS and billing behavior in the actual target host. This is an implementation decision, not platform architectural approval.
 
+## Storage options considered
+
+| Option | Reuse / operating conditions | Decision |
+|---|---|---|
+| Existing Next.js + SQLite backend | Reuses services/encryption, but requires external hosting, independently verified Anna identity/session mapping and an owner-managed server | Not chosen for this bounded first App; no unverified shared bootstrap identity |
+| Node Executa + SQLite | Possible process/native-runtime architecture, but needs platform-specific native distribution, durable per-user filesystem and stable encryption-key guarantees that are not established for this App | Preserve standalone SQLite; do not copy a real database or invent persistence guarantees |
+| Static App UI + own-App APS | Official signed-user bridge, durable per-user/App rows, etags and TTL; real save/reopen/upgrade verified, purge/backup/at-rest guarantees still qualified | Chosen for new Anna-only records; this is not a migration of existing standalone data |
+
 ## Identity and access
 
 No TrueDraft login, arbitrary user ID, token copying, app-wide service account or external HTTP backend. The official SDK's hello handshake binds the window token; host resolves the user and App. All storage calls omit `owner` and `scope`, selecting own-App per-user storage. No cross-App storage, third-party credentials, local-device tools or browser permissions are declared. Entry payload, host runtimeState and conversation context are ignored. There is no separate export/deletion endpoint with weaker authorization.
@@ -27,7 +35,7 @@ One random-UUID APS row per essay (`truedraft/v1/<uuid>`): schema version, 30/90
 
 Every existing-row write/delete supplies the last read etag. A startup probe intentionally uses a bad etag on a disposable 60-second row and requires `precondition_failed`; legacy last-writer-wins storage is refused. Focus rechecks etag; a stale editor never silently overwrites a saved record. New essays use cryptographically random identifiers. A failed save does not reset the editor. Content typed while save awaits remains in the editor.
 
-The official APS contract says durable per-user storage across windows; **actual restart, reinstall, App upgrade and account isolation were not verified**. The local harness legacy backend is memory-only. Use `--storage aps` with real test auth for meaningful persistence checks. Keep the same registered App identity and `truedraft/v1/` namespace for updates. No existing SQLite or encrypted database is migrated or opened. No TrueDraft encryption key is introduced; this candidate uses platform-managed storage, **not standalone application-layer encryption or E2EE**. Platform at-rest encryption/key recovery must be confirmed before real-data pilot approval.
+The official APS contract says durable per-user storage across windows; **actual close/reopen and App upgrade preservation were verified; full host restart, reinstall and second-account isolation were not verified**. The local harness legacy backend is memory-only. Use `--storage aps` with real test auth for meaningful persistence checks. Keep the same registered App identity and `truedraft/v1/` namespace for updates. No existing SQLite or encrypted database is migrated or opened. No TrueDraft encryption key is introduced; this candidate uses platform-managed storage, **not standalone application-layer encryption or E2EE**. Platform at-rest encryption/key recovery must be confirmed before real-data pilot approval.
 
 ## AI and accidental usage
 
@@ -62,3 +70,5 @@ No API key input is needed here. Host routes through Anna Credits or the user's 
 - [Terms: eligibility and no-training covenant](https://anna.partners/legal/terms)
 - [Privacy: retention and third parties](https://anna.partners/legal/privacy)
 - [Developer Forum](https://forum.anna.partners/c/developers/5)
+
+Current evidence and known limitations are in [VALIDATION.md](VALIDATION.md) and [review/LIVE-EVIDENCE.md](review/LIVE-EVIDENCE.md). The plain-language bilingual policy is [PRIVACY.md](PRIVACY.md).

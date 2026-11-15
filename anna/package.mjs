@@ -4,6 +4,8 @@ import { execFileSync } from "node:child_process";
 import path from "node:path";
 const root = process.cwd();
 const version = JSON.parse(await readFile("anna/package.json", "utf8")).version;
+if (!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version))
+  throw new Error("Invalid package version");
 const name = `truedraft-anna-${version}-test`;
 const stage = path.join(root, "dist", name);
 await mkdir("dist", { recursive: true });
@@ -18,11 +20,24 @@ for (const file of [
   "README.md",
   "INSTALL.md",
   "ARCHITECTURE.md",
+  "PRIVACY.md",
+  "THIRD-PARTY-NOTICES.txt",
   "VALIDATION.md",
-  "review",
-  "bundle",
-])
-  await cp("anna/" + file, path.join(stage, file), { recursive: true });
+  "review/REVIEW.md",
+  "review/FORUM-DRAFT.md",
+  "review/LIVE-EVIDENCE.md",
+  "review/screenshots/en-review-simulated.png",
+  "review/screenshots/zh-narrow-simulated.png",
+  "review/screenshots/en-real-anna.jpg",
+  "review/screenshots/zh-real-anna.jpg",
+  "bundle/index.html",
+  "bundle/app.css",
+  "bundle/app.js",
+]) {
+  const target = path.join(stage, file);
+  await mkdir(path.dirname(target), { recursive: true });
+  await cp("anna/" + file, target);
+}
 async function files(dir) {
   const out = [];
   for (const e of await readdir(dir, { withFileTypes: true })) {

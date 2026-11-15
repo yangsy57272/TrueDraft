@@ -34,4 +34,4 @@ This is also available via “Load fictional example”. No real applicant docum
 
 ## Screenshots
 
-`en-review-simulated.png` and `zh-narrow-simulated.png` are from the actual static UI with a **simulated host and explicitly labelled test feedback**. They are layout/flow evidence only. Replace or supplement them with real-host screenshots after live validation. They do not prove live AI, installation, billing, isolation or approval.
+`en-review-simulated.png` and `zh-narrow-simulated.png` are from the actual static UI with a **simulated host and explicitly labelled test feedback**. They are layout/flow evidence only. They do not prove live AI, installation, billing, isolation or approval. `en-real-anna.jpg` and `zh-real-anna.jpg` supplement them with cropped real beta.4 host captures and actual stored feedback on fictional text. See LIVE-EVIDENCE.md for the verified installation, upgrade, three explicit model calls and remaining limits.

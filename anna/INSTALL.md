@@ -4,7 +4,7 @@ This is a **test candidate**, not an App Store release. Use fictional essays onl
 
 ## For a first-time reviewer
 
-1. Unzip `truedraft-anna-0.1.0-beta.2-test.zip` into its own folder. Keep the original TrueDraft application and database unchanged.
+1. Unzip `truedraft-anna-0.1.0-beta.4-test.zip` into its own folder. Keep the original TrueDraft application and database unchanged.
 2. Install Node 22 LTS and Astral uv from their official sources. In this folder run `npm ci` to install the pinned official Anna CLI (0.1.64).
 3. Run `npm run validate`. No login, upload or review submission occurs.
 4. Run `npm run dev` for a local host check. The default legacy in-memory store **must be rejected** with `aps_required`. This is a safety check, not a working persistence demo. Its AI is disabled and it cannot consume tokens.
@@ -27,3 +27,11 @@ This is a **test candidate**, not an App Store release. Use fictional essays onl
 Export first. Use in-app delete-one/delete-all to soft-delete active App rows if desired; uninstall is separate and does not prove a purge. Uninstall/disable the private test App in Anna, stop the local harness with Ctrl+C, and revoke the CLI developer PAT through Anna's developer-token controls when testing ends. Revoke rather than merely deleting a local file. Ask Anna for permanent deletion/backup handling; this candidate cannot verify it.
 
 The install package includes no secrets and no real student content. Standalone TrueDraft remains independently available and unchanged.
+
+## Observed private installation (2026-11-15)
+
+The owner authorized a private test App and completed developer activation/device-flow approval. Working-draft-only installation failed with “App has no published version available”. After cutting beta.1, the console installed it privately; beta.2 was then installed and ran a validated real hosted-AI review, manual revision, close/reopen and JSON export. Beta.4 was later installed and verified to preserve both versions/feedback after upgrade, generate Chinese feedback, export and soft-delete a disposable essay. Beta.3 was not separately installed. Full restart/reinstall and rollback still need verification. They are not public releases. No apps release or submit-review command was run.
+
+Use apps cut <version> only for an owner-authorized private immutable snapshot, then the console’s Install button. This is different from releasing the App. Keep the same App identity and verify exported data after upgrading.
+
+CLI0.1.64 does not support the older guide’s --llm real spelling: real mode is the default when logged in. npm run dev:real uses supported flags. The official harness displays raw RPC payloads; use fictional data only and never share full recordings publicly. Local-harness real APS and production iframe showed different essay lists, so do not assume they share a data namespace.

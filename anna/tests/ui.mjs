@@ -67,12 +67,12 @@ const fixture = {
   questions_for_student: ["What did you learn?"],
   limitations: "Simulated test feedback, not live Anna AI.",
 };
-const sdk = `export const AnnaAppRuntime={connect:async()=>({storage:{
-get:async({key})=>{const r=JSON.parse(localStorage.getItem(key)||'null');return r?{exists:true,...r}:{exists:false}},
+const sdk = `const canonical=x=>Array.isArray(x)?x.map(canonical):x&&typeof x==='object'?Object.fromEntries(Object.keys(x).sort().map(k=>[k,canonical(x[k])])):x; export const AnnaAppRuntime={connect:async()=>({storage:{
+get:async({key})=>{const r=JSON.parse(localStorage.getItem(key)||'null');return r?{exists:true,...canonical(r)}:{exists:false}},
 set:async({key,value,if_match})=>{const old=JSON.parse(localStorage.getItem(key)||'null');if(if_match&&old?.etag!==if_match)throw new Error('precondition_failed');const generation=(old?.generation||0)+1;const r={value,etag:String(generation),generation};localStorage.setItem(key,JSON.stringify(r));return r},
 delete:async({key,if_match})=>{const old=JSON.parse(localStorage.getItem(key)||'null');if(if_match&&old?.etag!==if_match)throw new Error('precondition_failed');localStorage.removeItem(key);return{}},
 list:async({prefix})=>({items:Object.keys(localStorage).filter(key=>key.startsWith(prefix)).map(key=>({key}))})},
-llm:{complete:async()=>{localStorage.setItem('calls',String(Number(localStorage.getItem('calls')||0)+1));await new Promise(r=>setTimeout(r,500));if(localStorage.getItem('failure')==='timeout')throw new Error('timeout');if(localStorage.getItem('failure'))return {ok:false,error:{code:'APP_QUOTA_EXCEEDED'}};return {stopReason:'endTurn',content:{text:JSON.stringify(${JSON.stringify(fixture)})},usage:{inputTokens:100,outputTokens:50}}}}
+llm:{complete:async()=>{localStorage.setItem('calls',String(Number(localStorage.getItem('calls')||0)+1));await new Promise(r=>setTimeout(r,500));if(localStorage.getItem('failure')==='timeout')throw new Error('timeout');if(localStorage.getItem('failure'))return {ok:false,error:{code:'APP_QUOTA_EXCEEDED'}};return {stopReason:'endTurn',content:{text:JSON.stringify(${JSON.stringify(fixture)})},model:'simulated-'+localStorage.getItem('calls'),usage:{inputTokens:100,outputTokens:50}}}}
 })};`;
 const server = createServer(async (req, res) => {
   try {
@@ -136,6 +136,15 @@ try {
   await p.locator("#analyze").dblclick();
   await p.locator("#feedback").filter({ hasText: "TEST FIXTURE" }).waitFor();
   assert.equal(await p.evaluate(() => localStorage.getItem("calls")), "1");
+  await p.locator("#language").selectOption("zh-CN");
+  await p.locator("#consent").check();
+  await p.locator("#analyze").click();
+  await p.locator("#feedback").filter({ hasText: "simulated-2" }).waitFor();
+  await p.locator("#language").selectOption("en");
+  await p.locator("#consent").check();
+  await p.locator("#analyze").click();
+  await p.locator("#feedback").filter({ hasText: "simulated-1" }).waitFor();
+  assert.equal(await p.evaluate(() => localStorage.getItem("calls")), "2");
   await p.locator("#draft").fill(original + " I have revised this myself.");
   await p
     .locator("#stale")
@@ -157,6 +166,11 @@ try {
   await p.locator("#draft").fill(original + " First window.");
   await p.locator("#save").click();
   await p.locator("#notice").filter({ hasText: "Version saved" }).waitFor();
+  const persistedText = await q.locator("#feedback").innerText();
+  assert(
+    persistedText.indexOf("First revision priority") <
+      persistedText.indexOf("Your revision checklist"),
+  );
   await q.locator("#draft").fill(original + " Second window.");
   await q.locator("#save").click();
   await q
@@ -223,7 +237,7 @@ try {
     .waitFor();
   assert.match(await p.locator("#draft").inputValue(), /quota failure/);
   const count = await p.evaluate(() => localStorage.getItem("calls"));
-  assert.equal(count, "3");
+  assert.equal(count, "4");
   await p.evaluate(() => localStorage.setItem("failure", "timeout"));
   await p.locator("#consent").check();
   await p.locator("#analyze").click();

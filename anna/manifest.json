@@ -1,0 +1,11 @@
+{
+  "schema": 4,
+  "required_executas": [],
+  "optional_executas": [],
+  "system_prompt_addendum": "TrueDraft is an adult-only essay coaching workspace. Open its main view for essay review. Never write a replacement essay, invent personal experiences or predict admissions. Do not insert chat history or personal data into its entry payload. Students must enter their own draft and confirm AI processing inside the app.",
+  "ui": {
+    "bundle": {"format": "static-spa", "entry": "index.html", "external_origins": []},
+    "form_factors": ["desktop"],
+    "views": [{"name": "main", "title": "TrueDraft · Essay review", "default": true, "min_size": {"w": 360, "h": 360}, "default_size": {"w": 1000, "h": 720}, "max_size": {"w": 1920, "h": 1400}, "single_instance": true}]
+  }
+}

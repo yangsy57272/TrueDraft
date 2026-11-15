@@ -4,6 +4,8 @@
 
 TrueDraft is a bilingual (English / Simplified Chinese) web app that gives students — especially Chinese students applying to undergraduate programs abroad — structured, ethical feedback on their own college application essays. It is a coaching and revision tool, **not** a ghostwriting service. The AI is instructed not to write or replace the essay, invent experiences, or predict admission outcomes. Structured, length-capped output (at most two short alternatives for a passage the student selects) makes handing back a replacement essay hard, but no control can guarantee a model never produces ghostwritten text.
 
+> **Anna private test edition (18+):** a separate essay-review App now supports Anna-managed AI, bilingual feedback, versioned drafts and export. The independent desktop product remains separate. See the [Anna test package and setup](anna/README.md), [privacy policy](anna/PRIVACY.md) and [verified results / remaining review requirements](anna/VALIDATION.md). This candidate is privately tested, not publicly released or submitted for review.
+
 > The product name, tagline, and logo are configured in [`src/config/brand.ts`](src/config/brand.ts).
 
 ---

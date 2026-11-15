@@ -17,3 +17,6 @@ dist/
 tmp/
 
 __pycache__/
+
+# Local Anna developer identity (CLI managed; never packaged)
+anna/.anna/

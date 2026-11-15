@@ -1,3 +1,5 @@
+> Update 2026-11-15: the separate Anna implementation and current evidence are in [anna/README.md](../anna/README.md) and [anna/VALIDATION.md](../anna/VALIDATION.md). The assessment below is historical; private development tests are now authorized. No public release or review submission is authorized.
+
 # Anna opportunity: readiness assessment (2026-11-13)
 
 This is an implementation recommendation and a record of open questions, not platform approval or a deployment. Isabel's latest email clarifies the commercial scope but does not pre-approve TrueDraft's architecture or student-data handling. No Anna App, public forum post or real-student upload was created in this task.

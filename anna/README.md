@@ -1,4 +1,4 @@
-# TrueDraft for Anna · 0.1.0-beta.5
+# TrueDraft for Anna · 0.1.0-beta.6
 
 **Adult-only, fictional-data test candidate. The private beta.4 install/upgrade, real English/Chinese managed-AI reviews, save/reopen, export and single-essay soft deletion are verified. Not publicly released, not submitted for review, and not yet submission-ready.** This folder is a separate static Anna App; the standalone Next.js/SQLite app is unchanged.
 

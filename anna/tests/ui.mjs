@@ -67,13 +67,13 @@ const fixture = {
   questions_for_student: ["What did you learn?"],
   limitations: "Simulated test feedback, not live Anna AI.",
 };
-const sdk = `const canonical=x=>Array.isArray(x)?x.map(canonical):x&&typeof x==='object'?Object.fromEntries(Object.keys(x).sort().map(k=>[k,canonical(x[k])])):x; export const AnnaAppRuntime={connect:async()=>({storage:{
+const sdk = `const canonical=x=>Array.isArray(x)?x.map(canonical):x&&typeof x==='object'?Object.fromEntries(Object.keys(x).sort().map(k=>[k,canonical(x[k])])):x; export const AnnaAppRuntime={connect:async()=>{window.__hostConnected=true;if(location.search.includes("connection-failure"))throw new Error("invalid_token");return ({storage:{
 get:async({key})=>{const r=JSON.parse(localStorage.getItem(key)||'null');return r?{exists:true,...canonical(r)}:{exists:false}},
 set:async({key,value,if_match})=>{const old=JSON.parse(localStorage.getItem(key)||'null');if(if_match&&old?.etag!==if_match)throw new Error('precondition_failed');const generation=(old?.generation||0)+1;const r={value,etag:String(generation),generation};localStorage.setItem(key,JSON.stringify(r));return r},
 delete:async({key,if_match})=>{const old=JSON.parse(localStorage.getItem(key)||'null');if(if_match&&old?.etag!==if_match)throw new Error('precondition_failed');localStorage.removeItem(key);return{}},
 list:async({prefix})=>({items:Object.keys(localStorage).filter(key=>key.startsWith(prefix)).map(key=>({key}))})},
 llm:{complete:async()=>{localStorage.setItem('calls',String(Number(localStorage.getItem('calls')||0)+1));await new Promise(r=>setTimeout(r,500));if(localStorage.getItem('failure')==='timeout')throw new Error('timeout');if(localStorage.getItem('failure'))throw new Error('APP_QUOTA_EXCEEDED');return {stopReason:'endTurn',content:{text:JSON.stringify(${JSON.stringify(fixture)})},model:'simulated-'+localStorage.getItem('calls'),usage:{inputTokens:100,outputTokens:50}}}}
-})};`;
+})}};`;
 const server = createServer(async (req, res) => {
   try {
     if (req.url.includes("/_sdk/")) {
@@ -81,7 +81,8 @@ const server = createServer(async (req, res) => {
       res.end(sdk);
       return;
     }
-    const path = req.url === "/" ? "index.html" : req.url.slice(1);
+    const pathname = new URL(req.url, "http://localhost").pathname;
+    const path = pathname === "/" ? "index.html" : pathname.slice(1);
     if (!["index.html", "app.css", "app.js"].includes(path)) {
       res.writeHead(404).end();
       return;
@@ -109,8 +110,22 @@ const browser = await chromium.launch({
 });
 try {
   const context = await browser.newContext({ acceptDownloads: true });
+  const unavailable = await context.newPage();
+  await unavailable.goto(url + "/?connection-failure");
+  await unavailable.waitForFunction(() => window.__hostConnected === true);
+  await unavailable.locator("#adult").check();
+  await unavailable.locator("#enter").click();
+  await unavailable.locator("#notice").filter({ hasText: "Close the TrueDraft window" }).waitFor();
+  assert.equal(await unavailable.locator("#workspace").isVisible(), false);
+  assert.equal(await unavailable.evaluate(() => localStorage.length), 0);
+  await unavailable.locator("#locale").selectOption("zh-CN");
+  await unavailable.locator("#enter").click();
+  await unavailable.locator("#notice").filter({ hasText: "没有提交 AI 分析" }).waitFor();
+  await unavailable.close();
   const p = await context.newPage();
   await p.goto(url);
+  await p.waitForFunction(() => window.__hostConnected === true);
+  assert.equal(await p.evaluate(() => localStorage.length), 0);
   assert.equal(await p.locator("#workspace").isVisible(), false);
   await p.locator("#enter").click();
   await p.locator("#notice").filter({ hasText: "adult requirement" }).waitFor();

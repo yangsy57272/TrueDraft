@@ -27,6 +27,19 @@ let zh = false,
   dirty = false;
 let deleteAll = false,
   active = true;
+// Establish the host session while the gate is visible so SDK token-refresh
+// events are received. Essay storage and AI remain gated by adult confirmation.
+const hostConnection = (async (): Promise<
+  { host: Host } | { error: string }
+> => {
+  try {
+    const sdkPath = "/static/anna-apps/_sdk/latest/index.js";
+    const { AnnaAppRuntime } = await import(sdkPath);
+    return { host: await AnnaAppRuntime.connect() };
+  } catch (e) {
+    return { error: errorCode(e) };
+  }
+})();
 const copy: Record<string, [string, string]> = {
   principle: [
     "Feedback to help you revise your own writing. No replacement essays, invented experiences or admission predictions.",
@@ -396,6 +409,7 @@ async function save() {
 }
 function controls(on: boolean) {
   for (const id of [
+    "enter",
     "save",
     "analyze",
     "open",
@@ -410,7 +424,7 @@ function controls(on: boolean) {
   ])
     $<HTMLButtonElement>(id).disabled = on;
 }
-async function action(fn: () => Promise<void>) {
+async function action(fn: () => Promise<void>, opening = false) {
   if (busy || !active) return;
   busy = true;
   controls(true);
@@ -419,7 +433,12 @@ async function action(fn: () => Promise<void>) {
     await fn();
   } catch (e) {
     const safe = errorCode(e);
-    message(
+    if (opening)
+      message(
+        `Could not open your Anna workspace (${safe}). No AI analysis was submitted. Close the TrueDraft window using its red Close button inside Anna, then open it again from Apps. Keep this browser tab open. If this continues, contact Anna support.`,
+        `无法打开 Anna 工作台（${safe}），没有提交 AI 分析。请点击 Anna 页面内 TrueDraft 窗口的红色关闭按钮，再从 Apps 重新打开；保留浏览器标签页。如仍失败，请联系 Anna 支持。`,
+      );
+    else message(
       `Could not complete (${safe}). Your editor text is kept. Export/copy it before reopening. No automatic retry. If marked pending, confirm the old request ended with Anna support before any new analysis.`,
       `未完成（${safe}）。编辑区内容保留；重新打开前请导出或复制，不自动重试。如显示 pending，请先向 Anna 支持确认旧请求结束。`,
     );
@@ -442,14 +461,14 @@ $("enter").onclick = () => {
     return;
   }
   void action(async () => {
-    const sdkPath = "/static/anna-apps/_sdk/latest/index.js";
-    const { AnnaAppRuntime } = await import(sdkPath);
-    host = await AnnaAppRuntime.connect();
+    const connected = await hostConnection;
+    if ("error" in connected) throw new Error(connected.error);
+    host = connected.host;
     await probe(host);
     await refresh();
     $("gate").hidden = true;
     $("workspace").hidden = false;
-  });
+  }, true);
 };
 for (const id of ["prompt", "draft"])
   input(id).oninput = () => {

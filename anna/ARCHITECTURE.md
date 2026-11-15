@@ -72,3 +72,7 @@ No API key input is needed here. Host routes through Anna Credits or the user's 
 - [Developer Forum](https://forum.anna.partners/c/developers/5)
 
 Current evidence and known limitations are in [VALIDATION.md](VALIDATION.md) and [review/LIVE-EVIDENCE.md](review/LIVE-EVIDENCE.md). The plain-language bilingual policy is [PRIVACY.md](PRIVACY.md).
+
+## Host connection before entry
+
+The SDK connection starts when the static page loads, before adult acknowledgement, so the official handshake, ready heartbeat and auth.refresh listener are active while the user reads the gate. This does not call essay storage or AI; the APS probe/list and all editing remain behind adult acknowledgement, and analysis retains its separate consent. The SDK may provide host runtime metadata during the handshake. A caught connection failure produces a bilingual startup-specific message with in-page close/reopen instructions rather than a misleading analysis-pending warning. No automatic retry or model call is added.

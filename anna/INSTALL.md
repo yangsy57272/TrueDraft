@@ -4,7 +4,7 @@ This is a **test candidate**, not an App Store release. Use fictional essays onl
 
 ## For a first-time reviewer
 
-1. Unzip `truedraft-anna-0.1.0-beta.5-test.zip` into its own folder. Keep the original TrueDraft application and database unchanged.
+1. Unzip `truedraft-anna-0.1.0-beta.6-test.zip` into its own folder. Keep the original TrueDraft application and database unchanged.
 2. Install Node 22 LTS and Astral uv from their official sources. In this folder run `npm ci` to install the pinned official Anna CLI (0.1.64).
 3. Run `npm run validate`. No login, upload or review submission occurs.
 4. Run `npm run dev` for a local host check. The default legacy in-memory store **must be rejected** with `aps_required`. This is a safety check, not a working persistence demo. Its AI is disabled and it cannot consume tokens.

@@ -562,7 +562,12 @@ $("analyze").onclick = () =>
           : "反馈已保存，并关联此版本。",
       );
     } catch (e) {
-      if (settled) {
+      const definitelyEnded = [
+        "APP_QUOTA_EXCEEDED",
+        "APP_NOT_GRANTED",
+        "APP_INVALID_REQUEST",
+      ].includes(errorCode(e));
+      if (settled || definitelyEnded) {
         const current = await read(host, data!.id);
         if (current.data.pending?.id === run) {
           delete current.data.pending;

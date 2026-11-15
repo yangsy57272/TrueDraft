@@ -1,6 +1,6 @@
 # TrueDraft Anna validation report
 
-2026-11-15 · candidate **0.1.0-beta.4** · **private test candidate, not submission-ready**.
+2026-11-15 · candidate **0.1.0-beta.5** · **private test candidate, not submission-ready**.
 
 The complete core workflow ran successfully in the real Anna production host on beta.2 using fictional text: private installation → prompt/draft → consent → valid managed-AI feedback → manual revision → save → close/reopen → export. The current beta.4 is also privately installed: upgrade preserved data, real Chinese feedback was saved, and a disposable essay was soft-deleted. No public release, review submission, forum/email message or real-student upload was performed.
 
@@ -65,3 +65,7 @@ The final actual export inspected locally contains one explicitly fictional essa
 3. **Uncertain billable-request recovery/cancellation.** Source: inspected completion contract and conservative pending marker. Close with supported idempotency/status/cancellation semantics and tests for timeout/window closure/retries/charging. Until then orphaned calls remain blocked and stop-displaying is not described as a provider cancel.
 
 These identity/privacy/runtime decisions require owner/platform review before a real-data pilot or review submission. Prepared forum questions are not posted. Review approval and eligibility have not been inferred from build/test success.
+
+## Beta.5 delta
+
+Latest candidate beta.5 adds only terminal-error cleanup: known quota/not-granted/invalid-request errors unlock a settled attempt even when the SDK rejects its Promise. Unknown provider/transport errors remain conservatively pending. The browser test covers that SDK rejection shape, manual retry and the separate timeout lock. All296 unit/integration checks, browser workflow, typecheck/lint and strict validation pass locally. The private console installation is confirmed; its new runtime/data recheck awaits closing the old pinned beta.4 window. Full source commit11bf36d CI, browser/integration and all5 desktop builds passed; latest source checks are recorded in PR #14 and local loop-state.

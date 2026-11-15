@@ -83,6 +83,7 @@ export function errorCode(error: unknown): string {
     "aps_required",
     "APP_QUOTA_EXCEEDED",
     "APP_NOT_GRANTED",
+    "APP_INVALID_REQUEST",
     "input_limits",
     "not_found",
     "pending_analysis",

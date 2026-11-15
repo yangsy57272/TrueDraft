@@ -34,3 +34,9 @@ The owner explicitly authorized a private test App and official CLI device-flow 
 - The local real-APS harness and production iframe showed different essay lists. Confirm scope/identity mapping; no automatic migration/equivalence is claimed.
 - Earlier browser automation timed out/reset and native capture failed; a later session recovered and completed the beta.4 upgrade, soft deletion and real screenshots. Those completed items are resolved, not current blockers.
 - No real-student essay, minor pilot, public release, review submission, forum post or email was used.
+
+## Beta.5 terminal-error fix
+
+Beta.5 distinguishes definitive quota/not-granted/invalid-request rejections from uncertain transport failure. The browser contract test now rejects the Promise like the SDK instead of only returning an error object. It proves a known quota rejection releases this attempt’s marker for a later manual retry, while the simulated timeout retains its marker and prevents another call. No automatic paid retry was introduced. Official strict validation, TypeScript/lint, the browser workflow and296 unit/integration checks pass.
+
+The console confirmed private beta.5 installation. Anna initially restored the already-open beta.4 window; a fresh beta.5 runtime/data check is pending manual close/reopen because three automation close attempts did not work. The owner was asked to perform that small UI action. The beta.4 live AI/upgrade/export/deletion evidence above remains valid.

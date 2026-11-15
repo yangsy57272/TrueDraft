@@ -72,7 +72,7 @@ get:async({key})=>{const r=JSON.parse(localStorage.getItem(key)||'null');return 
 set:async({key,value,if_match})=>{const old=JSON.parse(localStorage.getItem(key)||'null');if(if_match&&old?.etag!==if_match)throw new Error('precondition_failed');const generation=(old?.generation||0)+1;const r={value,etag:String(generation),generation};localStorage.setItem(key,JSON.stringify(r));return r},
 delete:async({key,if_match})=>{const old=JSON.parse(localStorage.getItem(key)||'null');if(if_match&&old?.etag!==if_match)throw new Error('precondition_failed');localStorage.removeItem(key);return{}},
 list:async({prefix})=>({items:Object.keys(localStorage).filter(key=>key.startsWith(prefix)).map(key=>({key}))})},
-llm:{complete:async()=>{localStorage.setItem('calls',String(Number(localStorage.getItem('calls')||0)+1));await new Promise(r=>setTimeout(r,500));if(localStorage.getItem('failure')==='timeout')throw new Error('timeout');if(localStorage.getItem('failure'))return {ok:false,error:{code:'APP_QUOTA_EXCEEDED'}};return {stopReason:'endTurn',content:{text:JSON.stringify(${JSON.stringify(fixture)})},model:'simulated-'+localStorage.getItem('calls'),usage:{inputTokens:100,outputTokens:50}}}}
+llm:{complete:async()=>{localStorage.setItem('calls',String(Number(localStorage.getItem('calls')||0)+1));await new Promise(r=>setTimeout(r,500));if(localStorage.getItem('failure')==='timeout')throw new Error('timeout');if(localStorage.getItem('failure'))throw new Error('APP_QUOTA_EXCEEDED');return {stopReason:'endTurn',content:{text:JSON.stringify(${JSON.stringify(fixture)})},model:'simulated-'+localStorage.getItem('calls'),usage:{inputTokens:100,outputTokens:50}}}}
 })};`;
 const server = createServer(async (req, res) => {
   try {

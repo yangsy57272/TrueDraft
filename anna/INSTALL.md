@@ -4,7 +4,7 @@ This is a **test candidate**, not an App Store release. Use fictional essays onl
 
 ## For a first-time reviewer
 
-1. Unzip `truedraft-anna-0.1.0-beta.4-test.zip` into its own folder. Keep the original TrueDraft application and database unchanged.
+1. Unzip `truedraft-anna-0.1.0-beta.5-test.zip` into its own folder. Keep the original TrueDraft application and database unchanged.
 2. Install Node 22 LTS and Astral uv from their official sources. In this folder run `npm ci` to install the pinned official Anna CLI (0.1.64).
 3. Run `npm run validate`. No login, upload or review submission occurs.
 4. Run `npm run dev` for a local host check. The default legacy in-memory store **must be rejected** with `aps_required`. This is a safety check, not a working persistence demo. Its AI is disabled and it cannot consume tokens.
@@ -35,3 +35,5 @@ The owner authorized a private test App and completed developer activation/devic
 Use apps cut <version> only for an owner-authorized private immutable snapshot, then the console’s Install button. This is different from releasing the App. Keep the same App identity and verify exported data after upgrading.
 
 CLI0.1.64 does not support the older guide’s --llm real spelling: real mode is the default when logged in. npm run dev:real uses supported flags. The official harness displays raw RPC payloads; use fictional data only and never share full recordings publicly. Local-harness real APS and production iframe showed different essay lists, so do not assume they share a data namespace.
+
+If Anna restores an old window after upgrading, close that App window and reopen it from Apps; the host can keep existing windows pinned to their original version. Beta.5 private installation is confirmed; its fresh-window check is recorded separately in LIVE-EVIDENCE.md.

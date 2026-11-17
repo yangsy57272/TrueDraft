@@ -22,7 +22,7 @@ test("action centre persists checklists and exports follow-up dates after submis
   await page.screenshot({ path: test.info().outputPath("hub-desktop.png"), fullPage: true });
   await page.route("**/api/list/*/checklist/*", route => route.fulfill({ status: 503, json: { error: { code: "internal_error" } } }));
   await card.getByRole("checkbox").first().click();
-  await expect(page.getByRole("alert")).toBeVisible();
+  await expect(page.locator(".application-hub").getByRole("alert")).toBeVisible();
   await expect(card.getByRole("checkbox").first()).toBeChecked();
   await page.unroute("**/api/list/*/checklist/*");
   await card.getByRole("link", { name: "Edit checklist, application status & dates →" }).click();

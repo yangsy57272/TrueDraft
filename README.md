@@ -162,6 +162,10 @@ TrueDraft is not affiliated with the Common App, any university, or any essay-co
 
 Every school page links to programme-focused official-source research, a Why School logic map, a source-anchored resource workbook and a six-part audit. Browse UK, Hong Kong, Canada, Australia and Singapore using the country/region filter. Research can be looked up without AI; connected AI can relate the evidence to the applicant’s own profile. UK research hands off to a subject-focused personal-statement setup. See [School research guide](docs/SCHOOL_RESEARCH.md) for steps, official-source boundaries and coverage limitations.
 
+### Application action centre
+
+`/my-list/hub` brings next steps, missing-information warnings, deadline watch and per-school checklists into one bilingual page. It keeps outstanding follow-ups visible after application submission, saves progress to the existing planner and supports private JSON checklist download or browser printing. It uses the student’s actual list and needs no AI key. See [Action centre guide](docs/APPLICATION_ACTION_CENTRE.md).
+
 ### Personalized application plan
 
 `/my-list/plan` automatically creates a student timetable from chosen schools, programmes, supplements, entered deadlines and linked essay progress. Save available days/hours, select applicable optional prompts, track tasks and download a calendar snapshot. Missing dates, unresolved requirements and workload that does not fit stay visible. No AI key is needed. See [Application plan guide](docs/APPLICATION_PLAN.md).

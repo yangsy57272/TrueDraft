@@ -26,7 +26,7 @@ const SUBMITTED = ["submitted", "admitted", "waitlisted", "deferred", "denied", 
 
 export default async function JourneyPage() {
   const user = await requirePageUser();
-  const { t } = await getT();
+  const { t, locale } = await getT();
   const [profile, list, essays] = await Promise.all([getProfile(user.id), listEntries(user.id), listEssays(user.id)]);
 
   // Statuses only say whether a step has been started. Facts say what exists, without claiming
@@ -72,6 +72,7 @@ export default async function JourneyPage() {
       <h1 className="text-3xl font-semibold">{t("journey.title")}</h1>
       <p className="mt-2 text-ink-soft">{t("journey.intro")}</p>
 
+      <p className="mt-5"><Link className="btn btn-primary" href="/my-list/hub">{locale === "zh-CN" ? "申请行动中心：下一步与提交后跟进" : "Application action centre: next steps & follow-ups"}</Link></p>
       <div className="mt-6">
         <p className="text-sm font-semibold text-ink">{t("journey.progress", { started: startedCount, total: planningSteps.length })}</p>
         <div className="mt-2 flex gap-1" aria-hidden="true">

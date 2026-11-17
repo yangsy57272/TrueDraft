@@ -88,7 +88,7 @@ function EntryCard({ entry, ops }: { entry: ListEntry; ops: ListOps }) {
   const essayHref = `/essays/new?listEntry=${entry.id}&school=${encodeURIComponent(v.schoolName)}`;
 
   return (
-    <li className="card p-5">
+    <li id={v.id} tabIndex={-1} className="card scroll-mt-6 p-5 target:ring-2 target:ring-focus">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h2 className="text-xl font-semibold">{name}</h2>

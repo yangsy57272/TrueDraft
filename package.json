@@ -38,7 +38,7 @@
     "better-sqlite3": "13.0.3",
     "diff": "^9.0.0",
     "drizzle-orm": "^0.45.4",
-    "next": "^16.4.3",
+    "next": "16.4.5",
     "nodemailer": "^10.2.1",
     "radix-ui": "^1.8.1",
     "react": "^19.3.1",

@@ -21,6 +21,7 @@ export default async function MyListPage() {
           <h1 className="text-3xl font-semibold">{t("list.title")}</h1>
           <p className="mt-2 max-w-3xl text-ink-soft">{t("list.intro")}</p>
         </div>
+        <Link href="/my-list/hub" className="btn btn-primary">{locale === "zh-CN" ? "申请行动中心" : "Application action centre"}</Link>
         <Link href="/my-list/plan" className="btn btn-primary">{locale === "zh-CN" ? "我的申请时间表" : "My application plan"}</Link>
         <Link href="/my-list/resources" className="btn btn-secondary">{locale === "zh-CN" ? "预算与录取分组" : "Budget & admission groups"}</Link>
         <Link href="/my-list/deadlines" className="btn btn-secondary">{t("journey.actions.track")}</Link>

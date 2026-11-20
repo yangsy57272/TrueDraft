@@ -112,7 +112,7 @@ test("admin enters verified CDS data and students see it with its source", async
   await expect(student.getByText("From the 2099-2100 Common Data Set published by the college.")).toBeVisible();
   await expect(student.getByText(/Values checked against the official document on/)).toBeVisible();
   await expect(student.getByText("Automated check")).toHaveCount(0);
-  await expect(student.getByText("10%").first()).toBeVisible();
+  await expect(student.getByRole("heading", { name: "Admissions (C1–C2)", exact: true }).locator("..").getByText("10%", { exact: true })).toBeVisible();
   await expect(student.getByText("Very important").first()).toBeVisible();
 
   // Clean up the test dataset so it never lingers on a shared database.

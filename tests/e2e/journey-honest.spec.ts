@@ -57,9 +57,9 @@ test("sample feedback is available in English, bilingual, and Chinese", async ({
   await expect(page.getByRole("link", { name: "English", exact: true })).toHaveAttribute("aria-current", "page");
   await expect(page.getByText("中文说明")).toHaveCount(0);
   await page.getByRole("link", { name: "English + Chinese notes" }).click();
-  await expect(page.getByText(/第四段从具体观察跳到了空泛的总结/)).toBeVisible();
+  await expect(page.getByText(/先展开一次具体比较/)).toBeVisible();
   await page.getByRole("link", { name: "中文" }).click();
-  await expect(page.getByText("把总结段换成你自己的思考")).toBeVisible();
+  await expect(page.getByText("让读者跟着完成一次比较，而不只是知道你有这个习惯")).toBeVisible();
   // Quotes stay in the essay's language.
-  await expect(page.getByText("“Nobody went down the third row because the light there was broken.”").first()).toBeVisible();
+  await expect(page.getByText("“I wasn't sure how to explain why it might.”").first()).toBeVisible();
 });

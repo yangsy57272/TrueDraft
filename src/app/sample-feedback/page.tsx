@@ -22,7 +22,7 @@ export default async function SampleFeedbackPage({ searchParams }: { searchParam
     <div className="container-page py-12">
       <h1 className="text-4xl font-semibold">{t("sample.title")}</h1>
       <p className="notice notice-warn mt-4 max-w-3xl" role="note">
-        <strong>{t("common.fictional")}. </strong>
+        <strong>{locale === "zh-CN" ? "写作示例。" : "Worked example. "}</strong>
         {t("sample.notice")}
       </p>
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_1.2fr]">

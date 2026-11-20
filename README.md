@@ -33,7 +33,7 @@ Explore colleges with search, filters, and sourced data.
 
 A worked example follows a student helping a classmate choose an English reply. The draft keeps everyday details and uncertainty; the feedback explains what to preserve, what needs development, and how to revise. Written for demonstration, rather than taken from a real application.
 
-![Everyday student draft beside detailed bilingual feedback](docs/images/sample-feedback.png)
+![Everyday student draft beside detailed bilingual feedback](docs/images/sample-feedback-natural.png)
 
 See application progress, checklists, and next steps together. The schools and application records below are fictional demonstration data.
 

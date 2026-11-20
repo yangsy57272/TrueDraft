@@ -1,0 +1,18 @@
+name: Improvement or data correction
+description: Suggest an improvement or report outdated college information.
+title: "[Idea]: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would you like to improve?
+      description: Explain who this helps and the problem they face. For a data correction, name the school, field, and application cycle.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested change and sources
+      description: Describe the outcome you want. For college data, include an official college or government source URL.
+    validations:
+      required: true

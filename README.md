@@ -1,10 +1,12 @@
 # TrueDraft
 
+[Download](https://github.com/yangsy57272/TrueDraft/releases) · [简体中文](README.zh-CN.md) · [Contribute](CONTRIBUTING.md) · [Report a problem](https://github.com/yangsy57272/TrueDraft/issues)
+
 **Your story. Your voice. Clearer feedback.**
 
 你的故事，你的声音。更清晰、更透明的文书反馈。
 
-TrueDraft helps students explore colleges, organize applications, and revise their own essays. It brings college research, deadlines, budgets, and optional AI feedback into one workspace, with English and Simplified Chinese interfaces.
+TrueDraft is an open-source college application planner and AI essay coach that helps students explore colleges, organize applications, and revise their own essays. It brings college research, deadlines, budgets, and optional AI feedback into one workspace, with English and Simplified Chinese interfaces.
 
 Whether you are choosing a major or polishing a final draft, TrueDraft helps you work through the next step while keeping your experiences and voice at the center.
 
@@ -88,6 +90,10 @@ Run `npm test` for unit and integration tests, or `npm run test:e2e` for browser
 - [Budget and time planning](docs/ADMISSION_BUDGET_PLAN.md)
 - [Application action centre](docs/APPLICATION_ACTION_CENTRE.md)
 - [Security and deployment review](docs/SECURITY_AND_LEGAL_REVIEW.md)
+
+See the [contribution guide](CONTRIBUTING.md) for ways to help with testing, translations, accessibility, and college data.
+
+If TrueDraft helps you, consider starring this repository or sharing it with a student who could use it.
 
 Questions, bug reports, and improvement ideas are welcome through [GitHub Issues](https://github.com/yangsy57272/TrueDraft/issues). Please use fictional examples when reporting problems with essays or profiles.
 

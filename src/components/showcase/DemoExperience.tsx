@@ -360,10 +360,15 @@ export function DemoExperience({
                   <span>{say("colleges", "所学校")}</span>
                 </p>
                 <p>
-                  {say(
-                    "One shared Common App statement, with each college’s requirements checked separately.",
-                    "一篇通用 Common App 文书；各学校要求仍须分别核对。",
-                  )}
+                  {selected.length
+                    ? say(
+                        "One shared Common App statement, with each college’s requirements checked separately.",
+                        "一篇通用 Common App 文书；各学校要求仍须分别核对。",
+                      )
+                    : say(
+                        "Choose a fictional college to start your demo plan.",
+                        "选择一所虚构学校，开始演示计划。",
+                      )}
                 </p>
                 <hr />
                 <p className="td-label">

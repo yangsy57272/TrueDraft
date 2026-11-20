@@ -12,6 +12,7 @@ test("action centre persists checklists and exports follow-up dates after submis
   }
   await page.goto("/my-list/hub");
   await expect(page.getByRole("heading", { name: "Application action centre", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Your focus for today", exact: true })).toBeVisible();
   const watch = page.getByRole("heading", { name: "Deadline watch", exact: true }).locator("..");
   await expect(watch.getByText("FICTIONAL Hub College · Financial aid forms")).toBeVisible();
   await expect(watch.getByText("FICTIONAL Hub College · Application", { exact: true })).toHaveCount(0);

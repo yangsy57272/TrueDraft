@@ -49,8 +49,12 @@ export function RecommendationEvidence({
                   "已使用，具体分数及范围见上方",
                 )
               : say(
-                  "Not used; see the grouping explanation above",
-                  "未使用，原因见上方分组说明",
+                  fit
+                    ? "Not used; see the grouping explanation above"
+                    : "No usable saved profile for a score comparison",
+                  fit
+                    ? "未使用，原因见上方分组说明"
+                    : "没有可用于成绩对照的已保存档案",
                 )}
           </dd>
         </div>

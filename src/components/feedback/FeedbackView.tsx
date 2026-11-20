@@ -1,4 +1,5 @@
 "use client";
+import { EvidenceTrace } from "./EvidenceTrace";
 import { useId } from "react";
 import { useI18n } from "@/i18n/client";
 import type { FullFeedback } from "@/server/ai/schemas";
@@ -15,8 +16,8 @@ export type FullFeedbackResult = Omit<FullFeedback, "strengths" | "categories" |
 const ALIGNMENT_ICON: Record<string, string> = { responds: "✓", partly: "◐", not_yet: "○", unclear: "?" };
 
 /** Renders the five-part structured feedback. All text is rendered as React text (escaped). */
-export function FeedbackView({ data, compact = false }: { data: FullFeedbackResult; compact?: boolean }) {
-  const { t } = useI18n();
+export function FeedbackView({ data, compact = false, sourceDraft }: { data: FullFeedbackResult; compact?: boolean; sourceDraft?: string | null }) {
+  const { t, locale } = useI18n();
   const uid = useId();
   const pad = compact ? "p-4" : "p-5";
 
@@ -104,6 +105,7 @@ export function FeedbackView({ data, compact = false }: { data: FullFeedbackResu
                 <PriorityBadge priority={p.priority} />
               </div>
               <QuoteBlock quote={p.quote} located={p.located ?? true} />
+              {sourceDraft != null && <EvidenceTrace draft={sourceDraft} quote={p.quote} zh={locale === "zh-CN"} />}
               <p className="mt-3">{p.observation}</p>
               <p className="mt-2 text-sm">
                 <strong>{t("feedback.whyItMatters")}:</strong> {p.why_it_matters}

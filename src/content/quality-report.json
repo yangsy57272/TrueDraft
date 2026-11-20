@@ -1,0 +1,171 @@
+{
+  "suiteVersion": "1.0",
+  "scope": "Deterministic regression fixtures; no live model calls or student data",
+  "sourceDigest": "d979b4816b518117c6b21c891201b54979364eb534eded95d0bb3e594094e440",
+  "passed": 18,
+  "total": 18,
+  "rows": [
+    {
+      "id": "quote-en",
+      "en": "Locate a real English quote",
+      "zh": "定位英文原句",
+      "input": "This experience taught me the importance of teamwork and perseverance.",
+      "expected": "true",
+      "actual": "true",
+      "passed": true
+    },
+    {
+      "id": "quote-invented",
+      "en": "Flag a fabricated quotation",
+      "zh": "识别不存在的引用",
+      "input": "I founded a nationwide engineering charity.",
+      "expected": "false",
+      "actual": "false",
+      "passed": true
+    },
+    {
+      "id": "quote-zh",
+      "en": "Locate Chinese text with spacing",
+      "zh": "定位中文引用并处理空白",
+      "input": "我开始  记录每一次失败。",
+      "expected": "true",
+      "actual": "true",
+      "passed": true
+    },
+    {
+      "id": "source-offsets",
+      "en": "Map normalized quotes to the source paragraph",
+      "zh": "将标点统一后的引用映射回原文段落",
+      "input": "she said \"ask first\"",
+      "expected": "2:She said “ask  first”",
+      "actual": "2:She said “ask  first”",
+      "passed": true
+    },
+    {
+      "id": "prediction-en",
+      "en": "Reject a clear admission promise",
+      "zh": "识别英文录取保证",
+      "input": "You will definitely get into college.",
+      "expected": "false",
+      "actual": "false",
+      "passed": true
+    },
+    {
+      "id": "prediction-zh",
+      "en": "Reject a Chinese admission promise",
+      "zh": "识别中文录取保证",
+      "input": "你一定会被录取。",
+      "expected": "false",
+      "actual": "false",
+      "passed": true
+    },
+    {
+      "id": "ghostwriting",
+      "en": "Flag explicit essay-writing compliance",
+      "zh": "识别明确的代写响应",
+      "input": "Here is your essay",
+      "expected": "false",
+      "actual": "false",
+      "passed": true
+    },
+    {
+      "id": "language-en",
+      "en": "Check en prose heuristic",
+      "zh": "检查英文语言启发式",
+      "input": "Ask what changed in your reasoning and point to a specific moment.",
+      "expected": "true",
+      "actual": "true",
+      "passed": true
+    },
+    {
+      "id": "language-zh",
+      "en": "Check zh prose heuristic",
+      "zh": "检查中文语言启发式",
+      "input": "请指出你的思考发生变化的具体时刻，并解释你为什么改变了方法。",
+      "expected": "true",
+      "actual": "true",
+      "passed": true
+    },
+    {
+      "id": "alternatives-clearer",
+      "en": "Bound alternatives: clearer",
+      "zh": "限制替代句：clearer",
+      "input": "Three short options and a 1,000-character replacement",
+      "expected": "2",
+      "actual": "2",
+      "passed": true
+    },
+    {
+      "id": "alternatives-translate",
+      "en": "Bound alternatives: translate",
+      "zh": "限制替代句：translate",
+      "input": "Three short options and a 1,000-character replacement",
+      "expected": "0",
+      "actual": "0",
+      "passed": true
+    },
+    {
+      "id": "alternative-length",
+      "en": "Discard an essay-length alternative",
+      "zh": "丢弃过长替代句",
+      "input": "One 1,000-character alternative to a short sentence",
+      "expected": "0",
+      "actual": "0",
+      "passed": true
+    },
+    {
+      "id": "unknown-school",
+      "en": "Keep missing admission data unassessed",
+      "zh": "缺失录取数据时不推断",
+      "input": "No admission rate, SAT 1600",
+      "expected": "null",
+      "actual": "null",
+      "passed": true
+    },
+    {
+      "id": "reach-floor",
+      "en": "Keep a highly selective school as Reach",
+      "zh": "高选择性学校保持 Reach",
+      "input": "12% admission rate, SAT 1600",
+      "expected": "reach",
+      "actual": "reach",
+      "passed": true
+    },
+    {
+      "id": "shared-once",
+      "en": "Schedule one shared statement for two schools",
+      "zh": "两校通用文书只安排一次",
+      "input": "Two active Common App schools",
+      "expected": "1",
+      "actual": "1",
+      "passed": true
+    },
+    {
+      "id": "dependencies",
+      "en": "Hold drafting until brainstorming is handled",
+      "zh": "素材整理完成后再起草",
+      "input": "Unfinished ideas → draft",
+      "expected": "global:common_app:ideas",
+      "actual": "global:common_app:ideas",
+      "passed": true
+    },
+    {
+      "id": "time-cap",
+      "en": "Keep the focus plan inside saved availability",
+      "zh": "当日重点不超出保存的可用时间",
+      "input": "60 allocated minutes",
+      "expected": "true",
+      "actual": "true",
+      "passed": true
+    },
+    {
+      "id": "no-time",
+      "en": "Do not invent free time",
+      "zh": "不假定额外空闲时间",
+      "input": "No work sessions today",
+      "expected": "0",
+      "actual": "0",
+      "passed": true
+    }
+  ]
+}

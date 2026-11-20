@@ -2,6 +2,10 @@
 
 Open **My college list → Application action centre** (`/my-list/hub`), also linked from the journey and daily plan. English and Chinese are supported. This is part of the standalone TrueDraft app; the separate Anna essay-review candidate is unchanged.
 
+## Today’s focus
+
+The focus panel selects up to three ready tasks within work minutes already allocated for today in the saved schedule and selected time zone. It does not assume extra availability. Writing stages wait for earlier unfinished stages; application submission waits for open tasks, including the relevant shared platform statement. Shared tasks list the active schools they cover. Partial sessions are labeled; starting a session does not mark a whole task finished. Suggested dates, date basis and recorded source can be inspected. This is deterministic planning, not AI or a prediction of completion.
+
 ## For a student
 
 1. Add your schools in My college list. Choose each programme, application round and entry year; confirm school-specific requirements and dates in the official portal.

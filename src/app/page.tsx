@@ -34,6 +34,7 @@ export default async function HomePage() {
                 {t("journey.homeExplore")}
               </Link>
             </div>
+            <div className="mt-4 flex flex-wrap gap-4 text-sm"><Link href="/demo">{locale === "zh-CN" ? "无需注册，体验完整演示 →" : "Try the interactive demo — no sign-in →"}</Link><Link href="/quality">{locale === "zh-CN" ? "查看质量检查" : "See quality checks"}</Link></div>
             <p className="mt-6 max-w-xl text-sm text-ink-soft">{t("disclaimer.main")}</p>
           </div>
           <section className="card border-t-4 border-t-teal p-5 sm:p-7" aria-labelledby="sample-title">

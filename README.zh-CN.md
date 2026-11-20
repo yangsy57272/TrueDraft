@@ -2,7 +2,7 @@
 
 **你的故事，你的声音。更清晰、更透明的文书反馈。**
 
-[English](README.md) · [下载桌面版](https://github.com/yangsy57272/TrueDraft/releases) · [反馈问题](https://github.com/yangsy57272/TrueDraft/issues) · [参与贡献](CONTRIBUTING.md)
+[免注册互动演示](https://yangsy57272.github.io/TrueDraft/) · [English](README.md) · [下载桌面版](https://github.com/yangsy57272/TrueDraft/releases) · [反馈问题](https://github.com/yangsy57272/TrueDraft/issues) · [参与贡献](CONTRIBUTING.md)
 
 TrueDraft 是一个开源大学申请规划与文书修改工具，提供英文和简体中文界面。你可以在同一个工作空间里研究大学、整理申请、管理截止日期和预算，并按需使用 AI 反馈修改自己的文书。
 
@@ -14,6 +14,12 @@ TrueDraft 是一个开源大学申请规划与文书修改工具，提供英文�
 - **按需使用 AI 辅导：** 理解题目、梳理想法、获得段落反馈和修改计划，保留自己的经历与表达。
 
 [查看实际界面截图](README.md#screenshots)。反馈示例是虚构演示，非实时 AI 生成结果。
+
+## 先在线体验
+
+打开[互动演示](https://yangsy57272.github.io/TrueDraft/)，跟随一个完整的虚构申请案例，体验选校、当天计划、反馈原句定位和修改对照。无需注册或 AI 密钥；刷新后重置。也可观看[简短操作录屏](https://yangsy57272.github.io/TrueDraft/demo-tour.webm)。
+
+[查看0.2.0更新说明（英文）](RELEASE_NOTES.md) · [质量评测方法与局限（英文）](docs/QUALITY.md) · [体验测试流程（英文）](docs/USER_TESTING.md)
 
 ## 开始使用
 

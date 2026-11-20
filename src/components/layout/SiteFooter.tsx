@@ -3,7 +3,7 @@ import { getT } from "@/i18n/server";
 import { Logo } from "./Logo";
 
 export async function SiteFooter() {
-  const { t } = await getT();
+  const { t, locale } = await getT();
   return (
     <footer className="mt-16 border-t border-line bg-paper-2">
       <div className="container-page grid gap-8 py-10 md:grid-cols-[1.4fr_1fr_1fr]">
@@ -25,6 +25,9 @@ export async function SiteFooter() {
         <nav aria-label={t("footer.trust")}>
           <h2 className="font-sans text-sm font-semibold uppercase tracking-wide text-ink-soft">{t("footer.trust")}</h2>
           <ul className="mt-3 space-y-2 text-sm">
+            <li><Link href="/quality">{locale === "zh-CN" ? "质量与依据" : "Quality & evidence"}</Link></li>
+            <li><Link href="/demo">{locale === "zh-CN" ? "互动演示" : "Interactive demo"}</Link></li>
+            <li><Link href="https://github.com/yangsy57272/TrueDraft/releases">{locale === "zh-CN" ? "下载与版本更新" : "Downloads & release notes"}</Link></li>
             <li><Link href="/privacy">{t("nav.privacy")}</Link></li>
             <li><Link href="/responsible-ai">{t("nav.integrity")}</Link></li>
           </ul>

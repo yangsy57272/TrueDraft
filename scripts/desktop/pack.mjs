@@ -47,6 +47,7 @@ function buildPayload() {
     }
   }
   fs.copyFileSync(path.join(import.meta.dirname, 'launch.mjs'), path.join(payload, 'launch.mjs'));
+  for (const file of ['LICENSE', 'RELEASE_NOTES.md']) fs.copyFileSync(path.join(root, file), path.join(payload, file));
   fs.mkdirSync(path.join(payload, 'data'), { recursive: true });
   fs.copyFileSync(path.join(root, 'data', 'global-schools.json'), path.join(payload, 'data', 'global-schools.json'));
   fs.cpSync(path.join(root, 'data', 'cds'), path.join(payload, 'data', 'cds'), { recursive: true, filter: file => !file.includes(`${path.sep}research`) });

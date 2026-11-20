@@ -1,0 +1,45 @@
+import { chromium } from "playwright";
+import { mkdir } from "node:fs/promises";
+// Record the actual fictional walkthrough. No account or model is involved.
+const executablePath = process.env.PW_CHROMIUM_PATH;
+const browser = await chromium.launch(executablePath ? { executablePath } : {});
+await mkdir("tmp/tour", { recursive: true });
+await mkdir("public/showcase", { recursive: true });
+const context = await browser.newContext({
+  viewport: { width: 1280, height: 900 },
+  recordVideo: { dir: "tmp/tour", size: { width: 1280, height: 900 } },
+});
+const page = await context.newPage();
+const video = page.video();
+await page.goto(process.env.PREVIEW_URL || "http://localhost:4173");
+await page.getByRole("heading", { name: /A little less overwhelm/ }).waitFor();
+await page.waitForTimeout(4000);
+await page.locator(".td-section-heading").scrollIntoViewIfNeeded();
+await page.getByText("Why this grouping?", { exact: true }).first().click();
+await page.waitForTimeout(5000);
+await page.getByRole("button", { name: /Make today count/ }).click();
+await page.locator(".td-section-heading").scrollIntoViewIfNeeded();
+await page.waitForTimeout(5000);
+await page.getByText("Why now, and what comes next?", { exact: true }).click();
+await page.waitForTimeout(4000);
+await page.getByRole("button", { name: "Mark task handled" }).first().click();
+await page.waitForTimeout(3000);
+await page.getByRole("button", { name: /Keep your voice/ }).click();
+await page.locator(".td-section-heading").scrollIntoViewIfNeeded();
+await page.getByRole("button", { name: "Locate this in the draft" }).click();
+await page.waitForTimeout(5000);
+await page
+  .getByRole("button", { name: "Compare an illustrative revision" })
+  .click();
+await page.locator(".td-revision").scrollIntoViewIfNeeded();
+await page.waitForTimeout(5000);
+await page.getByRole("button", { name: /Check the evidence/ }).click();
+await page.locator(".td-section-heading").scrollIntoViewIfNeeded();
+await page.waitForTimeout(5000);
+await page.getByRole("button", { name: "Switch to Chinese" }).click();
+await page.waitForTimeout(4000);
+await page.close();
+await context.close();
+await video.saveAs("public/showcase/demo-tour.webm");
+await browser.close();
+console.log("Recorded actual walkthrough: public/showcase/demo-tour.webm");

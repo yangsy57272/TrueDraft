@@ -1,0 +1,44 @@
+import { build } from "esbuild";
+import { mkdir, writeFile, cp, access } from "node:fs/promises";
+const out = "dist/preview";
+await mkdir(out, { recursive: true });
+await build({
+  entryPoints: ["scripts/preview/entry.tsx"],
+  bundle: true,
+  minify: true,
+  outfile: `${out}/demo.js`,
+  platform: "browser",
+  format: "esm",
+  jsx: "automatic",
+  define: { "process.env.NODE_ENV": '"production"' },
+  legalComments: "linked",
+});
+await writeFile(
+  `${out}/index.html`,
+  `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Try TrueDraft: an open-source college application planner and AI essay coach. Explore a fictional college list, day plan, and essay revision. No sign-in required."><meta name="theme-color" content="#182c2b"><meta property="og:title" content="TrueDraft — Your next clear step"><meta property="og:description" content="A college application journey you can try without signing in. English and Chinese. Open source."><meta property="og:type" content="website"><meta property="og:url" content="https://yangsy57272.github.io/TrueDraft/"><meta property="og:image" content="https://yangsy57272.github.io/TrueDraft/social-preview.png"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'"><title>TrueDraft — College applications, with a clearer next step</title><link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="stylesheet" href="./demo.css"><style>body{margin:0}*{box-sizing:border-box}a.skip{position:absolute;top:-100px;left:12px}a.skip:focus{top:12px;z-index:100;background:white;padding:10px}</style></head><body><a href="#main" class="skip">Skip to content</a><main id="main" tabindex="-1"><div id="demo"></div></main><noscript>This interactive demo requires JavaScript. <a href="https://github.com/yangsy57272/TrueDraft">Read about TrueDraft on GitHub</a>.</noscript><script type="module" src="./demo.js"></script></body></html>`,
+);
+await writeFile(
+  `${out}/icon.svg`,
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#182c2b"/><text x="15" y="48" fill="#fffef9" font-size="48" font-family="Georgia">T</text><circle cx="47" cy="47" r="4" fill="#acd9b8"/></svg>',
+);
+await writeFile(`${out}/.nojekyll`, "");
+await writeFile(
+  `${out}/robots.txt`,
+  "User-agent: *\nAllow: /\nSitemap: https://yangsy57272.github.io/TrueDraft/sitemap.xml\n",
+);
+await writeFile(
+  `${out}/sitemap.xml`,
+  '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://yangsy57272.github.io/TrueDraft/</loc></url></urlset>',
+);
+for (const name of ["social-preview.png", "demo-tour.webm"]) {
+  try {
+    await access(`public/showcase/${name}`);
+    await cp(`public/showcase/${name}`, `${out}/${name}`);
+  } catch {
+    /* Media may be captured after the initial preview build. */
+  }
+}
+console.log(
+  `Public preview built at ${out}. No server, API keys, account data or analytics.`,
+);

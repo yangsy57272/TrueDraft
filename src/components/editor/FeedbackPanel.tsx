@@ -108,7 +108,7 @@ export function FeedbackPanel({ essayId, feedback, runs, versions, activeRun, er
           </div>
           <h3 className="mt-6 text-sm font-semibold uppercase tracking-wide text-ink-soft">{t("feedback.fullDetail")}</h3>
           <div className="mt-2">
-            <FeedbackView data={feedback.result} compact />
+            <FeedbackView data={feedback.result} sourceDraft={feedback.versionContent} compact />
           </div>
           <Link href={`/essays/${essayId}/feedback/${feedback.runId}`} className="btn btn-secondary btn-sm mt-4">{t("feedback.viewFull")}</Link>
         </div>

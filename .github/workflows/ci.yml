@@ -26,6 +26,8 @@ jobs:
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run test:unit
+      - run: npm run quality:check
+      - run: npm run preview:build
 
   integration-e2e:
     name: Integration and browser tests

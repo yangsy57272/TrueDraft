@@ -59,7 +59,7 @@ test("journey: profile → majors → schools → list → linked supplemental e
   await expect(page.getByRole("heading", { name: "No CDS data imported yet" })).toBeVisible();
   // Without a CDS, the federal figures are still there, with their period and source.
   await expect(page.getByRole("heading", { name: "U.S. Department of Education data" })).toBeVisible();
-  await expect(page.getByText("Fall 2024").first()).toBeVisible();
+  await expect(page.getByRole("region", { name: "U.S. Department of Education data", exact: true }).getByText("Fall 2024").first()).toBeVisible();
   await expect(page.getByRole("link", { name: /This college on College Scorecard/ })).toHaveAttribute("href", /collegescorecard\.ed\.gov\/school\/\?186131/);
 
   // My list: set category/round/deadline, toggle checklist, start a linked essay
@@ -112,7 +112,7 @@ test("admin enters verified CDS data and students see it with its source", async
   await expect(student.getByText("From the 2099-2100 Common Data Set published by the college.")).toBeVisible();
   await expect(student.getByText(/Values checked against the official document on/)).toBeVisible();
   await expect(student.getByText("Automated check")).toHaveCount(0);
-  await expect(student.getByText("10%").first()).toBeVisible();
+  await expect(student.getByRole("heading", { name: "Admissions (C1–C2)", exact: true }).locator("..").getByText("10%", { exact: true })).toBeVisible();
   await expect(student.getByText("Very important").first()).toBeVisible();
 
   // Clean up the test dataset so it never lingers on a shared database.

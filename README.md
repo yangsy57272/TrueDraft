@@ -17,6 +17,20 @@ Whether you are choosing a major or polishing a final draft, TrueDraft helps you
 
 TrueDraft is designed to support your writing and decisions. AI can make mistakes; review its suggestions and confirm current requirements with each college. School groupings are planning aids, and a “Safety” label guarantees neither admission nor affordability.
 
+## Screenshots
+
+Explore colleges with search, filters, and sourced data.
+
+![College explorer with filters and school comparison options](docs/images/college-explorer.png)
+
+Read structured feedback alongside a draft, with English and Chinese options. This built-in example is fictional and hand-written, rather than a live AI response.
+
+![Fictional sample essay beside bilingual feedback](docs/images/sample-feedback.png)
+
+See application progress, checklists, and next steps together. The schools and application records below are fictional demonstration data.
+
+![Application action centre showing next steps for fictional colleges](docs/images/application-centre.png)
+
 ## Try the desktop app
 
 Download the package for your system from **[GitHub Releases](https://github.com/yangsy57272/TrueDraft/releases)**:
@@ -78,3 +92,7 @@ Run `npm test` for unit and integration tests, or `npm run test:e2e` for browser
 Questions, bug reports, and improvement ideas are welcome through [GitHub Issues](https://github.com/yangsy57272/TrueDraft/issues). Please use fictional examples when reporting problems with essays or profiles.
 
 TrueDraft is an independent project, unaffiliated with the Common App or any university.
+
+## License
+
+TrueDraft’s original code and documentation are licensed under the [MIT License](LICENSE), copyright © 2026 Shiyi Yang. Third-party dependencies and attributed external materials retain their own licenses and terms.

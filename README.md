@@ -1,89 +1,58 @@
 # TrueDraft
 
-**Your story. Your voice. Clearer feedback.** · 你的故事，你的声音。更清晰、更透明的文书反馈。
+**Your story. Your voice. Clearer feedback.**
 
-TrueDraft is a bilingual (English / Simplified Chinese) web app that gives students — especially Chinese students applying to undergraduate programs abroad — structured, ethical feedback on their own college application essays. It is a coaching and revision tool, **not** a ghostwriting service. The AI is instructed not to write or replace the essay, invent experiences, or predict admission outcomes. Structured, length-capped output (at most two short alternatives for a passage the student selects) makes handing back a replacement essay hard, but no control can guarantee a model never produces ghostwritten text.
+你的故事，你的声音。更清晰、更透明的文书反馈。
 
-> The product name, tagline, and logo are configured in [`src/config/brand.ts`](src/config/brand.ts).
+TrueDraft helps students explore colleges, organize applications, and revise their own essays. It brings college research, deadlines, budgets, and optional AI feedback into one workspace, with English and Simplified Chinese interfaces.
 
----
+Whether you are choosing a major or polishing a final draft, TrueDraft helps you work through the next step while keeping your experiences and voice at the center.
 
-## What the app does now
+## What you can do
 
-1. **School recommendations after choosing majors** — “See colleges for these majors →” opens `/schools/recommended`. The link is always visible; applicants without a saved field can choose one directly. The default now considers **all six application systems** (US, UK, Hong Kong, Canada, Australia and Singapore), with a system selector and visible directory/match/unknown counts. Non-U.S. cards use reviewed official undergraduate subject listings, concrete research links and an undecided admission group; all 39 recorded international schools remain visible as matches or schools to research. The initial evidence catalogue has 21 schools and 206 subject links, not worldwide coverage. Every system now shows Reach / Target / Safety columns. International groups use explicit student choices or qualification-specific course checks; missing data stays unassessed. For the **U.S.**, a starting list aims for **4 Reach, 5 Target, 4 Safety**, with fewer when data or filters leave too few candidates. Each card explains its classification, field prevalence, graduation rate, and verified U.S. News ranks. School pages also let you choose a field and inspect its available data. Choose balanced matching, undergraduate program rank, or National University rank as the ordering priority. Rankings never change the admission group.
-   - **AI school + major matching** uses courses, activities, honors and interests to explain the shortlist, tradeoffs and next research steps, with streamed character tracking. It requires configured AI and consent. Test scores/GPA remain local to the rules; development mock results are clearly labeled. AI can only return schools in the server-generated shortlist and cannot assign admission groups. Its 13-school explanation limit is balanced across the selected systems; the full subject-match results remain visible.
-   - **U.S. only:** university-wide admit-rate bands: below 15% always Reach; 15–35% Reach; 35–60% Target; 60%+ Safety. SAT/ACT at or above the published 75th percentile moves one group safer; below the 25th percentile moves one harder. Missing scores/ranges use admit rate only. These are planning suggestions, **not predictions or program-specific admission assessments**. Competitive majors, international admission and financial aid can make admission harder; Safety does not guarantee admission or affordability. Applicants choose the final label.
-   - The versioned **2027 U.S. News** extract currently covers 24 institutions with overall and/or undergraduate program rankings. Each displayed rank links to a publisher or university announcement and identifies its category. National Universities and Liberal Arts Colleges are not pooled into one ranking; graduate/public-only/specialty ranks are not passed off as undergraduate overall ranks. Missing data says **not verified**, not unranked. Degree share is **prevalence, not program quality**. Broader ranking and program-specific admissions coverage remain future work.
-   - Adding a school saves its suggested Reach/Target/Safety label and the selected major/field to My list. Existing list entries retain the applicant’s choices.
-   - **Budget and time planning** — `/my-list/resources` uses your saved schools to estimate total application-season spending and alternative one-school annual/first-year/full-degree scenarios. Default USD, original currencies, dated ECB conversions, household budgets, confirmed awards/renewal, deposits/proof-of-funds, paid/waived fees, shared application charges, tests/documents and remaining essay/admin time stay separate. Unknown costs never become free. Academic Safety and financial affordability are separate. [Workflow and source limits](docs/ADMISSION_BUDGET_PLAN.md).
-2. **Supplemental essays** — The 2026–27 catalog now contains **134 institutions**: 98 with listed questions or labeled task summaries, 31 requiring portal checks, and 5 with no required general supplement identified. Its **428 prompt/task records preserve all 327 original workbook prompts**. School pages show limits/requirements and “Start this essay” prefills the workspace; My list shows prompt counts. Newly researched task summaries link to official wording. Confirm current route/program requirements in the application portal. College Essay Guy commentary was not imported; relevant free guides appear as attributed external links.
-3. **Personal statement guide** — `/guides/personal-statement`, in English and Chinese, covers the seven Common App prompts, six writing steps, montage/narrative structures, pitfalls, international-applicant tips, a submission checklist and outside reading. The text is original and linked from navigation, essays and the journey.
-4. **Desktop downloads** — SQLite packages for Windows x64, macOS Apple Silicon/Intel and Linux x64/arm64 include the runtime and reference data. Upgrades refresh public supplements while retaining local drafts. AI is optional. **Settings → AI connection settings** provides service presets, a masked API-key field, model discovery, a synthetic structured-response test and instant save; no `.env` editing is needed in desktop downloads. Keys are encrypted on the device. Hosted deployments retain operator-managed AI.
+- **Explore majors and colleges.** Build a profile of your interests and activities, compare schools, and understand the data behind suggested matches. Research covers the U.S., U.K., Hong Kong, Canada, Australia, and Singapore, with coverage varying by system.
+- **Plan your applications.** Keep a college list, deadlines, document checklists, follow-ups, and application statuses together. Estimate costs and remaining work.
+- **Develop your essays.** Use writing guides and supplemental prompts, save drafts automatically, compare versions, and export your writing.
+- **Get optional AI coaching.** Unpack a prompt, brainstorm ideas, request passage feedback, and turn suggestions into a revision plan. Feedback is available in English, Chinese, or both.
 
-## Status: what is implemented vs. future work
+TrueDraft is designed to support your writing and decisions. AI can make mistakes; review its suggestions and confirm current requirements with each college. School groupings are planning aids, and a “Safety” label guarantees neither admission nor affordability.
 
-### Implemented (and covered by automated tests)
+## Try the desktop app
 
-| Area | What works |
-|---|---|
-| Accounts | Email magic-link sign-in (Better Auth), persistent sessions, sign-out, account deletion, full JSON data export (format v2: every record with its id, uncapped history, activity log). Name, school, phone, ID, and family finances are never required; test scores and GPA are optional profile fields that are never sent to the AI. |
-| Essays | Create workspaces (title, type, exact prompt, optional school & word limit, focus areas, feedback language, optional context); autosaved working draft (saves run one at a time with a revision number, so an outdated tab or reordered request can never overwrite newer text; conflicts are shown with keep/load/copy choices; export and navigation wait for the save); immutable numbered versions with notes; compare any two versions (word diff); duplicate; export `.md` / `.txt`; delete. |
-| AI feedback | Five-part structured feedback (overall response, 8-category diagnostic with developmental labels, passage comments, 3–5 step revision plan, voice check) in English, Chinese, or bilingual. Honest progress stages from the real response stream, no fake percentages. |
-| AI tools | Prompt Decoder, Brainstorming Coach (stored only if the student saves notes), Sentence Feedback (7 modes, max 2 alternatives, length-capped), Word-Count Assistant, Final Read-Through. |
-| AI safety | Versioned server-side prompts; strict JSON-schema structured output validated with Zod; length-capped fields so no single field can carry an essay; long alternatives discarded; quotes checked against the draft; prompt-injection tag neutralisation; never fabricates feedback on failure; timeouts + limited retries; refusal handling. |
-| Privacy | Consent dialog (with “Learn what is sent” and “Save without AI analysis”) before the first AI call and after any policy-version change; consent records with withdrawal; identifier redaction before sending; AES-256-GCM application-level encryption of drafts, versions and version notes, notes, profiles, and feedback (titles, prompts, and list metadata are stored unencrypted and owner-scoped); retention periods with automatic purge; Privacy Center driven by deployment config; no third-party analytics; logs carry no essay content. |
-| Security | Server-side auth + per-user authorization on every route (foreign IDs → 404), same-origin checks on mutations, SQLite-backed rate limits, CSP and security headers, `no-store` on private data, sanitized Markdown, generic error messages. |
-| Localization | Complete English and Simplified Chinese UI; language switcher in the header and Settings; preference stored on the account; i18n architecture ready for more locales. |
-| Content | Original bilingual writing guides (seeded), attributed external links, and a clearly-labelled fictional sample essay with hand-written sample feedback. |
-| Application journey | A 7-step hub (`/journey`): profile → majors → read the CDS → explore schools → college list → essays → track applications. Each step's status is computed from the student's own data, with no streaks or pressure. |
-| Profile | Courses (IB/A-Level/AP/Chinese national/OSSD levels), Common App-style activities (150-char descriptions, grades, hours), honors, interests and values, optional scores, and college preferences. Encrypted at rest. **CV import:** paste CV text, the AI extracts items, the student ticks which to add, and the CV itself is never stored. |
-| Major Explorer | AI suggests fields of study grounded in the student's own entries. Every cited entry is checked against the profile and flagged if not found. Includes ways to test each interest. No prestige ranking or admission talk. Scores and GPA are never sent. Shortlist "majors I'm considering". |
-| Common Data Set | `/cds` explains every CDS section and the key items (C1, C2, C7, C8–C9, C11–C12, C13–C22, G1, H6, J1), with a fictional worked example. `/schools` is a directory of 1,573 U.S. colleges of every kind (public and private nonprofit, any selectivity). It has U.S. Department of Education figures (College Scorecard) for every college, and 245 imported Common Data Set editions for 234 institutions, plus 561 checked institutional CDS entry points/documents (including historical sources); every value is marked with its source and period. Filters cover region, size, admission rate, tuition, test policy, early plans, international aid, and field. Results can be sorted and are paginated. Schools whose data can't answer a filter are listed separately, never silently dropped. School pages, side-by-side compare, and admin CDS entry, CSV import, and AI pre-fill (drafts only) are included. |
-| Recommendations | All six systems participate by default with a system selector. Official international subject listings explain relevance and retain unassessed admission groups; all recorded international schools are accounted for. See `docs/CROSS_SYSTEM_RECOMMENDATIONS.md`. For the U.S., `/schools/recommended`: after choosing majors (each linked to a field of study), a balanced starting list split into **Reach / Target / Safety** (4/5/4). Rule-based and transparent (`src/lib/fit.ts`): admit-rate bands (under 15% is always a reach), moved one step by where the student's SAT/ACT sits in the school's middle-50% range; no score or no published range means admit rate only, and the card says so. Candidates must award ≥1% of degrees in the student's fields; ordered by field prevalence, six-year graduation rate and verified ranking signals. Size/region preferences apply first and are relaxed (and labelled) only to fill a short group. Every card lists its reasons and adds the school to the list with the suggested label. School pages show the same suggestion. Not a prediction, and the page says so. |
-| Supplements | 2026–27 catalog for 134 institutions (428 prompt/task records; 98 with listed questions, 31 portal checks, 5 with no required general supplement identified), loaded from `data/supplements/2026-2027.json` with `npm run supplements:import`. Shown on school pages and summarised on My list; "Start this essay" opens a new essay pre-filled with the prompt, word limit, school, and list link. |
-| Personal statement guide | `/guides/personal-statement`: original bilingual guide — Common App prompts, step-by-step process, two essay shapes, pitfalls, notes for international applicants, a pre-submit checklist, and attributed external links. |
-| College list | Add directory or custom schools. Labels are Reach / Target / Safety / Not sure; TrueDraft can suggest one, but the student always decides. Tracks round, platform, deadline, intended major, status, private notes (encrypted), a checklist with defaults (recommendations, transcript, English test, CSS/ISFAA, …), linked supplemental essays, and upcoming deadlines. |
-| Admin | Aggregate counts only (no essay browsing). Resource management with source, author, license status, permission notes, knowledge collection, access level, and an AI-retrieval switch that is off by default. |
-| Accessibility | Semantic HTML, skip link, labelled fields with associated errors, visible focus, keyboard-operable Radix tabs/dialogs/menus with focus return, non-colour cues on all statuses, reduced-motion support, no horizontal overflow at 375px. |
+Download the package for your system from **[GitHub Releases](https://github.com/yangsy57272/TrueDraft/releases)**:
 
-### Not implemented / future work
+- **Windows:** run the x64 installer.
+- **macOS:** extract the Apple Silicon or Intel ZIP and open `TrueDraft.app`.
+- **Linux:** extract the x64 or arm64 archive and run `./TrueDraft`.
 
-- **Live AI was not exercised in this environment** (no API key was available). The Anthropic and OpenAI-compatible adapters are tested against their wire formats with stubbed HTTP; run one real request after configuring a key (see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)).
-- Counselor/teacher/parent roles, sharing links, and any social features (deliberately out of MVP scope).
-- Support access to essays (deliberately not built — see Privacy Center).
-- Nonce-based CSP (currently `'unsafe-inline'` scripts; see the security doc).
-- Translations beyond English and Simplified Chinese.
-- Uploading `.docx`/PDF drafts (students paste text).
-- AI retrieval from licensed materials is implemented as a gated mechanism but ships with **no** licensed content.
-- **CDS coverage is partial and explicitly sourced.** The 2026-11-12 audit covers all 1,573 U.S. directory institutions; 561 have a checked official page or document, and 234 have imported detailed figures. Historical sources, blocked sites, ambiguous forms, unparsed spreadsheets and missing fields are identified in the coverage catalog; none means “no CDS exists.” See [the coverage report](docs/CDS_COVERAGE.md).
-- Continued CDS source/field coverage expansion and deadline reminders by email.
-- Legal review of the privacy text for a specific operator and market (required before launch — see [docs/SECURITY_AND_LEGAL_REVIEW.md](docs/SECURITY_AND_LEGAL_REVIEW.md)).
+The desktop app opens in your browser and stores your work on your device. Writing and planning work offline. To enable AI, open **Settings → AI connection settings** and configure a compatible provider or local service. Cloud AI may incur provider charges.
 
----
+See the [desktop guide](docs/DESKTOP.md) for installation details, AI setup, and backups. Release downloads can lag behind features on the `main` branch.
 
-## Tech stack
+## Your writing and data
 
-Next.js 16 (App Router, server components, route handlers) · TypeScript · SQLite + Drizzle ORM (SQL migrations in `drizzle-sqlite/`) · Better Auth (magic link) · Tailwind CSS v4 · Radix UI primitives · Zod · Anthropic TypeScript SDK behind a provider-agnostic adapter · Vitest + Playwright + axe-core.
+You choose when to request AI help and are asked for consent before analysis. Relevant text is sent to the configured provider when you use AI; that provider’s data policies also apply. The editor works with AI turned off.
 
-## Desktop app
+Drafts and other sensitive records are encrypted at rest. Some metadata, including essay titles and prompts, is stored unencrypted. TrueDraft includes data export and deletion controls and ships without third-party analytics. See [AI data flow](docs/AI_DATA_FLOW.md) for details.
 
-Download the Windows x64 installer or the macOS ZIP for your processor from [GitHub Releases](https://github.com/yangsy57272/TrueDraft/releases). On Windows, double-click the installer. On macOS, extract the ZIP and open `TrueDraft.app`. TrueDraft opens in your browser with a local profile and stores data in a SQLite file on your device. The packages include Node.js and the reference data.
+College information includes source links and reporting periods where available. Coverage is incomplete, and requirements can change. Check official college websites and application portals before acting.
 
-See the [desktop guide](docs/DESKTOP.md) for data locations, backup, optional AI settings, and packaging commands.
+## Run locally
 
-## Quick start (local development)
+For developers, TrueDraft uses Next.js, TypeScript, SQLite, and Drizzle ORM.
 
-1. Install Node.js **22.22.0** (the version in `.nvmrc`), then run these commands from the repository folder.
+1. Install Node.js **22.22.0** (see `.nvmrc`), then clone and install:
 
    ```bash
-   node --version
+   git clone https://github.com/yangsy57272/TrueDraft.git
+   cd TrueDraft
    npm ci
    cp .env.example .env
    ```
 
-2. Open `.env`. Keep `DATABASE_PATH=.truedraft/truedraft.sqlite` to store the SQLite database inside this checkout. The first migration creates the file and its tables.
-3. Run `openssl rand -base64 32` twice. Use the first result for `BETTER_AUTH_SECRET` and the second for `ENCRYPTION_KEYS`, with `k1:` before the second result. Keep `EMAIL_TRANSPORT=console` for local sign-in. Set `AI_PROVIDER=mock` to try the feedback workflow with fictional text, or leave it empty to try the editor without AI. Keep `.env` local.
-4. Create the tables, load the starter data, and start the app.
+2. In `.env`, replace `BETTER_AUTH_SECRET` and `ENCRYPTION_KEYS`. Run `openssl rand -base64 32` twice: use one result for the secret and the other as `ENCRYPTION_KEYS=k1:<second-result>`. Keep `.env` private. Leave `AI_PROVIDER` empty to start without AI, or use `mock` for clearly labeled development feedback. Keep `EMAIL_TRANSPORT=console` for local sign-in.
+
+3. Initialize the database and start:
 
    ```bash
    npm run db:migrate
@@ -94,82 +63,18 @@ See the [desktop guide](docs/DESKTOP.md) for data locations, backup, optional AI
    npm run dev
    ```
 
-5. Open `http://localhost:3000` and sign in with `demo@example.test`. Open the one-time link printed in the terminal where `npm run dev` is running. Create a fictional essay, then go to **My journey** and use **Open draft** to return to it. Add a school and a deadline in **My college list**, then open **View my deadlines** and select the school name to jump back to its deadline controls.
+4. Open [localhost:3000](http://localhost:3000), enter an email address, and use the sign-in link printed in your terminal.
 
-### AI provider options
+Run `npm test` for unit and integration tests, or `npm run test:e2e` for browser tests. See [deployment](docs/DEPLOYMENT.md) and [AI evaluation](docs/AI_EVALUATION.md) for configuration and verification guidance.
 
-| `AI_PROVIDER` | Behaviour |
-|---|---|
-| *(empty)* | AI feedback disabled; students can still write, save, version, compare, export. The UI says so. |
-| `mock` | **Development only.** Returns placeholder text labelled “Development mock — not real feedback”. A dev banner is shown. |
-| `anthropic` | Claude via the official SDK. Set `ANTHROPIC_API_KEY`; model via `AI_MODEL` (default `claude-opus-5-5`). |
-| `openai-compatible` | Any Chat Completions endpoint that supports strict JSON-schema output. Set `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`. |
+## Learn more and contribute
 
-Keys are read only on the server. Model, timeout, retries, token limit, effort/temperature, and rate limits are all environment variables (see `.env.example`).
+- [College data and sources](docs/CDS_DATA.md)
+- [Recommendations across application systems](docs/CROSS_SYSTEM_RECOMMENDATIONS.md)
+- [Budget and time planning](docs/ADMISSION_BUDGET_PLAN.md)
+- [Application action centre](docs/APPLICATION_ACTION_CENTRE.md)
+- [Security and deployment review](docs/SECURITY_AND_LEGAL_REVIEW.md)
 
-## Testing
+Questions, bug reports, and improvement ideas are welcome through [GitHub Issues](https://github.com/yangsy57272/TrueDraft/issues). Please use fictional examples when reporting problems with essays or profiles.
 
-```bash
-# Unit tests only (no database needed)
-npm run test:unit
-# Unit + integration (creates in-memory SQLite databases)
-npm test
-
-# End-to-end (Playwright) against a production build
-# .env must contain: AI_PROVIDER=mock, EMAIL_TRANSPORT=file, AUTH_RATE_LIMIT=off
-npm run build && npm run start &   # or let Playwright start it
-npm run test:e2e
-```
-
-Covered: magic-link auth, sign-out, forged cookies; cross-user access to every essay endpoint; drafts, autosave vs. versions, stale-revision rejection, versions and feedback never overwriting a newer draft, concurrent version numbering, encryption at rest; feedback validation, consent gating, rate limiting; structured-output validation, malformed output, outages with retry, refusals, not-configured state; sentence-alternative guard; prompt-injection tag escaping; essay deletion, feedback deletion, account deletion with no orphan rows, retention purge, export; consent grant/withdraw/re-consent on policy change; i18n structural parity and placeholders; word counting (English, Chinese, mixed); redaction; no essay text in logs/analytics/audit; provider wire formats; and in the browser: the full student workflow, typing through slow saves / version saves / feedback and reloading, two-tab conflicts, export refusing stale text, URL-tampering, keyboard navigation of tabs/dialogs/menus, axe WCAG 2 A/AA checks, language switching, mobile layouts without overflow, and secrets absent from client bundles.
-
-## Project layout
-
-```
-src/
-  app/                 pages (public + (app) authenticated group) and /api route handlers
-  components/          layout, editor workspace, feedback renderers, tools, UI primitives
-  config/              brand.ts (name/logo), deployment.ts (privacy facts, limits)
-  content/sample.ts    fictional demo essay + hand-written sample feedback
-  db/                  Drizzle schema and client
-  i18n/                locale config, en + zh-CN messages, server/client translators
-  server/
-    ai/                prompts (versioned), schemas, guardrails, provider adapters, orchestrator
-    services/          essays, feedback, consent, account/retention/export, resources, audit
-    auth.ts session.ts http.ts crypto.ts redact.ts logger.ts analytics.ts rate-limit.ts
-drizzle-sqlite/        SQLite migrations
-scripts/               migrate, seed, retention
-tests/                 unit, integration (SQLite), e2e (Playwright)
-docs/                  AI data flow, security & legal review, deployment
-```
-
-## Documentation
-
-- [docs/AI_DATA_FLOW.md](docs/AI_DATA_FLOW.md) — exactly what is sent to the AI provider and what happens to it
-- [docs/SECURITY_AND_LEGAL_REVIEW.md](docs/SECURITY_AND_LEGAL_REVIEW.md) — security measures and the tasks still required before launch
-- [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) — production setup
-- [docs/CDS_DATA.md](docs/CDS_DATA.md) — Common Data Set sources, integrity rules, and how to import and verify data
-
-## Learning materials and intellectual property
-
-All guides in this repository are original. TrueDraft does not include, scrape, or ingest third-party course materials, books, worksheets, or real applicants' essays. Licensed material can be added later by an administrator into a separate `licensed` collection with its permission recorded; it is never used for AI guidance unless an administrator explicitly enables retrieval for that item. Student essays are stored in separate tables and never enter the knowledge base.
-
-**Supplemental prompts.** `data/supplements/2026-2027.json` was converted from a spreadsheet the operator supplied: a public quick-reference list compiled by College Essay Guy (last updated 2026-08-21). Only the colleges' own prompt text and factual fields (word limit, required/optional, section labels, the college's page) are imported, and only for rows marked "Confirmed for 2026–27". The compiler's guides and commentary are **not** imported; where the list linked to a free College Essay Guy guide, TrueDraft shows an attributed external link. Students are told to confirm every prompt in the Common App or on the college's site.
-
-TrueDraft is not affiliated with the Common App, any university, or any essay-coaching company.
-
-### School research across application systems
-
-Every school page links to programme-focused official-source research, a Why School logic map, a source-anchored resource workbook and a six-part audit. Browse UK, Hong Kong, Canada, Australia and Singapore using the country/region filter. Research can be looked up without AI; connected AI can relate the evidence to the applicant’s own profile. UK research hands off to a subject-focused personal-statement setup. See [School research guide](docs/SCHOOL_RESEARCH.md) for steps, official-source boundaries and coverage limitations.
-
-### Application action centre
-
-`/my-list/hub` brings next steps, missing-information warnings, deadline watch and per-school checklists into one bilingual page. It keeps outstanding follow-ups visible after application submission, saves progress to the existing planner and supports private JSON checklist download or browser printing. It uses the student’s actual list and needs no AI key. See [Action centre guide](docs/APPLICATION_ACTION_CENTRE.md).
-
-### Personalized application plan
-
-`/my-list/plan` automatically creates a student timetable from chosen schools, programmes, supplements, entered deadlines and linked essay progress. Save available days/hours, select applicable optional prompts, track tasks and download a calendar snapshot. Missing dates, unresolved requirements and workload that does not fit stay visible. No AI key is needed. See [Application plan guide](docs/APPLICATION_PLAN.md).
-
-### Verified rounds and calendar entry points
-
-For the initial fall-2027 catalog, choosing a supported school/programme/round sets its corroborated application deadline and recalculates the plan. Coverage is 21 institutions/campuses and 42 choices; unsupported schools/years remain explicitly unverified. Each published date is supported by two institutional publications, each fetched twice. Apple/Google .ics import and per-session Google Calendar previews are available. See [Verified deadlines](docs/VERIFIED_DEADLINES.md).
+TrueDraft is an independent project, unaffiliated with the Common App or any university.

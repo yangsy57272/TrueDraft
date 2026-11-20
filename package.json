@@ -25,7 +25,7 @@
     "desktop:build": "node scripts/desktop/pack.mjs",
     "db:import-postgres": "tsx --conditions=react-server scripts/import-postgres.ts"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "engines": {
     "node": ">=22.12.0 <23"
   },

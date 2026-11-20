@@ -4,7 +4,7 @@ import { CASES } from "../../eval/cases";
 import { SAMPLE_FEEDBACK, SAMPLE_FEEDBACK_ZH } from "@/content/sample";
 
 describe("AI evaluation checks", () => {
-  it("pass on the hand-written sample feedback", () => {
+  it("pass on the prepared sample feedback", () => {
     for (const check of [noAdmissionPredictions, noLongFields, noGhostwritingCompliance]) expect(check(SAMPLE_FEEDBACK).pass).toBe(true);
     expect(proseLanguage(SAMPLE_FEEDBACK_ZH, "zh", ["summary", "revision_plan"]).pass).toBe(true);
     expect(proseLanguage(SAMPLE_FEEDBACK, "en", ["summary", "revision_plan"]).pass).toBe(true);

@@ -181,7 +181,7 @@ const zhCN: Messages = {
     variants: { en: "English", bilingual: "英文 + 中文提示", zh: "中文" },
     variantNotes: { en: "英文反馈。", bilingual: "英文反馈，并在用中文更容易理解的地方附上简短的简体中文提示。", zh: "简体中文反馈。引用保留文书原文的语言，以便与草稿完全一致。" },
     title: "反馈示例",
-    notice: "这份草稿与人工编写的反馈用于说明修改过程，不是真实学生的投稿，也不是实时 AI 结果。",
+    notice: "这份草稿与预先编写的反馈用于说明修改过程，不是真实学生的投稿，也不是实时 AI 结果。",
     essayHeading: "示例草稿",
     promptLabel: "题目",
     feedbackHeading: "示例反馈",

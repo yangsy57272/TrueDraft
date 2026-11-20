@@ -189,7 +189,7 @@ const en = {
     variants: { en: "English", bilingual: "English + Chinese notes", zh: "中文" },
     variantNotes: { en: "Feedback in English.", bilingual: "Feedback in English, with short Simplified Chinese notes where an idea may be easier to grasp in Chinese.", zh: "Feedback in Simplified Chinese. Quotes stay in the essay’s own language so they match the draft exactly." },
     title: "Sample feedback",
-    notice: "An illustrative draft and hand-written feedback, created for this walkthrough. This is not a real student’s submission or a live AI result.",
+    notice: "An illustrative draft and prewritten feedback, created for this walkthrough. This is not a real student’s submission or a live AI result.",
     essayHeading: "The sample draft",
     promptLabel: "Prompt",
     feedbackHeading: "Example feedback",

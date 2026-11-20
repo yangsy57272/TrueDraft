@@ -42,7 +42,7 @@ See application progress, checklists, and next steps together. The schools and a
 <!-- sample-feedback:start -->
 ## A closer look at the feedback
 
-The sample follows an ordinary student trying to help a classmate choose an English reply. The writer gets distracted discussing small phrases at lunch and is still working out what they think. The person, draft and feedback are illustrative and hand-written; this is not a real student’s submission or a live AI response.
+The sample follows an ordinary student trying to help a classmate choose an English reply. The writer gets distracted discussing small phrases at lunch and is still working out what they think. The person, draft and feedback are illustrative and prepared for this walkthrough; this is not a real student’s submission or a live AI response.
 
 <details>
 <summary>Read the example: what to keep, what to develop, and how to revise</summary>

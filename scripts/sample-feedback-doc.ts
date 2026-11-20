@@ -10,7 +10,7 @@ const end = "<!-- sample-feedback:end -->";
 const md = [
   "## A closer look at the feedback",
   "",
-  "The sample follows an ordinary student trying to help a classmate choose an English reply. The writer gets distracted discussing small phrases at lunch and is still working out what they think. The person, draft and feedback are illustrative and hand-written; this is not a real student’s submission or a live AI response.",
+  "The sample follows an ordinary student trying to help a classmate choose an English reply. The writer gets distracted discussing small phrases at lunch and is still working out what they think. The person, draft and feedback are illustrative and prepared for this walkthrough; this is not a real student’s submission or a live AI response.",
   "",
   "<details>",
   "<summary>Read the example: what to keep, what to develop, and how to revise</summary>",
@@ -66,7 +66,7 @@ const label: Record<string, string> = {
 const full = [
   "# Example essay feedback",
   "",
-  "An illustrative student, situation and draft, created to demonstrate useful feedback on an everyday experience. No real student’s work or testimonial is represented. Feedback is hand-written, not a live AI response. Suggestions are questions and revision options; they do not supply new experiences or a replacement essay.",
+  "An illustrative student, situation and draft, created to demonstrate useful feedback on an everyday experience. No real student’s work or testimonial is represented. Feedback is prewritten for demonstration, not a live AI response. Suggestions are questions and revision options; they do not supply new experiences or a replacement essay.",
   "",
   "## Prompt",
   "",

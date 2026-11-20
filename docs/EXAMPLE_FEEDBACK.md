@@ -1,6 +1,6 @@
 # Example essay feedback
 
-An illustrative student, situation and draft, created to demonstrate useful feedback on an everyday experience. No real student’s work or testimonial is represented. Feedback is hand-written, not a live AI response. Suggestions are questions and revision options; they do not supply new experiences or a replacement essay.
+An illustrative student, situation and draft, created to demonstrate useful feedback on an everyday experience. No real student’s work or testimonial is represented. Feedback is prewritten for demonstration, not a live AI response. Suggestions are questions and revision options; they do not supply new experiences or a replacement essay.
 
 ## Prompt
 
@@ -206,6 +206,6 @@ The topic is clear: how short expressions carry different meanings in different 
 
 ## Limits
 
-This is an illustrative, hand-written sample, not a real student’s submission, testimonial or live AI response. Feedback cannot verify memories or sources. Questions suggest directions to explore; they are not facts to add. No view is offered on admission chances or how this essay fits a complete application. The writer should keep control of the experiences, interpretation and wording.
+This is an illustrative, prewritten sample, not a real student’s submission, testimonial or live AI response. Feedback cannot verify memories or sources. Questions suggest directions to explore; they are not facts to add. No view is offered on admission chances or how this essay fits a complete application. The writer should keep control of the experiences, interpretation and wording.
 
 English, bilingual and Simplified Chinese variants of this feedback are available on the app’s `/sample-feedback` page. To regenerate this document and the README excerpt from the same sample content, run `npx tsx scripts/sample-feedback-doc.ts`.

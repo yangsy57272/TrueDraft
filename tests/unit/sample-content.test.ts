@@ -10,7 +10,7 @@ const quotes = (f: { strengths: { evidence_quote: string }[]; categories: { pass
   ...f.passage_comments.map((p) => p.quote),
 ] as string[];
 
-describe("sample feedback (fictional, hand-written)", () => {
+describe("sample feedback (illustrative, prewritten)", () => {
   for (const [name, f] of Object.entries(variants)) {
     it(`${name}: passes the same substance rules as live feedback`, () => {
       const parsed = fullFeedbackSchema.safeParse(f);

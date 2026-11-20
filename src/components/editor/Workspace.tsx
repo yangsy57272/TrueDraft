@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { findQuoteEvidence } from "@/lib/feedback-evidence";
 import { DropdownMenu, Tabs } from "radix-ui";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
@@ -323,14 +324,14 @@ export function Workspace({ essay, versions, runs, latestFeedback, ai, notes, li
       const el = textareaRef.current;
       if (!el) return;
       const text = draftRef.current;
-      let start = text.indexOf(quote);
-      if (start < 0) start = text.toLowerCase().indexOf(quote.toLowerCase());
-      if (start < 0) {
+      const evidence = findQuoteEvidence(text, quote);
+      if (!evidence) {
         notify(t("feedback.passageMoved"), "info");
         return;
       }
       el.focus({ preventScroll: true });
-      el.setSelectionRange(start, start + quote.length);
+      const { start, end } = evidence;
+      el.setSelectionRange(start, end);
       setSelection(quote);
       // The editor grows with its content, so scroll the page to the passage's approximate position.
       const rect = el.getBoundingClientRect();

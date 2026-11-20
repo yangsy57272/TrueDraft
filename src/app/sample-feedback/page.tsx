@@ -50,7 +50,7 @@ export default async function SampleFeedbackPage({ searchParams }: { searchParam
           </nav>
           <p className="mt-2 text-sm text-ink-soft">{t(`sample.variantNotes.${variant}` as never)}</p>
           <div className="mt-3" lang={variant === "zh" ? "zh-Hans" : "en"}>
-            <FeedbackView data={data} />
+            <FeedbackView data={data} sourceDraft={SAMPLE_ESSAY} />
           </div>
         </section>
       </div>

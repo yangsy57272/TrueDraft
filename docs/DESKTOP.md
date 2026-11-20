@@ -1,5 +1,9 @@
 # TrueDraft desktop app
 
+New here? Try the public `/demo` first; it needs no account or AI key and uses only fictional data. After installation, create a workspace with your own draft, add schools to My list, and use **Application action centre → Your focus for today**. See [release notes](../RELEASE_NOTES.md) for changes.
+
+Before upgrading, stop the app and back up the complete data directory below. Keep the database, settings and encrypted AI settings together. Replace the application package while retaining the data directory; do not run two versions against the same profile.
+
 - **Windows x64:** run `TrueDraft-Windows-x64.exe`. It installs for the current Windows user and opens TrueDraft. Later, use the desktop or Start menu shortcut.
 - **Linux x64 / arm64:** extract the matching `.tar.gz` and run `./TrueDraft`. Node.js is bundled. Run `sh install.sh` once to add TrueDraft to the applications menu, and keep the extracted folder in place. A desktop with `xdg-open` is needed to open the browser automatically. Linux packages target glibc distributions such as Ubuntu 24.04. Stop with `./TrueDraft --stop`.
 - **macOS:** unzip the package for Apple Silicon (`arm64`) or Intel (`x64`), then open `TrueDraft.app`. The downloadable bundle is ad-hoc signed and has no Apple notarization. The Windows installer has no publisher signature.

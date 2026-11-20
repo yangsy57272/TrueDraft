@@ -55,7 +55,7 @@ export default async function FeedbackPage({ params }: { params: Promise<{ id: s
           </section>
         ) : null}
         <section aria-label={t("feedback.title")}>
-          {run.kind === "full_feedback" ? <FeedbackView data={result} /> : null}
+          {run.kind === "full_feedback" ? <FeedbackView data={result} sourceDraft={version?.content} /> : null}
           {run.kind === "prompt_decoder" ? <PromptDecoderView data={result} /> : null}
           {run.kind === "sentence" ? (
             <>

@@ -15,6 +15,7 @@ import { getProfile } from "@/server/services/profile";
 import { CdsView } from "@/components/cds/CdsView";
 import { FederalView } from "@/components/cds/FederalView";
 import { AddToListButton } from "@/components/cds/SchoolClientBits";
+import { RecommendationEvidence } from "@/components/schools/RecommendationEvidence";
 import { FitPanel } from "@/components/schools/FitBadge";
 import { SupplementsSection } from "@/components/schools/SupplementsSection";
 import { getSupplements } from "@/server/services/supplements";
@@ -90,6 +91,7 @@ export default async function SchoolPage({ params, searchParams }: { params: Pro
       </section>
       {user ? <p className="mt-3 text-sm"><Link href="/schools/recommended">{zh ? "按我的专业推荐学校 →" : "Recommend schools for my majors →"}</Link></p> : null}
       {fit ? <FitPanel fit={fit} t={t} /> : null}
+      {s.country === "US" && <RecommendationEvidence dataset={dataset} federal={federal?.data ?? null} fit={fit} zh={zh} />}
       {fit ? <p className="mt-2 text-xs text-ink-soft">{zh ? "分组依据全校数据；专业及国际生录取率尚未核实。Safety 不保证录取或可负担。" : "Grouping uses university-wide data; major-specific and international admission rates are not verified. Safety is not an admission or affordability guarantee."}</p> : null}
       <section className="card mt-6 p-5"><h2 className="text-xl font-semibold">{zh ? "学校研究与申请体系" : "School research & application system"}</h2>
         {system ? <><p className="mt-2 font-semibold">{zh ? system.zh : system.en} · {system.route}</p><p className="mt-2 text-sm">{zh ? system.noteZh : system.noteEn}</p><a href={system.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-sm">{zh ? "官方申请说明" : "Official application guidance"} ↗</a></> : null}

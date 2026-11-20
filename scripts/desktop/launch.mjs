@@ -149,6 +149,11 @@ async function verifyApp(app, url) {
   assert.match(cookie, /td\.session_token=/);
   const journey = await fetch(`${origin}/journey`, { headers: { cookie }, redirect: 'manual' });
   assert.equal(journey.status, 200);
+  for (const [route, expected] of [["/demo", "A little less overwhelm"], ["/quality", "Fixture checks passed"]]) {
+    const response = await fetch(`${origin}${route}`);
+    assert.equal(response.status, 200);
+    assert.ok((await response.text()).includes(expected), `Missing public page: ${route}`);
+  }
   // Exercise the actual settings API against a loopback-only synthetic provider.
   // No essays/profile are sent; the saved encrypted connection must survive a restart.
   const settingsPage = await fetch(`${origin}/settings`, { headers: { cookie } });

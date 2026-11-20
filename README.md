@@ -1,6 +1,6 @@
 # TrueDraft
 
-[Download](https://github.com/yangsy57272/TrueDraft/releases) · [简体中文](README.zh-CN.md) · [Contribute](CONTRIBUTING.md) · [Report a problem](https://github.com/yangsy57272/TrueDraft/issues)
+[Try the interactive demo](https://yangsy57272.github.io/TrueDraft/) · [Download](https://github.com/yangsy57272/TrueDraft/releases) · [简体中文](README.zh-CN.md) · [Contribute](CONTRIBUTING.md) · [Report a problem](https://github.com/yangsy57272/TrueDraft/issues)
 
 **Your story. Your voice. Clearer feedback.**
 
@@ -18,6 +18,12 @@ Whether you are choosing a major or polishing a final draft, TrueDraft helps you
 - **Get optional AI coaching.** Unpack a prompt, brainstorm ideas, request passage feedback, and turn suggestions into a revision plan. Feedback is available in English, Chinese, or both.
 
 TrueDraft is designed to support your writing and decisions. AI can make mistakes; review its suggestions and confirm current requirements with each college. School groupings are planning aids, and a “Safety” label guarantees neither admission nor affordability.
+
+## Try it in your browser
+
+**[Open the interactive demo](https://yangsy57272.github.io/TrueDraft/)** — no account or AI key needed. Explore a fictional college list, today’s work, a quoted essay comment, and a revision comparison. English and Chinese are available. Changes reset on reload.
+
+[Watch the short walkthrough](https://yangsy57272.github.io/TrueDraft/demo-tour.webm) · [Quality methods and limits](docs/QUALITY.md) · [What’s new in 0.2.0](RELEASE_NOTES.md)
 
 ## Screenshots
 
@@ -89,6 +95,8 @@ Run `npm test` for unit and integration tests, or `npm run test:e2e` for browser
 - [Recommendations across application systems](docs/CROSS_SYSTEM_RECOMMENDATIONS.md)
 - [Budget and time planning](docs/ADMISSION_BUDGET_PLAN.md)
 - [Application action centre](docs/APPLICATION_ACTION_CENTRE.md)
+- [Help test TrueDraft](docs/USER_TESTING.md)
+- [Public preview architecture](docs/PUBLIC_PREVIEW.md)
 - [Security and deployment review](docs/SECURITY_AND_LEGAL_REVIEW.md)
 
 See the [contribution guide](CONTRIBUTING.md) for ways to help with testing, translations, accessibility, and college data.

@@ -8,9 +8,11 @@ import { SignOutButton } from "./SignOutButton";
 import { StepBar } from "./StepBar";
 
 export async function SiteHeader() {
-  const { t } = await getT();
+  const { t, locale } = await getT();
   const user = await getCurrentUser();
   const publicLinks = [
+    { href: "/demo", label: locale === "zh-CN" ? "互动演示" : "Try the demo" },
+    { href: "/quality", label: locale === "zh-CN" ? "质量与依据" : "Quality & evidence" },
     { href: "/how-it-works", label: t("nav.howItWorks") },
     { href: "/sample-feedback", label: t("nav.sample") },
     { href: "/schools", label: t("nav.schools") },

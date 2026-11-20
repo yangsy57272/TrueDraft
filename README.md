@@ -31,13 +31,54 @@ Explore colleges with search, filters, and sourced data.
 
 ![College explorer with filters and school comparison options](docs/images/college-explorer.png)
 
-Read structured feedback alongside a draft, with English and Chinese options. This built-in example is fictional and hand-written, rather than a live AI response.
+A worked example follows a student helping a classmate choose an English reply. The draft keeps everyday details and uncertainty; the feedback explains what to preserve, what needs development, and how to revise. Written for demonstration, rather than taken from a real application.
 
-![Fictional sample essay beside bilingual feedback](docs/images/sample-feedback.png)
+![Everyday student draft beside detailed bilingual feedback](docs/images/sample-feedback-natural.png)
 
 See application progress, checklists, and next steps together. The schools and application records below are fictional demonstration data.
 
 ![Application action centre showing next steps for fictional colleges](docs/images/application-centre.png)
+
+<!-- sample-feedback:start -->
+## A closer look at the feedback
+
+The sample follows an ordinary student trying to help a classmate choose an English reply. The writer gets distracted discussing small phrases at lunch and is still working out what they think. The person, draft and feedback are illustrative and prepared for this walkthrough; this is not a real student’s submission or a live AI response.
+
+<details>
+<summary>Read the example: what to keep, what to develop, and how to revise</summary>
+
+**What to keep:** Lunch and the neglected homework show the interest taking up time naturally. Keep this detail: it shows the interest competing with something else you meant to do.
+
+**First priority: Let us follow one comparison, not just the habit.** Use the lunch conversation or the opening translation question to show your thinking at work. What did you initially think a reply meant? What detail made you or your friend read it differently? What did you conclude, or leave unresolved? A short exchange can connect the scene, your learning process and the reason you keep returning to the topic. Let that exchange carry the reflection. If you cannot remember the exact words, summarize the discussion accurately rather than creating a quotation.
+
+> Once we spent part of lunch discussing whether a full stop made a short reply seem unfriendly.
+
+**What needs work:** This is a useful scene, but we do not yet know what the two of you compared or why you read the reply differently. The next sentence shows lost time more clearly than this one shows the thinking.
+
+**Why it matters:** The scene can answer both why the topic holds your attention and how another person helps you learn. One developed exchange would do more work than several additional examples.
+
+**Try this:** What was the short reply, if you remember it? What did each of you think the full stop changed? Which part of the disagreement made you reconsider something, or remained unresolved? Summarize if you cannot recall the exact words.
+
+> I usually check a learner's dictionary first, then ask classmates who use the expression.
+
+**What needs work:** You tell us the types of sources you consult, but not what one source added. A dictionary and a classmate may help with different parts of the same question.
+
+**Why it matters:** The prompt asks what or whom you turn to when you want to learn. Explaining one useful idea and your response would show how you learn.
+
+**Try this:** Choose a source or conversation you actually remember. What question did you bring to it, what did it help explain, and what was still unclear? Name or describe the source accurately so a reader can follow the learning.
+
+**A manageable revision order**
+
+1. Choose the opening exchange or lunch discussion as the main example. Note what each person meant, the wording discussed and what you remember accurately. Done when you can separate remembered detail from a guess.
+2. Expand that example with your initial reading, the other reading and what you reconsidered. Done when a reader can follow the comparison and understand why you wanted to keep thinking about it.
+3. Connect one actual learning source or conversation to that example. Done when the reader can identify the question you asked, what you learned and what remained unclear. Keep other source types brief.
+4. Clarify the English-message context, then trim examples that repeat the same point. Done when each remaining detail either helps us follow the exchange or adds something to your thinking.
+5. Read the revised middle beside the opening and ending. Done when they describe a believable, still-developing habit, every prompt part is addressed, and all details are supportable. Check the 650-word ceiling last.
+
+[Read the complete sample draft and feedback](docs/EXAMPLE_FEEDBACK.md), including all eight diagnostic areas, six passage comments, voice checks and questions for the writer.
+
+</details>
+<!-- sample-feedback:end -->
 
 ## Try the desktop app
 

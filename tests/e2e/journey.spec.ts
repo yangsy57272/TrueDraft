@@ -59,7 +59,7 @@ test("journey: profile → majors → schools → list → linked supplemental e
   await expect(page.getByRole("heading", { name: "No CDS data imported yet" })).toBeVisible();
   // Without a CDS, the federal figures are still there, with their period and source.
   await expect(page.getByRole("heading", { name: "U.S. Department of Education data" })).toBeVisible();
-  await expect(page.getByText("Fall 2024").first()).toBeVisible();
+  await expect(page.getByRole("region", { name: "U.S. Department of Education data", exact: true }).getByText("Fall 2024").first()).toBeVisible();
   await expect(page.getByRole("link", { name: /This college on College Scorecard/ })).toHaveAttribute("href", /collegescorecard\.ed\.gov\/school\/\?186131/);
 
   // My list: set category/round/deadline, toggle checklist, start a linked essay

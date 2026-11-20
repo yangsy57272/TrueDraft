@@ -1,7 +1,7 @@
 {
   "suiteVersion": "1.0",
   "scope": "Deterministic regression fixtures; no live model calls or student data",
-  "sourceDigest": "dff3835afe31459288dd744b2d78d90e9c00981e442aa52f316d273fddfbf515",
+  "sourceDigest": "d979b4816b518117c6b21c891201b54979364eb534eded95d0bb3e594094e440",
   "passed": 18,
   "total": 18,
   "rows": [
